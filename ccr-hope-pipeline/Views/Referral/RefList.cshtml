@@ -1,0 +1,50 @@
+﻿@model List<HopePipeline.Models.DbEntities.Referrals.RefRow>;
+
+@{
+    ViewData["Title"] = "Referral List";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+<h2>Referrals</h2>
+<h3>Showing @Model.Count referrals</h3>
+
+<table id="reflist" class="table">
+    <thead>
+        <tr>
+            <th>
+              Name
+            </th>
+            <th>
+                Date of Birth
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+               More Options
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.lname) , @Html.DisplayFor(modelItem => item.fname)
+            </td>
+            <td>
+               @Html.DisplayFor(modelItem => item.dob)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.status)
+            </td>
+            <td>
+                <a asp-controller="Tracking" asp-action="TrackingForm" asp-route-clientCode="@item.clientCode">Start Tracking</a> |
+                <a asp-controller="n" asp-action="detailReferralM" asp-route-clientCode="@item.clientCode">Details</a> |
+                <a asp-controller="n" asp-action="contactInfoM" asp-route-clientCode="@item.clientCode">Contact</a> |
+                <a asp-controller="Referral" asp-action="Delete" asp-route-pk="@item.clientCode">Delete</a>
+            </td>
+        </tr>; }
+    </tbody>
+</table>

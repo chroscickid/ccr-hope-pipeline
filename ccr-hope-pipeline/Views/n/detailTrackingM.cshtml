@@ -1,0 +1,477 @@
+﻿
+@{
+    ViewData["Title"] = "detailTrackingM";
+}
+
+
+<head>
+    <style>
+
+        table {
+            width: 100%;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 11px;
+            text-align: left;
+        }
+
+        table#t01 tr:nth-child(even) {
+            background-color: #e6f3ff;
+        }
+
+        table#t01 tr:nth-child(odd) {
+            background-color: #fff;
+        }
+
+        table#t01 th {
+            background-color: #005199;
+            color: white;
+        }
+
+        td:first-child {
+            font-weight: bold
+        }
+        /* Style the tab */
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+
+            /* Style the buttons inside the tab */
+            .tab button {
+                background-color: inherit;
+                float: left;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 14px 16px;
+                transition: 0.3s;
+                font-size: 17px;
+            }
+
+                /* Change background color of buttons on hover */
+                .tab button:hover {
+                    background-color: #ddd;
+                }
+
+                /* Create an active/current tablink class */
+                .tab button.active {
+                    background-color: #ccc;
+                }
+
+        /* Style the tab content */
+        .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+        }
+        /* Style width of form */
+        .t {
+            width: 30%;
+            table-layout: fixed;
+        }
+    </style>
+    <script>
+        function Information(evt, Specific) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(Specific).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+    </script>
+</head>
+<h2>Detail of Client Tracking Information</h2>
+<div class="tab">
+    <button class="tablinks active" onclick="Information(event, 'Demographic Information')">Demographic Information</button>
+    <button class="tablinks" onclick="Information(event, 'School Information')">School Information</button>
+    <button class="tablinks" onclick="Information(event, 'CCR')">Center for Children's Rights Information</button>
+    <button class="tablinks" onclick="Information(event, 'Discipline Information')">Discipline Information</button>
+
+</div>
+
+
+
+
+<hr />
+<div id="Demographic Information" class="tabcontent" style="display:block">
+    <table id="t01">
+
+
+        <tr>
+            <td class="t" style="text-align:right">
+                Client Code:
+            </td>
+
+            <td>
+                12251
+            </td>
+        </tr>
+
+
+        <tr>
+            <td class="t" style="text-align:right">
+                First Name:
+            </td>
+
+            <td>
+                jill
+            </td>
+        </tr>
+        <tr>
+            <td class="t" style="text-align:right">
+                Last Name:
+            </td>
+
+            <td>
+                pan
+            </td>
+        </tr>
+        <tr>
+            <td class="t" style="text-align:right">
+                Guardian's relationship to the youth:
+            </td>
+
+            <td>
+                Father
+            </td>
+        </tr>
+        <tr>
+            <td class="t" style="text-align:right">
+                Guardian's Name:
+            </td>
+
+            <td>
+                Teal
+            </td>
+        </tr>
+
+        <tr>
+            <td class="t" style="text-align:right">Gender Identity: </td>
+
+            <td>
+                He/Him/His
+            </td>
+
+        </tr>
+        <tr>
+            <td class="t" style="text-align:right">Ethnicity: </td>
+
+            <td>
+                Hispanic
+            </td>
+
+        </tr>
+
+        <tr>
+            
+            <td class="t" style="text-align:right">
+                Date of Birth:
+            </td>
+
+            <td>
+                12/5/1425
+            </td>
+        </tr>
+
+        <tr>
+            <td class="t" style="text-align:right">Referral Source's First Name:</td>
+
+            <td> Roger</td>
+
+
+        </tr>
+        <tr>
+            <td class="t" style="text-align:right">Referral Source's Last Name:</td>
+
+            <td> Pan</td>
+
+
+        </tr>
+
+        <tr>
+            <td class="t" style="text-align:right">Baker Acted</td>
+
+            <td>
+                No
+            </td>
+
+        </tr>
+
+        <tr>
+            <td class="t" style="text-align:right">Female-led household?</td>
+
+            <td>
+                Yes
+            </td>
+
+        </tr>
+
+        <tr>
+            <td class="t" style="text-align:right"> Adopted </td>
+
+            <td>
+                No
+            </td>
+
+        </tr>
+        <tr>
+            <td class="t" style="text-align:right">Evicted</td>
+
+            <td>
+                Yes
+            </td>
+
+        </tr>
+
+        <tr>
+            <td class="t" style="text-align:right"> Incarcarated Parent</td>
+
+            <td>
+                Yes
+            </td>
+
+        </tr>
+        <tr>
+            <td class="t" style="text-align:right">
+                Which Parent is Incarcerated:
+            </td>
+            <td style="text-align:left">
+                N/A
+            </td>
+        </tr>
+
+        <tr>
+            <td class="t" style="text-align:right">Asthma</td>
+
+            <td>
+                No
+            </td>
+
+        </tr>
+    </table>
+
+</div>
+
+
+<div id="School Information" class="tabcontent">
+    <p>
+        <table id="t01">
+            <tr>
+                <td class="t" style="text-align:right">
+                    School
+                </td>
+                <td>
+                    Kernan Trail Elementary
+                </td>
+
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    Failed a Grade
+                </td>
+                <td>
+                    No
+                </td>
+
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    If yes, which grade and how many times
+                </td>
+                <td>
+                    N/A
+                </td>
+
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    Has an IEP/504 Plan<br />
+                </td>
+                <td>
+                    Gifted
+                </td>
+
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    In Pride
+                </td>
+                <td>
+                    Yes
+                </td>
+
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    New FBA
+                </td>
+                <td>
+                    No
+                </td>
+
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    Addititonal Accomodations Gained
+                </td>
+                <td>
+                    Yes
+                </td>
+
+            </tr>
+
+            <tr>
+                <td class="t" style="text-align:right">
+                    Additional Compensatory Services <br />
+                </td>
+                <td>
+                    No
+                </td>
+
+            </tr>
+
+            <tr>
+                <td class="t" style="text-align:right">
+                    If yes, what services
+                </td>
+                <td>
+                    Services
+                </td>
+
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    Bullied <br />
+                </td>
+                <td>
+                    No
+                </td>
+
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    If yes, was it reported  <br />
+                </td>
+                <td>
+                    N/A
+                </td>
+
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    Date of report  <br />
+                </td>
+                <td>
+                    N/A
+                </td>
+
+            </tr>
+        </table>
+    </p>
+</div>
+
+
+<div id="CCR" class="tabcontent">
+    <p>
+        <table id="t01">
+            <tr>
+
+                <td class="t" style="text-align:right">Level of Service Provided</td>
+                <td>
+                    Information/Education
+
+                </td>
+            </tr>
+
+            <tr>
+                <td class="t" style="text-align:right"> Date Referral Input:</td>
+
+                <td>12/31/2019</td>
+
+
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">Intake Date</td>
+
+                <td>
+                    12/31/2019
+                </td>
+
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">Reason for Nonengagement</td>
+                <td>
+                    N/A
+                </td>
+            </tr>
+
+            <tr>
+                <td class="t" style="text-align:right">
+                    Case open/close status
+                </td>
+                <td>
+                    Open
+                </td>
+
+            </tr>
+
+        </table>
+    </p>
+</div>
+
+<div id="Discipline Information" class="tabcontent">
+    <p>
+        <table id="t01">
+            <tr>
+                <td class="t" style="text-align:right">
+                    Suspended more than three times  <br />
+                </td>
+                <td>
+                    No
+                </td>
+
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    Alternative School  <br />
+                </td>
+                <td>
+                   No
+                </td>
+
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    Alternative School Name<br />
+                </td>
+                <td>
+                    N/A
+                </td>
+
+            </tr>
+
+        </table>
+    </p>
+</div>
+
+<div>
+    <a asp-controller="n" asp-action="EditTrackingM">Edit</a><br />
+    <a asp-action="Index" asp-controller="Home">Back to List</a>
+</div>
+

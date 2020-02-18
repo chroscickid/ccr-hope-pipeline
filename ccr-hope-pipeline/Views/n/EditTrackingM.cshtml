@@ -1,0 +1,788 @@
+﻿
+@{
+    ViewData["Title"] = "editTrackingM";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table {
+            width: 100%;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        table#t01 tr:nth-child(even) {
+            background-color: #e6f3ff;
+        }
+
+        table#t01 tr:nth-child(odd) {
+            background-color: #fff;
+        }
+
+        table#t01 th {
+            background-color: #005199;
+            color: white;
+        }
+
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+/* Style width of form */
+.t {
+width:30%;
+table-layout:fixed;
+}
+    </style>
+    <script>
+        function editConfirm() {
+
+            var r = confirm("Please Confirm you would like to Submit your changes")
+            if (r == true) {
+
+                window.location.href = "detailTrackingM";
+                return true;
+            }
+            else
+                return false;
+        }
+       
+            function Information(evt, Specific) {
+      var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+          }
+          tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+          }
+          document.getElementById(Specific).style.display = "block";
+          evt.currentTarget.className += " active";
+        }
+   
+
+    </script>
+
+
+
+</head>
+<body>
+
+
+    <!-- Decision after login by authorized user -->
+
+    <h1>Edit Client Tracking Information</h1><br />
+
+
+
+    <!-- register should only be provided by authorized personal so not for any user till logged in and authorized user will have to register new users
+    1.1 Login Page -->
+             <div class="tab">
+              <button class="tablinks active" onclick="Information(event, 'Demographic Information')">Demographic Information</button>
+             <button class="tablinks" onclick="Information(event, 'School Information')">School Information</button>
+            <button class="tablinks" onclick="Information(event, 'CCR')">Center for Children's Rights Information</button>
+             <button class="tablinks" onclick="Information(event, 'Discipline Information')">Discipline Information</button>
+                                                 
+           </div>
+    <div>
+        <form>
+
+            @*<button type="button" class="collapsible">
+            Demographic Information
+        </button>*@
+
+            <div id="Demographic Information" class="tabcontent" style="display:block">
+                <p>
+                    <table id="t01">
+                        <tr>
+                            <td class="t" style="text-align:right"> ClientID </td>
+
+                            <td> <input type="text" value="wg4237"></td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="t" style="text-align:right">First Name:</td>
+
+                            <td> <input type="text" value="Bryan"></td>
+
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">Last Name: </td>
+
+                            <td><input type="text" value="Brice"></td>
+
+                        </tr>
+
+
+                        <tr>
+                            <td class="t" style="text-align:right"> Guardian's relationship to the youth:</td>
+
+                            <td>
+                                <br>  <input type="checkbox" name="Mother" value="Mother" checked> Mother<br>
+                                <input type="checkbox" name="Father" value=" Father"> Father<br>
+                                <input type="checkbox" name="Guardian" value="Guardian"> Guardian<br>
+                                <input type="checkbox" name="Familymember" value="Family member"> Family member(aunt, uncle, grandmother, grandfather, great grandparent, sibiling, cousin, etc)<br>
+                                <input type="checkbox" name="FosterParent" value="Foster Parent"> Foster Parent<br>
+
+                                Other:<input type="text" name="VariableFM">
+                                <br>
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+                            <td class="t" style="text-align:right">  Guardian's Name:</td>
+
+                            <td><input type="text" value="Victoria"></td>
+
+                        </tr>
+
+
+                        <tr>
+                            <td class="t" style="text-align:right">Gender Identity: </td>
+
+                            <td>
+                                <input type="radio" name="gender" value="male"> He/Him/His<br>
+                                <input type="radio" name="gender" value="female"> She/Her/Hers<br>
+                                <input type="radio" name="gender" value="trans*"> They/Them/Theirs<br />
+                                <input type="radio" name="gender" value="nonbinaryF"> She/They<br>
+                                <input type="radio" name="gender" value="nonbinaryM"> He/They<br>
+                                <input type="radio" name="gender" value="neutral"> Zie/Zir/Zirs<br />
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">Ethnicity: </td>
+
+                            <td>
+                                <select>
+                                    <option value="nhWhite">Non Hispanic White</option>
+                                    <option value="hispanic">Hispanic</option>
+                                    <option value="natAm">Native American</option>
+                                    <option value="jewish">Jewish</option>
+                                    <option value="black">Black</option>
+                                    <option value="multi">Multiple Ethnicities</option>
+                                    <option value="notListed" selected>Ethnicity Not Listed</option>
+                                </select>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">Date of Birth:</td>
+
+                            <td> <input type="date" value="2008-12-31"></td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="t" style="text-align:right">Referral Source's First Name:</td>
+
+                            <td> <input type="text" value="Roger"></td>
+
+
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">Referral Source's Last Name:</td>
+
+                            <td> <input type="text" value="Pan"></td>
+
+
+                        </tr>
+
+                        <tr>
+                            <td class="t" style="text-align:right">Baker Acted</td>
+
+                            <td>
+                                <input type="radio" name="baker" value="y"> Yes<br />
+                                <input type="radio" name="noBaker" value="n" checked /> No <br />
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="t" style="text-align:right">Female-led household?</td>
+
+                            <td>
+                                <input type="radio" name="femHouse" value="y" checked> Yes<br />
+                                <input type="radio" name="noFemHouse" value="n" /> No <br />
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="t" style="text-align:right"> Adopted </td>
+
+                            <td>
+                                <input type="radio" name="adopted" value="y"> Yes<br />
+                                <input type="radio" name="notAdopted" value="n" checked /> No <br />
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">Evicted</td>
+
+                            <td>
+                                <input type="radio" name="evicted" value="y"> Yes<br />
+                                <input type="radio" name="notEvicted" value="n" checked /> No <br />
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="t" style="text-align:right"> Incarcarated Parent</td>
+
+                            <td>
+                                <input type="radio" name="incarParent" value="y"> Yes<br />
+                                <input type="radio" name="incarParent" value="n" checked /> No <br />
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                Which Parent is Incarcerated:
+                            </td>
+                            <td>
+                                <input type="radio" name="wincarParent" value="Father"> Father<br />
+                                <input type="radio" name="wincarParent" value="Mother" checked /> Mother<br />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="t" style="text-align:right">Asthma</td>
+
+                            <td>
+                                <input type="radio" name="asthma" value="y"> Yes<br />
+                                <input type="radio" name="noAsthma" value="n" checked /> No <br />
+                            </td>
+
+                        </tr>
+                    </table>
+                </p>
+            </div>
+
+
+
+
+
+
+
+
+
+            @*<table id="t01">
+        
+        <tr>
+            <td style="text-align:right"> Address:</td>
+
+
+            <td> <input type="text" value="12 House St."></td>
+
+        </tr>
+        <tr>
+            <td style="text-align:right"> Zip Code</td>
+
+            <td><input type="text" value="12541"></td>
+
+        </tr>
+        <tr>
+            <td style="text-align:right">Guardian's Email:</td>
+
+            <td>  <input type="email" value="toria@gmail.com"></td>
+
+
+        </tr>
+        <tr>
+            <td style="text-align:right"> Guardian's Phone Number:</td>
+
+            <td><input type="text" value="912-584-4125"></td>
+
+
+        </tr>
+
+        <tr>
+            <td style="text-align:right"> Does the youth have a meeting?</td>
+
+            <td>
+                <select name="Meeting">
+                    <option value="Select">Please Select an Option</option>
+                    <option value="Yes" selected>Yes</option>
+                    <option value="No">No</option>
+                    <option value="Maybe">Maybe</option>
+
+                </select><br>
+            </td>
+
+
+        </tr>
+        <tr>
+            <td style="text-align:right"> Date of Youth's Meeting:</td>
+
+            <td><input type="date" value="2019-12-31"><br></td>
+
+
+        </tr>
+        <tr>
+            <td style="text-align:right"> Time of Youth's Meeting:</td>
+
+            <td><input type="time" name="meetingtime" value="10:53:05"></td>
+
+
+        </tr>
+        <tr>
+            <td style="text-align:right">Youth a student in a Duval County Public School:</td>
+
+            <td>
+                <select name="School">
+                    <option value="Select">Please Select an Option</option>
+                    <option value="Yes" checked>Yes</option>
+                    <option value="No">No</option>
+                    <option value="Maybe">Maybe</option>
+
+                </select>
+            </td>
+
+
+        </tr>
+        <tr>
+            <td style="text-align:right">Issues which are currently impacting the Youth:</td>
+
+            <td>
+                <br>  <input type="checkbox" name="Failed" value="Failed a grade">Failed a grade<br>
+                <input type="checkbox" name="Suspended" value="Frequently suspendeds">Frequently suspended<br>
+                <input type="checkbox" name="Alt" value="In an alternative school setting " checked>In an alternative school setting (Mattie V., Grand Park, AMI, Pace, etc)<br>
+                <input type="checkbox" name="Plan" value="Has a 504 plan or an IEP">Has a 504 plan or an IEP<br>
+                <input type="checkbox" name="Notenrolled" value="Not enrolled in school">Not enrolled in school<br>
+                <input type="checkbox" name="Hxbaker" value="Has a history of being Baker Acted">Has a history of being Baker Acted<br>
+                <input type="checkbox" name="Dependent" value="Dependent">Dependent<br>
+            </td>
+
+
+        </tr>
+        <tr>
+            <td style="text-align:right">Youth's school they are currently Attending:</td>
+
+            <td>  <input type="text" value="Duval HighSchool"></td>
+
+
+        </tr>
+        <tr>
+            <td style="text-align:right">   General Information Provided:</td>
+
+
+            <td>  <textarea id="subject" name="subject" placeholder="We are having a hard time finding permanent housing" style="height:200px; width:300px"></textarea></td>
+
+        </tr>
+        <tr>
+            <td style="text-align:right">Best way to Communicate with youth:</td>
+
+            <td>
+                <input type="radio" name="Reach" value="Phone" checked>Phone
+                <input type="radio" name="Reach" value="Email">Email
+                <input type="radio" name="Reach" value="Text">Text
+                <input type="radio" name="1"> Other:<input type="text" name="Reach"><br>
+            </td>
+
+
+        </tr>
+        <tr>
+            <td style="text-align:right"> Status:</td>
+
+            <td>
+
+
+                <input type="radio" name="Status" value="Open" checked>Open
+                <input type="radio" name="Status" value="Closed">Closed
+                <input type="radio" name="Status" value="Non-Engagement">Closed Non-Engagement
+                <br>
+            </td>
+
+
+        </tr>
+
+
+        <tr>
+            <td style="text-align:right">  Date Referral Input:</td>
+
+            <td><input type="date" value="2019-12-31"></td>
+
+
+        </tr>
+        <tr>
+            <td style="text-align:right">Referral Source's First Name:</td>
+
+            <td> <input type="text" value="Roger"></td>
+
+
+        </tr>
+        <tr>
+            <td style="text-align:right">Referral Source's Last Name:</td>
+
+            <td> <input type="text" value="Pan"></td>
+
+
+        </tr>
+        <tr>
+            <td style="text-align:right">Referral Source's Email for youth:</td>
+
+            <td> <input type="email" value="RogerP@gmail.com"></td>
+
+
+        </tr>
+
+        <tr>
+
+            <td> Level of Service Provided</td>
+            <td>
+                <br />
+                <input type="radio" name="none" value="n"> None
+                <br />
+                <input type="radio" name="infoEdu" value="info" checked /> Information/Education
+                <br />
+                <input type="radio" name="serviceAdvice" value="service"> Brief Service/Advice
+                <br />
+                <input type="radio" name="full" value="full" /> Full
+                <br />
+            </td>
+        </tr>
+
+         <tr>
+            <td style="text-align:right">  Date Referral Input:</td>
+
+            <td><input type="date" value="2019-12-31"></td>
+
+
+        </tr>
+        <tr>
+            <td>Intake Date</td>
+
+            <td>
+                <input type="date" name="dob" value="2019-12-31">
+            </td>
+
+        </tr>
+        <tr>
+            <td> Reason for Nonengagement</td>
+            <td>
+                <input type="radio" name="contact" value="n"> Unable to Contact
+                <br />
+                <input type="radio" name="intake" value="info" /> Unable to Complete Intake
+                <br />
+                <input type="radio" name="declined" value="service"> Family Declined Services
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                Case open/close status
+            </td>
+            <td>
+                <input type="radio" name="Open" value="o" checked> Open
+                <br />
+                <input type="radio" name="closed" value="c" /> Closed
+                <br />
+                <input type="radio" name="nonEngageClose" value="nec"> Closed due to nonengagement
+            </td>
+
+        </tr>*@
+
+
+
+
+
+
+
+            <div id="School Information" class="tabcontent">
+                <p>
+                    <table id="t01">
+
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                School
+                            </td>
+                            <td>
+                                <input type="text" name="school" value="Kernan Trail Elementary" />
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                Failed a Grade
+                            </td>
+                            <td>
+                                <input type="radio" name="fail" value="y"> Yes<br />
+                                <input type="radio" name="noFail" value="n" checked /> No <br />
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                If yes, which grade and how many times
+                            </td>
+                            <td>
+                                <input type="text" name="failedGrade" />
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                Has an IEP/504 Plan<br />
+                            </td>
+                            <td>
+                                <input type="radio" name="emo" value="emo"> Emotional/Behavioral Disability<br />
+                                <input type="radio" name="gifted" value="gifted" checked /> Gifted<br />
+                                <input type="radio" name="intellectual" value="intell"> Intellectual Disability<br />
+                                <input type="radio" name="language" value="lang" /> Language Impairment<br />
+                                <input type="radio" name="otherHealth" value="otherHealth" /> Other Health Impairment<br />
+                                <input type="radio" name="specificLearning" value="specificLearning"> Specific Learning Disability<br />
+                                <input type="radio" name="speech" value="speech" /> Speech Impairment<br />
+                                <input type="radio" name="other" value="other"> Other <br />
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                In Pride
+                            </td>
+                            <td>
+                                <input type="radio" name="inPride" value="y" checked> Yes<br />
+                                <input type="radio" name="notInPride" value="n" /> No <br />
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                New FBA
+                            </td>
+                            <td>
+                                <input type="radio" name="newFBA" value="y" checked> Yes<br />
+                                <input type="radio" name="noNewFBA" value="n" /> No <br />
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                Addititonal Accomodations Gained
+                            </td>
+                            <td>
+                                <input type="radio" name="accomGained" value="y" checked> Yes<br />
+                                <input type="radio" name="noaccomGained" value="n" /> No <br />
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                Additional Compensatory Services <br />
+                            </td>
+                            <td>
+                                <input type="radio" name="compServices" value="y"> Yes<br />
+                                <input type="radio" name="noCompServices" value="y" checked> No<br />
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                If yes, what services
+                            </td>
+                            <td>
+                                <input type="text" name="services" />
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                Bullied <br />
+                            </td>
+                            <td>
+                                <input type="radio" name="bullied" value="y"> Yes <br />
+                                <input type="radio" name="notBullied" value="y" checked> No <br />
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                If yes, was it reported  <br />
+                            </td>
+                            <td>
+                                <input type="radio" name="report" value="y"> Yes <br />
+                                <input type="radio" name="report" value="n"> No <br />
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                Date of report  <br />
+                            </td>
+                            <td>
+                                <input type="date" name="dateOfBully" /> <br />
+                            </td>
+
+                        </tr>
+                    </table>
+                </p>
+            </div>
+
+
+            <div id="CCR" class="tabcontent">
+                <p>
+                    <table id="t01">
+                        <tr>
+
+                            <td class="t" style="text-align:right">Level of Service Provided</td>
+                            <td>
+                                <br />
+                                <input type="radio" name="none" value="n"> None
+                                <br />
+                                <input type="radio" name="infoEdu" value="info" checked /> Information/Education
+                                <br />
+                                <input type="radio" name="serviceAdvice" value="service"> Brief Service/Advice
+                                <br />
+                                <input type="radio" name="full" value="full" /> Full
+                                <br />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="t" style="text-align:right"> Date Referral Input:</td>
+
+                            <td><input type="date" value="2019-12-31"></td>
+
+
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">Intake Date</td>
+
+                            <td>
+                                <input type="date" name="dob" value="2019-12-31">
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">Reason for Nonengagement</td>
+                            <td>
+                                <input type="radio" name="contact" value="n"> Unable to Contact
+                                <br />
+                                <input type="radio" name="intake" value="info" /> Unable to Complete Intake
+                                <br />
+                                <input type="radio" name="declined" value="service"> Family Declined Services
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                Case open/close status
+                            </td>
+                            <td>
+                                <input type="radio" name="Open" value="o" checked> Open
+                                <br />
+                                <input type="radio" name="closed" value="c" /> Closed
+                                <br />
+                                <input type="radio" name="nonEngageClose" value="nec"> Closed due to nonengagement
+                            </td>
+
+                        </tr>
+
+                    </table>
+                </p>
+            </div>
+
+
+            <div id="Discipline Information" class="tabcontent">
+                <p>
+                    <table id="t01">
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                Suspended more than three times  <br />
+                            </td>
+                            <td>
+                                <input type="radio" name="adopted" value="y"> Yes <br />
+                                <input type="radio" name="notAdopted" value="n" checked /> No <br />
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                Alternative School  <br />
+                            </td>
+                            <td>
+                                <input type="radio" name="schoolYes" value="y"> Yes <br />
+                                <input type="radio" name="schoolNo" value="n" checked /> No <br /> <br />
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                Alternative School Name<br />
+                            </td>
+                            <td>
+                                <input type="checkbox" name="mattieV" value="Mattie"> Mattie V <br />
+                                <input type="checkbox" name="grandPark" value="Grand" /> Grand Park <br />
+                            </td>
+
+                        </tr>
+
+                    </table>
+                </p>
+            </div>
+         
+
+            <br />
+            <input type="button" onclick="editConfirm()" value="Save Changes" />
+            &nbsp;  &nbsp;  &nbsp;  &nbsp;
+            <input type="reset"><br /><br /><br />
+            <a asp-action="Index" asp-controller="Home">Back to List</a>
+
+        </form>
+
+    <p id="demo"></p>
+    </div>
+
+
+</body>
+</html>

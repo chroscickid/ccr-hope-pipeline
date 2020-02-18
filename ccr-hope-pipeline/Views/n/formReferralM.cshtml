@@ -1,0 +1,373 @@
+﻿@model HopePipeline.Models.referralBrandi;
+@{
+    ViewData["Title"] = "formReferralM";
+}
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table {
+            width: 100%;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        table#t01 tr:nth-child(even) {
+            background-color: #e6f3ff;
+        }
+
+        table#t01 tr:nth-child(odd) {
+            background-color: #fff;
+        }
+
+        table#t01 th {
+            background-color: #005199;
+            color: white;
+        }
+    </style>
+    <script type="text/javascript">
+
+        function yesnoCheck() {
+            if (document.getElementById('yesCheck').checked) {
+                document.getElementById('ifYes').style.display= 'block';
+            }
+            else document.getElementById('ifYes').style.display = 'none';
+
+        }
+        function yesnoCheck1() {
+            if (document.getElementById('yesclick').checked) {
+                document.getElementById('Yes').style.display= 'block';
+            }
+            else document.getElementById('Yes').style.display = 'none';
+
+        }
+          function myConfirm() {
+           var array = []
+            var checkboxes = document.querySelectorAll('input[name=array]:checked')
+              alert(checkboxes);
+            for (var i = 0; i < checkboxes.length; i++) {
+            array.push(checkboxes[i].value)
+             }
+
+              var input = document.getElementById("input");
+              var array3 = document.getElementById("array3").value;
+              alert(array3);
+              if (input.checked) {
+                  //for (var i = 0; i < array3.length; i++)
+                  { array.push(array3) }
+              }
+             
+              alert(array);
+
+              document.getElementById("guardRe").value = array;
+
+
+
+               var array1 = []
+            var checkboxes1 = document.querySelectorAll('input[name=array1]:checked')
+
+            for (var i = 0; i < checkboxes1.length; i++) {
+            array1.push(checkboxes1[i].value)
+             }
+          
+              document.getElementById("issues0").value = array1;
+
+
+
+            var r = confirm("Please Confirm you would like to submit the Referral Form")
+              if (r == true) {
+
+                  window.location.href = "confirmationM";
+                  return true;
+              }
+            else
+                return false;
+        }
+        function afunction() {
+            if (!document.getElementById('input').checked) {
+                document.getElementById('array3').setAttribute('disabled', 'disabled');
+                
+            }
+         else document.getElementById('array3').removeAttribute('disabled'); 
+
+        }
+
+    </script>
+</head>
+<body>
+   
+
+ 
+    <!-- Decision after login by authorized user -->
+
+    <h1>Hope Pipeline Referral Form</h1>
+
+
+
+    <!-- register should only be provided by authorized personal so not for any user till logged in and authorized user will have to register new users
+    1.1 Login Page -->
+    <form asp-action="submitform" asp-controller="n" method="post">
+        <input type="hidden" name="clientCode" asp-for="clientCode" value="@ViewBag.Tessage">
+        <input type="hidden" name="dateInput" asp-for="dateInput" value="@ViewBag.Bessage">
+        <p></p>
+        <table id="t01">
+
+            <tr>
+                <th colspan="2">Referral for Educational Advocacy</th>
+            </tr>
+            <tr>
+                <td>
+                    Referral Source's First Name:<br />
+                    <input type="text" name="referralfname" asp-for="referralfname"><br>
+                </td>
+                <td>
+                    Referral Source's Last Name:<br />
+                    <input type="text" name="referrallname" asp-for="referrallname"><br>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    Referral Source's Email Address:<br />
+                    <input type="email" asp-for="email"><br>
+                </td>
+            </tr>
+        </table>
+        <table id="t01">
+            <tr>
+                <th colspan="4">Youth and Family Basic Information</th>
+            </tr>
+            <tr>
+                <td>
+                    First Name:<br />
+                    <input type="text" asp-for="fName"><br>
+                </td>
+
+                <td>
+                    Last Name:<br />
+                    <input type="text" asp-for="lName"><br>
+                </td>
+                <td>
+
+                    Gender Identity: <br />
+
+                    <input type="radio" name="gender" value="male" asp-for="gender"> He/Him/His<br>
+                    <input type="radio" name="gender" value="female" asp-for="gender"> She/Her/Hers<br>
+                    <input type="radio" name="gender" value="trans*" asp-for="gender"> They/Them/Theirs<br />
+                    <input type="radio" name="gender" value="nonbinaryF" asp-for="gender"> She/They<br>
+                    <input type="radio" name="gender" value="nonbinaryM" asp-for="gender"> He/They<br>
+                    <input type="radio" name="gender" value="neutral" asp-for="gender"> Zie/Zir/Zirs<br />
+
+                </td>
+                <td>
+                    Date Of Birth:<br />
+                    <input type="date" name="dOB" asp-for="dOB">
+                </td>
+            </tr>
+
+            <tr>
+                <!-- is their a reason you don't ask for first and last name???? -->
+                <td>
+                    Primary Caretaker's Name:<br />
+                    <input type="text" name="guardianName" asp-for="guardianName">
+                </td>
+                
+                <td colspan="2">
+                    <div id="checks">
+                        What is the primary caretaker's relationship to the youth? (please select all that apply)
+
+                        <br>  <input type="checkbox" name="array" value="Mother"> &nbsp;Mother<br>
+                        <input type="checkbox" name="array" value="Father"> &nbsp;Father<br>
+                        <input type="checkbox" name="array" value="Guardian"> &nbsp;Guardian<br>
+                        <input type="checkbox" name="array" value="Family member"> &nbsp;Family member(aunt, uncle, grandmother, grandfather, great grandparent, sibiling, cousin, etc)<br>
+                        <input type="checkbox" name="array" value="Foster Parent"> &nbsp;Foster Parent<br>
+
+                        &nbsp;<input type="checkbox" id="input" name="input1" value="Other" onclick="afunction()">&nbsp;Other: &nbsp;<input type="text" name="array" id="array3" disabled>
+
+                        <input type="hidden" id="guardRe" name="guardianRelationship" asp-for="guardianRelationship">
+                        <br>
+                    </div>
+                  
+                </td>
+               
+
+                <td>
+                    Street Address:<br />
+                    <input type="text" asp-for="address">
+                    <br><br>
+                    Zip Code:<br />
+                    <input type="text" asp-for="zip">
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    Parent/Guardian's email address:<br />
+                    <input type="email" asp-for="guardianEmail">
+
+
+                </td>
+
+                <td colspan="2">
+                    Parent/Guardian phone number:<br />
+                    <input type="text" asp-for="guardianPhone">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+
+
+                    Does the youth have any upcoming meetings scheduled with their school?<br />
+                    Yes <input type="radio" value="1" onclick="javascript:yesnoCheck();" name="meeting" id="yesCheck" asp-for="meeting">&nbsp;&nbsp;
+                    No <input type="radio" value="0" onclick="javascript:yesnoCheck();" name="meeting" id="noCheck" asp-for="meeting">&nbsp;&nbsp;
+                    Maybe <input type="radio" value="2" onclick="javascript:yesnoCheck();" name="meeting" id="nooCheck" asp-for="meeting"><br>
+
+
+
+                    <div id="ifYes" style="display:none">
+                        If yes, what is the date and time of the meeting?<br>
+                        Date:<br />
+                        <input type="date" asp-for="date"><br>
+
+
+                    </div>
+
+                </td>
+            </tr>
+        </table>
+        <table id="t01">
+
+            <tr>
+                <th colspan="2">Youth Needs</th>
+            </tr>
+
+            <tr>
+                <td>
+                    <div id="checks1">
+                        What issues are currently impacting the youth? Please check all that apply.
+                        <br>  <input type="checkbox" name="array1" value="Failed a grade" > &nbsp;Failed a grade<br>
+                        <input type="checkbox" name="array1" value="Frequently suspended" > &nbsp;Frequently suspended<br>
+                        <input type="checkbox" name="array1" value="In an alternative school setting " > &nbsp;In an alternative school setting (Mattie V., Grand Park, AMI, Pace, etc)<br>
+                        <input type="checkbox" name="array1" value="Has a 504 plan or an IEP" > &nbsp;Has a 504 plan or an IEP<br>
+                        <input type="checkbox" name="array1" value="Not enrolled in school"> &nbsp;Not enrolled in school<br>
+                        <input type="checkbox" name="array1" value="Has a history of being Baker Acted" > &nbsp;Has a history of being Baker Acted<br>
+                        <input type="checkbox" name="array1" value="Dependent"> &nbsp;Dependent<br>
+                        <input type="checkbox" name="array1" value="WINS" > &nbsp;WINS<br>
+
+
+                        <input type="hidden" id="issues0" name="issues" asp-for="issues">
+                    </div>
+                </td>
+
+                <td>
+                    Is this youth a student in a Duval County Public School? <br />
+                    <select name="youthInDuvalSchool" asp-for="youthInDuvalSchool">
+                        <option value="Select">Please Select an Option</option>
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                        <option value="2">Maybe</option>
+
+                    </select><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    What is the youth's grade in school?
+                    <br />
+                    <select name="Grade" asp-for="grade">
+                        <option value="N/A">Please Select an Option</option>
+                        <option value="1st">1st</option>
+                        <option value="2nd">2nd</option>
+                        <option value="3rd">3rd</option>
+                        <option value="4th">4th</option>
+                        <option value="5th">5th</option>
+                        <option value="6th">6th</option>
+                        <option value="7th">7th</option>
+                        <option value="8th">8th</option>
+                        <option value="9th">9th</option>
+                        <option value="10th">10th</option>
+                        <option value="11th">11th</option>
+                        <option value="12th">12th</option>
+
+
+                    </select><br>
+                </td>
+                <td>
+                    Is the youth currently attending school?<br />
+                    Yes <input type="radio" value="1" onclick="javascript:yesnoCheck1();" name="youthInSchool" id="yesclick" asp-for="youthInSchool">&nbsp;&nbsp;
+                    No <input type="radio" value="0" onclick="javascript:yesnoCheck1();" name="youthInSchool" id="noclick" asp-for="youthInSchool">&nbsp;&nbsp;
+                    Maybe <input type="radio" value="2" onclick="javascript:yesnoCheck1();" name="youthInSchool" id="nooclick" asp-for="youthInSchool"><br>
+
+                    <div id="Yes" style="display:none">
+                        <br />Where is the youth currently attending school?<br />
+                        <input type="text" name="school" asp-for="school">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    Has the youth been arrested?<br />
+                    Yes <input type="radio" name="arrest" value="1" asp-for="arrest">&nbsp;&nbsp;
+                    No <input type="radio" name="arrest" value="0" asp-for="arrest">&nbsp;&nbsp;
+                    Maybe <input type="radio" name="arrest" value="2" asp-for="arrest"><br>
+                </td>
+            </tr>
+        </table>
+        <table id="t01">
+
+            <tr>
+                <th>You tell us.</th>
+            </tr>
+
+            <tr>
+                <td>
+                    Is there anything else you would like us to know about the youth or their family?<br />
+                    ​<textarea id="txtArea" rows="5" cols="150" name="moreInfo" asp-for="moreInfo"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Reason for Referral?<br />
+                    ​<textarea id="txtArea" rows="5" cols="150" name="reason" asp-for="reason"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    What is the best way to communicate with the youth/family?
+
+                    <br /> <input type="radio" name="Reach" value="Phone" asp-for="Reach"> &nbsp;Phone<br />
+                    <input type="radio" name="Reach" value="Email" asp-for="Reach"> &nbsp;Email<br />
+                    <input type="radio" name="Reach" value="Text" asp-for="Reach"> &nbsp;Text<br />
+
+
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h4>Please upload any assessments, evaluations or additional documents you feel are important for us to have related to advocacy for this youth.</h4>
+                    Select files:  <input type="file" multiple /><br />
+                </td>
+            </tr>
+
+        </table><br />
+
+
+        <button type="submit"  onclick="myConfirm()">Submit</button>
+    </form>
+
+</body>
+</html>

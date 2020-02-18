@@ -1,0 +1,32 @@
+﻿@model  HopePipeline.Models.Referral
+@{
+    ViewData["Title"] = "EditReferral";
+}
+
+<h2>EditReferral</h2>
+
+
+<select name="bakerxhistory" id="bakerxhistory">
+    @{
+        switch (Model.bakerxhistory)
+        {
+            case 0:
+                <option value="0" selected>Yes</option>
+                <option value="1">No</option>
+                <option value="2">Maybe</option>
+                break;
+
+            case 1:
+                <option value="0">Yes</option>
+                <option value="1" selected>No</option>
+                <option value="2">Maybe</option>
+                break;
+
+            case 2:
+                <option value="0" selected>Yes</option>
+                <option value="1">No</option>
+                <option value="2" selected>Maybe</option>
+                break;
+        }
+    }
+</select>

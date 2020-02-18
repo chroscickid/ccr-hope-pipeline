@@ -1,0 +1,133 @@
+﻿@model  List<HopePipeline.Models.DbEntities.Referrals.Contact>;
+@{
+    ViewData["Title"] = "contactInfoM";
+
+}
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table {
+            width: 100%;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        table#t01 tr:nth-child(even) {
+            background-color: #e6f3ff;
+            
+        }
+
+        table#t01 tr:nth-child(odd) {
+            background-color: #fff;
+          
+        }
+
+        table#t01 th {
+            background-color: #005199;
+            color: white;
+           
+        }
+    </style>
+</head>
+<body>
+
+
+    <!-- Decision after login by authorized user -->
+
+    <h1>Hope Pipeline Contact Info</h1>
+
+    <!-- register should only be provided by authorized personal so not for any user till logged in and authorized user will have to register new users
+    1.1 Login Page -->
+    <p></p>
+    @foreach (var item in Model)
+    {
+        <table id="t01">
+           
+         
+                <tr>
+                    <th> Client:&nbsp;@Html.DisplayFor(modelItem => item.lname),&nbsp; @Html.DisplayFor(modelItem => item.fname)</th>
+                </tr>
+
+                <tr>
+                    <!-- is their a reason you don't ask for first and last name???? -->
+                    <td>Primary Caretaker's Name:&nbsp; @Html.DisplayFor(modelItem => item.guardianName)</td>
+                </tr>
+                <tr>
+                    <td>
+                        Primary Caretaker's Relationship:&nbsp; @Html.DisplayFor(modelItem => item.relationship)
+
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>Parent/Guardian Phone Number: @Html.DisplayFor(modelItem => item.phone)</td>
+                </tr>
+                <tr>
+                    <td>Parent/Guardian's E-mail Address: @Html.DisplayFor(modelItem => item.email)</td>
+
+                </tr>
+                <tr>
+                    <td>
+                        Street Address: @Html.DisplayFor(modelItem => item.address)<br><br>
+                        Zip Code: @Html.DisplayFor(modelItem => item.zip)
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        What is the best way to communicate with the youth/family: @Html.DisplayFor(modelItem => item.reach)
+
+                    </td>
+                </tr>
+
+
+            </table>
+            <table id="t01">
+                <tr>
+                    <th colspan="2"> Referral Souce for Contact</th>
+                </tr>
+                <tr>
+                    <td>
+                        Referral Source First Name: @Html.DisplayFor(modelItem => item.rfname)
+
+                    </td>
+                    <td>
+                        Referral Source Last Name: @Html.DisplayFor(modelItem => item.rlname)
+
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        Referral Source E-mail Address:  @Html.DisplayFor(modelItem => item.remail)
+
+                    </td>
+
+                </tr>
+            </table>
+        }
+            
+
+        </body>
+</html>
+
+
+
+<p>
+
+    @Html.ActionLink("Back to List", "Index", "Home")
+</p>

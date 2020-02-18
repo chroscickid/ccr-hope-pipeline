@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewData["Title"] = "confirmationM";
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+
+
+</head>
+<body>
+
+    <br /><br />
+
+
+    <h2>A referral was made for "first name" and "last name" </h2>
+    <h4>"Date of Referral"</h4>
+    <h4>Thank you for your submission</h4>
+   
+   
+        <br />
+        <br />
+        <p>
+            To get this confirmation in an email please enter your email address:
+            <br /><input type="email" name="emailaddress" size="35" style="font-size:25px;">
+
+            <br />
+            <input type="image" src="~/images/email33.png" alt="Submit" onclick="location.href='@Url.Action("Index", "Home")'">
+        </p>
+    
+    <br />
+
+</body>
+</html>
+

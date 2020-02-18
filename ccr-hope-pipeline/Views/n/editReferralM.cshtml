@@ -1,0 +1,383 @@
+﻿@model HopePipeline.Models.referralBrandi;
+@{
+    ViewData["Title"] = "editReferralM";
+}
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table {
+            width: 100%;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        table#t01 tr:nth-child(even) {
+            background-color: #e6f3ff;
+        }
+
+        table#t01 tr:nth-child(odd) {
+            background-color: #fff;
+        }
+
+        table#t01 th {
+            background-color: #005199;
+            color: white;
+        }
+        /* Style width of form */
+        .t {
+            width: 30%;
+            table-layout: fixed;
+        }
+    </style>
+    <script>
+        function editConfirm() {
+
+            var r = confirm("Please Confirm you would like to Submit your changes")
+            if (r == true) {
+
+                window.location.href = "detailReferralM";
+                return true;
+            }
+            else
+                return false;
+        }
+
+
+        function yesnoCheck() {
+            if (document.getElementById('yesCheck').checked) {
+                document.getElementById('ifYes').style.display = 'block';
+            }
+            else document.getElementById('ifYes').style.display = 'none';
+
+        }
+        function yesnoCheck1() {
+            if (document.getElementById('yesclick').checked) {
+                document.getElementById('Yes').style.display = 'block';
+            }
+            else document.getElementById('Yes').style.display = 'none';
+
+        }
+
+
+
+    </script>
+
+
+</head>
+<body>
+
+
+    <!-- Decision after login by authorized user -->
+
+    <h1>Edit Client Referral Information</h1>
+
+
+
+    <!-- register should only be provided by authorized personal so not for any user till logged in and authorized user will have to register new users
+    1.1 Login Page -->
+
+    <div>
+        <form>
+            <table id="t01">
+                <tr>
+                    <td class="t" style="text-align:right"> First Name:</td>
+
+                    <td> <input type="text" value="Bryan"></td>
+
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right"> Last Name: </td>
+
+                    <td><input type="text" value="Brice"></td>
+
+                </tr>
+
+
+                <tr>
+                    <td class="t" style="text-align:right"> Gender Identity:  </td>
+
+                    <td>
+                        <input type="radio" name="gender" value="male"> He/Him/His<br>
+                        <input type="radio" name="gender" value="female"> She/Her/Hers<br>
+                        <input type="radio" name="gender" value="trans*" checked> They/Them/Theirs<br />
+                        <input type="radio" name="gender" value="nonbinaryF"> She/They<br>
+                        <input type="radio" name="gender" value="nonbinaryM"> He/They<br>
+                        <input type="radio" name="gender" value="neutral"> Zie/Zir/Zirs<br />
+                    </td>
+
+                </tr>
+
+
+                <tr>
+                    <td class="t" style="text-align:right"> Date of Birth:</td>
+
+                    <td> <input type="date" value="2008-12-31"></td>
+
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right">   Guardian's Name:</td>
+
+                    <td><input type="text" value="Victoria"></td>
+
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right">  Guardian's relationship to the youth:</td>
+
+                    <td>
+                        <br>  <input type="checkbox" name="Mother" value="Mother" checked> Mother<br>
+                        <input type="checkbox" name="Father" value=" Father"> Father<br>
+                        <input type="checkbox" name="Guardian" value="Guardian"> Guardian<br>
+                        <input type="checkbox" name="Familymember" value="Family member"> Family member(aunt, uncle, grandmother, grandfather, great grandparent, sibiling, cousin, etc)<br>
+                        <input type="checkbox" name="FosterParent" value="Foster Parent"> Foster Parent<br>
+
+                        Other:<input type="text" name="VariableFM">
+                        <br>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right"> Street Address:</td>
+
+
+                    <td> <input type="text" value="12 House St."></td>
+
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right">  Zip Code</td>
+
+                    <td><input type="text" value="12541"></td>
+
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right"> Parent/Guardian's Email:</td>
+
+                    <td>  <input type="email" value="toria@gmail.com"></td>
+
+
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right"> Parent/Guardian Phone Number:</td>
+
+                    <td><input type="text" value="912-584-4125"></td>
+
+
+                </tr>
+
+                <tr>
+                    <td class="t" style="text-align:right"> Does the youth have a meeting?</td>
+
+                    <td>
+
+                        Yes <input type="radio" onclick="javascript:yesnoCheck();" name="Meeting" id="yesCheck">&nbsp;&nbsp;
+                        No <input type="radio" onclick="javascript:yesnoCheck();" name="Meeting" id="noCheck">&nbsp;&nbsp;
+                        Maybe <input type="radio" onclick="javascript:yesnoCheck();" name="Meeting" id="nooCheck"><br>
+
+                        <div id="ifYes" style="display:none">
+                            <br />Date of Youth's Meeting:&nbsp;<br /><input type="date" value="2019-12-31"><br /><br />
+                            Time of Youth's Meeting:&nbsp;<br /><input type="time" name="meetingtime" value="10:53:05"><br />
+                        </div>
+                    </td>
+
+
+                </tr>
+
+                <tr>
+                    <td class="t" style="text-align:right"> Issues which are currently impacting the Youth:</td>
+
+                    <td>
+                        <br>  <input type="checkbox" name="Failed" value="Failed a grade"> Failed a grade<br>
+                        <input type="checkbox" name="Suspended" value="Frequently suspendeds"> Frequently suspended<br>
+                        <input type="checkbox" name="Alt" value="In an alternative school setting " checked> In an alternative school setting (Mattie V., Grand Park, AMI, Pace, etc)<br>
+                        <input type="checkbox" name="Plan" value="Has a 504 plan or an IEP"> Has a 504 plan or an IEP<br>
+                        <input type="checkbox" name="Notenrolled" value="Not enrolled in school"> Not enrolled in school<br>
+                        <input type="checkbox" name="Hxbaker" value="Has a history of being Baker Acted"> Has a history of being Baker Acted<br>
+                        <input type="checkbox" name="Dependent" value="Dependent"> Dependent<br>
+                        <input type="checkbox" name="WINS" value="WINS">&nbsp;WINS<br>
+                    </td>
+
+
+                </tr>
+
+                <tr>
+                    <td class="t" style="text-align:right">
+                        Is this youth a student in a Duval County Public School? <br />
+                    </td>
+                    <td>
+                        <select name="School">
+                            <option value="Select">Please Select an Option</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                            <option value="Maybe">Maybe</option>
+
+                        </select><br>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="t" style="text-align:right">
+                        What is the youth's grade in school?
+                        <br />
+                    </td>
+                    <td>
+                        <select name="Grade">
+                            <option value="Select">Please Select an Option</option>
+                            <option value="1st">1st</option>
+                            <option value="2nd">2nd</option>
+                            <option value="3rd">3rd</option>
+                            <option value="4th">4th</option>
+                            <option value="5th">5th</option>
+                            <option value="6th">6th</option>
+                            <option value="7th">7th</option>
+                            <option value="8th">8th</option>
+                            <option value="9th">9th</option>
+                            <option value="10th">10th</option>
+                            <option value="11th">11th</option>
+                            <option value="12th">12th</option>
+
+
+                        </select><br>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="t" style="text-align:right">
+                        Is the the youth currently attending school?<br />
+                    </td>
+                    <td>
+                        Yes <input type="radio" onclick="javascript:yesnoCheck1();" name="attend" id="yesclick">&nbsp;&nbsp;
+                        No <input type="radio" onclick="javascript:yesnoCheck1();" name="attend" id="noclick" checked>&nbsp;&nbsp;
+                        Maybe <input type="radio" onclick="javascript:yesnoCheck1();" name="attend" id="nooclick"><br>
+
+                        <div id="Yes" style="display:none">
+                            <br />Where is the youth currently attending school?<br />
+                            <input type="text">
+                        </div>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="t" style="text-align:right">
+                        Has the youth been arrested?<br />
+                    </td>
+                    <td>
+                        Yes <input type="radio" name="arrest">&nbsp;&nbsp;
+                        No <input type="radio" name="arrest">&nbsp;&nbsp;
+                        Maybe <input type="radio" name="arrest"><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right">
+                        Is there anything else you would like us to know about the youth or their family?<br />
+                    </td>
+                    <td>
+                        ​<textarea id="txtArea" rows="5" cols="75" name="moreInfo" placeholder="We struggling with communication issues"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right">
+                        Reason for Referral?<br />
+                    </td>
+                    <td>
+                        ​<textarea id="txtArea" rows="5" cols="75" name="reason" placeholder="We are having a hard time finding permanent housing"></textarea>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="t" style="text-align:right"> Best way to Communicate with youth:</td>
+
+                    <td>
+                        <input type="radio" name="Reach" value="Phone" checked>Phone
+                        <input type="radio" name="Reach" value="Email">Email
+                        <input type="radio" name="Reach" value="Text">Text
+                        <input type="radio" name="1"> Other:<input type="text" name="Reach"><br>
+                    </td>
+
+
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right"> Status:</td>
+
+                    <td>
+
+
+                        <input type="radio" name="Status" value="Open" checked>Open
+                        <input type="radio" name="Status" value="Closed">Closed
+                        <input type="radio" name="Status" value="Non-Engagement">Closed Non-Engagement
+                        <br>
+                    </td>
+
+
+                </tr>
+
+
+                <tr>
+                    <td class="t" style="text-align:right">  Date Referral Input:</td>
+
+                    <td><input type="date" value="2019-12-31"></td>
+
+
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right"> Referral Source's First Name:</td>
+
+                    <td> <input type="text" value="Roger"></td>
+
+
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right"> Referral Source's Last Name:</td>
+
+                    <td> <input type="text" value="Pan"></td>
+
+
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right"> Referral Source's Email for youth:</td>
+
+                    <td> <input type="email" value="RogerP@gmail.com"></td>
+
+
+                </tr>
+
+
+                <tr>
+                    <td class="t" style="text-align:right"> File:</td>
+
+                    <td>
+                        file  &nbsp;  &nbsp;  &nbsp;
+                    </td>
+                </tr>
+
+            </table>
+            <br />
+            <input type="button" onclick="editConfirm()" value="Save Changes" />
+            &nbsp;  &nbsp;  &nbsp;  &nbsp;
+            <input type="reset"><br /><br /><br />
+            <a asp-action="Index" asp-controller="Home">Back to List</a>
+
+        </form>
+
+        <p id="demo"></p>
+    </div>
+
+
+</body>
+</html>

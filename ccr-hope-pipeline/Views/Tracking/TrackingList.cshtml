@@ -1,0 +1,56 @@
+﻿@model List<HopePipeline.Models.DbEntities.Tracking.TrackingRow>;
+@{
+    ViewData["Title"] = "Tracking List";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+<h2>Tracking</h2>
+<h3>Showing @Model.Count</h3>
+
+<form asp-controller="Tracking" asp-action="search">
+    <input name="term" />
+    <button type="submit">Search</button>
+</form>
+
+
+<table class="table" id="tracklist">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Phone number
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                More Options
+            </th>
+            </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.lname) , @Html.DisplayFor(modelItem => item.fname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.phoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.status)
+                </td>
+                <td>
+                    <a asp-controller="Tracking" asp-action="TrackingForm" asp-route-clientCode="@item.clientCode">Edit</a> |
+                    <a asp-controller="n" asp-action="detailTrackingM">Details</a> |
+                    <a asp-controller="Referral" asp-action="Delete" asp-route-clientID="@item.clientCode">Delete</a>
+                </td>
+            </tr>
+            ;
+        }
+    </tbody>
+</table>

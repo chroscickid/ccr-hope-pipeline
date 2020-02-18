@@ -1,0 +1,72 @@
+﻿@model HopePipeline.Models.DbEntities.Login.Account;
+@{
+        ViewData["Title"] = "Admin Login";
+    }
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width = device-width, initial-scale=1">
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        input[type=text], input[type=password] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        input[type=submit] {
+            background-color: #09335e;
+            color: white;
+            padding: 10px 18px;
+            width: auto;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .cancelbtn {
+            width: auto;
+            padding: 10px 18px;
+            color: white;
+            background-color: #f44336;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>Administrator Log In</h3>
+        <p></p>
+        @ViewBag.error
+        <form method="post" asp-controller="Account" asp-action="Verify">
+            <p></p>
+            <p></p>
+            <label for="username"><b>Username/Email</b></label>
+            <input type="text" placeholder="Enter Username" name="username" required="" asp-for="username">
+            <p></p>
+            <label for="pass"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="pass" required="" asp-for="pass">
+            <p></p>
+            <button type="button" onclick="javascript:history.back().style.display='none'" class="cancelbtn" OnClientClick="JavaScript:window.history.back(1);return false;">Cancel </button>
+            &nbsp;&nbsp;
+            @Html.AntiForgeryToken()
+            &nbsp;&nbsp;
+            <input type="submit" value="Login">
+            <p></p>
+            <h5><a asp-controller="Home" asp-action="ForgotPassword">Forgot Password?</a></h5>
+
+            <p></p>
+        </form>
+    </div>
+</body>
+</html>

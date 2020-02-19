@@ -21,7 +21,7 @@ namespace HopePipeline.Models.DbEntities.Tracking
         public string clientGender { get; set; }
         public string clientEthnicity { get; set; }
         public string school { get; set; }
-        public string currentGrade { get; set; }
+        public int currentGrade { get; set; }
         public string compTime { get; set; }
 
         public string careGender { get; set; }

@@ -124,7 +124,8 @@ namespace HopePipeline.Controllers
 
             cnn.Close();
 
-
+            var deleteReferral = new ReferralController();
+            deleteReferral.Delete(id);
             return RedirectToAction("TrackingList");
         }
 
@@ -261,7 +262,7 @@ namespace HopePipeline.Controllers
                 DeleteSqlCommand("iep", clientCode),
                 DeleteSqlCommand("legal", clientCode),
                 DeleteSqlCommand("suspension", clientCode),
-                                DeleteSqlCommand("demographics", clientCode),
+                DeleteSqlCommand("demographics", clientCode),
 
             };
 

@@ -103,7 +103,7 @@ namespace HopePipeline.Controllers
                 "INSERT INTO dbo.iep VALUES (" + sub.iep + ",'" + sub.iepplan1 + "'','" + sub.iepplan2 + "'," + "0" + "," + id + ")",
                 //otherLegal should be in the db?
                 "INSERT INTO dbo.legal VALUES (" + sub.firstLegal + ",'" + sub.secondLegal + "','" + sub.justiceOutcome + "'," + id + ")",
-                "INSERT INTO dbo.school ("
+                "INSERT INTO dbo.school (" + id + "," + sub.currentGrade + ",'" + sub.school + "','" + sub.schoolRef + "')"
             };
             int totalSus = sub.iss + sub.oss;
             qs.Add("INSERT INTO dbo.suspension VALUES(" + sub.suspended + "," + sub.suspendCount + "," + totalSus + "," + sub.iss + "," + sub.oss + "," + 0 + "," + 0 + "," + id + ")");
@@ -247,7 +247,6 @@ namespace HopePipeline.Controllers
             List<string> qs = new List<String>
             {
                 DeleteSqlCommand("failed", clientCode),
-                DeleteSqlCommand("demographics", clientCode),
                 DeleteSqlCommand("accomodations", clientCode),
                 DeleteSqlCommand("client", clientCode),
                 DeleteSqlCommand("advocacy", clientCode),
@@ -261,7 +260,9 @@ namespace HopePipeline.Controllers
                 DeleteSqlCommand("household", clientCode),
                 DeleteSqlCommand("iep", clientCode),
                 DeleteSqlCommand("legal", clientCode),
-                DeleteSqlCommand("suspension", clientCode)
+                DeleteSqlCommand("suspension", clientCode),
+                                DeleteSqlCommand("demographics", clientCode),
+
             };
 
 

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using HopePipeline.Models;
 using System.Data.SqlClient;
 using HopePipeline.Models.DbEntities.Tracking;
+using HopePipeline.Models.DbEntities.Meetings;
 using HopePipeline.Models.Contexts;
 
 namespace HopePipeline.Controllers
@@ -165,6 +166,64 @@ namespace HopePipeline.Controllers
             reader.Close();
 
             return View("TrackingList", results);
+        }
+
+        [HttpPost]
+        public IActionResult AddMeeting(Meeting meet)
+        {
+            SqlConnection cnn = new SqlConnection(connectionString);
+            SqlCommand command;
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            cnn.Open();
+            string query = "INSERT INTO meetings VALUES ('" + meet.MeetingDate.ToString("yyyy-MM-dd") + "','" + meet.MeetingPurpose + "','" + meet.MeetingNotes + "'," + meet.clientCode + ")";
+
+            command = new SqlCommand(query, cnn);
+            SqlDataReader reader = command.ExecuteReader();
+            reader.Close();
+
+
+            return RedirectToAction("MeetingList",meet.clientCode);
+        }
+
+        public ViewResult MeetingList(int clientCode)
+        {
+            var results = new List<Meeting>();
+            var sendme = new MeetingList();
+            SqlConnection cnn;
+            cnn = new SqlConnection(connectionString);
+            SqlCommand command;
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            cnn.Open();
+
+            string query = "select * from meetings where clientCode = " + clientCode;
+            command = new SqlCommand(query, cnn);
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {               
+               //We push information from the query into a row and onto the list of rows
+                Meeting meet = new Meeting { MeetingDate = reader.GetDateTime(0), MeetingPurpose = reader.GetString(1), MeetingNotes = reader.GetString(2)};
+
+                results.Add(meet);
+            }
+            reader.Close();
+
+            sendme.list = results;
+            query = "select clientLast, clientFirst from client where clientCode = " + clientCode;
+            command = new SqlCommand(query, cnn);
+            reader = command.ExecuteReader();
+            while(reader.Read())
+            {
+                sendme.fname = reader.GetString(1);
+                sendme.lname = reader.GetString(0);
+                sendme.clientCode = clientCode;
+               
+            }
+            reader.Close();
+
+
+
+            return View("MeetingList", sendme);
         }
 
 

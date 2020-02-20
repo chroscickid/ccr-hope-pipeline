@@ -68,22 +68,59 @@ namespace HopePipeline.Controllers
 
             return RedirectToAction("RefList");
         }
-
-        
-
-
-        /*public IActionResult Details(int det)
-         {
-
-             return View(pK);
-         }*/
-        [Route("Referral/{pK:int}")]
-        public IActionResult Detail(int id)
+        [HttpPost]
+        public IActionResult Search(string term)
         {
-            return View();
+
+            var results = new List<RefRow>();
+            SqlConnection cnn;
+            cnn = new SqlConnection(connectionString);
+            SqlCommand command;
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            cnn.Open();
+
+            string q1 = "SELECT fname, lname, dob, clientCode from refform where fname = '" + term + "';";
+            string q2 = "SELECT fname, lname, dob, clientCode from refform where lname = '" + term + "';";
+            command = new SqlCommand(q1, cnn);
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                //We push information from the query into a row and onto the list of rows
+                RefRow row = new RefRow
+                {
+                    fname = reader.GetString(reader.GetOrdinal("fname")),
+                    lname = reader.GetString(1),
+                    dob = reader.GetDateTime(2).ToString("dd MMMM yyyy"),
+                    clientCode = reader.GetInt32(3)
+                };
+                results.Add(row);
+            }
+            reader.Close();
+            command = new SqlCommand(q2, cnn);
+            SqlDataReader reader2 = command.ExecuteReader();
+            while (reader2.Read())
+            {
+                RefRow row = new RefRow
+                {
+                    fname = reader.GetString(reader.GetOrdinal("fname")),
+                    lname = reader.GetString(1),
+                    dob = reader.GetDateTime(2).ToString("dd MMMM yyyy"),
+                    clientCode = reader.GetInt32(3)
+                };
+                results.Add(row);
+               
+            }
+            reader2.Close();
+            return View("RefList", results);
         }
 
-  
-        
+
+
+
+
+
+
+
+
     }
 }

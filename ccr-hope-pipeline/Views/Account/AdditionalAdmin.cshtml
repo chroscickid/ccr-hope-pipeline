@@ -1,0 +1,200 @@
+﻿@model HopePipeline.Models.DbEntities.Login.Account;
+
+@{
+    ViewData["Title"] = "Additional Admin";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width = device-width, initial-scale=1">
+    <title>AdditionalAdmin</title>
+    <style>
+         body {
+             font-family: Arial, Helvetica, sans-serif;
+         }
+
+         input[type=text], input[type=password], input[type=email] {
+             width: 100%;
+             padding: 12px 20px;
+             margin: 8px 0;
+             display: inline-block;
+             border: 1px solid #ccc;
+             box-sizing: border-box;
+         }
+
+         input[type=submit] {
+             background-color: #09335e;
+             color: white;
+             padding: 10px 18px;
+             width: auto;
+             border: none;
+             border-radius: 4px;
+             cursor: pointer;
+         }
+
+         .cancelbtn {
+             width: auto;
+             padding: 10px 18px;
+             color: white;
+             background-color: #f44336;
+             border: none;
+             border-radius: 4px;
+             cursor: pointer;
+         }
+
+
+         .form-style-9 ul li .field-style {
+             box-sizing: border-box;
+             -webkit-box-sizing: border-box;
+             -moz-box-sizing: border-box;
+             padding: 8px;
+             outline: none;
+             border: 1px solid #B0CFE0;
+             -webkit-transition: all 0.30s ease-in-out;
+             -moz-transition: all 0.30s ease-in-out;
+             -o-transition: all 0.30s ease-in-out;
+         }
+
+             .form-style-9 ul li .field-style:focus {
+                 box-shadow: 0 0 5px #B0CFE0;
+                 border: 1px solid #B0CFE0;
+             }
+
+         .form-style-9 ul li .field-split {
+             width: 49%;
+         }
+
+
+         .form-style-9 ul li input.align-left {
+             float: left;
+         }
+
+         .form-style-9 ul li input.align-right {
+             float: right;
+         }
+
+         #menu li {
+             list-style-type: none;
+         }
+
+         /*var pass = document.getElementById("pass"), confirm_password = document.getElementById("pass2");
+
+             function validatePassword()
+        {
+             if(password.value != confirm_password.value)
+             {
+             confirm_password.setCustomValidity("Passwords Don't Match");
+             }
+             else
+             {
+             confirm_password.setCustomValidity('');
+             }
+        }
+
+             password.onchange = validatePassword;
+             confirm_password.onkeyup = validatePassword;*/
+
+    </style>
+</head>
+<body>
+    <script type="text/javascript">
+
+        function checkForm(form) {
+            if (form.email.value == "") {
+                alert("Error: Username cannot be blank!");
+                form.email.focus();
+                return false;
+            }
+            re = /^\w+$/;
+            if (!re.test(form.username.value)) {
+                alert("Error: Username must contain only letters, numbers and underscores!");
+                form.email.focus();
+                return false;
+            }
+
+            if (form.pass.value != "" && form.pass.value == form.pass2.value) {
+                if (form.pass.value.length < 3) {
+                    alert("Error: Password must contain at least three characters!");
+                    form.pass.focus();
+                    return false;
+                }
+
+                if (form.pass.value == form.email.value) {
+                    alert("Error: Password must be different from Username!");
+                    form.pass.focus();
+                    return false;
+                }
+
+                re = /[0-9]/;
+
+                if (!re.test(form.pass.value)) {
+                    alert("Error: password must contain at least one number (0-9)!");
+                    form.pass.focus();
+                    return false;
+                }
+
+            }
+
+            else {
+                alert("Error: Please check that you've entered and confirmed your password!");
+                form.pass.focus();
+                return false;
+            }
+
+            //alert("You entered a valid password: " + form.pass.value);
+            return true;
+        }
+
+    </script>
+
+    <li class="container">
+        <h3>Create a new administrator account</h3>
+        <p></p>
+        @*<form method="post" asp-controller="Account" asp-action="Verify">*@
+        <form asp-action="newaccount" asp-controller="account" class="form-style-9" ul id="menu" method=post oninput='up2.setCustomValidity(up2.value != up.value ? "Passwords do not match." : "")'>
+            <p></p>
+            <p></p>
+            <p></p>
+            &nbsp;
+            @*//add styling so that they are on same line*@
+
+            <ul>
+                <label for="text"><b>First Name & Last Name</b></label>
+                <li>
+                    <input type="text" asp-for="firstname" placeholder="First Name" class="field-style field-split align-left" name="firstname" required="">
+                    <input type="text" asp-for="lastname" placeholder="Last Name" class="field-style field-split align-right" name="lastname" required="">
+                </li>
+                <li>
+                    <label for="email"><b>Email Address</b></label>
+                    <input type="email" asp-for="email" placeholder="Enter Email Address" name="email" required="">
+                </li>
+                <li>
+                    <p></p>
+                    <label for="pass"><b>Password</b></label>
+                    <input type="password" asp-for="pass" placeholder="Enter Password" name="pass" required="">
+                    <p></p>
+                </li>
+                <li>
+                    <label for="pass"><b>Confirm Password</b></label>
+                    <input type="password" placeholder="Confirm Password" id="confirm_password" name="pass2" required="">
+                    <p></p>
+                </li>
+                <li>
+                    <button type="button" onclick="javascript:history.back().style.display='none'" class="cancelbtn" OnClientClick="JavaScript:window.history.back(1);return false;">Cancel </button>
+                    &nbsp;&nbsp;
+                    @Html.AntiForgeryToken()
+                    &nbsp;&nbsp;
+                    <input type="submit" value="Submit">
+                    <p></p>
+                </li>
+            </ul>
+            <p></p>
+        </form>
+
+</body>
+</html>
+
+

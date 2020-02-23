@@ -433,16 +433,16 @@ namespace HopePipeline.Controllers
                 refCodeList.Add(reader.GetInt32(0));
             }
             reader.Close();
-           
+
             
             foreach(int refcode in refCodeList)
             {
-                string query = "SELECT referralfname, referralname FROM refform WHERE clientCode = " + refcode;
+                string query = "SELECT referralfname, referrallname FROM refform WHERE clientCode = " + clientCode;
                 command = new SqlCommand(q1, cnn);
                 SqlDataReader reader2 = command.ExecuteReader();
                 while (reader2.Read())
                 {
-                    var row = new TrackRefRow { firstName = reader.GetString(0), lastName = reader.GetString(1), refCode = refcode };
+                    var row = new TrackRefRow { firstName = reader2.GetString(0), lastName = reader2.GetString(1), refCode = reader.GetInt32(2) };
                     mod.list.Add(row);
                 }
                 reader2.Close();

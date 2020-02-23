@@ -13,7 +13,32 @@
             font-family: Arial, Helvetica, sans-serif;
         }
 
-        input[type=text], input[type=password] {
+        .form-style-9 
+        {
+            max-width: 1000px;
+            background: #FAFAFA;
+            padding: 60px;
+            margin: 50px auto;
+            border-radius: 10px;
+            border: 6px solid #305A72;
+        }
+
+            .form-style-9 ul li .field-style 
+            {
+                box-sizing: border-box;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                padding: 8px;
+                outline: none;
+                border: 1px solid #B0CFE0;
+                -webkit-transition: all 0.30s ease-in-out;
+                -moz-transition: all 0.30s ease-in-out;
+                -o-transition: all 0.30s ease-in-out;
+            }
+
+
+        input[type=text], input[type=password] 
+        {
             width: 100%;
             padding: 12px 20px;
             margin: 8px 0;
@@ -45,28 +70,28 @@
 </head>
 <body>
     <div class="container">
-        <h3>Administrator Log In</h3>
+      
         <p></p>
         @ViewBag.error
-        <form method="post" asp-controller="Account" asp-action="Verify">
-            <p></p>
-            <p></p>
-            <label for="email"><b>Username/Email</b></label>
-            <input type="text" placeholder="Enter Username" name="email" required="" asp-for="email">
-            <p></p>
-            <label for="pass"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="pass" required="" asp-for="pass">
-            <p></p>
-            <button type="button" onclick="javascript:history.back().style.display='none'" class="cancelbtn" OnClientClick="JavaScript:window.history.back(1);return false;">Cancel </button>
-            &nbsp;&nbsp;
-            @Html.AntiForgeryToken()
-            &nbsp;&nbsp;
-            <input type="submit" value="Login">
-            <p></p>
-            <h5><a asp-controller="Home" asp-action="ForgotPassword">Forgot Password?</a></h5>
+    <form method="post" class="form-style-9" asp-controller="Account" asp-action="Verify">
+        <h3>Administrator Log In</h3>
+        <br />
+        <label for="email"><b>Username/Email</b></label>
+        <input type="text" placeholder="Enter Username" name="email" required="" asp-for="email">
+        <p></p>
+        <label for="pass"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="pass" required="" asp-for="pass">
+        <p></p>
+        <button type="button" onclick="javascript:history.back().style.display='none'" class="cancelbtn" OnClientClick="JavaScript:window.history.back(1);return false;">Cancel </button>
+        &nbsp;&nbsp;
+        @Html.AntiForgeryToken()
+        &nbsp;&nbsp;
+        <input type="submit" value="Login">
+        <p></p>
+        <h5><a asp-controller="Home" asp-action="ForgotPassword">Forgot Password?</a></h5>
 
-            <p></p>
-        </form>
+        <p></p>
+    </form>
     </div>
 </body>
 </html>

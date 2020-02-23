@@ -32,7 +32,7 @@ namespace HopePipeline.Controllers
             SqlCommand command;
             cnn.Open();
 
-            string query = "select fname, lname, dob, clientCode from dbo.refform;";
+            string query = "select fname, lname, dob, clientCode from dbo.refform WHERE currStatus = 'Pending';";
             command = new SqlCommand(query, cnn);
             SqlDataReader reader = command.ExecuteReader();
 
@@ -111,6 +111,39 @@ namespace HopePipeline.Controllers
                
             }
             reader2.Close();
+            return View("RefList", results);
+        }
+
+        public ViewResult SeeAssigned()
+        {
+            var results = new List<RefRow>();
+            //  string connectionString = "Server=tcp:ccrhopepipeline.database.windows.net,1433;Initial Catalog=Hope Pipeline;Persist Security Info=False;User ID=user;Password=P4ssw0rd;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+
+            SqlConnection cnn;
+            cnn = new SqlConnection(connectionString);
+            SqlCommand command;
+            cnn.Open();
+
+            string query = "select fname, lname, dob, clientCode from dbo.refform WHERE currStatus = 'Closed';";
+            command = new SqlCommand(query, cnn);
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+
+                //We push information from the query into a row and onto the list of rows
+                RefRow row = new RefRow
+                {
+                    fname = reader.GetString(reader.GetOrdinal("fname")),
+                    lname = reader.GetString(1),
+                    dob = reader.GetDateTime(2).ToString("dd MMMM yyyy"),
+                    clientCode = reader.GetInt32(3)
+                };
+                results.Add(row);
+            }
+            reader.Close();
+            cnn.Close();
+
             return View("RefList", results);
         }
 

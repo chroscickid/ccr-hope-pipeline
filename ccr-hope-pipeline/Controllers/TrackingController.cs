@@ -92,7 +92,7 @@ namespace HopePipeline.Controllers
                 "INSERT INTO dbo.bully VALUES (" + sub.bullied + "," + sub.bullyReport + ",'" + sub.dateofBully + "'," + id + ")",
                 "INSERT INTO dbo.caregiver VALUES ('" + sub.careFirstName + "','" + sub.careLastName + "','" + sub.careGender + "','" + sub.careEthnicity + "'," + "'careRelationship'" + "," + id + ")",
 
-                "INSERT dbo.ccr VALUES ('" + sub.levelOfServiceProvided + "'," + sub.caseStatus + "," + sub.remedyResolution + "," + sub.rearrestWhileRepresented + ",'" + sub.schoolAtClosure + "'," + id + ")",
+                "INSERT dbo.ccr VALUES ('" + sub.levelOfServiceProvided + "'," + sub.caseStatus + ",'" + sub.nonEngagementReason + "'," + sub.remedyResolution + "," + sub.rearrestWhileRepresented + ",'" + sub.schoolAtClosure + "'," + id + ")",
                 "INSERT INTO dbo.comp VALUES (" + sub.compService + ",'" + sub.ifWhatServices + "','" + sub.compTime + "'," + id + ")",
                 //AddService?
                 //Servicesgained
@@ -335,6 +335,123 @@ namespace HopePipeline.Controllers
 
 
             return RedirectToAction("TrackingList");
+        }
+
+       
+        public IActionResult ChangeStatus(int clientCode, int status)
+        {
+            SqlConnection cnn = new SqlConnection(connectionString);
+            SqlCommand command;
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            cnn.Open();
+            string query = "UPDATE ccr SET ccrStatus = " + status + "WHERE clientCode = " + clientCode;
+            command = new SqlCommand(query, cnn);
+            SqlDataReader reader = command.ExecuteReader();
+            reader.Close();
+            cnn.Close();
+            return RedirectToAction("TrackingList");
+
+        }
+        public ViewResult AssignTrackingList(int clientCode)
+        {
+            var results = new List<TrackingRow>();
+            SqlConnection cnn;
+            cnn = new SqlConnection(connectionString);
+            SqlCommand command;
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            cnn.Open();
+
+            string query = "SELECT clientLast, clientFirst, dbo.ccr.ccrStatus, dbo.client.clientCode, phoneNumber FROM dbo.client INNER JOIN dbo.ccr ON dbo.client.clientCode = dbo.ccr.clientCode;";
+            command = new SqlCommand(query, cnn);
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                string statusString = "";
+                switch (reader.GetInt32(2))
+                {
+                    case 1:
+                        statusString = "Open";
+                        break;
+                    case 0:
+                        statusString = "Closed";
+                        break;
+                    case 2:
+                        statusString = "Closed due to non-engagement";
+                        break;
+
+                }
+                //We push information from the query into a row and onto the list of rows
+                TrackingRow row = new TrackingRow { lname = reader.GetString(0), fname = reader.GetString(1), status = statusString, clientCode = reader.GetInt32(3), phoneNumber = reader.GetString(4) };
+
+                results.Add(row);
+            }
+            reader.Close();
+            var mod = new TrackingAssign();
+            mod.list = results;
+            mod.referralClientCode = clientCode;
+
+            return View("AssignTrackingList", mod);
+        }
+
+        public IActionResult AssignSpecific(int clientCode, int refCode)
+        {
+            SqlConnection cnn;
+            cnn = new SqlConnection(connectionString);
+            SqlCommand command;
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            cnn.Open();
+
+            string q1 = "INSERT INTO referral VALUES (" + refCode + "," + clientCode + ")";
+            string q2 = "UPDATE refform SET currStatus = 'Closed' WHERE clientCode = " + refCode;
+            command = new SqlCommand(q1, cnn);
+            SqlDataReader reader = command.ExecuteReader();
+            command = new SqlCommand(q2, cnn);
+            reader.Close();
+            reader = command.ExecuteReader();
+            reader.Close();
+
+            return RedirectToAction("RefList","Referral");
+
+        }
+
+
+        public IActionResult ViewTrackRefs(int clientCode)
+        {
+            SqlConnection cnn;
+            cnn = new SqlConnection(connectionString);
+            SqlCommand command;
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            cnn.Open();
+            var mod = new TrackRefList();
+
+            string q1 = "SELECT * FROM referral WHERE clientCode = " + clientCode;
+            command = new SqlCommand(q1, cnn);
+            SqlDataReader reader = command.ExecuteReader();
+            var refCodeList = new List<int>();
+            while (reader.Read())
+            {
+                refCodeList.Add(reader.GetInt32(0));
+            }
+            reader.Close();
+           
+            
+            foreach(int refcode in refCodeList)
+            {
+                string query = "SELECT referralfname, referralname FROM refform WHERE clientCode = " + refcode;
+                command = new SqlCommand(q1, cnn);
+                SqlDataReader reader2 = command.ExecuteReader();
+                while (reader2.Read())
+                {
+                    var row = new TrackRefRow { firstName = reader.GetString(0), lastName = reader.GetString(1), refCode = refcode };
+                    mod.list.Add(row);
+                }
+                reader2.Close();
+
+                mod.studentName = "Placeholder";
+            }
+
+            return View("RefTrackList", mod);
+
         }
     }
 }

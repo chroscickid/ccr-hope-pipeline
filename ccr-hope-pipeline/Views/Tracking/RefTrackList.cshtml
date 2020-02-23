@@ -1,0 +1,34 @@
+﻿@model HopePipeline.Models.DbEntities.Tracking.TrackRefList;
+@{
+    ViewData["Title"] = "RefTrackList";
+}
+
+<h1>Referral forms assigned to @Model.studentName</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+        <th>
+            Referral Source Name
+        </th>
+        <th>
+            View Referral
+        </th>
+       </tr>
+    </thead>
+    <tbody>
+        @foreach(var row in Model.list)
+        {
+            <tr>
+                <td>
+                    @row.firstName, @row.lastName
+                </td>
+                <td>
+                    <a asp-controller="n" asp-action="detailReferralM" asp-route-clientCode="@row.refCode">View</a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+

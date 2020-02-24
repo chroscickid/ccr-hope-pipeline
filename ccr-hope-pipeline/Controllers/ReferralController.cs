@@ -7,6 +7,8 @@ using HopePipeline.Models.DbEntities.Referrals;
 using HopePipeline.Models;
 using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace HopePipeline.Controllers
 {

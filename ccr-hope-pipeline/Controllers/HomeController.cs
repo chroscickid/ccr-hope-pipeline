@@ -17,6 +17,7 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
+using HopePipeline.Services.SendgridEmailInAspNetCore.Services;
 
 namespace HopePipeline.Controllers
 {
@@ -24,9 +25,15 @@ namespace HopePipeline.Controllers
 
 
     {
-      
 
-          
+
+        private readonly IEmailSender _emailSender;
+
+        public HomeController(IEmailSender emailSender)
+        {
+            _emailSender = emailSender;
+        }
+
         public IActionResult Index()
         {
             ViewBag.Message = "HomePage";
@@ -53,12 +60,29 @@ namespace HopePipeline.Controllers
             return View();
         }
 
-     
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-     }   }
+        }
+
+        public IActionResult SendEmail()
+        {
+            return View();
+        }
+        //public async task sendemail(emailmodel model)
+        //{
+        //    if (modelstate.isvalid)
+        //    {
+        //        var emails = new list();
+        //        emails.add(model.email);
+        //        await _emailsender.sendemailasync(emails, model.subject, model.message);
+        //    }
+        //    return View(model);
+        //}
+    }
     }
 

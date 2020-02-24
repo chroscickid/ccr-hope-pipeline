@@ -17,7 +17,8 @@ using HopePipeline.Models.DbEntities;
 using HopePipeline.Models.DbEntities.Login;
 using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace HopePipeline.Controllers
 {

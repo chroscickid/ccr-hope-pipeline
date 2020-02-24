@@ -13,6 +13,11 @@ using ccr_hope_pipeline.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authorization;
+using HopePipeline.Services;
+using HopePipeline.Services.SendgridEmailInAspNetCore.Services;
+using Microsoft.Extensions.Options;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace ccr_hope_pipeline
 {
@@ -28,6 +33,9 @@ namespace ccr_hope_pipeline
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+           // services.Configure(Configuration);
+            services.AddTransient<IEmailSender, EmailSender>();
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -42,8 +50,7 @@ namespace ccr_hope_pipeline
             services.AddDefaultIdentity<IdentityUser>().AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-
-
+          
 
             services.AddMvc(config =>
             {
@@ -94,3 +101,5 @@ namespace ccr_hope_pipeline
         }
     }
 }
+
+

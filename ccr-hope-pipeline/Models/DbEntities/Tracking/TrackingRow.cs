@@ -13,5 +13,7 @@ namespace HopePipeline.Models.DbEntities.Tracking
         public string status { get; set; }
         public string phoneNumber { get; set; }
         public int clientCode { get; set; }
+
+        
     }
 }

@@ -30,6 +30,9 @@ namespace HopePipeline.Controllers
             command = new SqlCommand(query, cnn);
             SqlDataReader reader = command.ExecuteReader();
 
+            //I hate this. This is just vile 😒
+            //We are basically just putting a referral in the tracking model so we
+            //can autopopulate values in the tracking form
             while (reader.Read())
             {
                 relRef.address = reader.GetString(reader.GetOrdinal("strAddress"));
@@ -64,10 +67,9 @@ namespace HopePipeline.Controllers
             }
             reader.Close();
 
+            //We push it into the model that gets sent to the view
             newF.referralBrandi = relRef;
 
-
-            //do black magic to get a model using the client code
             return View(newF);
         }
 
@@ -79,6 +81,10 @@ namespace HopePipeline.Controllers
             SqlCommand command;
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
+
+            //Again, makes me vomit. A list of every sql command needed to 😒
+            //insert a full tracking form into the database
+            //Took me two weeks
             List<string> qs = new List<String>
             {
                 "INSERT INTO dbo.demographics VALUES (" + id + ")",
@@ -92,7 +98,7 @@ namespace HopePipeline.Controllers
                 "INSERT INTO dbo.bully VALUES (" + sub.bullied + "," + sub.bullyReport + ",'" + sub.dateofBully + "'," + id + ")",
                 "INSERT INTO dbo.caregiver VALUES ('" + sub.careFirstName + "','" + sub.careLastName + "','" + sub.careGender + "','" + sub.careEthnicity + "'," + "'careRelationship'" + "," + id + ")",
 
-                "INSERT dbo.ccr VALUES ('" + sub.levelOfServiceProvided + "'," + sub.caseStatus + "," + sub.remedyResolution + "," + sub.rearrestWhileRepresented + ",'" + sub.schoolAtClosure + "'," + id + ")",
+                "INSERT dbo.ccr VALUES ('" + sub.levelOfServiceProvided + "'," + sub.caseStatus + ",'" + sub.nonEngagementReason + "'," + sub.remedyResolution + "," + sub.rearrestWhileRepresented + ",'" + sub.schoolAtClosure + "'," + id + ")",
                 "INSERT INTO dbo.comp VALUES (" + sub.compService + ",'" + sub.ifWhatServices + "','" + sub.compTime + "'," + id + ")",
                 //AddService?
                 //Servicesgained
@@ -106,16 +112,12 @@ namespace HopePipeline.Controllers
                 "INSERT INTO dbo.legal VALUES (" + sub.firstLegal + ",'" + sub.secondLegal + "','" + sub.justiceOutcome + "'," + id + ")",
                 "INSERT INTO dbo.school (" + id + "," + sub.currentGrade + ",'" + sub.school + "','" + sub.schoolRef + "')"
             };
+
+            //Um, this needs to be outside of that for some reason
             int totalSus = sub.iss + sub.oss;
             qs.Add("INSERT INTO dbo.suspension VALUES(" + sub.suspended + "," + sub.suspendCount + "," + totalSus + "," + sub.iss + "," + sub.oss + "," + 0 + "," + 0 + "," + id + ")");
-            //Lili is going to rework the meetings table soon so I'm not even going to bother
-            //qs[15] = "";
-
-            ///dbo.referral. Not sure what's going on here
-            //qs[16] = "";
-
-
-
+           
+            //We now just run through every string in the list, running it as a sql command
             foreach (string query in qs)
             {
                 command = new SqlCommand(query, cnn);
@@ -125,13 +127,13 @@ namespace HopePipeline.Controllers
 
             cnn.Close();
 
-            var deleteReferral = new ReferralController();
-            deleteReferral.Delete(id);
+            //TODO: Submitting the tracking form changes the related Referral form to closed (In the currStatus field)
             return RedirectToAction("TrackingList");
         }
 
         public ViewResult TrackingList()
         {
+            //Very boiler-plate tracking list, just like the sql one
             var results = new List<TrackingRow>();
             SqlConnection cnn;
             cnn = new SqlConnection(connectionString);
@@ -335,6 +337,123 @@ namespace HopePipeline.Controllers
 
 
             return RedirectToAction("TrackingList");
+        }
+
+       
+        public IActionResult ChangeStatus(int clientCode, int status)
+        {
+            SqlConnection cnn = new SqlConnection(connectionString);
+            SqlCommand command;
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            cnn.Open();
+            string query = "UPDATE ccr SET ccrStatus = " + status + "WHERE clientCode = " + clientCode;
+            command = new SqlCommand(query, cnn);
+            SqlDataReader reader = command.ExecuteReader();
+            reader.Close();
+            cnn.Close();
+            return RedirectToAction("TrackingList");
+
+        }
+        public ViewResult AssignTrackingList(int clientCode)
+        {
+            var results = new List<TrackingRow>();
+            SqlConnection cnn;
+            cnn = new SqlConnection(connectionString);
+            SqlCommand command;
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            cnn.Open();
+
+            string query = "SELECT clientLast, clientFirst, dbo.ccr.ccrStatus, dbo.client.clientCode, phoneNumber FROM dbo.client INNER JOIN dbo.ccr ON dbo.client.clientCode = dbo.ccr.clientCode;";
+            command = new SqlCommand(query, cnn);
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                string statusString = "";
+                switch (reader.GetInt32(2))
+                {
+                    case 1:
+                        statusString = "Open";
+                        break;
+                    case 0:
+                        statusString = "Closed";
+                        break;
+                    case 2:
+                        statusString = "Closed due to non-engagement";
+                        break;
+
+                }
+                //We push information from the query into a row and onto the list of rows
+                TrackingRow row = new TrackingRow { lname = reader.GetString(0), fname = reader.GetString(1), status = statusString, clientCode = reader.GetInt32(3), phoneNumber = reader.GetString(4) };
+
+                results.Add(row);
+            }
+            reader.Close();
+            var mod = new TrackingAssign();
+            mod.list = results;
+            mod.referralClientCode = clientCode;
+
+            return View("AssignTrackingList", mod);
+        }
+
+        public IActionResult AssignSpecific(int clientCode, int refCode)
+        {
+            SqlConnection cnn;
+            cnn = new SqlConnection(connectionString);
+            SqlCommand command;
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            cnn.Open();
+
+            string q1 = "INSERT INTO referral VALUES (" + refCode + "," + clientCode + ")";
+            string q2 = "UPDATE refform SET currStatus = 'Closed' WHERE clientCode = " + refCode;
+            command = new SqlCommand(q1, cnn);
+            SqlDataReader reader = command.ExecuteReader();
+            command = new SqlCommand(q2, cnn);
+            reader.Close();
+            reader = command.ExecuteReader();
+            reader.Close();
+
+            return RedirectToAction("RefList","Referral");
+
+        }
+
+
+        public IActionResult ViewTrackRefs(int clientCode)
+        {
+            SqlConnection cnn;
+            cnn = new SqlConnection(connectionString);
+            SqlCommand command;
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            cnn.Open();
+            var mod = new TrackRefList();
+
+            string q1 = "SELECT * FROM referral WHERE clientCode = " + clientCode;
+            command = new SqlCommand(q1, cnn);
+            SqlDataReader reader = command.ExecuteReader();
+            var refCodeList = new List<int>();
+            while (reader.Read())
+            {
+                refCodeList.Add(reader.GetInt32(0));
+            }
+            reader.Close();
+
+            
+            foreach(int refcode in refCodeList)
+            {
+                string query = "SELECT referralfname, referrallname FROM refform WHERE clientCode = " + clientCode;
+                command = new SqlCommand(q1, cnn);
+                SqlDataReader reader2 = command.ExecuteReader();
+                while (reader2.Read())
+                {
+                    var row = new TrackRefRow { firstName = reader2.GetString(0), lastName = reader2.GetString(1), refCode = reader.GetInt32(2) };
+                    mod.list.Add(row);
+                }
+                reader2.Close();
+
+                mod.studentName = "Placeholder";
+            }
+
+            return View("RefTrackList", mod);
+
         }
     }
 }

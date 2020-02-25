@@ -1,4 +1,4 @@
-﻿@model List<HopePipeline.Models.DbEntities.Tracking.TrackingRow>;
+﻿@model HopePipeline.Models.DbEntities.Tracking.TrackingAssign;
 @{
     ViewData["Title"] = "Tracking List";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -40,13 +40,10 @@
 .dropdown:hover .dropbtn {background-color: #3e8e41;}
 </style>
 <h2>Tracking</h2>
-<h3>Showing @Model.Count</h3>
+<h3>Showing @Model.list.Count</h3>
 
-<form asp-controller="Tracking" asp-action="search">
-    <input name="term" />
-    <button type="submit">Search</button>
-</form>
 
+<h1>Assign Tracking</h1>
 
 <table class="table" id="tracklist">
     <thead>
@@ -66,7 +63,7 @@
             </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.list)
         {
             <tr>
                 <td>
@@ -79,19 +76,7 @@
                     @Html.DisplayFor(modelItem => item.status)
                 </td>
                 <td>
-                    <a asp-controller="Tracking" asp-action="MeetingList" asp-route-clientCode="@item.clientCode">Meetings</a> |
-                    <div class="dropdown">
-                        <a class="dropbtn">Change Status</a>
-                        <div class="dropdown-content">
-                            <a asp-controller="Tracking" asp-action="ChangeStatus" asp-route-clientCode="@item.clientCode" asp-route-status="1">"Open"</a>
-                            <a asp-controller="Tracking" asp-action="ChangeStatus" asp-route-clientCode="@item.clientCode" asp-route-status="0">"Closed"</a>
-                            <a asp-controller="Tracking" asp-action="ChangeStatus" asp-route-clientCode="@item.clientCode" asp-route-status="2">"Closed to Non-engagement"</a>
-                        </div>
-                    </div> |
-                    <a asp-controller="Tracking" asp-action="TrackingForm" asp-route-clientCode="@item.clientCode">Edit</a> |
-                    <a asp-controller="n" asp-action="detailTrackingM">Details</a> |                    
-                    <a asp-controller="Tracking" asp-action="ViewTrackRefs" asp-route-clientCode="@item.clientCode">View Referrals</a> |
-                    <a asp-controller="Tracking" asp-action="Delete" asp-route-clientCode="@item.clientCode">Delete</a>
+                    <a asp-controller="Tracking" asp-action="AssignSpecific" asp-route-cllientCode="@item.clientCode" asp-route-refCode="@Model.referralClientCode">Assign</a>
                 </td>
             </tr>
             ;

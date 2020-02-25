@@ -30,6 +30,9 @@ namespace HopePipeline.Controllers
             command = new SqlCommand(query, cnn);
             SqlDataReader reader = command.ExecuteReader();
 
+            //I hate this. This is just vile 😒
+            //We are basically just putting a referral in the tracking model so we
+            //can autopopulate values in the tracking form
             while (reader.Read())
             {
                 relRef.address = reader.GetString(reader.GetOrdinal("strAddress"));
@@ -64,10 +67,9 @@ namespace HopePipeline.Controllers
             }
             reader.Close();
 
+            //We push it into the model that gets sent to the view
             newF.referralBrandi = relRef;
 
-
-            //do black magic to get a model using the client code
             return View(newF);
         }
 
@@ -79,6 +81,10 @@ namespace HopePipeline.Controllers
             SqlCommand command;
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
+
+            //Again, makes me vomit. A list of every sql command needed to 😒
+            //insert a full tracking form into the database
+            //Took me two weeks
             List<string> qs = new List<String>
             {
                 "INSERT INTO dbo.demographics VALUES (" + id + ")",
@@ -106,16 +112,12 @@ namespace HopePipeline.Controllers
                 "INSERT INTO dbo.legal VALUES (" + sub.firstLegal + ",'" + sub.secondLegal + "','" + sub.justiceOutcome + "'," + id + ")",
                 "INSERT INTO dbo.school (" + id + "," + sub.currentGrade + ",'" + sub.school + "','" + sub.schoolRef + "')"
             };
+
+            //Um, this needs to be outside of that for some reason
             int totalSus = sub.iss + sub.oss;
             qs.Add("INSERT INTO dbo.suspension VALUES(" + sub.suspended + "," + sub.suspendCount + "," + totalSus + "," + sub.iss + "," + sub.oss + "," + 0 + "," + 0 + "," + id + ")");
-            //Lili is going to rework the meetings table soon so I'm not even going to bother
-            //qs[15] = "";
-
-            ///dbo.referral. Not sure what's going on here
-            //qs[16] = "";
-
-
-
+           
+            //We now just run through every string in the list, running it as a sql command
             foreach (string query in qs)
             {
                 command = new SqlCommand(query, cnn);
@@ -125,13 +127,13 @@ namespace HopePipeline.Controllers
 
             cnn.Close();
 
-            var deleteReferral = new ReferralController();
-            deleteReferral.Delete(id);
+            //TODO: Submitting the tracking form changes the related Referral form to closed (In the currStatus field)
             return RedirectToAction("TrackingList");
         }
 
         public ViewResult TrackingList()
         {
+            //Very boiler-plate tracking list, just like the sql one
             var results = new List<TrackingRow>();
             SqlConnection cnn;
             cnn = new SqlConnection(connectionString);

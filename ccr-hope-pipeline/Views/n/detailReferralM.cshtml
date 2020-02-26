@@ -47,12 +47,12 @@
     </style>
 </head>
 <h2>Referral </h2>
+@foreach (var item in Model)
+{
+    <div>
+        <h4>Detail</h4>
+        <hr />
 
-<div>
-    <h4>Detail</h4>
-    <hr />
-    @foreach (var item in Model)
-    {
         <table id="t01">
 
             <tr>
@@ -126,7 +126,6 @@
                 <td class="t" style="text-align:right"> Does the youth have a meeting?</td>
 
                 <td>
-
                     @Html.DisplayFor(modelItem => item.meeting)<br />
                 </td>
             <tr>
@@ -173,7 +172,7 @@
             <tr>
                 <td class="t" style="text-align:right"> Where is the youth currently attending school?</td>
 
-                <td> @Html.DisplayFor(modelItem => item.currentSchool)</td>
+                <td> @Html.DisplayFor(modelItem => item.school)</td>
             </tr>
 
             <tr>
@@ -258,14 +257,15 @@
 
 
 
-
+            @{int tale = item.clientCode;}
 
 
         </table>
-    }
+
         <p id="demo"></p>
     </div>
-<div>
-    <a asp-controller="n" asp-action="editReferralM">Edit</a><br />
-    <a asp-action="Index" asp-controller="Home">Back to List</a>
-</div>
+
+    <a asp-controller="n" asp-action="editReferralM" asp-route-clientCode="@tale">Edit</a>}
+<br />
+<a asp-action="RefList" asp-controller="Referral">Back to List</a>
+

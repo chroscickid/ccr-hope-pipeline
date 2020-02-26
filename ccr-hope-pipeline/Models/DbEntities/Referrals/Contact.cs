@@ -20,6 +20,6 @@ namespace HopePipeline.Models.DbEntities.Referrals
         public string address { get; set; }
 
         public string zip { get; set; }
-        public string reach{ get; set; }
+        public string reach { get; set; }
     }
 }

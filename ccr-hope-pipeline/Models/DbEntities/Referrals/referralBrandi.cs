@@ -26,7 +26,7 @@ namespace HopePipeline.Models
         public DateTime? dOB { get; set; }
 
         public string guardianName { get; set; }
-        
+
         public string guardianRelationship { get; set; }
 
         public string address { get; set; }
@@ -67,7 +67,7 @@ namespace HopePipeline.Models
         public string referralfname { get; set; }
         public string referrallname { get; set; }
 
-        
+
 
     }
 }

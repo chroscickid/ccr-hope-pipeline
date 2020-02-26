@@ -43,75 +43,76 @@
 
         function yesnoCheck() {
             if (document.getElementById('yesCheck').checked) {
-                document.getElementById('ifYes').style.display= 'block';
+                document.getElementById('ifYes').style.display = 'block';
             }
             else document.getElementById('ifYes').style.display = 'none';
 
         }
         function yesnoCheck1() {
             if (document.getElementById('yesclick').checked) {
-                document.getElementById('Yes').style.display= 'block';
+                document.getElementById('Yes').style.display = 'block';
             }
             else document.getElementById('Yes').style.display = 'none';
 
         }
-          function myConfirm() {
-           var array = []
+        function myConfirm() {
+            var array = []
             var checkboxes = document.querySelectorAll('input[name=array]:checked')
-              alert(checkboxes);
+            // alert(checkboxes);
             for (var i = 0; i < checkboxes.length; i++) {
-            array.push(checkboxes[i].value)
-             }
+                array.push(checkboxes[i].value)
+            }
 
-              var input = document.getElementById("input");
-              var array3 = document.getElementById("array3").value;
-              alert(array3);
-              if (input.checked) {
-                  //for (var i = 0; i < array3.length; i++)
-                  { array.push(array3) }
-              }
-             
-              alert(array);
+            var input = document.getElementById("input");
+            var array3 = document.getElementById("array3").value;
+            //alert(array3);
+            if (input.checked) {
+                //for (var i = 0; i < array3.length; i++)
+                { array.push(array3) }
+            }
 
-              document.getElementById("guardRe").value = array;
+            //alert(array);
+
+            document.getElementById("guardRe").value = array;
 
 
 
-               var array1 = []
+            var array1 = []
             var checkboxes1 = document.querySelectorAll('input[name=array1]:checked')
 
             for (var i = 0; i < checkboxes1.length; i++) {
-            array1.push(checkboxes1[i].value)
-             }
-          
-              document.getElementById("issues0").value = array1;
+                array1.push(checkboxes1[i].value)
+            }
+
+            document.getElementById("issues0").value = array1;
 
 
 
-            var r = confirm("Please Confirm you would like to submit the Referral Form")
-              if (r == true) {
+            if (confirm("Please Confirm you would like to submit the Referral Form")) {
 
-                  window.location.href = "confirmationM";
-                  return true;
-              }
-            else
+
+                return true;
+            }
+            else {
                 return false;
+                event.preventDefault();
+            }
         }
         function afunction() {
             if (!document.getElementById('input').checked) {
                 document.getElementById('array3').setAttribute('disabled', 'disabled');
-                
+
             }
-         else document.getElementById('array3').removeAttribute('disabled'); 
+            else document.getElementById('array3').removeAttribute('disabled');
 
         }
 
     </script>
 </head>
 <body>
-   
 
- 
+
+
     <!-- Decision after login by authorized user -->
 
     <h1>Hope Pipeline Referral Form</h1>
@@ -184,7 +185,7 @@
                     Primary Caretaker's Name:<br />
                     <input type="text" name="guardianName" asp-for="guardianName">
                 </td>
-                
+
                 <td colspan="2">
                     <div id="checks">
                         What is the primary caretaker's relationship to the youth? (please select all that apply)
@@ -200,9 +201,9 @@
                         <input type="hidden" id="guardRe" name="guardianRelationship" asp-for="guardianRelationship">
                         <br>
                     </div>
-                  
+
                 </td>
-               
+
 
                 <td>
                     Street Address:<br />
@@ -258,14 +259,14 @@
                 <td>
                     <div id="checks1">
                         What issues are currently impacting the youth? Please check all that apply.
-                        <br>  <input type="checkbox" name="array1" value="Failed a grade" > &nbsp;Failed a grade<br>
-                        <input type="checkbox" name="array1" value="Frequently suspended" > &nbsp;Frequently suspended<br>
-                        <input type="checkbox" name="array1" value="In an alternative school setting " > &nbsp;In an alternative school setting (Mattie V., Grand Park, AMI, Pace, etc)<br>
-                        <input type="checkbox" name="array1" value="Has a 504 plan or an IEP" > &nbsp;Has a 504 plan or an IEP<br>
+                        <br>  <input type="checkbox" name="array1" value="Failed a grade"> &nbsp;Failed a grade<br>
+                        <input type="checkbox" name="array1" value="Frequently suspended"> &nbsp;Frequently suspended<br>
+                        <input type="checkbox" name="array1" value="In an alternative school setting "> &nbsp;In an alternative school setting (Mattie V., Grand Park, AMI, Pace, etc)<br>
+                        <input type="checkbox" name="array1" value="Has a 504 plan or an IEP"> &nbsp;Has a 504 plan or an IEP<br>
                         <input type="checkbox" name="array1" value="Not enrolled in school"> &nbsp;Not enrolled in school<br>
-                        <input type="checkbox" name="array1" value="Has a history of being Baker Acted" > &nbsp;Has a history of being Baker Acted<br>
+                        <input type="checkbox" name="array1" value="Has a history of being Baker Acted"> &nbsp;Has a history of being Baker Acted<br>
                         <input type="checkbox" name="array1" value="Dependent"> &nbsp;Dependent<br>
-                        <input type="checkbox" name="array1" value="WINS" > &nbsp;WINS<br>
+                        <input type="checkbox" name="array1" value="WINS"> &nbsp;WINS<br>
 
 
                         <input type="hidden" id="issues0" name="issues" asp-for="issues">
@@ -289,6 +290,7 @@
                     <br />
                     <select name="Grade" asp-for="grade">
                         <option value="N/A">Please Select an Option</option>
+                        <option value="Kindergarten">Kindergarten</option>
                         <option value="1st">1st</option>
                         <option value="2nd">2nd</option>
                         <option value="3rd">3rd</option>
@@ -366,7 +368,7 @@
         </table><br />
 
 
-        <button type="submit"  onclick="myConfirm()">Submit</button>
+        <button type="submit" onclick="return myConfirm();">Submit</button>
     </form>
 
 </body>

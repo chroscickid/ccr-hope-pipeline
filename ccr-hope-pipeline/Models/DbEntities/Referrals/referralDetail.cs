@@ -24,7 +24,7 @@ namespace HopePipeline.Models.DbEntities.Referrals
 
         public string lName { get; set; }
 
-     
+
         public string dOB { get; set; }
 
         public string guardianName { get; set; }
@@ -47,7 +47,7 @@ namespace HopePipeline.Models.DbEntities.Referrals
 
         public string currentSchool { get; set; }
 
-   
+
 
         public string zip { get; set; }
         public string grade { get; set; }
@@ -57,7 +57,7 @@ namespace HopePipeline.Models.DbEntities.Referrals
         public string arrest { get; set; }
         public string school { get; set; }
         public string dateInput { get; set; }
- 
+
         public string date { get; set; }
 
         public string email { get; set; }

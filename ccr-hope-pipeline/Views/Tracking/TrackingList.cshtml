@@ -88,7 +88,7 @@
                             <a asp-controller="Tracking" asp-action="ChangeStatus" asp-route-clientCode="@item.clientCode" asp-route-status="2">"Closed to Non-engagement"</a>
                         </div>
                     </div> |
-                    <a asp-controller="Tracking" asp-action="TrackingForm" asp-route-clientCode="@item.clientCode">Edit</a> |
+                    <a asp-controller="n" asp-action="editTrackingM" asp-route-clientCode="@item.clientCode">Edit</a> |
                     <a asp-controller="n" asp-action="detailTrackingM">Details</a> |                    
                     <a asp-controller="Tracking" asp-action="ViewTrackRefs" asp-route-clientCode="@item.clientCode">View Referrals</a> |
                     <a asp-controller="Tracking" asp-action="Delete" asp-route-clientCode="@item.clientCode">Delete</a>

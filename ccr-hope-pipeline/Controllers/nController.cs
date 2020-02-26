@@ -7,14 +7,20 @@ using HopePipeline.Models;
 using System.Data.SqlClient;
 using HopePipeline.Models.DbEntities.Referrals;
 using HopePipeline.Models.DbEntities.Tracking;
+using System.Diagnostics;
 
 namespace HopePipeline.Controllers
 {
+
     public class nController : Controller
     {
+        public string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        public string cconnectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+
+
+
         public IActionResult formReferralM()
         {
-            string connectionString = "Data Source=hope-sqlserver.database.windows.net;Initial Catalog=hope-database;User ID=dadmin;Password=Hope2020!;Connect Timeout=30;Encrypt=True;TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False";
 
             SqlConnection cnn;
             cnn = new SqlConnection(connectionString);
@@ -25,7 +31,7 @@ namespace HopePipeline.Controllers
             int i = 0;
             if (Convert.IsDBNull(value))
             {
-                i = 0;
+                // i = 0;
                 ViewBag.Tessage = i;
             }
             if (!Convert.IsDBNull(value))
@@ -40,13 +46,13 @@ namespace HopePipeline.Controllers
             //FROM Products;
 
             cnn.Close();
+
             return View();
 
         }
         [HttpPost]
         public IActionResult submitform(referralBrandi form)
         {
-            string connectionString = "Data Source=hope-sqlserver.database.windows.net;Initial Catalog=hope-database;User ID=dadmin;Password=Hope2020!;Connect Timeout=30;Encrypt=True;TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False";
 
             SqlConnection cnn;
             cnn = new SqlConnection(connectionString);
@@ -60,15 +66,14 @@ namespace HopePipeline.Controllers
 
             //COnnect to the DB
 
-
-
+            adapter.Dispose();
+            command.Dispose();
             return RedirectToAction("Index", "Home");
 
         }
 
         public IActionResult contactInfoM(int clientCode)
         {
-            string connectionString = "Data Source=hope-sqlserver.database.windows.net;Initial Catalog=hope-database;User ID=dadmin;Password=Hope2020!;Connect Timeout=30;Encrypt=True;TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False";
 
             //var client= new Contact();
             List<Contact> clientl = new List<Contact>();
@@ -89,10 +94,8 @@ namespace HopePipeline.Controllers
                 {
 
                     Contact client = new Contact();
+
                     client.fname = Convert.ToString(dataReader["fname"]);
-
-
-
                     client.lname = Convert.ToString(dataReader["lname"]);
                     if (client.lname == " " || client.lname == "null" || client.lname == "")
                     { client.lname = "N/A"; }
@@ -130,7 +133,8 @@ namespace HopePipeline.Controllers
 
                 }
             }
-
+            adapter.Dispose();
+            command.Dispose();
             cnn.Close();
             return View(clientl);
 
@@ -138,7 +142,6 @@ namespace HopePipeline.Controllers
 
         public IActionResult detailReferralM(int clientCode)
         {
-            string connectionString = "Data Source=hope-sqlserver.database.windows.net;Initial Catalog=hope-database;User ID=dadmin;Password=Hope2020!;Connect Timeout=30;Encrypt=True;TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False";
 
             //var client= new Contact();
             List<referralDetail> clientl = new List<referralDetail>();
@@ -343,7 +346,8 @@ namespace HopePipeline.Controllers
 
                 }
             }
-
+            adapter.Dispose();
+            command.Dispose();
             cnn.Close();
             return View(clientl);
 
@@ -356,7 +360,6 @@ namespace HopePipeline.Controllers
         {
 
 
-            string connectionString = "Data Source=hope-sqlserver.database.windows.net;Initial Catalog=hope-database;User ID=dadmin;Password=Hope2020!;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
             SqlConnection cnn;
             cnn = new SqlConnection(connectionString);
@@ -523,6 +526,7 @@ namespace HopePipeline.Controllers
                 }
                 connection.Open();
                 command.ExecuteNonQuery();
+                cnn.Dispose();
                 connection.Close();
             }
             int message = form.clientCode;
@@ -537,7 +541,6 @@ namespace HopePipeline.Controllers
         {//this method will display the values from the sql code
             //get the values from specific sql
             //display
-            string connectionString = "Data Source=hope-sqlserver.database.windows.net;Initial Catalog=hope-database;User ID=dadmin;Password=Hope2020!;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
             //var client= new Contact();
 
@@ -697,7 +700,8 @@ namespace HopePipeline.Controllers
 
                 }
             }
-
+            adapter.Dispose();
+            command.Dispose();
             cnn.Close();
 
             return View();
@@ -713,13 +717,12 @@ namespace HopePipeline.Controllers
         { // referral form I need the firstname, lastname, 
             //sql commands for getting the tracking info
             //displaying the tracking information
-            string connectionString = "Data Source=hope-sqlserver.database.windows.net;Initial Catalog=hope-database;User ID=dadmin;Password=Hope2020!;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
             List<trackingDetail> clientl = new List<trackingDetail>();
             SqlConnection cnn;
             cnn = new SqlConnection(connectionString);
             SqlCommand command;
-            SqlDataAdapter adapter = new SqlDataAdapter();
+            //SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
             string query = "SELECT dbo.accomodations.clientCode, dbo.accomodations.accomGained, dbo.accomodations.compServices, dbo.accomodations.ifWhatServices," +
@@ -777,15 +780,15 @@ namespace HopePipeline.Controllers
                     { client.clientLastName = "N/A"; }//Done
 
                     client.careGender = Convert.ToString(dataReader["caregender"]);
-                    if (client.careGender == "Mother")
+                    if (client.careGender.Contains("Mother"))
                     { client.careGender = "Mother"; }
-                    if (client.careGender == "Father")
+                    if (client.careGender.Contains("Father"))
                     { client.careGender = "Father"; }
-                    if (client.careGender == "mGrandma")
+                    if (client.careGender.Contains("mGrandma"))
                     { client.careGender = "Grandma"; }
-                    if (client.careGender == "mGrandpa")
+                    if (client.careGender.Contains("mGrandpa"))
                     { client.careGender = "Grandpa"; }
-                    if (client.careGender == "Other")
+                    if (client.careGender.Contains("Other"))
                     { client.careGender = "Other"; }
                     if (String.IsNullOrEmpty(Convert.ToString(dataReader["caregender"])))
                     { client.careGender = "N/A"; }
@@ -795,19 +798,20 @@ namespace HopePipeline.Controllers
 
                     if (Convert.IsDBNull(dataReader["clientgender"]))
                     { client.clientGender = "N/A"; }
-                    if (!Convert.IsDBNull(dataReader["clientgender"]))
-                    { client.clientGender = Convert.ToString(dataReader["clientgender"]); }
-                    if (client.clientGender == "male")
+
+                    client.clientGender = Convert.ToString(dataReader["clientgender"]);
+
+                    if (client.clientGender.Contains("male"))
                     { client.clientGender = "He/Him/His"; }
-                    if (client.clientGender == "female")
+                    if (client.clientGender.Contains("female"))
                     { client.clientGender = "She/Her/Hers"; }
-                    if (client.clientGender == "trans*")
+                    if (client.clientGender.Contains("trans"))
                     { client.clientGender = "They/them/Theirs"; }
-                    if (client.clientGender == "nonbinaryF")
+                    if (client.clientGender.Contains("nonbinaryF"))
                     { client.clientGender = "She/They"; }
-                    if (client.clientGender == "nonbinaryM")
+                    if (client.clientGender.Contains("nonbinaryM"))
                     { client.clientGender = "He/They"; }
-                    if (client.clientGender == "neutral")
+                    if (client.clientGender.Contains("neutral"))
                     { client.clientGender = "Zie/Zir/Zirs"; }
                     else { client.clientGender = client.clientGender; }
 
@@ -1406,7 +1410,7 @@ namespace HopePipeline.Controllers
 
                 }
             }
-
+            command.Dispose();
             cnn.Close();
             return View(clientl);
 
@@ -1418,7 +1422,6 @@ namespace HopePipeline.Controllers
         {//this method will display the values from the sql code
          //get the values from specific sql
          //display
-            string connectionString = "Data Source=hope-sqlserver.database.windows.net;Initial Catalog=hope-database;User ID=dadmin;Password=Hope2020!;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
             //var client= new Contact();
 
@@ -1482,6 +1485,7 @@ namespace HopePipeline.Controllers
                     client.clientDOB = Convert.ToString(dataReader["clientdob"]);
                     client.school = Convert.ToString(dataReader["school"]);
                     client.currentGrade = Convert.ToInt32(dataReader["grade"]);
+                    client.currentGrade.ToString();
                     client.referralSource = Convert.ToString(dataReader["referralfname"]) + " " + Convert.ToString(dataReader["referrallname"]);
                     if (Convert.IsDBNull(dataReader["gradeFailed"]))
                     { client.failedGrade = 33; }
@@ -1699,478 +1703,1091 @@ namespace HopePipeline.Controllers
 
                 }
             }
-
+            adapter.Dispose();
+            command.Dispose();
             cnn.Close();
 
             return View();
 
         }
+
+
         [HttpPost]
-        public IActionResult editTrackingForm(TrackingForm info)
+        public IActionResult editTrackingForm(TrackingForm form)
         {
-            //update total sum, nonengagment, referral source, intake date delete, referral email, delete referral1, delete first referral, 
+            //if client code is not in the table client ID insert values in table
+
+            SqlConnection cnnn;
+            cnnn = new SqlConnection(connectionString);
+            cnnn.Open();
+            //SqlCommand commandd = cnnn.CreateCommand();
+            object bullycheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.bully WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
+            object clientcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.client WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
+            object advocacycheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.advocacy WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
+            object accomodationscheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.accomodations WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
+            object altSchoolcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.altSchool WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
+            object caregivercheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.caregiver WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
+            object ccrcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.ccr WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
+            object compcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.comp WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
+            object currentStatuscheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.currentStatus WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
+            object failedcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.failed WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
+            object healthcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.health WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
+            object householdcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.household WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
+            object suspensioncheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.suspension WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
+            object iepcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.iep WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
+            object legalcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.legal WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
+            object schoolcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.school WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
+
+            int bc = (Convert.ToInt16(bullycheck)) + 0;
+            int cc = (Convert.ToInt16(clientcheck)) + 0;
+            int ac = (Convert.ToInt16(advocacycheck)) + 0;
+            int acc = (Convert.ToInt16(accomodationscheck)) + 0;
+            int asc = (Convert.ToInt16(altSchoolcheck)) + 0;
+            int cgc = (Convert.ToInt16(caregivercheck)) + 0;
+            int ccrc = (Convert.ToInt16(ccrcheck)) + 0;
+            int fc = (Convert.ToInt16(failedcheck)) + 0;
+            int compch = (Convert.ToInt16(compcheck)) + 0;
+            int currentStatusch = (Convert.ToInt16(currentStatuscheck)) + 0;
+            int hc = (Convert.ToInt16(healthcheck)) + 0;
+            int hhc = (Convert.ToInt16(householdcheck)) + 0;
+            int ssc = (Convert.ToInt16(suspensioncheck)) + 0;
+            int iepc = (Convert.ToInt16(iepcheck)) + 0;
+            int lc = (Convert.ToInt16(legalcheck)) + 0;
+            int sc = (Convert.ToInt16(schoolcheck)) + 0;
+
+
+            if (bc == 0)
             {
-                string connectionString = "Data Source=hope-sqlserver.database.windows.net;Initial Catalog=hope-database;User ID=dadmin;Password=Hope2020!;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-
-                SqlConnection cnn;
-                cnn = new SqlConnection(connectionString);
-
-
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                using (SqlCommand command = new SqlCommand("", connection))
+                // clientcode is not in the table insert the values
+                SqlConnection cnnt;
+                cnnt = new SqlConnection(cconnectionString);
+                using (SqlConnection link = new SqlConnection(cconnectionString))
+                using (SqlCommand bullyins = new SqlCommand("", link))
                 {
-                    command.CommandText = "UPDATE dbo.advocacy" +
-                        "SET dbo.advocacy.rearrestAdvo = @rearrestAdvo, dbo.advocacy.courtAdvo = @courtAdvo, dbo.advocacy.staffingAdvo = @staffingAdvo, dbo.advocacy.legalAdvo = @legalAdvo, dbo.advocacy.legalAdvoTaken = @legalAdvoTaken " +
-                        "WHERE dbo.advocacy.clientCode = @clientCode;" +
-
-                        "UPDATE dbo.accomodations" +
-                        "SET  dbo.accomodations.accomGained = @accomGained, dbo.accomodations.compServices = @compServices , dbo.accomodations.ifWhatServices = @ifWhatServices " +
-                        "WHERE dbo.accomodations.clientCode = @clientCode;" +
-
-                        "UPDATE dbo.altSchool" +
-                        "SET dbo.altSchool.altSchool = @altSchool, dbo.altSchool.altSchoolName = @altSchoolName, dbo.altSchool.altSchoolDate = @altSchoolDate, dbo.altSchool.altSchoolTimes = @altSchoolTimes, dbo.altSchool.daysOwed = @daysOwed, dbo.altSchool.daysSinceIntake = @daysSinceIntake" +
-                        "WHERE dbo.altSchool.clientCode = @clientCode;" +
-
-                          "UPDATE dbo.bully" +
-                        "SET dbo.bully.bullied = @bullied, dbo.bully.reported = @reported, dbo.bully.reportDate = @reportDate " +
-                        "WHERE dbo.bully.clientCode = @clientCode;" +
-
-                        "UPDATE dbo.caregiver" +
-                        "SET dbo.caregiver.careLast = @careLast, dbo.caregiver.careFirst = @careFirst, dbo.caregiver.genderIdentity as caregender = @caregender, dbo.caregiver.ethnicity as careethnic = @careethnic, dbo.caregiver.relationship = @relationship " +
-                        "WHERE dbo.caregiver.clientCode= @clientCode;" +
-
-                        "UPDATE dbo.ccr" +
-                        "SET dbo.ccr.levelofService = @levelofService, dbo.ccr.ccrStatus = @ccrStatus, dbo.ccr.nonEngageReason = @nonEngageReason, dbo.ccr.remedy = @remedy, dbo.ccr.rearrestRep = @rearrestRep, dbo.ccr.closureSchool = @closureSchool " +
-                        "WHERE dbo.ccr.clientCode = @clientCode;" +
-
-                        "UPDATE dbo.client" +
-                        "SET dbo.client.clientLast = @clientLast, dbo.client.clientFirst = @clientFirst, dbo.client.dependency = @dependency, dbo.client.genderIdentity as clientgender = @clientgender, dbo.client.ethnicity as clientethn = @clientethn, dbo.client.dob = @dob, dbo.client.phoneNumber = @phoneNumber" +
-                        "WHERE dbo.client.clientCode= @clientCode;" +
-                        "UPDATE dbo.comp" +
-                        "SET dbo.comp.compTime = @compTime " +
-                        "WHERE dbo.comp.clientCode = @clientCode;" +
-
-                        "UPDATE dbo.currentStatus" +
-                        "SET dbo.currentStatus.readingLevel = @readingLevel, dbo.currentStatus.mathLevel = @mathLevel, dbo.currentStatus.currentServices = @currentServices, dbo.currentStatus.inPride = @inPride, dbo.currentStatus.newFBA = @newFBA, dbo.currentStatus.addService = @addService, dbo.currentStatus.servicesGained = @servicesGained " +
-                        "WHERE dbo.currentStatus.clientCode=  @clientCode; " +
-                        "UPDATE dbo.failed" +
-                        "SET dbo.failed.gradeFailed = @gradeFailed, dbo.failed.whichGrade = @whichGrade, dbo.failed.failedRepeat = @failedRepeat " +
-                        "WHERE dbo.failed.clientCode = @clientCode;" +
-                        "UPDATE dbo.health" +
-                        "SET dbo.health.bakerActed = @bakerActed, dbo.health.marchmanActed = @marchmanActed, dbo.health.asthma = @asthma " +
-                        "WHERE dbo.health.clientCode = @clientCode;" +
-
-                        "UPDATE dbo.household" +
-                        "SET dbo.household.femLed = @femLed, dbo.household.domVio = @domVio, dbo.household.adopted = @adopted, dbo.household.evicted = @evicted, dbo.household.incarParent = @incarParent, dbo.household.publicAssistance = @publicAssistance " +
-                        "WHERE dbo.household.clientCode = @clientCode;" +
-
-                        //"UPDATE dbo.referral" +
-                        //"SET dbo.referral.referralDate = @referralDate, dbo.referral.intakeDate = @intakeDate, dbo.referral.referral1 = @referral1, dbo.referral.referral2 = @referral2, dbo.referral.referral3 = @referral3, dbo.referral.referrerName = @referrerName, dbo.referral.referrerEmail = @referrerEmail " +
-                        //"WHERE dbo.referral.clientCode= @clientCode;" +
-
-                        "UPDATE dbo.suspension" +
-                        "SET dbo.suspension.suspendedThrice = @suspendedThrice, dbo.suspension.numSuspensions = @numSuspensions, dbo.suspension.totalDaysSuspended = @totalDaysSuspended, dbo.suspension.ISS = @ISS, dbo.suspension.OSS = @OSS, dbo.suspension.daysofDiscipline = @daysofDiscipline, dbo.suspension.disciplineSinceIntake = @disciplineSinceIntake " +
-                        "WHERE dbo.suspension.clientCode = @clientCode;" +
-
-                        "UPDATE dbo.iep" +
-                        "SET dbo.iep.IEP = @IEP, dbo.iep.primaryIEP = @primaryIEP, dbo.iep.secondaryIEP = @secondaryIEP, dbo.iep.addIEp = @addIEp" +
-                        "WHERE dbo.iep.clientCode =@clientCode;" +
-
-                         "UPDATE dbo.legal" +
-                        "SET dbo.legal.legalIssues = @legalIssues, dbo.legal.leagalIssues2 = @leagalIssues2, dbo.legal.juvJusticeOutcome" +
-                        "WHERE dbo.legal.clientCode = @clientCode;" +
-
-                        "UPDATE dbo.school" +
-                        "SET dbo.school.grade = @grade, dbo.school.school = @school, dbo.school.SchoolRef = @SchoolRef" +
-                        "WHERE dbo.school.clientCode = @clientCode;" +
-
-                    "UPDATE dbo.refform" +
-                    "SET dbo.refform.email = @email, dbo.refform.referralfname = @referralfname, dbo.refform.referrallname = @referrallname, dbo.refform.dateInput = @dateInput" +
-                     "WHERE dbo.refform.clientCode = @clientCode;";
-
-                    command.Parameters.AddWithValue("@clientCode", info.ClientID);
+                    bullyins.CommandText = "INSERT INTO dbo.bully (bullied,  reported,  reportDate, clientCode) VALUES (@bullied,  @reported, @reportDate, @clientCode);";
+                    bullyins.Parameters.AddWithValue("@clientCode", form.ClientID);
                     //----------------------------------------------Demographics--------------------------------
+                    SqlParameter issu = bullyins.Parameters.AddWithValue("@bullied", form.bullied);
+                    if (form.bullied < 0 || form.bullied > 1)
+                    {
+                        issu.Value = DBNull.Value;
+                    }
+                    SqlParameter arr = bullyins.Parameters.AddWithValue("@reported", form.bullyReport);
+                    if (form.bullyReport != 0 && form.bullyReport != 1)
+                    {
+                        arr.Value = DBNull.Value;
+                    }
+                    SqlParameter dateofbullie = bullyins.Parameters.AddWithValue("@reportDate", form.dateofBully);
+                    if (form.dateofBully == null)
+                    {
+                        dateofbullie.Value = DBNull.Value;
+                    }
+                    link.Open();
+                    bullyins.ExecuteNonQuery();
+                    link.Close();
+                    cnnt.Close();
 
-                    SqlParameter reasa = command.Parameters.AddWithValue("@clientFirst", info.clientFirstName);
-                    if (info.clientFirstName == null)
+                }
+
+
+            }
+            if (cc == 0)
+            {
+                // clientcode is not in the table insert the values
+                SqlConnection cnnt;
+                cnnt = new SqlConnection(cconnectionString);
+                using (SqlConnection link = new SqlConnection(cconnectionString))
+                using (SqlCommand stateclient = new SqlCommand("", link))
+                {
+                    stateclient.CommandText = "INSERT INTO dbo.client (clientLast,  clientFirst,  genderIdentity,  ethnicity,  dob,  phoneNumber, clientCode) VALUES (@clientLast,  @clientFirst, @clientgender, @clientethn, @dob, @phoneNumber, @clientCode); ";
+                    stateclient.Parameters.AddWithValue("@clientCode", form.ClientID);
+                    //----------------------------------------------Demographics--------------------------------
+                    SqlParameter reasa = stateclient.Parameters.AddWithValue("@clientFirst", form.clientFirstName);
+                    if (form.clientFirstName == null)
                     {
                         reasa.Value = DBNull.Value;
                     }
-                    SqlParameter morea = command.Parameters.AddWithValue("@clientLast", info.clientLastName);
-                    if (info.clientLastName == null)
+                    SqlParameter morea = stateclient.Parameters.AddWithValue("@clientLast", form.clientLastName);
+                    if (form.clientLastName == null)
                     {
                         morea.Value = DBNull.Value;
                     }
-                    SqlParameter dates = command.Parameters.AddWithValue("@caregender", info.careGender);
-                    if (info.careGender != "Mother" || info.careGender != "Father" || info.careGender != "mGrandma" || info.careGender != "mGrandpa" || info.careGender != "Other")
-                    {
-                        dates.Value = DBNull.Value;
-                    }
-                    SqlParameter rlna = command.Parameters.AddWithValue("@clientgender", info.clientGender);
-                    if (info.clientGender != "male" || info.clientGender != "female" || info.clientGender != "trans" || info.clientGender != "nonbinaryF" || info.clientGender != "nonbinaryM" || info.clientGender != "neutral")
+                    SqlParameter rlna = stateclient.Parameters.AddWithValue("@clientgender", form.clientGender);
+                    if (form.clientGender != "male" && form.clientGender != "female" && form.clientGender != "trans" && form.clientGender != "nonbinaryF" && form.clientGender != "nonbinaryM" && form.clientGender != "neutral")
                     {
                         rlna.Value = DBNull.Value;
                     }
-                    SqlParameter graw = command.Parameters.AddWithValue("@clientethn", info.clientEthnicity);
-                    if (info.clientEthnicity != "nhWhite" || info.clientEthnicity != "hispanic" || info.clientEthnicity != "natAm" || info.clientEthnicity != "jewish" || info.clientEthnicity != "black" || info.clientEthnicity != "multi" || info.clientEthnicity != "notListed")
+                    SqlParameter graw = stateclient.Parameters.AddWithValue("@clientethn", form.clientEthnicity);
+                    if (form.clientEthnicity != "nhWhite" && form.clientEthnicity != "hispanic" && form.clientEthnicity != "natAm" && form.clientEthnicity != "jewish" && form.clientEthnicity != "black" && form.clientEthnicity != "multi" && form.clientEthnicity != "notListed")
                     {
                         graw.Value = DBNull.Value;
                     }
-                    SqlParameter rfnas = command.Parameters.AddWithValue("@dob", info.clientDOB);/////////////////////-Date
-                    if (info.clientDOB == null)
+                    SqlParameter rfnas = stateclient.Parameters.AddWithValue("@dob", form.clientDOB);/////////////////////-Date
+                    if (form.clientDOB == null)
                     {
                         rfnas.Value = DBNull.Value;
                     }
-                    SqlParameter school = command.Parameters.AddWithValue("@school", info.school);
-                    if (info.school == null)
+                    SqlParameter rlnt = stateclient.Parameters.AddWithValue("@phoneNumber", form.carePhone);
+                    if (form.carePhone == null)
                     {
-                        school.Value = DBNull.Value;
+                        rlnt.Value = DBNull.Value;
                     }
-                    SqlParameter grade = command.Parameters.AddWithValue("@grade", info.currentGrade);
-                    if (info.currentGrade == null)
-                    {
-                        grade.Value = DBNull.Value;
-                    }
-                    var referralnamefix = info.referralSource;
-                    string[] stage1fix = referralnamefix.Split(" ");
+                    link.Open();
+                    stateclient.ExecuteNonQuery();
+                    link.Close();
+                    cnnt.Close();
+                }
 
-                    SqlParameter referralfname = command.Parameters.AddWithValue("@referralfname", stage1fix[0]);
-                    SqlParameter referrallname = command.Parameters.AddWithValue("@referrallname", stage1fix[1]);
-                    if (info.referralSource == null)
+            }
+
+            if (ac == 0)
+            {
+                // clientcode is not in the table insert the values
+                SqlConnection cnnt;
+                cnnt = new SqlConnection(cconnectionString);
+                using (SqlConnection link = new SqlConnection(cconnectionString))
+                using (SqlCommand stateadvo = new SqlCommand("", link))
+                {
+                    stateadvo.CommandText = "INSERT INTO dbo.advocacy (rearrestAdvo, courtAdvo, staffingAdvo, legalAdvo, legalAdvoTaken, clientCode) VALUES (@rearrestAdvo, @courtAdvo, @staffingAdvo,  @legalAdvo, @legalAdvoTaken, @clientCode); ";
+                    stateadvo.Parameters.AddWithValue("@clientCode", form.ClientID);
+                    SqlParameter rearrestAdvoCodeParam = stateadvo.Parameters.AddWithValue("@rearrestAdvo", form.rearrestAdvocacy);
+                    if (form.rearrestAdvocacy != 1 && form.rearrestAdvocacy != 0)
                     {
-                        referralfname.Value = DBNull.Value;
-                        referrallname.Value = DBNull.Value;
+                        rearrestAdvoCodeParam.Value = DBNull.Value;
                     }
-                    SqlParameter gradeFailed = command.Parameters.AddWithValue("@gradeFailed", info.failedGrade);
-                    if (info.failedGrade != 0 || info.failedGrade != 1)
+
+                    SqlParameter courtAdvoCodeParam = stateadvo.Parameters.AddWithValue("@courtAdvo", form.courtAdvocacy);
+                    if (form.courtAdvocacy < 0 || form.courtAdvocacy > 1)
+                    {
+                        courtAdvoCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter staffingAdvoCodeParam = stateadvo.Parameters.AddWithValue("@staffingAdvo", form.staffAdvocacy);
+                    if (form.staffAdvocacy < 0 || form.staffAdvocacy > 1)
+                    {
+                        staffingAdvoCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter legalAdvoCodeParam = stateadvo.Parameters.AddWithValue("@legalAdvo", form.legalAdvocacy);
+                    if (form.legalAdvocacy > 1 || form.legalAdvocacy < 0)
+                    {
+                        legalAdvoCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter legalAdvoTakenCodeParam = stateadvo.Parameters.AddWithValue("@legalAdvoTaken", form.legalAdvoTaken);
+                    if (form.legalAdvoTaken == null)
+                    {
+                        legalAdvoTakenCodeParam.Value = DBNull.Value;
+                    }
+                    link.Open();
+                    stateadvo.ExecuteNonQuery();
+                    link.Close();
+                    cnnt.Close();
+                }
+
+            }
+
+            if (acc == 0)
+            {
+                // clientcode is not in the table insert the values
+                SqlConnection cnnt;
+                cnnt = new SqlConnection(cconnectionString);
+                using (SqlConnection link = new SqlConnection(cconnectionString))
+                using (SqlCommand stateacc = new SqlCommand("", link))
+                {
+                    stateacc.CommandText = "INSERT INTO dbo.accomodations (accomGained,  compServices, ifWhatServices, clientCode) VALUES (@accomGained,  @compServices, @ifWhatServices, @clientCode);";
+                    stateacc.Parameters.AddWithValue("@clientCode", form.ClientID);
+                    SqlParameter rearrestAdvoCodeParam = stateacc.Parameters.AddWithValue("@rearrestAdvo", form.rearrestAdvocacy);
+                    SqlParameter accomGainedCodeParam = stateacc.Parameters.AddWithValue("@accomGained", form.accomGained);
+                    if (form.accomGained != 1 && form.accomGained != 2 && form.accomGained != 0)
+                    {
+                        accomGainedCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter compServicesCodeParam = stateacc.Parameters.AddWithValue("@compServices", form.compService);
+                    if (form.compService != 1 && form.compService != 0)
+                    {
+                        compServicesCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter ifWhatServicesCodeParam = stateacc.Parameters.AddWithValue("@ifWhatServices", form.ifWhatServices);
+                    if (form.ifWhatServices == null)
+                    {
+                        ifWhatServicesCodeParam.Value = DBNull.Value;
+                    }
+                    link.Open();
+                    stateacc.ExecuteNonQuery();
+                    link.Close();
+                    cnnt.Close();
+                }
+
+            }
+            if (asc == 0)
+            {
+                // clientcode is not in the table insert the values
+                SqlConnection cnnt;
+                cnnt = new SqlConnection(cconnectionString);
+                using (SqlConnection link = new SqlConnection(cconnectionString))
+                using (SqlCommand altschoolstate = new SqlCommand("", link))
+                {
+                    altschoolstate.CommandText = "INSERT INTO dbo.altSchool (altSchool, altSchoolName, altSchoolDate, altSchoolTimes, daysOwed, daysSinceIntake, clientCode) VALUES (@altSchool, @altSchoolName, @altSchoolDate, @altSchoolTimes, @daysOwed, @daysSinceIntake, @clientCode);";
+                    altschoolstate.Parameters.AddWithValue("@clientCode", form.ClientID);
+                    SqlParameter altSchool = altschoolstate.Parameters.AddWithValue("@altSchool", form.altSchool);
+                    if (form.altSchool != 0 && form.altSchool != 1)
+                    {
+                        altSchool.Value = DBNull.Value;
+                    }
+                    SqlParameter y = altschoolstate.Parameters.AddWithValue("@altSchoolName", form.altSchoolName);
+                    if (form.altSchoolName == null)
+                    {
+                        y.Value = DBNull.Value;
+                    }
+                    SqlParameter yy = altschoolstate.Parameters.AddWithValue("@altSchoolDate", form.dateOfAlt);
+                    if (form.dateOfAlt == null)
+                    {
+                        yy.Value = DBNull.Value;
+                    }
+                    SqlParameter gin = altschoolstate.Parameters.AddWithValue("@altSchoolTimes", form.timesInAlt);
+                    if (form.timesInAlt < 0 || form.timesInAlt > 3)
+                    {
+                        gin.Value = DBNull.Value;
+                    }
+
+                    SqlParameter tok = altschoolstate.Parameters.AddWithValue("@daysOwed", form.daysOwed);
+                    SqlParameter daysSinceIntake = altschoolstate.Parameters.AddWithValue("@daysSinceIntake", form.daysSinceIntake);
+                    link.Open();
+                    altschoolstate.ExecuteNonQuery();
+                    link.Close();
+                    cnnt.Close();
+                }
+            }
+            if (cgc == 0)
+            {
+                // clientcode is not in the table insert the values
+                SqlConnection cnnt;
+                cnnt = new SqlConnection(cconnectionString);
+                using (SqlConnection link = new SqlConnection(cconnectionString))
+                using (SqlCommand carestate = new SqlCommand("", link))
+                {
+                    carestate.CommandText = "INSERT INTO dbo.caregiver (careLast,  careFirst,  genderIdentity,  ethnicity, clientCode) VALUES (@careLast,  @careFirst, @caregender, @careethnic , @clientCode);";
+                    carestate.Parameters.AddWithValue("@clientCode", form.ClientID);
+                    SqlParameter stat = carestate.Parameters.AddWithValue("@careLast", form.careLastName);
+                    if (form.careLastName == null)
+                    {
+                        stat.Value = DBNull.Value;
+                    }
+                    SqlParameter dateii = carestate.Parameters.AddWithValue("@careFirst", form.careFirstName);
+                    if (form.careFirstName == null)
+                    {
+                        dateii.Value = DBNull.Value;
+                    }
+                    SqlParameter dates = carestate.Parameters.AddWithValue("@caregender", form.careGender);
+                    if (form.careGender != "Mother" && form.careGender != "Father" && form.careGender != "mGrandma" && form.careGender != "mGrandpa" && form.careGender != "Other")
+                    {
+                        dates.Value = DBNull.Value;
+                    }
+                    SqlParameter ema = carestate.Parameters.AddWithValue("@careethnic", form.careEthnicity);
+                    if (form.careEthnicity == null)
+                    {
+                        ema.Value = DBNull.Value;
+                    }
+                    link.Open();
+                    carestate.ExecuteNonQuery();
+                    link.Close();
+                    cnnt.Close();
+                }
+            }
+            if (ccrc == 0)
+            {
+
+                // clientcode is not in the table insert the values
+                SqlConnection cnnt;
+                cnnt = new SqlConnection(cconnectionString);
+                using (SqlConnection link = new SqlConnection(cconnectionString))
+                using (SqlCommand ccrcstate = new SqlCommand("", link))
+                {
+                    ccrcstate.CommandText = "INSERT INTO dbo.ccr (dbo.ccr.levelofService, dbo.ccr.ccrStatus, dbo.ccr.nonEngageReason, dbo.ccr.remedy, dbo.ccr.rearrestRep, dbo.ccr.closureSchool, clientCode) VALUES (@levelofService, @ccrStatus, @nonEngageReason, @remedy, @rearrestRep, @closureSchool, @clientCode);";
+                    ccrcstate.Parameters.AddWithValue("@clientCode", form.ClientID);
+                    SqlParameter morei = ccrcstate.Parameters.AddWithValue("@levelofService", form.levelOfServiceProvided);
+                    if (form.levelOfServiceProvided == null)
+                    {
+                        morei.Value = DBNull.Value;
+                    }
+                    SqlParameter reas = ccrcstate.Parameters.AddWithValue("@ccrStatus", form.caseStatus);
+                    if (form.caseStatus > 2 || form.caseStatus < 0)
+                    {
+                        reas.Value = DBNull.Value;
+                    }
+                    SqlParameter nonEngageReason = ccrcstate.Parameters.AddWithValue("@nonEngageReason", form.nonEngagementReason);
+                    if (form.nonEngagementReason == null)
+                    {
+                        nonEngageReason.Value = DBNull.Value;
+                    }
+
+                    SqlParameter rfn = ccrcstate.Parameters.AddWithValue("@remedy", form.remedyResolution);
+                    if (form.remedyResolution > 1 || form.remedyResolution < 0)
+                    {
+                        rfn.Value = DBNull.Value;
+                    }
+                    SqlParameter rln = ccrcstate.Parameters.AddWithValue("@rearrestRep", form.rearrestWhileRepresented);
+                    if (form.rearrestWhileRepresented > 1 || form.rearrestWhileRepresented < 0)
+                    {
+                        rln.Value = DBNull.Value;
+                    }
+                    SqlParameter gra = ccrcstate.Parameters.AddWithValue("@closureSchool", form.schoolAtClosure);
+                    if (form.schoolAtClosure == null)
+                    {
+                        gra.Value = DBNull.Value;
+                    }
+
+                    link.Open();
+                    ccrcstate.ExecuteNonQuery();
+                    link.Close();
+                    cnnt.Close();
+                }
+
+            }
+
+            if (compch == 0)
+            {
+                SqlConnection cnnt;
+                cnnt = new SqlConnection(cconnectionString);
+                using (SqlConnection link = new SqlConnection(cconnectionString))
+                using (SqlCommand compstate = new SqlCommand("", link))
+                {
+                    compstate.CommandText = "INSERT INTO dbo.comp (compTime, clientCode) VALUES (@compTime, @clientCode);";
+                    compstate.Parameters.AddWithValue("@clientCode", form.ClientID);
+                    SqlParameter comptime = compstate.Parameters.AddWithValue("@compTime", form.compTime);
+                    if (form.compTime == null)
+                    {
+                        comptime.Value = DBNull.Value;
+                    }
+
+                    link.Open();
+                    compstate.ExecuteNonQuery();
+                    link.Close();
+                    cnnt.Close();
+                }
+            }
+            if (currentStatusch == 0)
+            {
+                SqlConnection cnnt;
+                cnnt = new SqlConnection(cconnectionString);
+                using (SqlConnection link = new SqlConnection(cconnectionString))
+                using (SqlCommand currstate = new SqlCommand("", link))
+                {
+                    currstate.CommandText = "INSERT INTO dbo.currentStatus (readingLevel,  mathLevel,  inPride,  newFBA, clientCode) VALUES (@readingLevel,  @mathLevel, @inPride, @newFBA, @clientCode);";
+                    currstate.Parameters.AddWithValue("@clientCode", form.ClientID);
+                    SqlParameter readingLevel = currstate.Parameters.AddWithValue("@readingLevel", form.readingLevel);
+                    if (form.readingLevel == null)
+                    {
+                        readingLevel.Value = DBNull.Value;
+                    }
+                    SqlParameter mathLevel = currstate.Parameters.AddWithValue("@mathLevel", form.mathLevel);
+                    if (form.mathLevel == null)
+                    {
+                        mathLevel.Value = DBNull.Value;
+                    }
+                    SqlParameter inPride = currstate.Parameters.AddWithValue("@inPride", form.inPride);
+                    if (form.inPride < 1 || form.inPride > 0)
+                    {
+                        inPride.Value = DBNull.Value;
+                    }
+                    SqlParameter newFBA = currstate.Parameters.AddWithValue("@newFBA", form.newFBA);
+                    if (form.newFBA < 0 || form.newFBA > 1)
+                    {
+                        newFBA.Value = DBNull.Value;
+                    }
+
+                    link.Open();
+                    currstate.ExecuteNonQuery();
+                    link.Close();
+                    cnnt.Close();
+                }
+            }
+
+            if (fc == 0)
+            {
+                SqlConnection cnnt;
+                cnnt = new SqlConnection(cconnectionString);
+                using (SqlConnection link = new SqlConnection(cconnectionString))
+                using (SqlCommand failedstate = new SqlCommand("", link))
+                {
+                    failedstate.CommandText = "INSERT INTO dbo.failed (gradeFailed,  whichGrade,  failedRepeat, clientCode) VALUES (@gradeFailed,  @whichGrade, @failedRepeat, @clientCode);";
+                    failedstate.Parameters.AddWithValue("@clientCode", form.ClientID);
+                    SqlParameter gradeFailed = failedstate.Parameters.AddWithValue("@gradeFailed", form.failedGrade);
+                    if (form.failedGrade != 0 && form.failedGrade != 1)
                     {
                         gradeFailed.Value = DBNull.Value;
                     }
-                    SqlParameter whichGrade = command.Parameters.AddWithValue("@whichGrade", info.whichGradeFailed);
-                    if (0 > info.whichGradeFailed || info.whichGradeFailed > 12)
+                    SqlParameter whichGrade = failedstate.Parameters.AddWithValue("@whichGrade", form.whichGradeFailed);
+                    if (0 > form.whichGradeFailed || form.whichGradeFailed > 12)
                     {
                         whichGrade.Value = DBNull.Value;
                     }
-                    SqlParameter failedRepeat = command.Parameters.AddWithValue("@failedRepeat", info.failCount);
-                    if (info.failCount >= 0)
+                    SqlParameter failedRepeat = failedstate.Parameters.AddWithValue("@failedRepeat", form.failCount);
+                    if (form.failCount >= 0)
                     { }
                     else
                     {
                         failedRepeat.Value = DBNull.Value;
                     }
-                    SqlParameter bakerActed = command.Parameters.AddWithValue("@bakerActed", info.baker);
-                    if ((info.baker != 0 || info.baker != 1))
+
+                    link.Open();
+                    failedstate.ExecuteNonQuery();
+                    link.Close();
+                    cnnt.Close();
+                }
+            }
+            if (hc == 0)
+            {
+                SqlConnection cnnt;
+                cnnt = new SqlConnection(cconnectionString);
+                using (SqlConnection link = new SqlConnection(cconnectionString))
+                using (SqlCommand healthstate = new SqlCommand("", link))
+                {
+                    healthstate.CommandText = "INSERT INTO dbo.health (bakerActed,  marchmanActed,  asthma, clientCode) VALUES (@bakerActed,  @marchmanActed,  @asthma, @clientCode);";
+                    healthstate.Parameters.AddWithValue("@clientCode", form.ClientID);
+                    SqlParameter bakerActed = healthstate.Parameters.AddWithValue("@bakerActed", form.baker);
+                    if ((form.baker != 0 && form.baker != 1))
                     {
                         bakerActed.Value = DBNull.Value;
                     }
-                    SqlParameter march = command.Parameters.AddWithValue("@marchmanActed", info.marchman);
-                    if ((info.marchman != 0 || info.marchman != 1))
+                    SqlParameter march = healthstate.Parameters.AddWithValue("@marchmanActed", form.marchman);
+                    if ((form.marchman != 0 && form.marchman != 1))
                     {
                         march.Value = DBNull.Value;
                     }
-                    SqlParameter domVio = command.Parameters.AddWithValue("@domVio", info.domVio);
-                    if (info.domVio != 0 || info.domVio != 1)
-                    {
-                        domVio.Value = DBNull.Value;
-                    }
-                    //more
-                    SqlParameter femLed = command.Parameters.AddWithValue("@femLed", info.femHouse);
-                    if (info.femHouse != 0 || info.femHouse != 1)
-                    {
-                        femLed.Value = DBNull.Value;
-                    }
-                    SqlParameter adopted = command.Parameters.AddWithValue("@adopted", info.adopted);
-                    if (info.adopted != 0 || info.adopted != 1)
-                    {
-                        adopted.Value = DBNull.Value;
-                    }
-                    SqlParameter evicted = command.Parameters.AddWithValue("@evicted", info.evicted);
-                    if (info.evicted != 0 || info.evicted != 1)
-                    {
-                        bakerActed.Value = DBNull.Value;
-                    }
-                    SqlParameter incarParent = command.Parameters.AddWithValue("@incarParent", info.incarParent);
-                    if (info.incarParent != 0 || info.incarParent != 1)
-                    {
-                        incarParent.Value = DBNull.Value;
-                    }
-                    SqlParameter asthma = command.Parameters.AddWithValue("@asthma", info.asthma);
-                    if (info.asthma != 0 || info.asthma != 1)
+                    SqlParameter asthma = healthstate.Parameters.AddWithValue("@asthma", form.asthma);
+                    if (form.asthma != 0 && form.asthma != 1)
                     {
                         asthma.Value = DBNull.Value;
                     }
-                    //-----------------------CCR----------------------------------------------
 
-                    SqlParameter accomGainedCodeParam = command.Parameters.AddWithValue("@accomGained", info.accomGained);
-                    if (info.accomGained != 1 && info.accomGained != 2 && info.accomGained != 0)
+                    link.Open();
+                    healthstate.ExecuteNonQuery();
+                    link.Close();
+                    cnnt.Close();
+                }
+            }
+            if (hhc == 0)
+            {
+                SqlConnection cnnt;
+                cnnt = new SqlConnection(cconnectionString);
+                using (SqlConnection link = new SqlConnection(cconnectionString))
+                using (SqlCommand hhstate = new SqlCommand("", link))
+                {
+                    hhstate.CommandText = "INSERT INTO dbo.household (femLed,  domVio,  adopted,  evicted,  incarParent,  publicAssistance, clientCode) VALUES ( @femLed,  @domVio,  @adopted, @evicted, @incarParent, @publicAssistance, @clientCode);";
+                    hhstate.Parameters.AddWithValue("@clientCode", form.ClientID);
+                    SqlParameter femLed = hhstate.Parameters.AddWithValue("@femLed", form.femHouse);
+                    if (form.femHouse != 0 && form.femHouse != 1)
                     {
-                        accomGainedCodeParam.Value = DBNull.Value;
+                        femLed.Value = DBNull.Value;
                     }
-                    SqlParameter compServicesCodeParam = command.Parameters.AddWithValue("@compServices", info.compService);
-                    if (info.compService != 1 && info.compService != 2 && info.compService != 0)
+                    SqlParameter domVio = hhstate.Parameters.AddWithValue("@domVio", form.domVio);
+                    if (form.domVio != 0 && form.domVio != 1)
                     {
-                        compServicesCodeParam.Value = DBNull.Value;
+                        domVio.Value = DBNull.Value;
                     }
-                    SqlParameter ifWhatServicesCodeParam = command.Parameters.AddWithValue("@ifWhatServices", info.ifWhatServices);
-                    if (info.ifWhatServices == null)
+                    SqlParameter adopted = hhstate.Parameters.AddWithValue("@adopted", form.adopted);
+                    if (form.adopted != 0 && form.adopted != 1)
                     {
-                        ifWhatServicesCodeParam.Value = DBNull.Value;
+                        adopted.Value = DBNull.Value;
                     }
-                    SqlParameter rearrestAdvoCodeParam = command.Parameters.AddWithValue("@rearrestAdvo", info.rearrestAdvocacy);
-                    if (info.rearrestAdvocacy != 1 && info.rearrestAdvocacy != 2 && info.rearrestAdvocacy != 0)
+                    SqlParameter evicted = hhstate.Parameters.AddWithValue("@evicted", form.evicted);
+                    if (form.evicted != 0 && form.evicted != 1)
                     {
-                        rearrestAdvoCodeParam.Value = DBNull.Value;
+                        evicted.Value = DBNull.Value;
                     }
-                    SqlParameter courtAdvoCodeParam = command.Parameters.AddWithValue("@courtAdvo p", info.courtAdvocacy);
-                    if (info.courtAdvocacy == null)
+                    SqlParameter incarParent = hhstate.Parameters.AddWithValue("@incarParent", form.incarParent);
+                    if (form.incarParent != 0 && form.incarParent != 1)
                     {
-                        courtAdvoCodeParam.Value = DBNull.Value;
+                        incarParent.Value = DBNull.Value;
                     }
-                    SqlParameter staffingAdvoCodeParam = command.Parameters.AddWithValue("@staffingAdvo", info.staffAdvocacy);
-                    if (info.staffAdvocacy == null)
-                    {
-                        staffingAdvoCodeParam.Value = DBNull.Value;
-                    }
-                    SqlParameter legalAdvoCodeParam = command.Parameters.AddWithValue("@legalAdvo", info.legalAdvocacy);
-                    if (info.legalAdvocacy == null)
-                    {
-                        legalAdvoCodeParam.Value = DBNull.Value;
-                    }
-                    SqlParameter legalAdvoTakenCodeParam = command.Parameters.AddWithValue("@legalAdvoTaken", info.legalAdvoTaken);
-                    if (info.legalAdvoTaken == null)
-                    {
-                        legalAdvoTakenCodeParam.Value = DBNull.Value;
-                    }
-                    SqlParameter altSchool = command.Parameters.AddWithValue("@altSchool", info.altSchool);
-                    if (info.altSchool == null)
-                    {
-                        altSchool.Value = DBNull.Value;
-                    }
-                    SqlParameter y = command.Parameters.AddWithValue("@altSchoolName", info.altSchoolName);
-                    if (info.altSchoolName == null)
-                    {
-                        y.Value = DBNull.Value;
-                    }
-                    SqlParameter yy = command.Parameters.AddWithValue("@altSchoolDate", info.dateOfAlt);
-                    if (info.dateOfAlt == null)
-                    {
-                        yy.Value = DBNull.Value;
-                    }
-                    SqlParameter gin = command.Parameters.AddWithValue("@altSchoolTimes", info.timesInAlt);
-                    if (info.timesInAlt == null)
-                    {
-                        gin.Value = DBNull.Value;
-                    }
-                    SqlParameter tok = command.Parameters.AddWithValue("@daysOwed", info.daysOwed);
-                    if (info.daysOwed != 0 && info.daysOwed != 1 && info.daysOwed != 2)
-                    {
-                        tok.Value = DBNull.Value;
-                    }
-                    SqlParameter issu = command.Parameters.AddWithValue("@bullied", info.bullied);
-                    if (info.bullied == null)
-                    {
-                        issu.Value = DBNull.Value;
-                    }
-                    SqlParameter arr = command.Parameters.AddWithValue("@reported", info.bullyReport);
-                    if (info.bullyReport != 0 && info.bullyReport != 1 && info.bullyReport != 2)
-                    {
-                        arr.Value = DBNull.Value;
-                    }
-                    SqlParameter sc = command.Parameters.AddWithValue("@reportDate", info.dateofBully);
-                    if (info.dateofBully == null)
-                    {
-                        sc.Value = DBNull.Value;
-                    }
-                    SqlParameter stat = command.Parameters.AddWithValue("@careLast", info.careLastName);
-                    if (info.careLastName == null)
-                    {
-                        stat.Value = DBNull.Value;
-                    }
-                    SqlParameter dateii = command.Parameters.AddWithValue("@careFirst", info.careFirstName);
-                    if (info.careFirstName == null)
-                    {
-                        dateii.Value = DBNull.Value;
-                    }
-
-                    SqlParameter ema = command.Parameters.AddWithValue("@careethnic", info.careEthnicity);
-                    if (info.careEthnicity == null)
-                    {
-                        ema.Value = DBNull.Value;
-                    }
-
-                    SqlParameter morei = command.Parameters.AddWithValue("@levelofService", info.levelOfServiceProvided);
-                    if (info.levelOfServiceProvided == null)
-                    {
-                        morei.Value = DBNull.Value;
-                    }
-                    SqlParameter reas = command.Parameters.AddWithValue("@ccrStatus", info.caseStatus);
-                    if (info.caseStatus == null)
-                    {
-                        reas.Value = DBNull.Value;
-                    }
-                    SqlParameter rfn = command.Parameters.AddWithValue("@remedy", info.remedyResolution);
-                    if (info.remedyResolution == null)
-                    {
-                        rfn.Value = DBNull.Value;
-                    }
-                    SqlParameter rln = command.Parameters.AddWithValue("@rearrestRep", info.rearrestWhileRepresented);
-                    if (info.rearrestWhileRepresented == null)
-                    {
-                        rln.Value = DBNull.Value;
-                    }
-                    SqlParameter gra = command.Parameters.AddWithValue("@closureSchool", info.schoolAtClosure);
-                    if (info.schoolAtClosure == null)
-                    {
-                        gra.Value = DBNull.Value;
-                    }
-
-
-                    SqlParameter rlnt = command.Parameters.AddWithValue("@phoneNumber", info.carePhone);
-                    if (info.carePhone == null)
-                    {
-                        rlnt.Value = DBNull.Value;
-                    }
-                    SqlParameter rfnacomps = command.Parameters.AddWithValue("@compServices", info.compService);
-                    if (info.compService == null)
-                    {
-                        rfnacomps.Value = DBNull.Value;
-                    }
-                    //SqlParameter rlntcomp = command.Parameters.AddWithValue("@compTime", info.comptime);
-                    //if (info.carePhone == null)
-                    //{
-                    //  rlntcomp.Value = DBNull.Value;
-                    //}
-                    SqlParameter readingLevel = command.Parameters.AddWithValue("@readingLevel", info.readingLevel);
-                    if (info.readingLevel == null)
-                    {
-                        readingLevel.Value = DBNull.Value;
-                    }
-                    SqlParameter mathLevel = command.Parameters.AddWithValue("@mathLevel", info.mathLevel);
-                    if (info.mathLevel == null)
-                    {
-                        mathLevel.Value = DBNull.Value;
-                    }
-                    SqlParameter currentServices = command.Parameters.AddWithValue("@currentServices", info.ifWhatServices);
-                    if (info.ifWhatServices == null)
-                    {
-                        currentServices.Value = DBNull.Value;
-                    }
-                    SqlParameter inPride = command.Parameters.AddWithValue("@inPride", info.inPride);
-                    if (info.inPride == null)
-                    {
-                        inPride.Value = DBNull.Value;
-                    }
-                    SqlParameter newFBA = command.Parameters.AddWithValue("@newFBA", info.newFBA);
-                    if (info.newFBA == null)
-                    {
-                        newFBA.Value = DBNull.Value;
-                    }
-                    //SqlParameter addService = command.Parameters.AddWithValue("@addService", info.addserv);
-                    //if (info.carePhone == null)
-                    // {
-                    //    addService.Value = DBNull.Value;
-                    // }
-                    //SqlParameter servicesGained = command.Parameters.AddWithValue("@servicesGained", info.gain);
-                    //if (info.compService == null)
-                    //{
-                    //  servicesGained.Value = DBNull.Value;
-                    //}
-
-
-
-                    SqlParameter publicAssistance = command.Parameters.AddWithValue("@publicAssistance", info.publicAssistance);
-                    if (info.publicAssistance == null)
+                    SqlParameter publicAssistance = hhstate.Parameters.AddWithValue("@publicAssistance", form.publicAssistance);
+                    if (form.publicAssistance != 0 && form.publicAssistance != 1)
                     {
                         publicAssistance.Value = DBNull.Value;
                     }
-                    //more more
-                    SqlParameter referralDate = command.Parameters.AddWithValue("@referralDate", info.referralDate);
-                    if (info.referralDate == null)
-                    {
-                        referralDate.Value = DBNull.Value;
-                    }
 
-                    SqlParameter referrerEmail = command.Parameters.AddWithValue("@referrerEmail", info.emailOfFirstReferralSource);
-                    if (info.emailOfFirstReferralSource == null)
-                    {
-                        referrerEmail.Value = DBNull.Value;
-                    }
-                    //suspended
-                    SqlParameter suspendedThrice = command.Parameters.AddWithValue("@suspendedThrice", info.suspended);
-                    if (info.suspended == null)
+                    link.Open();
+                    hhstate.ExecuteNonQuery();
+                    link.Close();
+                    cnnt.Close();
+                }
+            }
+            if (ssc == 0)
+            {
+                SqlConnection cnnt;
+                cnnt = new SqlConnection(cconnectionString);
+                using (SqlConnection link = new SqlConnection(cconnectionString))
+                using (SqlCommand susstate = new SqlCommand("", link))
+                {
+                    susstate.CommandText = "INSERT INTO dbo.suspension (suspendedThrice,  numSuspensions,  totalDaysSuspended,  ISS,  OSS, clientCode) VALUES ( @suspendedThrice, @numSuspensions, @totalDaysSuspended, @ISS,  @OSS, @clientCode);";
+                    susstate.Parameters.AddWithValue("@clientCode", form.ClientID);
+                    SqlParameter suspendedThrice = susstate.Parameters.AddWithValue("@suspendedThrice", form.suspended);
+                    if (form.suspended != 1 && form.suspended != 0)
                     {
                         suspendedThrice.Value = DBNull.Value;
                     }
-                    SqlParameter numSuspensions = command.Parameters.AddWithValue("@numSuspensions", info.suspendCount);
-                    if (info.suspendCount == null)
+                    SqlParameter numSuspensions = susstate.Parameters.AddWithValue("@numSuspensions", form.suspendCount);
+                    if (form.suspendCount < 4 || form.suspended > 10)
                     {
                         numSuspensions.Value = DBNull.Value;
                     }
-                    //WRONG
-                    SqlParameter totalDaysSuspended = command.Parameters.AddWithValue("@totalDaysSuspended", info.daysOwed);
-                    if (info.daysOwed == null)
-                    {
-                        totalDaysSuspended.Value = DBNull.Value;
-                    }
-                    SqlParameter ISS = command.Parameters.AddWithValue("@ISS", info.iss);
-                    if (info.iss == null)
-                    {
-                        ISS.Value = DBNull.Value;
-                    }
-                    SqlParameter OSS = command.Parameters.AddWithValue("@OSS", info.oss);
-                    if (info.oss == null)
-                    {
-                        OSS.Value = DBNull.Value;
-                    }
-                    SqlParameter daysofDiscipline = command.Parameters.AddWithValue("@daysofDiscipline", info.daysOwed);
-                    if (info.daysOwed == null)
-                    {
-                        daysofDiscipline.Value = DBNull.Value;
-                    }
-                    //SqlParameter disciplineSinceIntake = command.Parameters.AddWithValue("@disciplineSinceIntake", info.emailOfFirstReferralSource);
-                    //if (info.sin == null)
-                    //{
-                    //  disciplineSinceIntake.Value = DBNull.Value;
-                    //}
-                    SqlParameter IEP = command.Parameters.AddWithValue("@IEP", info.iep);
-                    if (info.iep == null)
+                    SqlParameter totalDaysSuspended = susstate.Parameters.AddWithValue("@totalDaysSuspended", (form.iss + form.oss));
+                    SqlParameter ISS = susstate.Parameters.AddWithValue("@ISS", form.iss);
+
+                    SqlParameter OSS = susstate.Parameters.AddWithValue("@OSS", form.oss);
+
+                    link.Open();
+                    susstate.ExecuteNonQuery();
+                    link.Close();
+                    cnnt.Close();
+                }
+            }
+            if (iepc == 0)
+            {
+                SqlConnection cnnt;
+                cnnt = new SqlConnection(cconnectionString);
+                using (SqlConnection link = new SqlConnection(cconnectionString))
+                using (SqlCommand iepstate = new SqlCommand("", link))
+                {
+                    iepstate.CommandText = "INSERT INTO dbo.iep (IEP,  primaryIEP,  secondaryIEP, clientCode) VALUES ( @IEP,  @primaryIEP,  @secondaryIEP , @clientCode);";
+                    iepstate.Parameters.AddWithValue("@clientCode", form.ClientID);
+                    SqlParameter IEP = iepstate.Parameters.AddWithValue("@IEP", form.iep);
+                    if (form.iep < 0 || form.iep > 1)
                     {
                         IEP.Value = DBNull.Value;
                     }
-                    SqlParameter primaryIEP = command.Parameters.AddWithValue("@primaryIEP", info.iepplan1);
-                    if (info.iepplan1 == null)
+                    SqlParameter primaryIEP = iepstate.Parameters.AddWithValue("@primaryIEP", form.iepplan1);
+                    if (form.iepplan1 == null)
                     {
                         primaryIEP.Value = DBNull.Value;
                     }
-                    SqlParameter secondaryIEP = command.Parameters.AddWithValue("@secondaryIEP", info.iepplan2);
-                    if (info.iepplan2 == null)
+                    SqlParameter secondaryIEP = iepstate.Parameters.AddWithValue("@secondaryIEP", form.iepplan2);
+                    if (form.iepplan2 == null)
                     {
                         secondaryIEP.Value = DBNull.Value;
                     }
-                    //SqlParameter addIEp = command.Parameters.AddWithValue("@addIEP", info.daysOwed);
-                    //  if (info.iep == null)
-                    // {
-                    //      addIEp.Value = DBNull.Value;
-                    //   }
-                    SqlParameter legalIssues = command.Parameters.AddWithValue("@legalIssues", info.firstLegal);
-                    if (info.firstLegal == null)
+
+                    link.Open();
+                    iepstate.ExecuteNonQuery();
+                    link.Close();
+                    cnnt.Close();
+                }
+            }
+            if (lc == 0)
+            {
+                // clientcode is not in the table insert the values
+                SqlConnection cnnt;
+                cnnt = new SqlConnection(cconnectionString);
+                using (SqlConnection link = new SqlConnection(cconnectionString))
+                using (SqlCommand statelegal = new SqlCommand("", link))
+                {
+                    statelegal.CommandText = "INSERT INTO dbo.legal (legalIssues, leagalIssues2, juvJusticeOutcome, clientCode) VALUES (@legalIssues,  @leagalIssues2,  @juvJusticeOutcome, @clientCode);";
+                    statelegal.Parameters.AddWithValue("@clientCode", form.ClientID);
+                    SqlParameter legalIssues = statelegal.Parameters.AddWithValue("@legalIssues", form.firstLegal);
+                    if (form.firstLegal == null)
                     {
                         legalIssues.Value = DBNull.Value;
                     }
-                    SqlParameter leagalIssues2 = command.Parameters.AddWithValue("@leagalIssues2", info.secondLegal);
-                    if (info.secondLegal == null)
+                    SqlParameter leagalIssues2 = statelegal.Parameters.AddWithValue("@leagalIssues2", form.secondLegal);
+                    if (form.secondLegal == null)
                     {
                         leagalIssues2.Value = DBNull.Value;
                     }
 
+                    SqlParameter justiceOutcome = statelegal.Parameters.AddWithValue("@juvJusticeOutcome", form.justiceOutcome);
+                    if (form.justiceOutcome == null)
+                    {
+                        justiceOutcome.Value = DBNull.Value;
+                    }
+
+                    link.Open();
+                    statelegal.ExecuteNonQuery();
+                    link.Close();
+                    cnnt.Close();
+                }
+
+            }
+            if (sc == 0)
+            {
+                SqlConnection cnnt;
+                cnnt = new SqlConnection(cconnectionString);
+                using (SqlConnection link = new SqlConnection(cconnectionString))
+                using (SqlCommand schoolstate = new SqlCommand("", link))
+                {
+                    schoolstate.CommandText = "INSERT INTO dbo.school (grade,  school,  SchoolRef, clientCode) VALUES (@grade,  @school,  @SchoolRef, @clientCode);";
+                    schoolstate.Parameters.AddWithValue("@clientCode", form.ClientID);
+                    SqlParameter grade = schoolstate.Parameters.AddWithValue("@grade", form.currentGrade);
+                    if (form.currentGrade == null)
+                    {
+                        grade.Value = DBNull.Value;
+                    }
+                    SqlParameter school = schoolstate.Parameters.AddWithValue("@school", form.school);
+                    if (form.school == null)
+                    {
+                        school.Value = DBNull.Value;
+                    }
+                    SqlParameter schoolRef = schoolstate.Parameters.AddWithValue("@schoolRef", form.schoolRef);
+                    if (form.schoolRef == null)
+                    {
+                        schoolRef.Value = DBNull.Value;
+                    }
+
+                    link.Open();
+                    schoolstate.ExecuteNonQuery();
+                    link.Close();
+                    cnnt.Close();
+                }
+            }
+            cnnn.Close();
+            {
+
+
+                SqlConnection cnn;
+                cnn = new SqlConnection(connectionString);
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlCommand command = new SqlCommand("", connection))
+                {
+
+                    command.CommandText =
+                         "UPDATE dbo.bully " +
+                        "SET bullied = @bullied,  reported = @reported,  reportDate = @reportDate WHERE clientCode = @clientCode;" +
+
+                              "UPDATE dbo.client " +
+                    "SET clientLast = @clientLast,  clientFirst = @clientFirst,  genderIdentity = @clientgender,  ethnicity = @clientethn,  dob = @dob,  phoneNumber = @phoneNumber " +
+                    "WHERE  clientCode= @clientCode;" +
+
+                    "UPDATE dbo.advocacy " +
+                     "SET rearrestAdvo = @rearrestAdvo, courtAdvo = @courtAdvo, staffingAdvo = @staffingAdvo, legalAdvo = @legalAdvo, legalAdvoTaken = @legalAdvoTaken " +
+                   "WHERE clientCode = @clientCode; " +
+
+                    "UPDATE dbo.accomodations" +
+                    " SET accomGained = @accomGained,  compServices = @compServices ,ifWhatServices = @ifWhatServices " +
+                    " WHERE  clientCode = @clientCode; " +
+
+                    "UPDATE dbo.altSchool" +
+                    " SET altSchool = @altSchool, altSchoolName = @altSchoolName, altSchoolDate = @altSchoolDate, altSchoolTimes = @altSchoolTimes, daysOwed = @daysOwed, daysSinceIntake = @daysSinceIntake" +
+                    " WHERE  clientCode = @clientCode; " +
+
+             "UPDATE dbo.caregiver" +
+                  " SET  careLast = @careLast,  careFirst = @careFirst,  genderIdentity = @caregender,  ethnicity = @careethnic " +
+                    " WHERE  clientCode= @clientCode; " +
+
+                   "UPDATE dbo.ccr" +
+                    " SET dbo.ccr.levelofService = @levelofService, dbo.ccr.ccrStatus = @ccrStatus, dbo.ccr.nonEngageReason = @nonEngageReason, dbo.ccr.remedy = @remedy, dbo.ccr.rearrestRep = @rearrestRep, dbo.ccr.closureSchool = @closureSchool " +
+                   " WHERE dbo.ccr.clientCode = @clientCode; " +
+
+                    "UPDATE dbo.comp" +
+                    " SET compTime = @compTime " +
+                    " WHERE  clientCode = @clientCode; " +
+
+                    "UPDATE dbo.currentStatus" +
+                  " SET readingLevel = @readingLevel,  mathLevel = @mathLevel,  inPride = @inPride,  newFBA = @newFBA " +
+                  " WHERE  clientCode=  @clientCode; " +
+
+                    "UPDATE dbo.failed" +
+                    " SET gradeFailed = @gradeFailed,  whichGrade = @whichGrade,  failedRepeat = @failedRepeat " +
+                    " WHERE  clientCode = @clientCode; " +
+
+                    "UPDATE dbo.health" +
+                    " SET bakerActed = @bakerActed,  marchmanActed = @marchmanActed,  asthma = @asthma " +
+                    " WHERE  clientCode = @clientCode; " +
+
+                    " UPDATE dbo.household" +
+                    " SET femLed = @femLed,  domVio = @domVio,  adopted = @adopted,  evicted = @evicted,  incarParent = @incarParent,  publicAssistance = @publicAssistance " +
+                     " WHERE  clientCode = @clientCode; " +
+
+                    " UPDATE dbo.suspension" +
+                    " SET  suspendedThrice = @suspendedThrice,  numSuspensions = @numSuspensions,  totalDaysSuspended = @totalDaysSuspended,  ISS = @ISS,  OSS = @OSS " +
+                    " WHERE  clientCode = @clientCode; " +
+
+                    " UPDATE dbo.iep" +
+                    " SET IEP = @IEP,  primaryIEP = @primaryIEP,  secondaryIEP = @secondaryIEP " +
+                    " WHERE  clientCode = @clientCode; " +
+
+                    " UPDATE dbo.legal" +
+                   " SET  legalIssues = @legalIssues,  leagalIssues2 = @leagalIssues2,  juvJusticeOutcome =@juvJusticeOutcome" +
+                   " WHERE  clientCode = @clientCode; " +
+
+                   " UPDATE dbo.school" +
+                    " SET  grade = @grade,  school = @school,  SchoolRef = @SchoolRef" +
+                   " WHERE  clientCode = @clientCode; " +
+
+               " UPDATE dbo.refform" +
+               " SET email = @email,  referralfname = @referralfname,  referrallname = @referrallname,  dateInput = @dateInput, fname = @fname, lname =@lname, dob= @dob, currStatus =@currStatus " +
+                " WHERE  clientCode = @clientCode; ";
+
+
+                    command.Parameters.AddWithValue("@clientCode", form.ClientID);
+                    //----------------------------------------------Demographics--------------------------------
+                    SqlParameter issu = command.Parameters.AddWithValue("@bullied", form.bullied);
+                    if (form.bullied < 0 || form.bullied > 1)
+                    {
+                        issu.Value = DBNull.Value;
+                    }
+                    SqlParameter arr = command.Parameters.AddWithValue("@reported", form.bullyReport);
+                    if (form.bullyReport != 0 && form.bullyReport != 1)
+                    {
+                        arr.Value = DBNull.Value;
+                    }
+                    SqlParameter dateofbullie = command.Parameters.AddWithValue("@reportDate", form.dateofBully);
+                    if (form.dateofBully == null)
+                    {
+                        dateofbullie.Value = DBNull.Value;
+                    }
+                    SqlParameter reasa = command.Parameters.AddWithValue("@clientFirst", form.clientFirstName);
+                    if (form.clientFirstName == null)
+                    {
+                        reasa.Value = DBNull.Value;
+                    }
+                    SqlParameter morea = command.Parameters.AddWithValue("@clientLast", form.clientLastName);
+                    if (form.clientLastName == null)
+                    {
+                        morea.Value = DBNull.Value;
+                    }
+                    SqlParameter rlna = command.Parameters.AddWithValue("@clientgender", form.clientGender);
+                    if (form.clientGender != "male" && form.clientGender != "female" && form.clientGender != "trans" && form.clientGender != "nonbinaryF" && form.clientGender != "nonbinaryM" && form.clientGender != "neutral")
+                    {
+                        rlna.Value = DBNull.Value;
+                    }
+                    SqlParameter graw = command.Parameters.AddWithValue("@clientethn", form.clientEthnicity);
+                    if (form.clientEthnicity != "nhWhite" && form.clientEthnicity != "hispanic" && form.clientEthnicity != "natAm" && form.clientEthnicity != "jewish" && form.clientEthnicity != "black" && form.clientEthnicity != "multi" && form.clientEthnicity != "notListed")
+                    {
+                        graw.Value = DBNull.Value;
+                    }
+                    SqlParameter rfnas = command.Parameters.AddWithValue("@dob", form.clientDOB);/////////////////////-Date
+                    if (form.clientDOB == null)
+                    {
+                        rfnas.Value = DBNull.Value;
+                    }
+                    SqlParameter rlnt = command.Parameters.AddWithValue("@phoneNumber", form.carePhone);
+                    if (form.carePhone == null)
+                    {
+                        rlnt.Value = DBNull.Value;
+                    }
+                    SqlParameter rearrestAdvoCodeParam = command.Parameters.AddWithValue("@rearrestAdvo", form.rearrestAdvocacy);
+                    if (form.rearrestAdvocacy != 1 && form.rearrestAdvocacy != 0)
+                    {
+                        rearrestAdvoCodeParam.Value = DBNull.Value;
+                    }
+
+                    SqlParameter courtAdvoCodeParam = command.Parameters.AddWithValue("@courtAdvo", form.courtAdvocacy);
+                    if (form.courtAdvocacy < 0 || form.courtAdvocacy > 1)
+                    {
+                        courtAdvoCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter staffingAdvoCodeParam = command.Parameters.AddWithValue("@staffingAdvo", form.staffAdvocacy);
+                    if (form.staffAdvocacy < 0 || form.staffAdvocacy > 1)
+                    {
+                        staffingAdvoCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter legalAdvoCodeParam = command.Parameters.AddWithValue("@legalAdvo", form.legalAdvocacy);
+                    if (form.legalAdvocacy > 1 || form.legalAdvocacy < 0)
+                    {
+                        legalAdvoCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter legalAdvoTakenCodeParam = command.Parameters.AddWithValue("@legalAdvoTaken", form.legalAdvoTaken);
+                    if (form.legalAdvoTaken == null)
+                    {
+                        legalAdvoTakenCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter accomGainedCodeParam = command.Parameters.AddWithValue("@accomGained", form.accomGained);
+                    if (form.accomGained != 1 && form.accomGained != 2 && form.accomGained != 0)
+                    {
+                        accomGainedCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter compServicesCodeParam = command.Parameters.AddWithValue("@compServices", form.compService);
+                    if (form.compService != 1 && form.compService != 0)
+                    {
+                        compServicesCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter ifWhatServicesCodeParam = command.Parameters.AddWithValue("@ifWhatServices", form.ifWhatServices);
+                    if (form.ifWhatServices == null)
+                    {
+                        ifWhatServicesCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter altSchool = command.Parameters.AddWithValue("@altSchool", form.altSchool);
+                    if (form.altSchool != 0 && form.altSchool != 1)
+                    {
+                        altSchool.Value = DBNull.Value;
+                    }
+                    SqlParameter y = command.Parameters.AddWithValue("@altSchoolName", form.altSchoolName);
+                    if (form.altSchoolName == null)
+                    {
+                        y.Value = DBNull.Value;
+                    }
+                    SqlParameter yy = command.Parameters.AddWithValue("@altSchoolDate", form.dateOfAlt);
+                    if (form.dateOfAlt == null)
+                    {
+                        yy.Value = DBNull.Value;
+                    }
+                    SqlParameter gin = command.Parameters.AddWithValue("@altSchoolTimes", form.timesInAlt);
+                    if (form.timesInAlt < 0 || form.timesInAlt > 3)
+                    {
+                        gin.Value = DBNull.Value;
+                    }
+
+                    SqlParameter tok = command.Parameters.AddWithValue("@daysOwed", form.daysOwed);
+                    SqlParameter daysSinceIntake = command.Parameters.AddWithValue("@daysSinceIntake", form.daysSinceIntake);
+                    SqlParameter stat = command.Parameters.AddWithValue("@careLast", form.careLastName);
+                    if (form.careLastName == null)
+                    {
+                        stat.Value = DBNull.Value;
+                    }
+                    SqlParameter dateii = command.Parameters.AddWithValue("@careFirst", form.careFirstName);
+                    if (form.careFirstName == null)
+                    {
+                        dateii.Value = DBNull.Value;
+                    }
+                    SqlParameter dates = command.Parameters.AddWithValue("@caregender", form.careGender);
+                    if (form.careGender != "Mother" && form.careGender != "Father" && form.careGender != "mGrandma" && form.careGender != "mGrandpa" && form.careGender != "Other")
+                    {
+                        dates.Value = DBNull.Value;
+                    }
+                    SqlParameter ema = command.Parameters.AddWithValue("@careethnic", form.careEthnicity);
+                    if (form.careEthnicity == null)
+                    {
+                        ema.Value = DBNull.Value;
+                    }
+                    SqlParameter morei = command.Parameters.AddWithValue("@levelofService", form.levelOfServiceProvided);
+                    if (form.levelOfServiceProvided == null)
+                    {
+                        morei.Value = DBNull.Value;
+                    }
+                    SqlParameter reas = command.Parameters.AddWithValue("@ccrStatus", form.caseStatus);
+                    if (form.caseStatus > 2 || form.caseStatus < 0)
+                    {
+                        reas.Value = DBNull.Value;
+                    }
+                    SqlParameter nonEngageReason = command.Parameters.AddWithValue("@nonEngageReason", form.nonEngagementReason);
+                    if (form.nonEngagementReason == null)
+                    {
+                        nonEngageReason.Value = DBNull.Value;
+                    }
+
+                    SqlParameter rfn = command.Parameters.AddWithValue("@remedy", form.remedyResolution);
+                    if (form.remedyResolution > 1 || form.remedyResolution < 0)
+                    {
+                        rfn.Value = DBNull.Value;
+                    }
+                    SqlParameter rln = command.Parameters.AddWithValue("@rearrestRep", form.rearrestWhileRepresented);
+                    if (form.rearrestWhileRepresented > 1 || form.rearrestWhileRepresented < 0)
+                    {
+                        rln.Value = DBNull.Value;
+                    }
+                    SqlParameter gra = command.Parameters.AddWithValue("@closureSchool", form.schoolAtClosure);
+                    if (form.schoolAtClosure == null)
+                    {
+                        gra.Value = DBNull.Value;
+                    }
+
+                    SqlParameter comptime = command.Parameters.AddWithValue("@compTime", form.compTime);
+                    if (form.compTime == null)
+                    {
+                        comptime.Value = DBNull.Value;
+                    }
+                    SqlParameter readingLevel = command.Parameters.AddWithValue("@readingLevel", form.readingLevel);
+                    if (form.readingLevel == null)
+                    {
+                        readingLevel.Value = DBNull.Value;
+                    }
+                    SqlParameter mathLevel = command.Parameters.AddWithValue("@mathLevel", form.mathLevel);
+                    if (form.mathLevel == null)
+                    {
+                        mathLevel.Value = DBNull.Value;
+                    }
+                    SqlParameter inPride = command.Parameters.AddWithValue("@inPride", form.inPride);
+                    if (form.inPride < 1 || form.inPride > 0)
+                    {
+                        inPride.Value = DBNull.Value;
+                    }
+                    SqlParameter newFBA = command.Parameters.AddWithValue("@newFBA", form.newFBA);
+                    if (form.newFBA < 0 || form.newFBA > 1)
+                    {
+                        newFBA.Value = DBNull.Value;
+                    }
+                    SqlParameter gradeFailed = command.Parameters.AddWithValue("@gradeFailed", form.failedGrade);
+                    if (form.failedGrade != 0 && form.failedGrade != 1)
+                    {
+                        gradeFailed.Value = DBNull.Value;
+                    }
+                    SqlParameter whichGrade = command.Parameters.AddWithValue("@whichGrade", form.whichGradeFailed);
+                    if (0 > form.whichGradeFailed || form.whichGradeFailed > 12)
+                    {
+                        whichGrade.Value = DBNull.Value;
+                    }
+                    SqlParameter failedRepeat = command.Parameters.AddWithValue("@failedRepeat", form.failCount);
+                    if (form.failCount >= 0)
+                    { }
+                    else
+                    {
+                        failedRepeat.Value = DBNull.Value;
+                    }
+                    SqlParameter bakerActed = command.Parameters.AddWithValue("@bakerActed", form.baker);
+                    if ((form.baker != 0 && form.baker != 1))
+                    {
+                        bakerActed.Value = DBNull.Value;
+                    }
+                    SqlParameter march = command.Parameters.AddWithValue("@marchmanActed", form.marchman);
+                    if ((form.marchman != 0 && form.marchman != 1))
+                    {
+                        march.Value = DBNull.Value;
+                    }
+                    SqlParameter asthma = command.Parameters.AddWithValue("@asthma", form.asthma);
+                    if (form.asthma != 0 && form.asthma != 1)
+                    {
+                        asthma.Value = DBNull.Value;
+                    }
+
+                    SqlParameter femLed = command.Parameters.AddWithValue("@femLed", form.femHouse);
+                    if (form.femHouse != 0 && form.femHouse != 1)
+                    {
+                        femLed.Value = DBNull.Value;
+                    }
+                    SqlParameter domVio = command.Parameters.AddWithValue("@domVio", form.domVio);
+                    if (form.domVio != 0 && form.domVio != 1)
+                    {
+                        domVio.Value = DBNull.Value;
+                    }
+                    SqlParameter adopted = command.Parameters.AddWithValue("@adopted", form.adopted);
+                    if (form.adopted != 0 && form.adopted != 1)
+                    {
+                        adopted.Value = DBNull.Value;
+                    }
+                    SqlParameter evicted = command.Parameters.AddWithValue("@evicted", form.evicted);
+                    if (form.evicted != 0 && form.evicted != 1)
+                    {
+                        evicted.Value = DBNull.Value;
+                    }
+                    SqlParameter incarParent = command.Parameters.AddWithValue("@incarParent", form.incarParent);
+                    if (form.incarParent != 0 && form.incarParent != 1)
+                    {
+                        incarParent.Value = DBNull.Value;
+                    }
+                    SqlParameter publicAssistance = command.Parameters.AddWithValue("@publicAssistance", form.publicAssistance);
+                    if (form.publicAssistance != 0 && form.publicAssistance != 1)
+                    {
+                        publicAssistance.Value = DBNull.Value;
+                    }
+                    SqlParameter suspendedThrice = command.Parameters.AddWithValue("@suspendedThrice", form.suspended);
+                    if (form.suspended != 1 && form.suspended != 0)
+                    {
+                        suspendedThrice.Value = DBNull.Value;
+                    }
+                    SqlParameter numSuspensions = command.Parameters.AddWithValue("@numSuspensions", form.suspendCount);
+                    if (form.suspendCount < 4 || form.suspended > 10)
+                    {
+                        numSuspensions.Value = DBNull.Value;
+                    }
+                    SqlParameter totalDaysSuspended = command.Parameters.AddWithValue("@totalDaysSuspended", (form.iss + form.oss));
+                    SqlParameter ISS = command.Parameters.AddWithValue("@ISS", form.iss);
+
+                    SqlParameter OSS = command.Parameters.AddWithValue("@OSS", form.oss);
+                    SqlParameter IEP = command.Parameters.AddWithValue("@IEP", form.iep);
+                    if (form.iep < 0 || form.iep > 1)
+                    {
+                        IEP.Value = DBNull.Value;
+                    }
+                    SqlParameter primaryIEP = command.Parameters.AddWithValue("@primaryIEP", form.iepplan1);
+                    if (form.iepplan1 == null)
+                    {
+                        primaryIEP.Value = DBNull.Value;
+                    }
+                    SqlParameter secondaryIEP = command.Parameters.AddWithValue("@secondaryIEP", form.iepplan2);
+                    if (form.iepplan2 == null)
+                    {
+                        secondaryIEP.Value = DBNull.Value;
+                    }
+                    SqlParameter legalIssues = command.Parameters.AddWithValue("@legalIssues", form.firstLegal);
+                    if (form.firstLegal == null)
+                    {
+                        legalIssues.Value = DBNull.Value;
+                    }
+                    SqlParameter leagalIssues2 = command.Parameters.AddWithValue("@leagalIssues2", form.secondLegal);
+                    if (form.secondLegal == null)
+                    {
+                        leagalIssues2.Value = DBNull.Value;
+                    }
+
+                    SqlParameter justiceOutcome = command.Parameters.AddWithValue("@juvJusticeOutcome", form.justiceOutcome);
+                    if (form.justiceOutcome == null)
+                    {
+                        justiceOutcome.Value = DBNull.Value;
+                    }
+                    SqlParameter grade = command.Parameters.AddWithValue("@grade", form.currentGrade);
+                    if (form.currentGrade == null)
+                    {
+                        grade.Value = DBNull.Value;
+                    }
+                    SqlParameter school = command.Parameters.AddWithValue("@school", form.school);
+                    if (form.school == null)
+                    {
+                        school.Value = DBNull.Value;
+                    }
+                    SqlParameter schoolRef = command.Parameters.AddWithValue("@schoolRef", form.schoolRef);
+                    if (form.schoolRef == null)
+                    {
+                        schoolRef.Value = DBNull.Value;
+                    }
+                    SqlParameter referrerEmail = command.Parameters.AddWithValue("@email", form.emailOfFirstReferralSource);
+                    if (form.emailOfFirstReferralSource == null)
+                    {
+                        referrerEmail.Value = DBNull.Value;
+                    }
+
+                    string referrals = form.referralSource;
+                    var referralnamefix = referrals;
+                    string[] stage1fix = referralnamefix.Split(' ');
+
+                    SqlParameter referralfname = command.Parameters.AddWithValue("@referralfname", stage1fix[0]);
+                    SqlParameter referrallname = command.Parameters.AddWithValue("@referrallname", stage1fix[1]);
+                    if (form.referralSource == null)
+                    {
+                        referralfname.Value = DBNull.Value;
+                        referrallname.Value = DBNull.Value;
+                    }
+                    SqlParameter referralDate = command.Parameters.AddWithValue("@dateInput", form.referralDate);
+                    if (form.referralDate == null)
+                    {
+                        referralDate.Value = DBNull.Value;
+                    }
+                    SqlParameter fNameCodeParam = command.Parameters.AddWithValue("@fName", form.clientFirstName);
+                    if (form.clientFirstName == null)
+                    {
+                        fNameCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter lNameCodeParam = command.Parameters.AddWithValue("@lName", form.clientLastName);
+                    if (form.clientLastName == null)
+                    {
+                        lNameCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter dOBCodeParam = command.Parameters.AddWithValue("@dOB", form.clientDOB);
+                    if (form.clientDOB == null)
+                    {
+                        dOBCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter casestat = command.Parameters.AddWithValue("@currStatus", form.caseStatus);
+                    if (form.caseStatus == 1)
+                    {
+                        casestat.Value = "Open";
+                    }
+                    if (form.caseStatus == 0)
+                    {
+                        casestat.Value = "Closed";
+                    }
+                    if (form.caseStatus == 2)
+                    {
+                        casestat.Value = "Closed Non-Engagment";
+                    }
+
                     connection.Open();
                     command.ExecuteNonQuery();
+                    cnn.Dispose();
+
                     connection.Close();
+
                 }
-                int message = info.ClientID;
+                //int message = form.ClientID;
                 //return RedirectToAction("detailReferralM?clientCode="+ message +"", "n");
-                return RedirectToAction("RefList", "Referral");
+                return RedirectToAction("TrackingList", "Tracking");
             }
         }
         public IActionResult confirmationM()

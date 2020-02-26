@@ -12,6 +12,8 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
+        "SENDEMAILDEMO_ENVIRONMENT_SENDGRID_KEY": "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",
+        "Key": "Value",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },

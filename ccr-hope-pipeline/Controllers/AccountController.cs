@@ -41,7 +41,7 @@ namespace HopePipeline.Controllers
             SqlCommand command;
             con.Open();
 
-            string query = "INSERT INTO account VALUES('" + acc.email + "','" + acc.pass + "','" + acc.firstname + "','" + acc.lastname + "')";
+            string query = "INSERT INTO account VALUES('" + acc.email + "','" + acc.pass + "','" + acc.firstname + "','" + acc.lastname + "','" + "NULL" + "')";
             command = new SqlCommand(query, con);
             SqlDataReader reader = command.ExecuteReader();
             reader.Close();

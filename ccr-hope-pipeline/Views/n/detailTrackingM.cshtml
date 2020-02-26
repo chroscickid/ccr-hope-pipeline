@@ -3,6 +3,7 @@
     ViewData["Title"] = "detailTrackingM";
 }
 
+
 <head>
     <style>
 
@@ -37,7 +38,7 @@
             font-weight: bold
         }
         /* Style the tab */
-       /*  .tab {
+        .tab {
             overflow: hidden;
             border: 1px solid #ccc;
             background-color: #f1f1f1;
@@ -47,7 +48,7 @@
         }
 
             /* Style the buttons inside the tab */
-          /*   .tab button {
+            .tab button {
                 background-color: inherit;
                 float: left;
                 border: none;
@@ -62,17 +63,17 @@
         }
 
         /* Change background color of buttons on hover */
-        /*.tab button:hover {
+        .tab button:hover {
             background-color: #ddd;
         }
 
         /* Create an active/current tablink class */
-       /*  .tab button.active {
+        .tab button.active {
             background-color: #ccc;
         }
 
         /* Style the tab content */
-       /*  .tabcontent {
+        .tabcontent {
             display: none;
             padding: 6px 12px;
             border: 1px solid #ccc;
@@ -84,7 +85,7 @@
             table-layout: fixed;
         }
     </style>
-    @*<script>
+    <script>
         function Information(evt, Specific) {
             var i, tabcontent, tablinks;
             tabcontent = document.getElementsByClassName("tabcontent");
@@ -99,25 +100,28 @@
             evt.currentTarget.className += " active";
         }
 
-    </script>*@
+    </script>
 </head>
-
+<a name="top"></a>
 <br />
 <br />
 <br />
-@*<div class="tab">
-    <button class="tablinks active" onclick="information(event, 'demographic information')">demographic information</button>
-    <button class="tablinks" onclick="information(event, 'school information')">school information</button>
-    <button class="tablinks" onclick="information(event, 'discipline information')">discipline information</button>
-    <button class="tablinks" onclick="information(event, 'ccr')">center for children's rights information</button>
+<div class="tab">
+    <button class="tablinks active" onclick="Information(event, 'Demographic Information')">Demographic Information</button>
+    <button class="tablinks" onclick="Information(event, 'School Information')">School Information</button>
+    <button class="tablinks" onclick="Information(event, 'Discipline Information')">Discipline Information</button>
+    <button class="tablinks" onclick="Information(event, 'CCR')">Center for Children's Rights Information</button>
 
 
-</div>*@
+</div>
 <h2>Detail of Client Tracking Information</h2>
 
+
+
+
+
 <hr />
-@*<div id="Demographic Information" class="tabcontent" style="display:block">
-    *@
+<div id="Demographic Information" class="tabcontent" style="display:block">
     <table id="t01">
         @foreach (var item in Model)
         {
@@ -365,10 +369,10 @@
         }
     </table>
 
-@*</div>
+</div>
 
 
-<div id="School Information" class="tabcontent">*@
+<div id="School Information" class="tabcontent">
     <p>
         <table id="t01">
             @foreach (var item in Model)
@@ -519,10 +523,10 @@
             }
         </table>
     </p>
-@*</div>
+</div>
 
 
-<div id="CCR" class="tabcontent">*@
+<div id="CCR" class="tabcontent">
     <p>
         <table id="t01">
             @foreach (var item in Model)
@@ -653,9 +657,9 @@
             }
         </table>
     </p>
-@*</div>
+</div>
 
-<div id="Discipline Information" class="tabcontent">*@
+<div id="Discipline Information" class="tabcontent">
     <p>
         <table id="t01">
             @foreach (var item in Model)
@@ -788,9 +792,10 @@
             }
         </table>
     </p>
-@*</div>*@
+</div>
 
 <div>
+    <a href="#top">Back to Top of Page</a><br /><br />
     <a asp-controller="n" asp-action="EditTrackingM">Edit</a><br />
     <a asp-action="TrackingList" asp-controller="Tracking">Back to List</a>
 </div>

@@ -1486,7 +1486,8 @@ namespace HopePipeline.Controllers
                     client.clientEthnicity = Convert.ToString(dataReader["clientethn"]);
                     client.clientDOB = Convert.ToString(dataReader["clientdob"]);
                     client.school = Convert.ToString(dataReader["school"]);
-                    client.currentGrade = Convert.ToString(dataReader["grade"]);
+                    client.currentGrade = Convert.ToInt32(dataReader["grade"]);
+                    client.currentGrade.ToString();
                     client.referralSource = Convert.ToString(dataReader["referralfname"]) + " " + Convert.ToString(dataReader["referrallname"]);
                     if (Convert.IsDBNull(dataReader["gradeFailed"]))
                     { client.failedGrade = 33; }

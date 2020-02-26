@@ -15,7 +15,7 @@ namespace HopePipeline.Controllers
     {
         public IActionResult formReferralM()
         {
-            string connectionString = "Data Source=hope-sqlserver.database.windows.net;Initial Catalog=hope-database;User ID=dadmin;Password=blackfoliageanimationmusic;Connect Timeout=30;Encrypt=True;TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False";
+            string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30; ";
 
             SqlConnection cnn;
             cnn = new SqlConnection(connectionString);
@@ -48,7 +48,7 @@ namespace HopePipeline.Controllers
         [HttpPost]
         public IActionResult submitform(referralBrandi form)
         {
-            string connectionString = "Data Source=hope-sqlserver.database.windows.net;Initial Catalog=hope-database;User ID=dadmin;Password=blackfoliageanimationmusic;Connect Timeout=30;Encrypt=True;TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False";
+            string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30; ";
 
             SqlConnection cnn;
             cnn = new SqlConnection(connectionString);
@@ -70,7 +70,7 @@ namespace HopePipeline.Controllers
 
         public IActionResult contactInfoM(int clientCode)
         {
-            string connectionString = "Data Source=hope-sqlserver.database.windows.net;Initial Catalog=hope-database;User ID=dadmin;Password=blackfoliageanimationmusic;Connect Timeout=30;Encrypt=True;TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False";
+            string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30; ";
 
             //var client= new Contact();
             List<Contact> clientl = new List<Contact>();
@@ -139,7 +139,7 @@ namespace HopePipeline.Controllers
 
         public IActionResult detailReferralM(int clientCode)
         {
-            string connectionString = "Data Source=hope-sqlserver.database.windows.net;Initial Catalog=hope-database;User ID=dadmin;Password=blackfoliageanimationmusic;Connect Timeout=30;Encrypt=True;TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False";
+            string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30; ";
 
             //var client= new Contact();
             List<referralDetail> clientl = new List<referralDetail>();
@@ -358,7 +358,7 @@ namespace HopePipeline.Controllers
         {
 
 
-            string connectionString = "Data Source=hope-sqlserver.database.windows.net;Initial Catalog=hope-database;User ID=dadmin;Password=blackfoliageanimationmusic;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30; ";
 
             SqlConnection cnn;
             cnn = new SqlConnection(connectionString);
@@ -540,7 +540,7 @@ namespace HopePipeline.Controllers
         {//this method will display the values from the sql code
             //get the values from specific sql
             //display
-            string connectionString = "Data Source=hope-sqlserver.database.windows.net;Initial Catalog=hope-database;User ID=dadmin;Password=blackfoliageanimationmusic;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
             //var client= new Contact();
 
@@ -717,7 +717,7 @@ namespace HopePipeline.Controllers
         { // referral form I need the firstname, lastname, 
             //sql commands for getting the tracking info
             //displaying the tracking information
-            string connectionString = "Data Source=hope-sqlserver.database.windows.net;Initial Catalog=hope-database;User ID=dadmin;Password=blackfoliageanimationmusic;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30; ";
 
             List<trackingDetail> clientl = new List<trackingDetail>();
             SqlConnection cnn;
@@ -1423,7 +1423,7 @@ namespace HopePipeline.Controllers
         {//this method will display the values from the sql code
          //get the values from specific sql
          //display
-            string connectionString = "Data Source=hope-sqlserver.database.windows.net;Initial Catalog=hope-database;User ID=dadmin;Password=blackfoliageanimationmusic;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30; ";
 
             //var client= new Contact();
 
@@ -1718,7 +1718,7 @@ namespace HopePipeline.Controllers
         public IActionResult editTrackingForm(TrackingForm form)
         {
             //if client code is not in the table client ID insert values in table
-            string cconnectionString = "Data Source=hope-sqlserver.database.windows.net;Initial Catalog=hope-database;User ID=dadmin;Password=blackfoliageanimationmusic;Connect Timeout=30;Encrypt=True;TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False";
+            string cconnectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30; ";
 
             SqlConnection cnnn;
             cnnn = new SqlConnection(cconnectionString);
@@ -2343,7 +2343,7 @@ namespace HopePipeline.Controllers
             cnnn.Close();
             {
 
-                string connectionString = "Data Source=hope-sqlserver.database.windows.net;Initial Catalog=hope-database;User ID=dadmin;Password=blackfoliageanimationmusic;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+                string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30; ";
 
                 SqlConnection cnn;
                 cnn = new SqlConnection(connectionString);

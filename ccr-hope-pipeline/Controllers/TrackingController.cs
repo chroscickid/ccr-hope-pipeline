@@ -108,9 +108,13 @@ namespace HopePipeline.Controllers
                 "INSERT INTO dbo.health VALUES (" + sub.baker + "," + sub.marchman + "," + sub.asthma + "," + id + ")",
                 "INSERT INTO dbo.household VALUES (" + sub.femHouse + "," + sub.domVio + "," + sub.adopted + "," + sub.evicted + "," + sub.incarParent + "," + sub.publicAssistance + "," + id + ")",
                 //addIEP?
-                "INSERT INTO dbo.iep VALUES (" + sub.iep + ",'" + sub.iepplan1 + "'','" + sub.iepplan2 + "'," + "0" + "," + id + ")",
+               // "INSERT INTO dbo.iep VALUES (" + sub.iep + ",'" + sub.iepplan1 + "'','" + sub.iepplan2 + "'," + "0" + "," + id + ")",
+               "INSERT INTO dbo.iep VALUES (" + sub.iep + ",'" + sub.iepplan1 + "','" + sub.iepplan2 + "'," + "0" + "," + id + ")",
                 //otherLegal should be in the db?
-                "INSERT INTO dbo.legal VALUES (" + sub.firstLegal + ",'" + sub.secondLegal + "','" + sub.justiceOutcome + "'," + id + ")",
+                //"INSERT INTO dbo.legal VALUES (" + sub.firstLegal + ",'" + sub.secondLegal + "','" + sub.justiceOutcome + "'," + id + ")",
+                "INSERT INTO dbo.legal VALUES ('" + sub.firstLegal + "','" + sub.secondLegal + "','" + sub.justiceOutcome + "'," + id + ")",
+                
+                //"INSERT INTO dbo.school (" + id + "," + sub.currentGrade + ",'" + sub.school + "','" + sub.schoolRef + "')"
                 "INSERT INTO dbo.school (" + id + "," + sub.currentGrade + ",'" + sub.school + "','" + sub.schoolRef + "')"
             };
 

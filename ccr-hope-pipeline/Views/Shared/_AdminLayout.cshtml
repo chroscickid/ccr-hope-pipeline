@@ -31,8 +31,11 @@
             </div>
             <div class="navbar-collapse collapse navbar-right">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Tracking" asp-action="TrackingList">Manage Tracking Information</a></li>
+                    <li><a asp-area="" asp-controller="Account" asp-action="AdminList">Edit Accounts</a></li>
+                    <li><a asp-area="" asp-controller="Account" asp-action="AdditionalAdmin">Add User</a></li>
                     <li><a asp-area="" asp-controller="Referral" asp-action="RefList">Manage Referrals</a></li>
+                    <li><a asp-area="" asp-controller="Tracking" asp-action="TrackingList">Manage Tracking Info</a></li>
+                  
                     <li><a asp-area="" asp-controller="Report" asp-action="GenerateReports">Generate Reports</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Logout</a></li>
                 </ul>

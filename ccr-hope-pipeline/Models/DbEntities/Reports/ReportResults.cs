@@ -8,7 +8,7 @@ namespace HopePipeline.Models.DbEntities.Reports
 {
     public class ReportResults
     {
-        public List<Reports.ReportRow> ResultsList {get; set;}
+        public List<Reports.ReportRow> ResultsList { get; set; }
         public string[] field { get; set; }
     }
 }

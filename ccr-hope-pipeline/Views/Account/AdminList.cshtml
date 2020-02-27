@@ -1,0 +1,44 @@
+﻿
+@model List<HopePipeline.Models.DbEntities.Login.AdminRow>;
+
+@{
+    ViewData["Title"] = "Admin List";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Edit Administrators</h2>
+<h3>Showing @Model.Count Account</h3>
+
+<table id="adminlist" class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Email Address
+            </th>
+            <th>
+                More Options
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.lastname) , @Html.DisplayFor(modelItem => item.firstname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.email)
+                </td>
+                <td>
+                    <a asp-controller="Account" asp-action="Delete" asp-route-email="@item.email">Delete</a>
+                </td>
+            </tr>
+;
+        }
+    </tbody>
+</table>

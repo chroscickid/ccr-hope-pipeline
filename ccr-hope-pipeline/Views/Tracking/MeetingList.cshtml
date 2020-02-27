@@ -3,7 +3,6 @@
     ViewData["Title"] = "MeetingList";
 }
 <script>
-
 </script>
 
 
@@ -14,17 +13,18 @@
         <p>Date <input type="date" name="meetingDate" /></p>
         <p>Purpose <input type="text" name="MeetingPurpose" /></p>
         <p>Notes </p>
-        <input type="text" name="MeetingNotes" />   
+        <input type="text" name="MeetingNotes" />
         <button type="submit">Submit</button>
     </form>
 </div>
 <h2>Meeting List</h2>
-@{ if(Model.list.Count == 0)
+@{ if (Model.list.Count == 0)
     {
         <h3>Sorry, there are no associated meetings for this student</h3>
-    } else
+    }
+    else
     {
-       <h1>@Model.fname @Model.lname's Meetings</h1>
+        <h1>@Model.fname @Model.lname's Meetings</h1>
         <table class="table">
             <thead>
                 <tr>
@@ -40,24 +40,24 @@
                 </tr>
             </thead>
             <tbody>
-                
-        @foreach(var row in Model.list)
-        {
-            <tr>
-                <td>
-                    @row.MeetingDate.ToString("yy-MM-dd")
-                </td>
-                <td>
-                    @row.MeetingPurpose
-                </td>
-                <td>
-                    @row.MeetingNotes
-                </td>
-            </tr>            
-        }
-                </tbody>
+
+                @foreach (var row in Model.list)
+                {
+                    <tr>
+                        <td>
+                            @row.MeetingDate.ToString("yy-MM-dd")
+                        </td>
+                        <td>
+                            @row.MeetingPurpose
+                        </td>
+                        <td>
+                            @row.MeetingNotes
+                        </td>
+                    </tr>
+
+                }
+            </tbody>
         </table>
     }
 
 }
-

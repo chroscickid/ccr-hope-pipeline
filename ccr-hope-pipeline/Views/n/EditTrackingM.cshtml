@@ -379,7 +379,14 @@
                         {
                             <option value="1" label="1">1st Grade</option>
                         }}
-        
+                    @{if (info.currentGrade == "2")
+                        {
+                            <option value="2" label="2" selected>2nd Grade</option>
+                        }
+                        else
+                        {
+                            <option value="2" label="2">2nd Grade</option>
+                        }}
                     @{if (info.currentGrade == "2")
                         {
                             <option value="2" label="2" selected>2nd Grade</option>

@@ -13,10 +13,11 @@ namespace HopePipeline.Controllers
 {
     public class nController : Controller
     {
+        string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
+        string cconnectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
         public IActionResult formReferralM()
         {
-            string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30; ";
-
+            
             SqlConnection cnn;
             cnn = new SqlConnection(connectionString);
             cnn.Open();
@@ -48,14 +49,14 @@ namespace HopePipeline.Controllers
         [HttpPost]
         public IActionResult submitform(referralBrandi form)
         {
-            string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30; ";
-
+           
             SqlConnection cnn;
             cnn = new SqlConnection(connectionString);
             SqlCommand command;
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
             string query = "INSERT INTO dbo.refform VALUES ('" + form.fName + "', '" + form.lName + "', '" + form.dOB + "', '" + form.clientCode + "', '" + form.guardianName + "', '" + form.guardianRelationship + "', '" + form.address + "', '" + form.gender + "', '" + form.guardianEmail + "', '" + form.guardianPhone + "', '" + form.meeting + "', '" + form.youthInDuvalSchool + "', '" + form.youthInSchool + "', '" + form.issues + "', '" + form.currentSchool + "', '" + form.zip + "', '" + form.grade + "', 'Open', '" + form.arrest + "', '" + form.school + "', '" + form.dateInput + "', '" + form.date + "', '" + form.email + "', '" + form.Reach + "', '" + form.moreInfo + "', '" + form.reason + "', '" + form.referralfname + "', '" + form.referrallname + "')";
+            
             command = new SqlCommand(query, cnn);
             SqlDataReader reader = command.ExecuteReader();
             reader.Close();
@@ -70,8 +71,7 @@ namespace HopePipeline.Controllers
 
         public IActionResult contactInfoM(int clientCode)
         {
-            string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30; ";
-
+            
             //var client= new Contact();
             List<Contact> clientl = new List<Contact>();
             SqlConnection cnn;
@@ -139,8 +139,7 @@ namespace HopePipeline.Controllers
 
         public IActionResult detailReferralM(int clientCode)
         {
-            string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30; ";
-
+            
             //var client= new Contact();
             List<referralDetail> clientl = new List<referralDetail>();
             SqlConnection cnn;
@@ -357,9 +356,53 @@ namespace HopePipeline.Controllers
         public IActionResult editReferralForm(referralBrandi form)
         {
 
+            SqlConnection cnnn;
+            cnnn = new SqlConnection(cconnectionString);
+            cnnn.Open();
+            object clientcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.client WHERE clientCode = " + form.clientCode + "", cnnn).ExecuteScalar();
+           
+            cnnn.Close();
+            int cc = (Convert.ToInt16(clientcheck)) + 0;
+           
 
-            string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30; ";
+            if (cc >= 1)
+            {
+                // clientcode is not in the table insert the values
+                SqlConnection cnnt;
+                cnnt = new SqlConnection(cconnectionString);
+                using (SqlConnection link = new SqlConnection(cconnectionString))
+                using (SqlCommand stateclient = new SqlCommand("", link))
+                {
+                    Debug.WriteLine("Send to debug output.");
+                    stateclient.CommandText = "UPDATE dbo.client SET clientLast = @clientLast,  clientFirst = @clientFirst, dob = @dob WHERE clientCode = @clientCode; ";
+                    stateclient.Parameters.AddWithValue("@clientCode", form.clientCode);
+                    //----------------------------------------------Demographics--------------------------------
+                    SqlParameter reasa = stateclient.Parameters.AddWithValue("@clientFirst", form.fName);
+                    if (form.fName == null)
+                    {
+                        reasa.Value = DBNull.Value;
+                    }
+                    SqlParameter morea = stateclient.Parameters.AddWithValue("@clientLast", form.lName);
+                    if (form.lName == null)
+                    {
+                        morea.Value = DBNull.Value;
+                    }
 
+                    SqlParameter rfnas = stateclient.Parameters.AddWithValue("@dob", form.dOB);/////////////////////-Date
+                    if (form.dOB == null)
+                    {
+                        rfnas.Value = DBNull.Value;
+                    }
+
+                    link.Open();
+                    stateclient.ExecuteNonQuery();
+                    link.Close();
+                    cnnt.Close();
+                }
+
+            }
+        
+          
             SqlConnection cnn;
             cnn = new SqlConnection(connectionString);
 
@@ -540,8 +583,7 @@ namespace HopePipeline.Controllers
         {//this method will display the values from the sql code
             //get the values from specific sql
             //display
-            string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-
+            
             //var client= new Contact();
 
             SqlConnection cnn;
@@ -717,8 +759,7 @@ namespace HopePipeline.Controllers
         { // referral form I need the firstname, lastname, 
             //sql commands for getting the tracking info
             //displaying the tracking information
-            string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30; ";
-
+           
             List<trackingDetail> clientl = new List<trackingDetail>();
             SqlConnection cnn;
             cnn = new SqlConnection(connectionString);
@@ -1423,8 +1464,7 @@ namespace HopePipeline.Controllers
         {//this method will display the values from the sql code
          //get the values from specific sql
          //display
-            string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30; ";
-
+            
             //var client= new Contact();
 
             SqlConnection cnn;
@@ -1477,7 +1517,7 @@ namespace HopePipeline.Controllers
                 while (dataReader.Read())
                 {
 
-                    TrackingForm client = new TrackingForm();
+                    EditTrackingm client = new EditTrackingm();
                     client.ClientID = Convert.ToInt32(dataReader["clientCode"]);
                     client.clientFirstName = Convert.ToString(dataReader["clientFirst"]);
                     client.clientLastName = Convert.ToString(dataReader["clientLast"]);
@@ -1486,8 +1526,7 @@ namespace HopePipeline.Controllers
                     client.clientEthnicity = Convert.ToString(dataReader["clientethn"]);
                     client.clientDOB = Convert.ToString(dataReader["clientdob"]);
                     client.school = Convert.ToString(dataReader["school"]);
-                    client.currentGrade = Convert.ToInt32(dataReader["grade"]);
-                    client.currentGrade.ToString();
+                    client.currentGrade = Convert.ToString(dataReader["grade"]);
                     client.referralSource = Convert.ToString(dataReader["referralfname"]) + " " + Convert.ToString(dataReader["referrallname"]);
                     if (Convert.IsDBNull(dataReader["gradeFailed"]))
                     { client.failedGrade = 33; }
@@ -1715,14 +1754,17 @@ namespace HopePipeline.Controllers
 
 
         [HttpPost]
-        public IActionResult editTrackingForm(TrackingForm form)
+        public IActionResult editTrackingForm(EditTrackingm form)
         {
-            //if client code is not in the table client ID insert values in table
-            string cconnectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30; ";
-
             SqlConnection cnnn;
             cnnn = new SqlConnection(cconnectionString);
-            cnnn.Open();
+            cnnn.Open();//Connect
+                        //as you edit the tracking form update the clients referral name, dob, case status
+            object ccrcheckc = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.refform WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
+            object clientcheckc = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.refform WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
+           
+            //if client code is not in the table client ID insert values in table
+
             //SqlCommand commandd = cnnn.CreateCommand();
             object bullycheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.bully WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
             object clientcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.client WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
@@ -1740,7 +1782,9 @@ namespace HopePipeline.Controllers
             object iepcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.iep WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
             object legalcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.legal WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
             object schoolcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.school WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
-
+            cnnn.Close();
+            int ccc = (Convert.ToInt16(clientcheckc)) + 0;
+            int ccrcc = (Convert.ToInt16(ccrcheckc)) + 0;
             int bc = (Convert.ToInt16(bullycheck)) + 0;
             int cc = (Convert.ToInt16(clientcheck)) + 0;
             int ac = (Convert.ToInt16(advocacycheck)) + 0;
@@ -1757,6 +1801,78 @@ namespace HopePipeline.Controllers
             int iepc = (Convert.ToInt16(iepcheck)) + 0;
             int lc = (Convert.ToInt16(legalcheck)) + 0;
             int sc = (Convert.ToInt16(schoolcheck)) + 0;
+
+            if (ccrc >= 1)
+            {
+
+                // clientcode is not in the table insert the values
+                SqlConnection cnnt;
+                cnnt = new SqlConnection(cconnectionString);
+                using (SqlConnection link = new SqlConnection(cconnectionString))
+                using (SqlCommand ccrcstate = new SqlCommand("", link))
+                {
+                    ccrcstate.CommandText = "UPDATE dbo.refform SET currStatus = @currStatus WHERE clientCode = @clientCode;";
+                    ccrcstate.Parameters.AddWithValue("@clientCode", form.ClientID);
+
+                    SqlParameter reas = ccrcstate.Parameters.AddWithValue("@currStatus", form.caseStatus);
+                    if (form.caseStatus == 1)
+                    {
+                        reas.Value = "Open";
+                    }
+                    if (form.caseStatus == 0)
+                    {
+                        reas.Value = "Closed";
+                    }
+                    if (form.caseStatus == 2)
+                    {
+                        reas.Value = "Closed Non-Engagement";
+                    }
+                    link.Open();
+                    ccrcstate.ExecuteNonQuery();
+                    link.Close();
+                    cnnt.Close();
+                }
+
+            }
+            if (cc >= 1)
+            {
+                // clientcode is not in the table insert the values
+                SqlConnection cnnt;
+                cnnt = new SqlConnection(cconnectionString);
+                using (SqlConnection link = new SqlConnection(cconnectionString))
+                using (SqlCommand stateclient = new SqlCommand("", link))
+                {
+                    Debug.WriteLine("Send to debug output.");
+                    stateclient.CommandText = "UPDATE dbo.refform SET fname = @fname,  lname = @lname WHERE clientCode = @clientCode; ";
+                    //, dob = @birthday //need to add this when it is working and null bday is accepted
+                    stateclient.Parameters.AddWithValue("@clientCode", form.ClientID);
+                    //----------------------------------------------Demographics--------------------------------
+                    SqlParameter reasa = stateclient.Parameters.AddWithValue("@fname", form.clientFirstName);
+                    if (form.clientFirstName == null)
+                    {
+                        reasa.Value = DBNull.Value;
+                    }
+                    SqlParameter morea = stateclient.Parameters.AddWithValue("@lname", form.clientLastName);
+                    if (form.clientLastName == null)
+                    {
+                        morea.Value = DBNull.Value;
+                    }
+
+                   // SqlParameter rfnas = stateclient.Parameters.AddWithValue("@birthday", form.clientDOB);/////////////////////-Date
+                   // if (form.clientDOB == null)
+                   // {
+                     //   rfnas.Value = DBNull.Value;
+                   // }
+
+                    link.Open();
+                    stateclient.ExecuteNonQuery();
+                    link.Close();
+                    cnnt.Close();
+                }
+
+            }
+
+
 
 
             if (bc == 0)
@@ -2343,8 +2459,7 @@ namespace HopePipeline.Controllers
             cnnn.Close();
             {
 
-                string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30; ";
-
+                
                 SqlConnection cnn;
                 cnn = new SqlConnection(connectionString);
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -2416,7 +2531,7 @@ namespace HopePipeline.Controllers
                    " WHERE  clientCode = @clientCode; " +
 
                " UPDATE dbo.refform" +
-               " SET email = @email,  referralfname = @referralfname,  referrallname = @referrallname,  dateInput = @dateInput, fname = @fname, lname =@lname, dob= @dob, currStatus =@currStatus " +
+               " SET email = @email,  referralfname = @referralfname,  referrallname = @referrallname,  dateInput = @dateInput, fname = @fname, lname =@lname, dob= @birthday, currStatus =@currStatus " +
                 " WHERE  clientCode = @clientCode; ";
 
 
@@ -2763,7 +2878,7 @@ namespace HopePipeline.Controllers
                     {
                         lNameCodeParam.Value = DBNull.Value;
                     }
-                    SqlParameter dOBCodeParam = command.Parameters.AddWithValue("@dOB", form.clientDOB);
+                    SqlParameter dOBCodeParam = command.Parameters.AddWithValue("@birthday", form.clientDOB);
                     if (form.clientDOB == null)
                     {
                         dOBCodeParam.Value = DBNull.Value;

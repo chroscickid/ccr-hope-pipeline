@@ -12,9 +12,9 @@ namespace HopePipeline.Controllers
 {
     public class ReferralController : Controller
     {
-        public string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30; ";
+        public string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
-        
+
         public ViewResult RefList()
         {
             var results = new List<RefRow>();
@@ -30,11 +30,13 @@ namespace HopePipeline.Controllers
             while (reader.Read())
             {
                 //We push information from the query into a row and onto the list of rows
-                RefRow row = new RefRow {
+                RefRow row = new RefRow
+                {
                     fname = reader.GetString(reader.GetOrdinal("fname")),
                     lname = reader.GetString(1),
                     dob = reader.GetDateTime(2).ToString("dd MMMM yyyy"),
-                    clientCode = reader.GetInt32(3) };
+                    clientCode = reader.GetInt32(3)
+                };
                 results.Add(row);
             }
             reader.Close();
@@ -45,8 +47,8 @@ namespace HopePipeline.Controllers
 
         public IActionResult Delete(int pk)
         {
-           // Super straight-forward, I think
-           //We simply push a SQL command for deleting the primary key
+            // Super straight-forward, I think
+            //We simply push a SQL command for deleting the primary key
             SqlConnection cnn;
             cnn = new SqlConnection(connectionString);
             SqlCommand command;
@@ -102,7 +104,7 @@ namespace HopePipeline.Controllers
                     clientCode = reader.GetInt32(3)
                 };
                 results.Add(row);
-               
+
             }
             reader2.Close();
             return View("RefList", results);

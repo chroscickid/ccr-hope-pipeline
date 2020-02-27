@@ -13,7 +13,8 @@ namespace HopePipeline.Controllers
 {
     public class TrackingController : Controller
     {
-        public string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30; ";
+        public string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+
 
         public ViewResult TrackingForm(int clientCode)
         {
@@ -116,7 +117,7 @@ namespace HopePipeline.Controllers
             //Um, this needs to be outside of that for some reason
             int totalSus = sub.iss + sub.oss;
             qs.Add("INSERT INTO dbo.suspension VALUES(" + sub.suspended + "," + sub.suspendCount + "," + totalSus + "," + sub.iss + "," + sub.oss + "," + 0 + "," + 0 + "," + id + ")");
-           
+
             //We now just run through every string in the list, running it as a sql command
             foreach (string query in qs)
             {
@@ -184,7 +185,7 @@ namespace HopePipeline.Controllers
             reader.Close();
 
 
-            return RedirectToAction("MeetingList",meet.clientCode);
+            return RedirectToAction("MeetingList", meet.clientCode);
         }
 
         public ViewResult MeetingList(int clientCode)
@@ -202,9 +203,9 @@ namespace HopePipeline.Controllers
             SqlDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
-            {               
-               //We push information from the query into a row and onto the list of rows
-                Meeting meet = new Meeting { MeetingDate = reader.GetDateTime(0), MeetingPurpose = reader.GetString(1), MeetingNotes = reader.GetString(2)};
+            {
+                //We push information from the query into a row and onto the list of rows
+                Meeting meet = new Meeting { MeetingDate = reader.GetDateTime(0), MeetingPurpose = reader.GetString(1), MeetingNotes = reader.GetString(2) };
 
                 results.Add(meet);
             }
@@ -214,12 +215,12 @@ namespace HopePipeline.Controllers
             query = "select clientLast, clientFirst from client where clientCode = " + clientCode;
             command = new SqlCommand(query, cnn);
             reader = command.ExecuteReader();
-            while(reader.Read())
+            while (reader.Read())
             {
                 sendme.fname = reader.GetString(1);
                 sendme.lname = reader.GetString(0);
                 sendme.clientCode = clientCode;
-               
+
             }
             reader.Close();
 
@@ -297,7 +298,7 @@ namespace HopePipeline.Controllers
         {
             string spoop = "DELETE FROM " + table + " WHERE ClientCode = " + clientCode + ";";
             return spoop;
-        
+
         }
 
         public IActionResult Delete(int clientCode)
@@ -339,7 +340,7 @@ namespace HopePipeline.Controllers
             return RedirectToAction("TrackingList");
         }
 
-       
+
         public IActionResult ChangeStatus(int clientCode, int status)
         {
             SqlConnection cnn = new SqlConnection(connectionString);
@@ -412,7 +413,7 @@ namespace HopePipeline.Controllers
             reader = command.ExecuteReader();
             reader.Close();
 
-            return RedirectToAction("RefList","Referral");
+            return RedirectToAction("RefList", "Referral");
 
         }
 
@@ -436,8 +437,8 @@ namespace HopePipeline.Controllers
             }
             reader.Close();
 
-            
-            foreach(int refcode in refCodeList)
+
+            foreach (int refcode in refCodeList)
             {
                 string query = "SELECT referralfname, referrallname FROM refform WHERE clientCode = " + clientCode;
                 command = new SqlCommand(q1, cnn);

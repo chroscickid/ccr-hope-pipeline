@@ -11,7 +11,7 @@ namespace HopePipeline.Models.DbEntities.Tracking
 {
     public class TrackingForm
     {
-        public HopePipeline.Models.referralBrandi referralBrandi {get; set;}
+        public HopePipeline.Models.referralBrandi referralBrandi { get; set; }
         public int ClientID { get; set; }
         public string referralSource { get; set; }
 
@@ -90,6 +90,6 @@ namespace HopePipeline.Models.DbEntities.Tracking
         public int staffAdvocacy { get; set; }
         public int daysSinceIntake { get; set; }
 
-        
+
     }
 }

@@ -11,11 +11,11 @@ namespace HopePipeline.Controllers
 {
     public class ReportController : Controller
     {
-        public string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30; ";
+        public string connectionString = "Server=tcp:ccrhopepipeline.database.windows.net,1433;Initial Catalog=Hope Pipeline;Persist Security Info=False;User ID=user;Password=P4ssw0rd;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         //This doesn't actually generate reports! This just calls the form
         public IActionResult GenerateReports()
-        {            
+        {
             return View();
         }
 
@@ -34,20 +34,21 @@ namespace HopePipeline.Controllers
             List<string> text = new List<string>();
 
             //there must be a more practical way of dong this
-            if(genReport.field1 == null)
+            if (genReport.field1 == null)
             {
                 return View("Index");
-            } else
+            }
+            else
             {
                 fields.Add(genReport.field1);
                 text.Add(genReport.text1);
             }
-            if(genReport.field2 != null)
+            if (genReport.field2 != null)
             {
                 fields.Add(genReport.field2);
                 text.Add(genReport.text2);
             }
-            if(genReport.field3 != null)
+            if (genReport.field3 != null)
             {
                 fields.Add(genReport.field3);
                 text.Add(genReport.text3);
@@ -64,11 +65,11 @@ namespace HopePipeline.Controllers
             }
 
             int count = 0;
-            foreach(var field in fields)
+            foreach (var field in fields)
             {
                 if (text[count] != null)
                 {
-                    string query = "SELECT clientLast, clientFirst FROM ??? WHERE " + field  + " = " + text[count];
+                    string query = "SELECT clientLast, clientFirst FROM ??? WHERE " + field + " = " + text[count];
                     command = new SqlCommand(query, cnn);
                     SqlDataReader reader = command.ExecuteReader();
 
@@ -83,7 +84,7 @@ namespace HopePipeline.Controllers
                     reader.Close();
                 }
 
-               
+
 
             }
             return View("ViewReports", results);
@@ -95,7 +96,6 @@ namespace HopePipeline.Controllers
                  {
                      string text = texts[i];
                      string field = fields[i];
-
                      //Since yes/no/maybe fields are represented as tinyints
                      //We wanted CCR to be able to search these in plaintext, so we convert them
                      if (checkifBool(field))
@@ -116,7 +116,6 @@ namespace HopePipeline.Controllers
                                  break;
                          }
                      }
-
                      //We generate a SQL query using the relevant field
                      string query = "SELECT [firstname],[lastname]," + field + " FROM [TrackingTable] WHERE " + field + " = " + text;
                      command = new SqlCommand(query, cnn);
@@ -128,18 +127,10 @@ namespace HopePipeline.Controllers
                          results.Add(row);
                      }
                      reader.Close();
-
                  }
                  reader.Close();
-
              return View("TrackingList", results);
-
-
-
-
-
              }
-
              //Pushes the list and relevant field onto the results model, and sends it to the view
              ReportResults toSend = new ReportResults { ResultsList = results, field = fields};
              return View("ReportResults", toSend);
@@ -155,7 +146,7 @@ namespace HopePipeline.Controllers
 
         public FileResult ExportDB()
         {
-            
+
             byte[] excelSheet = System.IO.File.ReadAllBytes("../HopePipeline/wwwroot/lib/hopetracking.xlsx");
             string fileName = "hopetracking.xlsx";
             return File(excelSheet, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);

@@ -1,58 +1,56 @@
 ﻿@model HopePipeline.Models.ReportForm;
 @{
-    ViewData["Title"] = "GenerateReports";
+    ViewData["Title"] = "Generate Reports";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 
 }
 
-<h2 id="hey">Generate Reports</h2>
+<h2 id="hey">Summary Statistics</h2>
 <div class="center-block">
-    <form asp-controller="Report" asp-action="ViewReports" method="post">
+    <!--<form asp-controller="Report" asp-action="ViewReports" method="post">
         <p>
             <select id="field1" name="field1">
-                    <option value="none" selected>None</option>
-                    <option value="Name">Name</option>
-                    <option value="ClientID">ClientID</option>
-                    <option value="caregender">caregender</option>
-                    <option value="carename">carename</option>
-                    <option value="gender">gender</option>
-                    <option value="ethnicity">ethnicity</option>
-                    <option value="dob">dob</option>
-                    <option value="school">school</option>
-                    <option value="referral">referral</option>
-                    <option value="fail">fail</option>
-                    <option value="failedGrade">failedGrade</option>
-                    <option value="baker">baker</option>
-                    <option value="femHouse">femHouse</option>
-                    <option value="domVio">domVio</option>
-                    <option value="adopted">adopted</option>
-                    <option value="evicted">evicted</option>
-                    <option value="incarParent">incarParent</option>
-                    <option value="asthma">asthma</option>
-                    <option value="iep">iep</option>
-                    <option value="inPride">inPride</option>
-                    <option value="newFBA">newFBA</option>
-                    <option value="accomGained">accomGained</option>
-                    <option value="compService">compService</option>
-                    <option value="services">services</option>
-                    <option value="bullied">bullied</option>
-                    <option value="report">report</option>
-                    <option value="dateofBully">dateofBully</option>
-                    <option value="suspended">suspended</option>
-                    <option value="altSchool">altSchool</option>
-                    <option value="altSchoolName">altSchoolName</option>
-                    <option value="dateOfAlt">dateOfAlt</option>
-                    <option value="timesInAlt">timesInAlt</option>
-                    <option value="daysOwed">daysOwed</option>
-                    <option value="firstLegal">firstLegal</option>
-                    <option value="secondLegal">secondLegal</option>                
+                <option value="none" selected>None</option>
+                <option value="Name">Name</option>
+                <option value="ClientID">ClientID</option>
+                <option value="caregender">caregender</option>
+                <option value="carename">carename</option>
+                <option value="gender">gender</option>
+                <option value="ethnicity">ethnicity</option>
+                <option value="dob">dob</option>
+                <option value="school">school</option>
+                <option value="referral">referral</option>
+                <option value="fail">fail</option>
+                <option value="failedGrade">failedGrade</option>
+                <option value="baker">baker</option>
+                <option value="femHouse">femHouse</option>
+                <option value="domVio">domVio</option>
+                <option value="adopted">adopted</option>
+                <option value="evicted">evicted</option>
+                <option value="incarParent">incarParent</option>
+                <option value="asthma">asthma</option>
+                <option value="iep">iep</option>
+                <option value="inPride">inPride</option>
+                <option value="newFBA">newFBA</option>
+                <option value="accomGained">accomGained</option>
+                <option value="compService">compService</option>
+                <option value="services">services</option>
+                <option value="bullied">bullied</option>
+                <option value="report">report</option>
+                <option value="dateofBully">dateofBully</option>
+                <option value="suspended">suspended</option>
+                <option value="altSchool">altSchool</option>
+                <option value="altSchoolName">altSchoolName</option>
+                <option value="dateOfAlt">dateOfAlt</option>
+                <option value="timesInAlt">timesInAlt</option>
+                <option value="daysOwed">daysOwed</option>
+                <option value="firstLegal">firstLegal</option>
+                <option value="secondLegal">secondLegal</option>
             </select>
             <input id="text1" name="text1" />
             <a onclick="addSearchField(1);">+</a>
             <br />
         </p>
-
-
         <p>
             <select id="field2" name="field2">
                 <option value="none" selected>None</option>
@@ -95,7 +93,6 @@
             <input id="text2" name="text2" />
             <a onclick="addSearchField(2);">+</a>
         </p>
-
         <p>
             <select id="field3" name="field3">
                 <option value="none" selected>None</option>
@@ -139,7 +136,6 @@
             <input id="text3" name="text3" />
             <a onclick="addSearchField(3);">+</a>
         </p>
-
         <p>
             <select id="field4" name="field4">
                 <option value="none" selected>None</option>
@@ -182,7 +178,6 @@
             <input id="text4" name="text4" />
             <a onclick="addSearchField(4);">+</a>
         </p>
-
         <p>
             <select id="field5" name="field5">
                 <option value="none" selected>None</option>
@@ -225,12 +220,121 @@
             <input id="text5" name="text5" />
         </p>
         <button type="submit" onclick="">Generate Reports</button>
+    </form>-->
+
+    <script src="https://cdn.plot.ly/plotly-1.2.0.min.js"></script>
+    <div id="gender" style="width:500px;height:500px;"></div>
+    <div id="race" style="width:500px;height:500px;"></div>
+    <div id="edu" style="width:500px;height:500px;"></div>
+    <div id="ref" style="width:500px;height:500px;"></div>
+    <div id="advo" style="width:500px;height:500px"></div>
+
+    <script>
+        GENDER = document.getElementById('gender');
+        var trace1 = {
+            x: ['Referral'],
+            y: [15, 14, 16, 13],
+            width: [0.8, 0.8, 0.8, 0.8],
+            name: ['Male', 'Female', 'Nonbinary', 'Trans*'],
+            type: 'bar'
+        };
+        var trace2 = {
+            x: ['Male', 'Female', 'Nonbinary', 'Trans*'],
+            y: [10, 7, 9, 8],
+            width: [0.8, 0.8, 0.8, 0.8],
+            name: ['Client'],
+            type: 'bar'
+        };
+        var data = [trace1, trace2];
+        var layout = {
+            barmode: 'stack',
+            title: 'Gender Breakdown'
+        };
+        Plotly.newPlot(gender, data, layout);
+    </script>
+
+
+    <script>
+        RACE = document.getElementById('race');
+        var trace1 = {
+            x: ['Black', 'White', 'Latino'],
+            y: [10, 14, 12],
+            name: 'Referral',
+            type: 'bar'
+        };
+        var trace2 = {
+            x: ['Black', 'White', 'Latino'],
+            y: [6, 9, 8],
+            name: 'Client',
+            type: 'bar'
+        };
+        var data = [trace1, trace2];
+        var layout = {
+            barmode: 'stack',
+            title: 'Race Breakdown'
+        };
+        Plotly.newPlot(race, data, layout);
+    </script>
+
+
+    <script>
+        EDU = document.getElementById('edu');
+        var data = [{
+            type: 'bar',
+            x: [20, 14, 23, 5, 7, 23],
+            y: ['Has an IEP/504', 'Not in School', 'Suspended >3 times in a year', 'Baker Acted', 'Alternative School', 'Failed a Grade'],
+            orientation: 'h'
+        }];
+        var layout = {
+            title: 'Referring Educational Issue'
+        };
+        Plotly.newPlot(edu, data, layout);
+    </script>
+
+    <script>
+        REF = document.getElementById('ref');
+        var trace1 = {
+            x: ['Female-led Household', 'Domestic Violence', 'Baker Acted', 'Evicted', 'Realtive Caretaker', 'Adopted'],
+            y: [2, 8, 3, 5, 3, 9],
+            name: 'Referral',
+            type: 'bar'
+        };
+        var trace2 = {
+            x: ['Female-led Household', 'Domestic Violence', 'Baker Acted', 'Evicted', 'Realtive Caretaker', 'Adopted'],
+            y: [2, 6, 2, 4, 1, 3],
+            name: 'Client',
+            type: 'bar'
+        };
+        var data = [trace1, trace2];
+        var layout = {
+            barmode: 'group',
+            title: 'Adverse Childhood Experience'
+        };
+        Plotly.newPlot(ref, data, layout);
+    </script>
+
+
+    <script>
+        ADVO = document.getElementById('advo');
+        var data = [{
+            type: 'bar',
+            x: [20, 14, 23, 5, 7, 23],
+            y: ['Additional Behavior Supports', 'Additional Learning Supports', 'Re-enrolled', 'Grade Adjustment', 'Initial Eligibility Determination',
+                'Pending Eligibility Determination', 'Completed Re-evaluation', 'Pening Re-evaluation', 'Updated IEP', 'Placement Change', 'Graduated',
+                'Direct Referral for Ligigation', 'Information'],
+            orientation: 'h'
+        }];
+        var layout = {
+            title: 'Advocacy Outcome'
+        };
+        Plotly.newPlot(advo, data, layout);
+    </script>
 
 
 
-    </form>
-    
+
+
+
 
 
     <a asp-controller="Report" asp-action="ExportDb">Click here to export to Excel</a>
-

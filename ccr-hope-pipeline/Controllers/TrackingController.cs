@@ -36,34 +36,57 @@ namespace HopePipeline.Controllers
             //can autopopulate values in the tracking form
             while (reader.Read())
             {
-                relRef.address = reader.GetString(reader.GetOrdinal("strAddress"));
-                relRef.arrest = reader.GetInt32(reader.GetOrdinal("arrest"));
-                relRef.currentSchool = reader.GetString(reader.GetOrdinal("currentSchool"));
-                //relRef.date = reader.GetDateTime(reader.GetOrdinal("date"));
-                //  relRef.dateInput = reader.GetDateTime(reader.GetOrdinal("dateInput"));
-                relRef.dOB = reader.GetDateTime(reader.GetOrdinal("dob"));
-                relRef.email = reader.GetString(reader.GetOrdinal("email"));
-                relRef.fName = reader.GetString(reader.GetOrdinal("fname"));
-                relRef.gender = reader.GetString(reader.GetOrdinal("gender"));
-                relRef.grade = reader.GetString(reader.GetOrdinal("grade"));
-                relRef.guardianEmail = reader.GetString(reader.GetOrdinal("guardianEmail"));
-                relRef.guardianName = reader.GetString(reader.GetOrdinal("guardianName"));
-                relRef.guardianPhone = reader.GetString(reader.GetOrdinal("guardianPhone"));
-                relRef.guardianRelationship = reader.GetString(reader.GetOrdinal("guardianRelationship"));
-                relRef.issues = reader.GetString(reader.GetOrdinal("issues"));
-                relRef.lName = reader.GetString(reader.GetOrdinal("lname"));
-                relRef.meeting = reader.GetInt32(reader.GetOrdinal("meeting"));
-                relRef.moreInfo = reader.GetString(reader.GetOrdinal("moreInfo"));
-                relRef.Reach = reader.GetString(reader.GetOrdinal("Reach"));
-                relRef.reason = reader.GetString(reader.GetOrdinal("reason"));
-                relRef.referralfname = reader.GetString(reader.GetOrdinal("referralfname"));
-                relRef.referrallname = reader.GetString(reader.GetOrdinal("referrallname"));
-                relRef.school = reader.GetString(reader.GetOrdinal("school"));
-                relRef.status = reader.GetString(reader.GetOrdinal("currStatus"));
-                relRef.youthInDuvalSchool = reader.GetInt32(reader.GetOrdinal("youthInDuvalSchool"));
-                relRef.youthInSchool = reader.GetInt32(reader.GetOrdinal("youthInSchool"));
-                relRef.zip = reader.GetString(reader.GetOrdinal("zip"));
+                while (reader.Read())
+                {
+                   relRef.address = reader.GetString(reader.GetOrdinal("strAddress"));
+                    
+                    if (!reader.IsDBNull(reader.GetOrdinal("moreInfo")))
+                    {
+                        relRef.moreInfo = reader.GetString(reader.GetOrdinal("moreInfo"));
+                    }
+                   
+                        relRef.arrest = reader.GetInt32(reader.GetOrdinal("arrest"));
+                   
+                    relRef.currentSchool = reader.GetString(reader.GetOrdinal("currentSchool"));
+                    relRef.dOB = reader.GetDateTime(reader.GetOrdinal("dob"));
+                    relRef.email = reader.GetString(reader.GetOrdinal("email"));
+                    relRef.fName = reader.GetString(reader.GetOrdinal("fname"));
+                    relRef.gender = reader.GetString(reader.GetOrdinal("gender"));
+                    relRef.grade = reader.GetString(reader.GetOrdinal("grade"));
+                    if (!reader.IsDBNull(reader.GetOrdinal("guardianEmail")))
+                    {
+                        relRef.guardianEmail = reader.GetString(reader.GetOrdinal("guardianEmail"));
+                    }
+                    if (!reader.IsDBNull(reader.GetOrdinal("guardianName")))
+                    {
+                        relRef.guardianName = reader.GetString(reader.GetOrdinal("guardianName"));
+                    }
+                    if (!reader.IsDBNull(reader.GetOrdinal("guardianPhone")))
+                    {
+                        relRef.guardianPhone = reader.GetString(reader.GetOrdinal("guardianPhone"));
+                    }
+                    relRef.guardianRelationship = reader.GetString(reader.GetOrdinal("guardianRelationship"));
+                    relRef.issues = reader.GetString(reader.GetOrdinal("issues"));
+                    relRef.lName = reader.GetString(reader.GetOrdinal("lname"));
+                    relRef.meeting = reader.GetInt32(reader.GetOrdinal("meeting"));
+                    relRef.Reach = reader.GetString(reader.GetOrdinal("Reach"));
+                    if (!reader.IsDBNull(reader.GetOrdinal("reason")))
+                    {
+                        relRef.reason = reader.GetString(reader.GetOrdinal("reason"));
+                    }
+                    relRef.referralfname = reader.GetString(reader.GetOrdinal("referralfname"));
+                    relRef.referrallname = reader.GetString(reader.GetOrdinal("referrallname"));
+                    if (!reader.IsDBNull(reader.GetOrdinal("school")))
+                    {
+                        relRef.school = reader.GetString(reader.GetOrdinal("school"));
+                    }
+                    relRef.status = reader.GetString(reader.GetOrdinal("currStatus"));
+                    relRef.youthInDuvalSchool = reader.GetInt32(reader.GetOrdinal("youthInDuvalSchool"));
+                    relRef.youthInSchool = reader.GetInt32(reader.GetOrdinal("youthInSchool"));
+                    relRef.zip = reader.GetString(reader.GetOrdinal("zip"));
 
+
+                }
 
             }
             reader.Close();
@@ -460,5 +483,7 @@ namespace HopePipeline.Controllers
             return View("RefTrackList", mod);
 
         }
+
+       
     }
 }

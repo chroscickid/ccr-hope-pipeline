@@ -908,10 +908,10 @@ namespace HopePipeline.Controllers
                     { client.clientGender = "He/They"; }
                     if (client.clientGender.Contains("neutral"))
                     { client.clientGender = "Zie/Zir/Zirs"; }
-                    if(client.clientGender.Length == 0||cc == 0 || time.Length == 0)//////////////Something is wrong
+                    if(client.clientGender.Length == 0||cc == 0 )//////////////Something is wrong
                     { client.clientGender = "N/A"; }
                     else { client.clientGender = client.clientGender; }
-
+               
 
                     client.clientEthnicity = Convert.ToString(dataReader["clientethn"]);
                     if (client.clientEthnicity.Equals("nhWhite") || client.clientEthnicity.Contains("nhWhite"))
@@ -1394,9 +1394,9 @@ namespace HopePipeline.Controllers
                     { client.altSchool = client.altSchool; }
 
                     client.altSchoolName = Convert.ToString(dataReader["altSchoolName"]);
-                    if (client.altSchoolName == "yes")
+                    if (client.altSchoolName.Contains("yes"))
                     { client.altSchoolName = "Mattie V"; }
-                    if (client.altSchoolName == "no")
+                    if (client.altSchoolName.Contains("no"))
                     { client.altSchoolName = "Grand Park"; }
                     if (client.altSchoolName == "" || asc == 0)
                     { client.altSchoolName = "N/A"; }
@@ -1767,16 +1767,16 @@ namespace HopePipeline.Controllers
 
 
                     if (Convert.IsDBNull(dataReader["ISS"]))
-                    { client.iss = 33; }
+                    { client.iss = 0; }
                     else { client.iss = Convert.ToInt16(dataReader["ISS"]); }
 
                     if (Convert.IsDBNull(dataReader["OSS"]))
-                    { client.oss = 33; }
+                    { client.oss = 0; }
                     else { client.oss = Convert.ToInt16(dataReader["OSS"]); }
 
 
                     if (Convert.IsDBNull(dataReader["daysSinceIntake"]))
-                    { client.daysSinceIntake = 33; }
+                    { client.daysSinceIntake = 0; }
                     else { client.daysSinceIntake = Convert.ToInt16(dataReader["daysSinceIntake"]); }
 
                     client.justiceOutcome = Convert.ToString(dataReader["juvJusticeOutcome"]);

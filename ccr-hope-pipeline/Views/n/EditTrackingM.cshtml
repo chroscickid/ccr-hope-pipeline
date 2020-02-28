@@ -1562,7 +1562,7 @@
                             } }
                     </select>
                     What day did the student enter the alternative school</br>
-                    <input asp-for="dateOfAlt" type="datetime-local" class="field-style field-full align-none" id="dateOfAlt"
+                    <input asp-for="dateOfAlt" type="date" class="field-style field-full align-none" id="dateOfAlt"
                            min="2000-06-07T00:00" max="2060-06-14T00:00">
                     <br />
                     <br />
@@ -1681,7 +1681,7 @@
             <li>
 
                 Referral Date and Time <br />
-                <input asp-for="referralDate" type="datetime-local" class="field-style field-full align-none" id="refdate"
+                <input asp-for="referralDate" type="date" class="field-style field-full align-none" id="refdate"
                        value="@info.referralDate"
                        min="2000-06-07T00:00" max="2060-06-14T00:00">
                 <br />

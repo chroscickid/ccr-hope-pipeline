@@ -40,6 +40,7 @@
             </td>
             <td>
                 <a asp-controller="Tracking" asp-action="TrackingForm" asp-route-clientCode="@item.clientCode">Start Tracking</a> |
+                <a asp-controller="n" asp-action="editReferralM" asp-route-clientCode="@item.clientCode">Edit</a> |
                 <a asp-controller="n" asp-action="detailReferralM" asp-route-clientCode="@item.clientCode">Details</a> |
                 <a asp-controller="n" asp-action="contactInfoM" asp-route-clientCode="@item.clientCode">Contact</a> |
                 <a asp-controller="Tracking" asp-action="AssignTrackingList" asp-route-clientCode="@item.clientCode">Assign to Tracking</a> |

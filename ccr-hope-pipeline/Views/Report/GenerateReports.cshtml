@@ -6,7 +6,7 @@
 }
 
 <h2 id="hey">Summary Statistics</h2>
-<div class="center-block">
+<div>
     <!--<form asp-controller="Report" asp-action="ViewReports" method="post">
         <p>
             <select id="field1" name="field1">
@@ -51,6 +51,8 @@
             <a onclick="addSearchField(1);">+</a>
             <br />
         </p>
+
+
         <p>
             <select id="field2" name="field2">
                 <option value="none" selected>None</option>
@@ -93,6 +95,7 @@
             <input id="text2" name="text2" />
             <a onclick="addSearchField(2);">+</a>
         </p>
+
         <p>
             <select id="field3" name="field3">
                 <option value="none" selected>None</option>
@@ -136,6 +139,7 @@
             <input id="text3" name="text3" />
             <a onclick="addSearchField(3);">+</a>
         </p>
+
         <p>
             <select id="field4" name="field4">
                 <option value="none" selected>None</option>
@@ -178,6 +182,7 @@
             <input id="text4" name="text4" />
             <a onclick="addSearchField(4);">+</a>
         </p>
+
         <p>
             <select id="field5" name="field5">
                 <option value="none" selected>None</option>
@@ -220,6 +225,7 @@
             <input id="text5" name="text5" />
         </p>
         <button type="submit" onclick="">Generate Reports</button>
+
     </form>-->
 
     <script src="https://cdn.plot.ly/plotly-1.2.0.min.js"></script>
@@ -227,95 +233,147 @@
     <div id="race" style="width:500px;height:500px;"></div>
     <div id="edu" style="width:500px;height:500px;"></div>
     <div id="ref" style="width:500px;height:500px;"></div>
-    <div id="advo" style="width:500px;height:500px"></div>
+    <div id="advo" style="width:1000px;height:500px"></div>
 
     <script>
+
         GENDER = document.getElementById('gender');
+
         var trace1 = {
-            x: ['Referral'],
-            y: [15, 14, 16, 13],
-            width: [0.8, 0.8, 0.8, 0.8],
-            name: ['Male', 'Female', 'Nonbinary', 'Trans*'],
+            x: ['Client', 'Referral'],
+            y: [4, 9],
+            width: [0.8],
+            name: ['Male'],
             type: 'bar'
         };
+
         var trace2 = {
-            x: ['Male', 'Female', 'Nonbinary', 'Trans*'],
-            y: [10, 7, 9, 8],
-            width: [0.8, 0.8, 0.8, 0.8],
-            name: ['Client'],
+            x: ['Client', 'Referral'],
+            y: [8, 9],
+            width: [0.8],
+            name: ['Female'],
             type: 'bar'
         };
-        var data = [trace1, trace2];
+
+        var trace3 = {
+            x: ['Client', 'Referral'],
+            y: [2, 4],
+            width: [0.8],
+            name: ['Nonbinary'],
+            type: 'bar'
+        };
+
+        var trace4 = {
+            x: ['Client', 'Referral'],
+            y: [3, 5],
+            width: [0.8],
+            name: ['Trans*'],
+            type: 'bar'
+        };
+
+        var data = [trace1, trace2, trace3, trace4];
+
         var layout = {
             barmode: 'stack',
             title: 'Gender Breakdown'
         };
+
         Plotly.newPlot(gender, data, layout);
+
     </script>
 
 
     <script>
+
         RACE = document.getElementById('race');
+
         var trace1 = {
-            x: ['Black', 'White', 'Latino'],
-            y: [10, 14, 12],
-            name: 'Referral',
+            x: ['Client', 'Referral'],
+            y: [4, 2],
+            width: [0.8],
+            name: ['Black'],
             type: 'bar'
         };
+
         var trace2 = {
-            x: ['Black', 'White', 'Latino'],
-            y: [6, 9, 8],
-            name: 'Client',
+            x: ['Client', 'Referral'],
+            y: [5, 1],
+            width: [0.8],
+            name: ['White'],
             type: 'bar'
         };
-        var data = [trace1, trace2];
+
+        var trace3 = {
+            x: ['Client', 'Referral'],
+            y: [6, 4],
+            width: [0.8],
+            name: ['Latino'],
+            type: 'bar'
+        };
+
+        var data = [trace1, trace2, trace3];
+
         var layout = {
             barmode: 'stack',
             title: 'Race Breakdown'
         };
+
         Plotly.newPlot(race, data, layout);
+
     </script>
 
 
     <script>
         EDU = document.getElementById('edu');
+
+
         var data = [{
             type: 'bar',
             x: [20, 14, 23, 5, 7, 23],
             y: ['Has an IEP/504', 'Not in School', 'Suspended >3 times in a year', 'Baker Acted', 'Alternative School', 'Failed a Grade'],
             orientation: 'h'
         }];
+
         var layout = {
             title: 'Referring Educational Issue'
         };
+
         Plotly.newPlot(edu, data, layout);
     </script>
 
     <script>
         REF = document.getElementById('ref');
+
+
         var trace1 = {
             x: ['Female-led Household', 'Domestic Violence', 'Baker Acted', 'Evicted', 'Realtive Caretaker', 'Adopted'],
             y: [2, 8, 3, 5, 3, 9],
             name: 'Referral',
             type: 'bar'
         };
+
         var trace2 = {
             x: ['Female-led Household', 'Domestic Violence', 'Baker Acted', 'Evicted', 'Realtive Caretaker', 'Adopted'],
             y: [2, 6, 2, 4, 1, 3],
             name: 'Client',
             type: 'bar'
         };
+
         var data = [trace1, trace2];
+
         var layout = {
             barmode: 'group',
             title: 'Adverse Childhood Experience'
         };
+
         Plotly.newPlot(ref, data, layout);
     </script>
 
 
     <script>
         ADVO = document.getElementById('advo');
+
+
         var data = [{
             type: 'bar',
             x: [20, 14, 23, 5, 7, 23],
@@ -324,9 +382,11 @@
                 'Direct Referral for Ligigation', 'Information'],
             orientation: 'h'
         }];
+
         var layout = {
             title: 'Advocacy Outcome'
         };
+
         Plotly.newPlot(advo, data, layout);
     </script>
 
@@ -338,3 +398,5 @@
 
 
     <a asp-controller="Report" asp-action="ExportDb">Click here to export to Excel</a>
+
+</div>

@@ -3,7 +3,7 @@
     ViewData["Title"] = "MeetingList";
 }
 <script>
-
+    
 </script>
 
 
@@ -11,7 +11,7 @@
 <div id="addMeeting">
     <form asp-controller="Tracking" asp-action="AddMeeting" method="post">
         <input type="hidden" name="clientCode" value="@Model.clientCode" />
-        <p>Date <input type="date" name="meetingDate" /></p>
+        <p>Date <input id="today" type="date" name="meetingDate" /></p>
         <p>Purpose <input type="text" name="MeetingPurpose" /></p>
         <p>Notes </p>
         <input type="text" name="MeetingNotes" />   

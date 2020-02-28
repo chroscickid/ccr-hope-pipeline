@@ -613,9 +613,15 @@
 
                 </tr>
                 <tr>
-                    <td class="t" style="text-align:right">   Guardian's Name:</td>
+                    <td class="t" style="text-align:right">   Guardian's First Name:</td>
 
                     <td><input type="text" name="guardianName" value="@data.guardianName" asp-for="guardianName"></td>
+
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right">   Guardian's Last Name:</td>
+
+                    <td><input type="text" name="guardianlName" value="@data.guardianlName" asp-for="guardianlName"></td>
 
                 </tr>
                 <tr>
@@ -728,21 +734,40 @@
                             {<input type="radio" onclick="javascript:yesnoCheck();" name="Meeting" value="2" id="nooCheck" asp-for="meeting"> }}<br>
 
                         @{ string answera = data.date.ToString();
-                            int spacea = answera.IndexOf(" ");
+                                                             int spacea = answera.IndexOf(' ');
                             string datea = answera.Substring(0, spacea);
-
-
-                            string[] strlista = datea.Split("/");
-
-
-                            string yeara = strlista[2];
-                            string montha = strlista[1];
+          string[] thingsti = answera.Split(' ');
+          Console.WriteLine(thingsti[2]);
+                       
+         int counteram =0;
+      
+         Console.WriteLine(thingsti[1]);
+       
+         string[] calc = thingsti[1].Split(':');
+         int hour = Int32.Parse(calc[0]);
+         string righthour = "";
+         if(thingsti[2] == "AM"){righthour = hour.ToString();}
+         if(thingsti[2] =="PM"){hour= hour+12;
+             righthour = hour.ToString();}
+            Console.WriteLine(righthour);
+         
+                           string[] strlista = datea.Split('/');
+                        
+                    string yeara = strlista[2];
+                         string montha = strlista[1];
                             if ((montha.Length) == 1)
-                            { montha = "0" + montha; }
-                            string daya = strlista[0];
-                            if ((daya.Length) == 1)
-                            { daya = "0" + daya; }
-                            string answer50a = yeara + "-" + daya + "-" + montha;
+                          { montha = "0" + montha; }
+                          string dayz = strlista[0];
+                         string daya="";
+                          if ((dayz.Length) == 2)
+                           { daya = dayz; }
+        else
+         {daya = "0"+dayz;}
+         if(righthour.Length ==1){righthour="0"+righthour;}
+         if(calc[1].Length ==1){calc[1] = "0"+ calc[1];}
+                         string answer50a = yeara + "-" + daya + "-" + montha + "T" + righthour +":" +calc[1];
+                          Console.WriteLine(answer50a);
+
 
                         }
                         @{ string an = "display:none";
@@ -754,7 +779,7 @@
                             { an = "display:none"; }
                         }
                         <div id="ifYes" style="@an">
-                            <br />Date of Youth's Meeting:&nbsp;<br /><input type="date" value="@answer50a" name="date" asp-for="date"><br /><br />
+                            <br />Date of Youth's Meeting:&nbsp;<br /><input type="datetime-local" value="@answer50a" name="date" asp-for="date"><br /><br />
 
                         </div>
                     </td>

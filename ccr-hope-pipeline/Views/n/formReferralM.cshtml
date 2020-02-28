@@ -182,8 +182,10 @@
             <tr>
                 <!-- is their a reason you don't ask for first and last name???? -->
                 <td>
-                    Primary Caretaker's Name:<br />
-                    <input type="text" name="guardianName" asp-for="guardianName">
+                    Primary Caretaker's First Name:<br />
+                    <input type="text" name="guardianName" asp-for="guardianName"><br /><br />
+                    Primary Caretaker's Last Name:<br />
+                    <input type="text" name="guardianlName" asp-for="guardianlName">
                 </td>
 
                 <td colspan="2">
@@ -241,7 +243,7 @@
                     <div id="ifYes" style="display:none">
                         If yes, what is the date and time of the meeting?<br>
                         Date:<br />
-                        <input type="date" asp-for="date"><br>
+                        <input type="datetime-local" asp-for="date"><br>
 
 
                     </div>

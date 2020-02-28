@@ -12,6 +12,7 @@ namespace HopePipeline.Models.DbEntities.Referrals
         public string rlname { get; set; }
         public string rfname { get; set; }
         public string guardianName { get; set; }
+        public string guardianlName { get; set; }
         public string relationship { get; set; }
         public string remail { get; set; }
         public string email { get; set; }

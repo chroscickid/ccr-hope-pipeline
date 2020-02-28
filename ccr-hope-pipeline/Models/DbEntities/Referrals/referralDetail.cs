@@ -28,7 +28,7 @@ namespace HopePipeline.Models.DbEntities.Referrals
         public string dOB { get; set; }
 
         public string guardianName { get; set; }
-
+        public string guardianlName { get; set; }
         public string guardianRelationship { get; set; }
 
         public string address { get; set; }

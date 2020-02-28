@@ -55,7 +55,7 @@ namespace HopePipeline.Controllers
             SqlCommand command;
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
-            string query = "INSERT INTO dbo.refform VALUES ('" + form.fName + "', '" + form.lName + "', '" + form.dOB + "', '" + form.clientCode + "', '" + form.guardianName + "', '" + form.guardianRelationship + "', '" + form.address + "', '" + form.gender + "', '" + form.guardianEmail + "', '" + form.guardianPhone + "', '" + form.meeting + "', '" + form.youthInDuvalSchool + "', '" + form.youthInSchool + "', '" + form.issues + "', '" + form.currentSchool + "', '" + form.zip + "', '" + form.grade + "', 'Open', '" + form.arrest + "', '" + form.school + "', '" + form.dateInput + "', '" + form.date + "', '" + form.email + "', '" + form.Reach + "', '" + form.moreInfo + "', '" + form.reason + "', '" + form.referralfname + "', '" + form.referrallname + "')";
+            string query = "INSERT INTO dbo.refform VALUES ('" + form.fName + "', '" + form.lName + "', '" + form.dOB + "', '" + form.clientCode + "', '" + form.guardianName + "', '" + form.guardianlName + "', '" + form.guardianRelationship + "', '" + form.address + "', '" + form.gender + "', '" + form.guardianEmail + "', '" + form.guardianPhone + "', '" + form.meeting + "', '" + form.youthInDuvalSchool + "', '" + form.youthInSchool + "', '" + form.issues + "', '" + form.currentSchool + "', '" + form.zip + "', '" + form.grade + "', 'Open', '" + form.arrest + "', '" + form.school + "', '" + form.dateInput + "', '" + form.date + "', '" + form.email + "', '" + form.Reach + "', '" + form.moreInfo + "', '" + form.reason + "', '" + form.referralfname + "', '" + form.referrallname + "')";
             
             command = new SqlCommand(query, cnn);
             SqlDataReader reader = command.ExecuteReader();
@@ -80,7 +80,7 @@ namespace HopePipeline.Controllers
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
-            string query = "SELECT fname, lname, guardianName, guardianRelationship, guardianPhone, guardianEmail, strAddress, zip, reach, referrallname, referralfname, email FROM refform WHERE clientCode= " + clientCode + ";";
+            string query = "SELECT fname, lname, guardianName, guardianlName, guardianRelationship, guardianPhone, guardianEmail, strAddress, zip, reach, referrallname, referralfname, email FROM refform WHERE clientCode= " + clientCode + ";";
 
             command = new SqlCommand(query, cnn);
 
@@ -99,6 +99,9 @@ namespace HopePipeline.Controllers
                     client.guardianName = Convert.ToString(dataReader["guardianName"]);
                     if (client.guardianName == " " || client.guardianName == "null" || client.guardianName == "")
                     { client.guardianName = "N/A"; }
+                    client.guardianlName = Convert.ToString(dataReader["guardianlName"]);
+                    if (client.guardianlName == " " || client.guardianlName == "null" || client.guardianlName == "")
+                    { client.guardianlName = "N/A"; }
                     client.relationship = Convert.ToString(dataReader["guardianRelationship"]);
                     if (client.relationship == " " || client.relationship == "null" || client.relationship == "")
                     { client.relationship = "N/A"; }
@@ -148,7 +151,7 @@ namespace HopePipeline.Controllers
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
-            string query = "SELECT clientCode, fname, lname, dob, guardianName, guardianRelationship, strAddress, gender, guardianEmail, guardianPhone, meeting, youthInDuvalSchool, youthInSchool, issues, currentSchool, zip, grade, currStatus, arrest, school, dateInput, meetingDate, email, reach, moreInfo, reason, referralfname, referrallname FROM refform WHERE clientCode= " + clientCode + ";";
+            string query = "SELECT clientCode, fname, lname, dob, guardianName, guardianlName, guardianRelationship, strAddress, gender, guardianEmail, guardianPhone, meeting, youthInDuvalSchool, youthInSchool, issues, currentSchool, zip, grade, currStatus, arrest, school, dateInput, meetingDate, email, reach, moreInfo, reason, referralfname, referrallname FROM refform WHERE clientCode= " + clientCode + ";";
 
             command = new SqlCommand(query, cnn);
 
@@ -185,6 +188,9 @@ namespace HopePipeline.Controllers
                     client.guardianName = Convert.ToString(dataReader["guardianName"]);
                     if (client.guardianName == " " || client.guardianName == "null" || client.guardianName == "")
                     { client.guardianName = "N/A"; }
+                    client.guardianlName = Convert.ToString(dataReader["guardianlName"]);
+                    if (client.guardianlName == " " || client.guardianlName == "null" || client.guardianlName == "")
+                    { client.guardianlName = "N/A"; }
                     client.guardianRelationship = Convert.ToString(dataReader["guardianRelationship"]);
                     if (client.guardianRelationship == " " || client.guardianRelationship == "null" || client.guardianRelationship == "")
                     { client.guardianRelationship = "N/A"; }
@@ -310,10 +316,8 @@ namespace HopePipeline.Controllers
                     if (client.dateInput == " " || client.dateInput == "null" || client.dateInput == "" || Convert.ToString(dataReader["dateInput"]).Length < 10)
                     { client.dateInput = "N/A"; }
 
-                    int space3 = Convert.ToString(dataReader["meetingDate"]).IndexOf(' ');
-                    if (Convert.ToString(dataReader["meetingDate"]).Length > 10)
-                    { client.date = Convert.ToString(dataReader["meetingDate"]).Substring(0, space3); }
-                    if (client.date == " " || client.date == "null" || client.date == "" || Convert.ToString(dataReader["meetingDate"]).Length < 10)
+                     client.date = Convert.ToString(dataReader["meetingDate"]);
+                    if (client.date == " " || client.date == "null" || client.date == "" )
                     { client.date = "N/A"; }
 
 
@@ -432,7 +436,7 @@ namespace HopePipeline.Controllers
             {
                 command.CommandText = "UPDATE dbo.refform " +
                     "SET " +
-                    "fname = @fName, lname = @lName, dob = @dOB, guardianName = @guardianName, guardianRelationship = @guardianRelationship, strAddress = @strAddress, gender = @gender, guardianEmail = @guardianEmail, guardianPhone = @guardianPhone, meeting = @meeting, youthInDuvalSchool = @youthInDuvalSchool, youthInSchool = @youthInSchool, issues = @issues, zip = @zip, grade = @grade, currStatus = @currStatus, arrest = @arrest, school = @school, dateInput = @dateInput, meetingDate = @meetingDate, email =@email, reach = @reach,moreInfo = @moreInfo, reason = @reason, referralfname = @referralfname, referrallname = @referrallname WHERE clientCode = @clientCode;";
+                    "fname = @fName, lname = @lName, dob = @dOB, guardianName = @guardianName, guardianlName = @guardianlName, guardianRelationship = @guardianRelationship, strAddress = @strAddress, gender = @gender, guardianEmail = @guardianEmail, guardianPhone = @guardianPhone, meeting = @meeting, youthInDuvalSchool = @youthInDuvalSchool, youthInSchool = @youthInSchool, issues = @issues, zip = @zip, grade = @grade, currStatus = @currStatus, arrest = @arrest, school = @school, dateInput = @dateInput, meetingDate = @meetingDate, email =@email, reach = @reach,moreInfo = @moreInfo, reason = @reason, referralfname = @referralfname, referrallname = @referrallname WHERE clientCode = @clientCode;";
 
                 command.Parameters.AddWithValue("@clientCode", form.clientCode);
 
@@ -455,6 +459,11 @@ namespace HopePipeline.Controllers
                 if (form.guardianName == null)
                 {
                     guardianNameCodeParam.Value = DBNull.Value;
+                }
+                SqlParameter guardianlNameCodeParam = command.Parameters.AddWithValue("@guardianlName", form.guardianlName);
+                if (form.guardianlName == null)
+                {
+                    guardianlNameCodeParam.Value = DBNull.Value;
                 }
                 SqlParameter guardianRelationshipCodeParam = command.Parameters.AddWithValue("@guardianRelationship", form.guardianRelationship);
                 if (form.guardianRelationship == null)
@@ -592,7 +601,7 @@ namespace HopePipeline.Controllers
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
-            string query = "SELECT clientCode, fname, lname, dob, guardianName, guardianRelationship, strAddress, gender, guardianEmail, guardianPhone, meeting, youthInDuvalSchool, youthInSchool, issues, currentSchool, zip, grade, currStatus, arrest, school, dateInput, meetingDate, email, reach, moreInfo, reason, referralfname, referrallname FROM refform WHERE clientCode= " + clientCode + ";";
+            string query = "SELECT clientCode, fname, lname, dob, guardianName, guardianlName, guardianRelationship, strAddress, gender, guardianEmail, guardianPhone, meeting, youthInDuvalSchool, youthInSchool, issues, currentSchool, zip, grade, currStatus, arrest, school, dateInput, meetingDate, email, reach, moreInfo, reason, referralfname, referrallname FROM refform WHERE clientCode= " + clientCode + ";";
 
             command = new SqlCommand(query, cnn);
 
@@ -621,7 +630,7 @@ namespace HopePipeline.Controllers
                     };//fix ints}
 
                     client.guardianName = Convert.ToString(dataReader["guardianName"]);
-
+                    client.guardianlName = Convert.ToString(dataReader["guardianlName"]);
                     client.guardianRelationship = Convert.ToString(dataReader["guardianRelationship"]);
 
 
@@ -698,7 +707,7 @@ namespace HopePipeline.Controllers
 
 
                     if (Convert.IsDBNull(dataReader["dateInput"]))
-                    { client.dateInput = DateTime.Parse("01/01/1970"); }
+                    { client.dateInput = DateTime.Parse("01/01/1970 12:00:00 AM"); }
                     else
                     {
                         client.dateInput = Convert.ToDateTime(dataReader["dateInput"]);
@@ -706,7 +715,7 @@ namespace HopePipeline.Controllers
 
 
                     if (Convert.IsDBNull(dataReader["meetingDate"]))
-                    { client.date = DateTime.Parse("01/01/1970"); }
+                    { client.date = DateTime.Parse("01/01/1970 12:00:00 AM"); }
                     else
                     {
                         client.date = Convert.ToDateTime(dataReader["meetingDate"]);
@@ -2858,10 +2867,15 @@ namespace HopePipeline.Controllers
 
                     SqlParameter referralfname = command.Parameters.AddWithValue("@referralfname", stage1fix[0]);
                     SqlParameter referrallname = command.Parameters.AddWithValue("@referrallname", stage1fix[1]);
-                    if (form.referralSource == null)
+                    if (stage1fix[0] == null)
                     {
                         referralfname.Value = DBNull.Value;
+                        
+                    }
+                    if (stage1fix[1] == null)
+                    {
                         referrallname.Value = DBNull.Value;
+
                     }
                     SqlParameter referralDate = command.Parameters.AddWithValue("@dateInput", form.referralDate);
                     if (form.referralDate == null)

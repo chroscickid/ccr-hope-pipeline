@@ -1,4 +1,4 @@
-﻿@model HopePipeline.Models.DbEntities.Tracking.TrackingForm;
+﻿@model HopePipeline.Models.DbEntities.Tracking.EditTrackingm;
 @{
     ViewData["Title"] = "EditTrackingForm";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -363,7 +363,7 @@
             <li>
                 Grade Level <br />
                 <select asp-for="currentGrade" class="field-style field-full align-none">
-                    @{if (info.currentGrade == 0)
+                    @{if (info.currentGrade == "0")
                         {
                             <option value="0" label="K" selected>Kindergarten</option>
                         }
@@ -371,7 +371,7 @@
                         {
                             <option value="0" label="K">Kindergarten</option>
                         }}
-                    @{if (info.currentGrade == 1)
+                    @{if (info.currentGrade == "1")
                         {
                             <option value="1" label="1" selected>1st Grade</option>
                         }
@@ -379,7 +379,7 @@
                         {
                             <option value="1" label="1">1st Grade</option>
                         }}
-                    @{if (info.currentGrade == 2)
+                    @{if (info.currentGrade == "2")
                         {
                             <option value="2" label="2" selected>2nd Grade</option>
                         }
@@ -387,7 +387,15 @@
                         {
                             <option value="2" label="2">2nd Grade</option>
                         }}
-                    @{if (info.currentGrade == 3)
+                    @{if (info.currentGrade == "2")
+                        {
+                            <option value="2" label="2" selected>2nd Grade</option>
+                        }
+                        else
+                        {
+                            <option value="2" label="2">2nd Grade</option>
+                        }}
+                    @{if (info.currentGrade == "3")
                         {
                             <option value="3" label="3" selected>3rd Grade</option>
                         }
@@ -395,7 +403,7 @@
                         {
                             <option value="3" label="3">3rd Grade</option>
                         }}
-                    @{if (info.currentGrade == 4)
+                    @{if (info.currentGrade == "4")
                         {
                             <option value="4" label="4" selected>4th Grade</option>
                         }
@@ -403,7 +411,7 @@
                         {
                             <option value="4" label="4">4th Grade</option>
                         }}
-                    @{if (info.currentGrade == 5)
+                    @{if (info.currentGrade == "5")
                         {
                             <option value="5" label="5" selected>5th Grade</option>
                         }
@@ -411,7 +419,7 @@
                         {
                             <option value="5" label="5">5th Grade</option>
                         }}
-                    @{if (info.currentGrade == 6)
+                    @{if (info.currentGrade == "6")
                         {
                             <option value="6" label="6" selected>6th Grade</option>
                         }
@@ -419,7 +427,7 @@
                         {
                             <option value="6" label="6">6th Grade</option>
                         }}
-                    @{if (info.currentGrade == 7)
+                    @{if (info.currentGrade == "7")
                         {
                             <option value="7" label="7" selected>7th Grade</option>
                         }
@@ -427,7 +435,7 @@
                         {
                             <option value="7" label="7">7th Grade</option>
                         }}
-                    @{if (info.currentGrade == 8)
+                    @{if (info.currentGrade == "8")
                         {
                             <option value="8" label="8" selected>8th Grade</option>
                         }
@@ -435,7 +443,7 @@
                         {
                             <option value="8" label="8">8th Grade</option>
                         }}
-                    @{if (info.currentGrade == 9)
+                    @{if (info.currentGrade == "9")
                         {
                             <option value="9" label="9" selected>9th Grade</option>
                         }
@@ -443,7 +451,7 @@
                         {
                             <option value="9" label="9">9th Grade</option>
                         }}
-                    @{if (info.currentGrade == 10)
+                    @{if (info.currentGrade == "10")
                         {
                             <option value="10" label="10" selected>10th Grade</option>
                         }
@@ -451,7 +459,7 @@
                         {
                             <option value="10" label="10">10th Grade</option>
                         }}
-                    @{if (info.currentGrade == 11)
+                    @{if (info.currentGrade == "11")
                         {
                             <option value="11" label="11" selected>11th Grade</option>
                         }
@@ -459,7 +467,7 @@
                         {
                             <option value="11" label="11">11th Grade</option>
                         }}
-                    @{if (info.currentGrade == 12)
+                    @{if (info.currentGrade == "12")
                         {
                             <option value="12" label="12" selected>12th Grade</option>
                         }
@@ -1873,5 +1881,4 @@
         </ul>
     </nav>
 </div>
-
 

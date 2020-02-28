@@ -7,7 +7,7 @@ namespace HopePipeline.Models.DbEntities.Reports
 {
     public class ReportRow
     {
-         
+
         public string fName { get; set; }
         public string lName { get; set; }
         public string releField1 { get; set; }

@@ -1,16 +1,16 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HopePipeline.Models
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-
-    using System.ComponentModel;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
+    
     public class referralBrandi
     {
 
@@ -26,7 +26,7 @@ namespace HopePipeline.Models
         public DateTime? dOB { get; set; }
 
         public string guardianName { get; set; }
-        
+        public string guardianlName { get; set; }
         public string guardianRelationship { get; set; }
 
         public string address { get; set; }
@@ -67,7 +67,7 @@ namespace HopePipeline.Models
         public string referralfname { get; set; }
         public string referrallname { get; set; }
 
-        
+
 
     }
 }

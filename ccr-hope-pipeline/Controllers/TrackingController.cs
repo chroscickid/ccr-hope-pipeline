@@ -36,34 +36,57 @@ namespace HopePipeline.Controllers
             //can autopopulate values in the tracking form
             while (reader.Read())
             {
-                relRef.address = reader.GetString(reader.GetOrdinal("strAddress"));
-                relRef.arrest = reader.GetInt32(reader.GetOrdinal("arrest"));
-                relRef.currentSchool = reader.GetString(reader.GetOrdinal("currentSchool"));
-                //relRef.date = reader.GetDateTime(reader.GetOrdinal("date"));
-                //  relRef.dateInput = reader.GetDateTime(reader.GetOrdinal("dateInput"));
-                relRef.dOB = reader.GetDateTime(reader.GetOrdinal("dob"));
-                relRef.email = reader.GetString(reader.GetOrdinal("email"));
-                relRef.fName = reader.GetString(reader.GetOrdinal("fname"));
-                relRef.gender = reader.GetString(reader.GetOrdinal("gender"));
-                relRef.grade = reader.GetString(reader.GetOrdinal("grade"));
-                relRef.guardianEmail = reader.GetString(reader.GetOrdinal("guardianEmail"));
-                relRef.guardianName = reader.GetString(reader.GetOrdinal("guardianName"));
-                relRef.guardianPhone = reader.GetString(reader.GetOrdinal("guardianPhone"));
-                relRef.guardianRelationship = reader.GetString(reader.GetOrdinal("guardianRelationship"));
-                relRef.issues = reader.GetString(reader.GetOrdinal("issues"));
-                relRef.lName = reader.GetString(reader.GetOrdinal("lname"));
-                relRef.meeting = reader.GetInt32(reader.GetOrdinal("meeting"));
-                relRef.moreInfo = reader.GetString(reader.GetOrdinal("moreInfo"));
-                relRef.Reach = reader.GetString(reader.GetOrdinal("Reach"));
-                relRef.reason = reader.GetString(reader.GetOrdinal("reason"));
-                relRef.referralfname = reader.GetString(reader.GetOrdinal("referralfname"));
-                relRef.referrallname = reader.GetString(reader.GetOrdinal("referrallname"));
-                relRef.school = reader.GetString(reader.GetOrdinal("school"));
-                relRef.status = reader.GetString(reader.GetOrdinal("currStatus"));
-                relRef.youthInDuvalSchool = reader.GetInt32(reader.GetOrdinal("youthInDuvalSchool"));
-                relRef.youthInSchool = reader.GetInt32(reader.GetOrdinal("youthInSchool"));
-                relRef.zip = reader.GetString(reader.GetOrdinal("zip"));
+                while (reader.Read())
+                {
+                   relRef.address = reader.GetString(reader.GetOrdinal("strAddress"));
+                    
+                    if (!reader.IsDBNull(reader.GetOrdinal("moreInfo")))
+                    {
+                        relRef.moreInfo = reader.GetString(reader.GetOrdinal("moreInfo"));
+                    }
+                   
+                        relRef.arrest = reader.GetInt32(reader.GetOrdinal("arrest"));
+                   
+                    relRef.currentSchool = reader.GetString(reader.GetOrdinal("currentSchool"));
+                    relRef.dOB = reader.GetDateTime(reader.GetOrdinal("dob"));
+                    relRef.email = reader.GetString(reader.GetOrdinal("email"));
+                    relRef.fName = reader.GetString(reader.GetOrdinal("fname"));
+                    relRef.gender = reader.GetString(reader.GetOrdinal("gender"));
+                    relRef.grade = reader.GetString(reader.GetOrdinal("grade"));
+                    if (!reader.IsDBNull(reader.GetOrdinal("guardianEmail")))
+                    {
+                        relRef.guardianEmail = reader.GetString(reader.GetOrdinal("guardianEmail"));
+                    }
+                    if (!reader.IsDBNull(reader.GetOrdinal("guardianName")))
+                    {
+                        relRef.guardianName = reader.GetString(reader.GetOrdinal("guardianName"));
+                    }
+                    if (!reader.IsDBNull(reader.GetOrdinal("guardianPhone")))
+                    {
+                        relRef.guardianPhone = reader.GetString(reader.GetOrdinal("guardianPhone"));
+                    }
+                    relRef.guardianRelationship = reader.GetString(reader.GetOrdinal("guardianRelationship"));
+                    relRef.issues = reader.GetString(reader.GetOrdinal("issues"));
+                    relRef.lName = reader.GetString(reader.GetOrdinal("lname"));
+                    relRef.meeting = reader.GetInt32(reader.GetOrdinal("meeting"));
+                    relRef.Reach = reader.GetString(reader.GetOrdinal("Reach"));
+                    if (!reader.IsDBNull(reader.GetOrdinal("reason")))
+                    {
+                        relRef.reason = reader.GetString(reader.GetOrdinal("reason"));
+                    }
+                    relRef.referralfname = reader.GetString(reader.GetOrdinal("referralfname"));
+                    relRef.referrallname = reader.GetString(reader.GetOrdinal("referrallname"));
+                    if (!reader.IsDBNull(reader.GetOrdinal("school")))
+                    {
+                        relRef.school = reader.GetString(reader.GetOrdinal("school"));
+                    }
+                    relRef.status = reader.GetString(reader.GetOrdinal("currStatus"));
+                    relRef.youthInDuvalSchool = reader.GetInt32(reader.GetOrdinal("youthInDuvalSchool"));
+                    relRef.youthInSchool = reader.GetInt32(reader.GetOrdinal("youthInSchool"));
+                    relRef.zip = reader.GetString(reader.GetOrdinal("zip"));
 
+
+                }
 
             }
             reader.Close();
@@ -108,16 +131,20 @@ namespace HopePipeline.Controllers
                 "INSERT INTO dbo.health VALUES (" + sub.baker + "," + sub.marchman + "," + sub.asthma + "," + id + ")",
                 "INSERT INTO dbo.household VALUES (" + sub.femHouse + "," + sub.domVio + "," + sub.adopted + "," + sub.evicted + "," + sub.incarParent + "," + sub.publicAssistance + "," + id + ")",
                 //addIEP?
-                "INSERT INTO dbo.iep VALUES (" + sub.iep + ",'" + sub.iepplan1 + "','" + sub.iepplan2 + "'," + "0" + "," + id + ")",
+               // "INSERT INTO dbo.iep VALUES (" + sub.iep + ",'" + sub.iepplan1 + "'','" + sub.iepplan2 + "'," + "0" + "," + id + ")",
+               "INSERT INTO dbo.iep VALUES (" + sub.iep + ",'" + sub.iepplan1 + "','" + sub.iepplan2 + "'," + "0" + "," + id + ")",
                 //otherLegal should be in the db?
+                //"INSERT INTO dbo.legal VALUES (" + sub.firstLegal + ",'" + sub.secondLegal + "','" + sub.justiceOutcome + "'," + id + ")",
                 "INSERT INTO dbo.legal VALUES ('" + sub.firstLegal + "','" + sub.secondLegal + "','" + sub.justiceOutcome + "'," + id + ")",
+                
+                //"INSERT INTO dbo.school (" + id + "," + sub.currentGrade + ",'" + sub.school + "','" + sub.schoolRef + "')"
                 "INSERT INTO dbo.school (" + id + "," + sub.currentGrade + ",'" + sub.school + "','" + sub.schoolRef + "')"
             };
 
             //Um, this needs to be outside of that for some reason
             int totalSus = sub.iss + sub.oss;
             qs.Add("INSERT INTO dbo.suspension VALUES(" + sub.suspended + "," + sub.suspendCount + "," + totalSus + "," + sub.iss + "," + sub.oss + "," + 0 + "," + 0 + "," + id + ")");
-           
+
             //We now just run through every string in the list, running it as a sql command
             foreach (string query in qs)
             {
@@ -185,7 +212,7 @@ namespace HopePipeline.Controllers
             reader.Close();
 
 
-            return RedirectToAction("MeetingList",meet.clientCode);
+            return RedirectToAction("MeetingList", meet.clientCode);
         }
 
         public ViewResult MeetingList(int clientCode)
@@ -203,9 +230,9 @@ namespace HopePipeline.Controllers
             SqlDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
-            {               
-               //We push information from the query into a row and onto the list of rows
-                Meeting meet = new Meeting { MeetingDate = reader.GetDateTime(0), MeetingPurpose = reader.GetString(1), MeetingNotes = reader.GetString(2)};
+            {
+                //We push information from the query into a row and onto the list of rows
+                Meeting meet = new Meeting { MeetingDate = reader.GetDateTime(0), MeetingPurpose = reader.GetString(1), MeetingNotes = reader.GetString(2) };
 
                 results.Add(meet);
             }
@@ -215,12 +242,12 @@ namespace HopePipeline.Controllers
             query = "select clientLast, clientFirst from client where clientCode = " + clientCode;
             command = new SqlCommand(query, cnn);
             reader = command.ExecuteReader();
-            while(reader.Read())
+            while (reader.Read())
             {
                 sendme.fname = reader.GetString(1);
                 sendme.lname = reader.GetString(0);
                 sendme.clientCode = clientCode;
-               
+
             }
             reader.Close();
 
@@ -298,7 +325,7 @@ namespace HopePipeline.Controllers
         {
             string spoop = "DELETE FROM " + table + " WHERE ClientCode = " + clientCode + ";";
             return spoop;
-        
+
         }
 
         public IActionResult Delete(int clientCode)
@@ -340,7 +367,7 @@ namespace HopePipeline.Controllers
             return RedirectToAction("TrackingList");
         }
 
-       
+
         public IActionResult ChangeStatus(int clientCode, int status)
         {
             SqlConnection cnn = new SqlConnection(connectionString);
@@ -413,7 +440,7 @@ namespace HopePipeline.Controllers
             reader = command.ExecuteReader();
             reader.Close();
 
-            return RedirectToAction("RefList","Referral");
+            return RedirectToAction("RefList", "Referral");
 
         }
 
@@ -437,8 +464,8 @@ namespace HopePipeline.Controllers
             }
             reader.Close();
 
-            
-            foreach(int refcode in refCodeList)
+
+            foreach (int refcode in refCodeList)
             {
                 string query = "SELECT referralfname, referrallname FROM refform WHERE clientCode = " + clientCode;
                 command = new SqlCommand(q1, cnn);
@@ -456,5 +483,7 @@ namespace HopePipeline.Controllers
             return View("RefTrackList", mod);
 
         }
+
+       
     }
 }

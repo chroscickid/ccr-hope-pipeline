@@ -7,6 +7,6 @@ namespace HopePipeline.Models.DbEntities.Tracking
 {
     public class TrackingSearch
     {
-        public string searchTerm {get; set; }
+        public string searchTerm { get; set; }
     }
 }

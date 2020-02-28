@@ -623,7 +623,7 @@ namespace HopePipeline.Controllers
                     //int space1 = Convert.ToString(dataReader["dob"]).IndexOf(' ');
 
                     if (Convert.IsDBNull(dataReader["dob"]))
-                    { client.dOB = DateTime.Parse("01/01/1970"); }
+                    { client.dOB = DateTime.Parse("01/01/1990"); }
                     else
                     {
                         client.dOB = Convert.ToDateTime(dataReader["dob"]);
@@ -934,9 +934,21 @@ namespace HopePipeline.Controllers
                     { client.clientEthnicity = client.clientEthnicity; }
 
 
-                    client.clientDOB = Convert.ToString(dataReader["clientdob"]);/////////////////////date corrections needed
-                    if (client.clientDOB == " " || client.clientDOB == "null" || client.clientDOB == "")
+                   
+                    if (Convert.ToString(dataReader["clientdob"]).Length > 10)
+                    {
+                      int spaceclientdob = Convert.ToString(dataReader["clientdob"]).IndexOf(' ');
+                        client.clientDOB = Convert.ToString(dataReader["clientdob"]).Substring(spaceclientdob); }
+                   
+
+                    if (client.clientDOB == " " || client.clientDOB == "null" || client.clientDOB== "" || Convert.ToString(dataReader["dob"]).Length < 10)
                     { client.clientDOB = "N/A"; }
+					
+					
+
+
+
+
 
                     client.school = Convert.ToString(dataReader["school"]);
                     if (client.school == " " || client.school == "null" || client.school == "" || sc ==0)
@@ -1121,7 +1133,19 @@ namespace HopePipeline.Controllers
                     else
                     { client.levelOfServiceProvided = client.levelOfServiceProvided; }
 
-                    client.referralDate = Convert.ToString(dataReader["dateInput"]);
+                    
+                    if (Convert.ToString(dataReader["dateInput"]).Length > 10)
+
+                    {int spacedateinput = Convert.ToString(dataReader["dateInput"]).IndexOf(' ');
+                        client.referralDate = Convert.ToString(dataReader["dateInput"]).Substring(spacedateinput);
+                    }
+                    if (client.referralDate == " " || client.referralDate == "null" || client.referralDate == "" || Convert.ToString(dataReader["dateInput"]).Length < 10)
+                    { client.referralDate = "N/A"; }
+
+
+
+
+
 
                     //Reason for Nonengagement needs to be added
                     client.nonEngagementReason = Convert.ToString(dataReader["nonEngageReason"]);
@@ -1364,7 +1388,15 @@ namespace HopePipeline.Controllers
                     else
                     { client.bullyReport = client.bullyReport; }
                     //date
-                    client.dateofBully = Convert.ToString(dataReader["reportDate"]);
+                   
+                    if (Convert.ToString(dataReader["reportDate"]).Length > 10)
+
+                    {int spacedateofbully = Convert.ToString(dataReader["reportDate"]).IndexOf(' ');
+                        client.dateofBully = Convert.ToString(dataReader["reportDate"]).Substring(spacedateofbully);
+                    }
+
+                    if (client.dateofBully == " " || client.dateofBully == "null" || client.dateofBully == "" || Convert.ToString(dataReader["reportDate"]).Length < 10)
+                    { client.dateofBully = "N/A"; }
 
                     //----------------------------------------------------------------------------Discipline-------------------------------
                     client.suspended = Convert.ToString(dataReader["suspendedThrice"]);
@@ -1403,9 +1435,16 @@ namespace HopePipeline.Controllers
                     else
                     { client.altSchoolName = client.altSchoolName; }
 
-                    client.dateOfAlt = Convert.ToString(dataReader["altSchoolDate"]);//date-------------------------------------------------------------DODODODO_________DATE_
-                    if (client.dateOfAlt == "")
+                  if (Convert.ToString(dataReader["altSchoolDate"]).Length > 10)
+
+                    {
+                        int spacealtdate = Convert.ToString(dataReader["altSchoolDate"]).IndexOf(' ');
+                        client.dateOfAlt = Convert.ToString(dataReader["altSchoolDate"]).Substring(spacealtdate);
+                    }
+
+                    if (client.dateOfAlt == " " || client.dateOfAlt == "null" || client.dateOfAlt == "" || Convert.ToString(dataReader["altSchoolDate"]).Length < 10)
                     { client.dateOfAlt = "N/A"; }
+
                     //int
                     client.timesInAlt = Convert.ToString(dataReader["altSchoolTimes"]);
                     if (client.timesInAlt == "" || asc == 0)
@@ -1579,7 +1618,17 @@ namespace HopePipeline.Controllers
                     client.careGender = Convert.ToString(dataReader["caregender"]);
                     client.clientGender = Convert.ToString(dataReader["clientgender"]);
                     client.clientEthnicity = Convert.ToString(dataReader["clientethn"]);
-                    client.clientDOB = Convert.ToString(dataReader["clientdob"]);
+              
+                 
+                      if (Convert.IsDBNull(dataReader["clientdob"]))
+                    { client.clientDOB = DateTime.Parse("01/01/1990"); }
+                    else
+                    {
+                        client.clientDOB = Convert.ToDateTime(dataReader["clientdob"]);
+                        
+                    };
+
+
                     client.school = Convert.ToString(dataReader["school"]);
                     client.currentGrade = Convert.ToString(dataReader["grade"]);
                     client.referralSource = Convert.ToString(dataReader["referralfname"]) + " " + Convert.ToString(dataReader["referrallname"]);
@@ -1632,8 +1681,13 @@ namespace HopePipeline.Controllers
 
                     client.levelOfServiceProvided = Convert.ToString(dataReader["levelofService"]);
 
-                    client.referralDate = Convert.ToString(dataReader["dateInput"]);//----------------------------Date-----------------------------------
-
+                 
+                    if (Convert.IsDBNull(dataReader["dateInput"]))
+                    { client.referralDate = DateTime.Parse("01/01/1990"); }
+                    else
+                    {
+                        client.referralDate = Convert.ToDateTime(dataReader["dateInput"]);
+                    };
                     //client.intakeDate = Convert.ToString(dataReader["intakeDate"]);//------------------------------------Date------------------------------------
 
                     //Reason for Nonengagement needs to be added
@@ -1731,7 +1785,13 @@ namespace HopePipeline.Controllers
                     else { client.bullyReport = Convert.ToInt16(dataReader["reported"]); }
 
                     //date
-                    client.dateofBully = Convert.ToString(dataReader["reportDate"]);
+             
+                    if (Convert.IsDBNull(dataReader["reportDate"]))
+                    { client.dateofBully = DateTime.Parse("01/01/1990"); }
+                    else
+                    {
+                        client.dateofBully = Convert.ToDateTime(dataReader["reportDate"]);
+                    };
 
                     //----------------------------------------------------------------------------Discipline-------------------------------
 
@@ -1749,8 +1809,13 @@ namespace HopePipeline.Controllers
 
                     client.altSchoolName = Convert.ToString(dataReader["altSchoolName"]);
 
-                    client.dateOfAlt = Convert.ToString(dataReader["altSchoolDate"]);//date-------------------------------------------------------------DODODODO_________DATE_
-
+                  if (Convert.IsDBNull(dataReader["altSchoolDate"]))
+                    { client.dateOfAlt = DateTime.Parse("01/01/1990"); }
+                    else
+                    {
+                        client.dateOfAlt = Convert.ToDateTime(dataReader["altSchoolDate"]);
+                        
+                    };
 
                     if (Convert.IsDBNull(dataReader["altSchoolTimes"]))
                     { client.timesInAlt = 33; }

@@ -2,6 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HopePipeline.Models.DbEntities.Tracking
 {
@@ -18,8 +26,8 @@ namespace HopePipeline.Models.DbEntities.Tracking
         public string careGender { get; set; }
         public string clientGender { get; set; }
         public string clientEthnicity { get; set; }
-
-        public string clientDOB { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? clientDOB { get; set; }
 
         public string school { get; set; }
         public string currentGrade { get; set; }
@@ -54,13 +62,15 @@ namespace HopePipeline.Models.DbEntities.Tracking
         public string compTime { get; set; }
         public int bullied { get; set; }
         public int bullyReport { get; set; }
-        public string dateofBully { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? dateofBully { get; set; }
         //stilll working on school
 
         //CCR
 
         public string levelOfServiceProvided { get; set; }
-        public string referralDate { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? referralDate { get; set; }
         public string intakeDate { get; set; }
         public string nonEngagementReason { get; set; }
         public int caseStatus { get; set; }
@@ -82,7 +92,8 @@ namespace HopePipeline.Models.DbEntities.Tracking
         public int suspendCount { get; set; }
         public int altSchool { get; set; }
         public string altSchoolName { get; set; }
-        public string dateOfAlt { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? dateOfAlt { get; set; }
         public int timesInAlt { get; set; }
         public int daysOwed { get; set; }
         public string firstLegal { get; set; }

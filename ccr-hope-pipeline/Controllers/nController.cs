@@ -908,7 +908,7 @@ namespace HopePipeline.Controllers
                     { client.clientGender = "He/They"; }
                     if (client.clientGender.Contains("neutral"))
                     { client.clientGender = "Zie/Zir/Zirs"; }
-                    if(client.clientGender.Length == 0||cc == 0 || time.Length == 0)////////////Something is wrong
+                    if(client.clientGender.Length == 0||cc == 0 || time.Length == 0)//////////////Something is wrong
                     { client.clientGender = "N/A"; }
                     else { client.clientGender = client.clientGender; }
 

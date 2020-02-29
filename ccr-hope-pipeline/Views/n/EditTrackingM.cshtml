@@ -234,7 +234,7 @@
 }
 <h2> Center for Children's Rights Tracking Form Edit</h2>
 
-<form asp-action="editTrackingForm" asp-controller="n" class="form-style-9" method="post">
+<form asp-action="EditTrackingForm" asp-controller="n" class="form-style-9" method="post">
 
     <div id="page1">
         <h3>Demographic Information</h3>
@@ -258,12 +258,12 @@
 
             <li>
 
-                @{ string answerdob = info.clientDOB.ToString();
+                @*@{ string answerdob = info.clientDOB.ToString();
                     int spacedob = answerdob.IndexOf(" ");
                     string datedob = answerdob.Substring(0, spacedob);
 
 
-                    string[] strlistdob = datedob.Split("/");
+                    string[] strlistdob = datedob.Split('/');
 
 
                     string yeardob = strlistdob[2];
@@ -275,11 +275,11 @@
                     { daydob = "0" + daydob; }
                     string answerb = yeardob + "-" + daydob + "-" + monthdob;
 
-                }
+                }*@
 
 
                 Date of Birth <br />
-                <input asp-for="clientDOB" type="date" min="2001-01-01" max="2050-12-31" class="field-style field-full align-none" value="@answerb"> <br />
+                <input asp-for="clientDOB" type="date" min="2001-01-01" max="2050-12-31" class="field-style field-full align-none" value="2001-02-02"> <br />
             </li>
 
             <li>
@@ -1400,12 +1400,12 @@
                     Need to fix the report date automatically showing
                 </div>
                 <div id="ifNoReport">
-                    @{ string answerbully = info.dateofBully.ToString();
+                    @*@{ string answerbully = info.dateofBully.ToString();
                         int spacebully = answerbully.IndexOf(" ");
                         string datebully = answerbully.Substring(0, spacebully);
 
 
-                        string[] strlistbully = datebully.Split("/");
+                        string[] strlistbully = datebully.Split('/');
 
 
                         string yearbully = strlistbully[2];
@@ -1417,9 +1417,9 @@
                         { daybully = "0" + daybully; }
                         string answerdatebully = yearbully + "-" + daybully + "-" + monthbully;
 
-                    }
+                    }*@
                     Date of report <br />
-                    <input asp-for="dateofBully" type="date" id="dateofBully" value="@answerdatebully" class="field-style field-full align-none" min="2001-01-01" max="2050-12-31"> <br />
+                    <input asp-for="dateofBully" type="date" id="dateofBully" value="2001-02-02" class="field-style field-full align-none" min="2001-01-01" max="2050-12-31"> <br />
                     <br />
                     <br />
                 </div>
@@ -1604,12 +1604,12 @@
                             } }
                     </select>
 
-                    @{ string answeralt = info.dateOfAlt.ToString();
+                    @*@{ string answeralt = info.dateOfAlt.ToString();
                         int spacealt = answeralt.IndexOf(" ");
                         string datealt = answeralt.Substring(0, spacealt);
 
 
-                        string[] strlistalt = datealt.Split("/");
+                        string[] strlistalt = datealt.Split('/');
 
 
                         string yearalt = strlistalt[2];
@@ -1621,10 +1621,10 @@
                         { dayalt = "0" + dayalt; }
                         string answeraltschool = yearalt + "-" + dayalt + "-" + monthalt;
 
-                    }
+                    }*@
                     What day did the student enter the alternative school</br>
                     <input asp-for="dateOfAlt" type="date" class="field-style field-full align-none" id="dateOfAlt"
-                         value="@answeraltschool"  min="2001-01-01" max="2050-12-31">
+                         value="2001-02-02"  min="2001-01-01" max="2050-12-31">
                     <br />
                     <br />
                 </div>
@@ -1740,12 +1740,12 @@
         <br />
         <ul>
             <li>
-                @{ string answer = info.referralDate.ToString();
+                @*@{ string answer = info.referralDate.ToString();
                     int space = answer.IndexOf(" ");
                     string date = answer.Substring(0, space);
 
 
-                    string[] strlist = date.Split("/");
+                    string[] strlist = date.Split('/');
 
 
                     string year = strlist[2];
@@ -1757,14 +1757,14 @@
                     { day = "0" + day; }
                     string answera = year + "-" + day + "-" + month;
 
-                }
+                }*@
 
 
 
 
                 Referral Date <br />
                 <input asp-for="referralDate" type="date" class="field-style field-full align-none" id="refdate"
-                       value="@answera"
+                       value="2001-02-02"
                        min="2001-01-01" max="2050-12-31">
                 <br />
             </li>

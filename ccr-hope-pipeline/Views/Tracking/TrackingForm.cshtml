@@ -270,7 +270,7 @@
                         { <input asp-for="clientGender" type="radio" value="female" checked>}
                         else
                         { <input asp-for="clientGender" type="radio" value="female">} } She/Her/Hers<br>
-                    @{ if (refMove.gender == "trans")
+                    @{ if (refMove.gender == "trans*")
                         { <input asp-for="clientGender" type="radio" value="trans" checked>}
                         else
                         { <input asp-for="clientGender" type="radio" value="trans">} } They/Them/Theirs<br>

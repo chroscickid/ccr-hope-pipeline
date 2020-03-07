@@ -10,7 +10,7 @@ namespace HopePipeline.Models.DbEntities.Meetings
         public DateTime MeetingDate { get; set; }
         public string MeetingPurpose { get; set; }
         public string MeetingNotes { get; set; }
-        public int clientCode { get; set; }
+        public Guid clientCode { get; set; }
 
     }
 

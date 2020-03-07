@@ -34,8 +34,7 @@ namespace HopePipeline.Controllers
             //I hate this. This is just vile 😒
             //We are basically just putting a referral in the tracking model so we
             //can autopopulate values in the tracking form
-            while (reader.Read())
-            {
+          
                 while (reader.Read())
                 {
                    relRef.address = reader.GetString(reader.GetOrdinal("strAddress"));
@@ -88,7 +87,7 @@ namespace HopePipeline.Controllers
 
                 }
 
-            }
+            
             reader.Close();
 
             //We push it into the model that gets sent to the view
@@ -188,9 +187,13 @@ namespace HopePipeline.Controllers
                         break;
 
                 }
+
                 //We push information from the query into a row and onto the list of rows
                 TrackingRow row = new TrackingRow { lname = reader.GetString(0), fname = reader.GetString(1), status = statusString, clientCode = reader.GetInt32(3), phoneNumber = reader.GetString(4) };
-
+                string mDate = lastMeeting(row.clientCode);
+                if (mDate.Equals(""))
+                    mDate = "No meetings";
+                row.lastMeeting = mDate;
                 results.Add(row);
             }
             reader.Close();
@@ -201,18 +204,51 @@ namespace HopePipeline.Controllers
         [HttpPost]
         public IActionResult AddMeeting(Meeting meet)
         {
+
+            Guid g = Guid.NewGuid();
+
             SqlConnection cnn = new SqlConnection(connectionString);
             SqlCommand command;
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
-            string query = "INSERT INTO meetings VALUES ('" + meet.MeetingDate.ToString("yyyy-MM-dd") + "','" + meet.MeetingPurpose + "','" + meet.MeetingNotes + "'," + meet.clientCode + ")";
+            string query = "INSERT INTO meetings VALUES ('" + meet.MeetingDate.ToString("yyyy-MM-dd") + "','" + meet.MeetingPurpose + "','" + meet.MeetingNotes + "'," + meet.clientCode + ",'" + g + "')";
 
             command = new SqlCommand(query, cnn);
             SqlDataReader reader = command.ExecuteReader();
             reader.Close();
 
 
-            return RedirectToAction("MeetingList", meet.clientCode);
+            //  return RedirectToAction("MeetingList", meet.clientCode);
+            return Redirect("MeetingList?clientCode=" + meet.clientCode);
+        }
+
+        public string lastMeeting(int clientCode)
+        {
+            var results = new List<DateTime>();
+            SqlConnection cnn;
+            cnn = new SqlConnection(connectionString);
+            SqlCommand command;
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            cnn.Open();
+
+            string query = "select meetingDate from meetings where clientCode =" + clientCode;
+            command = new SqlCommand(query, cnn);
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                if(!reader.IsDBNull(0))
+                {
+                    //We push information from the query into a row and onto the list of rows
+                    results.Add(reader.GetDateTime(0));
+                }
+            }
+            reader.Close();
+            results.Sort();
+
+            if (results.Count != 0)
+                return results[0].ToString("MM-dd-yyyy");
+            else
+                return "";
         }
 
         public ViewResult MeetingList(int clientCode)

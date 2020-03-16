@@ -1,9 +1,77 @@
 ﻿
 @{
     ViewData["Title"] = "confirmationM";
+ 
 }
+    <head>
+        <style>
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+            }
 
+            .form-style-9 {
+                max-width: 1000px;
+                background: #FAFAFA;
+                padding: 60px;
+                margin: 50px auto;
+                border-radius: 10px;
+                border: 6px solid #305A72;
+            }
 
+                .form-style-9 ul li .field-style {
+                    box-sizing: border-box;
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    padding: 8px;
+                    outline: none;
+                    border: 1px solid #B0CFE0;
+                    -webkit-transition: all 0.30s ease-in-out;
+                    -moz-transition: all 0.30s ease-in-out;
+                    -o-transition: all 0.30s ease-in-out;
+                }
+
+            input[type=text], input[type=password] {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                box-sizing: border-box;
+            }
+
+            input[type=submit] {
+                background-color: #09335e;
+                color: white;
+                padding: 10px 18px;
+                width: auto;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            .cancelbtn {
+                width: auto;
+                padding: 10px 18px;
+                color: white;
+                background-color: #f44336;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+        </style>
+        <script type="text/javascript">
+            function myConfirm(name) {
+                var name = document.getElementById('custId').value;
+                if (confirm("Please Confirm you would like to recieve a copy of " + name + "'s referral")) {
+                    return true;
+                }
+                else {
+                    return false;
+                    event.preventDefault();
+                }
+            }
+        </script>
+    </head>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,23 +82,30 @@
 
     <br /><br />
 
+    <form asp-action="Emailreferral" class="form-style-9" asp-controller="n" method="post">
+        <h4>A referral was successfully made for @ViewBag.Name </h4>
+        <h4>at @ViewBag.Bessage</h4>
+        <h4>Thank you for your submission</h4>
 
-    <h2>A referral was made for "first name" and "last name" </h2>
-    <h4>"Date of Referral"</h4>
-    <h4>Thank you for your submission</h4>
-
-
-    <br />
-    <br />
-    <p>
-        To get this confirmation in an email please enter your email address:
-        <br /><input type="email" name="emailaddress" size="35" style="font-size:25px;">
 
         <br />
-        <input type="image" src="~/images/email33.png" alt="Submit" onclick="location.href='@Url.Action("Index", "Home")'">
-    </p>
+        <br />
+        
+            <input type="hidden" id="custId" name="name" value="@ViewBag.Name">
+            <p>
 
-    <br />
+                To get this confirmation in an email, please enter your email address and click the email icon:<br />
+                <input type="email" name="emailaddress" size="35" style="font-size:25px;vertical-align:middle" value="g@mail.com">
+
+                &nbsp;&nbsp;&nbsp;
+                <input type="image" style="vertical-align:middle;width:140px;height:57px;"src="~/images/email33.png" alt="Submit" onclick="return myConfirm(name);"><br />
+                <br />
+               <button onclick="location.href='@Url.Action("Index","Home")'" class="cancelbtn">Cancel</button>
+
+            </p>
+        </form>
+
+        <br />
 
 </body>
 </html>

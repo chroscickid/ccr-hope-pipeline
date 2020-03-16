@@ -8,6 +8,10 @@ using System.Data.SqlClient;
 using HopePipeline.Models.DbEntities.Referrals;
 using HopePipeline.Models.DbEntities.Tracking;
 using System.Diagnostics;
+//using SendGrid;
+//using SendGrid.Helpers.Mail;
+//using System;
+//using System.Threading.Tasks;
 
 namespace HopePipeline.Controllers
 {
@@ -23,20 +27,13 @@ namespace HopePipeline.Controllers
             cnn.Open();
             SqlCommand command = cnn.CreateCommand();
             object value = new SqlCommand("SELECT MAX(clientCode) FROM refform", cnn).ExecuteScalar();
-            //value = Convert.ToString(value);
-            int i = 0;
-            if (Convert.IsDBNull(value))
-            {
-                // i = 0;
-                ViewBag.Tessage = i;
-            }
-            if (!Convert.IsDBNull(value))
-            {
-                i = Convert.ToInt32(value);
-                ViewBag.Tessage = i + 1;
-            }
+          
+            Guid clientCode = Guid.NewGuid();
+
+            ViewBag.Tessage = clientCode;
 
             ViewBag.Bessage = DateTime.Now;
+            
 
             //SELECT MAX(Price) AS LargestPrice
             //FROM Products;
@@ -45,7 +42,7 @@ namespace HopePipeline.Controllers
 
             return View();
 
-        }
+        }//GUID Done-------------------------------------------------------------------------Form Referral Method
         [HttpPost]
         public IActionResult submitform(referralBrandi form)
         {
@@ -55,19 +52,26 @@ namespace HopePipeline.Controllers
             SqlCommand command;
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
-            string query = "INSERT INTO dbo.refform VALUES ('" + form.fName + "', '" + form.lName + "', '" + form.dOB + "', '" + form.clientCode + "', '" + form.guardianName + "', '" + form.guardianlName + "', '" + form.guardianRelationship + "', '" + form.address + "', '" + form.gender + "', '" + form.guardianEmail + "', '" + form.guardianPhone + "', '" + form.meeting + "', '" + form.youthInDuvalSchool + "', '" + form.youthInSchool + "', '" + form.issues + "', '" + form.currentSchool + "', '" + form.zip + "', '" + form.grade + "', 'Open', '" + form.arrest + "', '" + form.school + "', '" + form.dateInput + "', '" + form.date + "', '" + form.email + "', '" + form.Reach + "', '" + form.moreInfo + "', '" + form.reason + "', '" + form.referralfname + "', '" + form.referrallname + "')";
+
+            string query = "INSERT INTO dbo.refform VALUES ('" + form.fName + "', '" + form.lName + "', '" + form.dOB + "', '" + form.clientCode + "', '" + form.guardianName + "', '" + form.guardianlName + "', '" + form.guardianRelationship + "', '" + form.address + "', '" + form.gender + "', '" + form.guardianEmail + "', '" + form.guardianPhone + "', '" + form.meeting + "', '" + form.youthInDuvalSchool + "', '" + form.youthInSchool + "', '" + form.issues + "', '" + form.currentSchool + "', '" + form.zip + "', '" + form.grade + "', 'Pending', '" + form.arrest + "', '" + form.school + "', '" + form.dateInput + "', '" + form.date + "', '" + form.email + "', '" + form.Reach + "', '" + form.moreInfo + "', '" + form.reason + "', '" + form.referralfname + "', '" + form.referrallname + "','"+ 0 +"')";
             
             command = new SqlCommand(query, cnn);
+            
             SqlDataReader reader = command.ExecuteReader();
+            string fname = form.fName.ToString();
+            string lname = form.lName.ToString();
+            string namestring = fname+ " " + lname;
             reader.Close();
 
             //COnnect to the DB
 
+            ViewBag.Name = namestring;
+            ViewBag.Bessage = DateTime.Now;
             adapter.Dispose();
             command.Dispose();
-            return RedirectToAction("Index", "Home");
+            return View("confirmationM", "n");
 
-        }
+        }//-------------------------------------------------------------End Form Submit Referral GUID DONE
 
         public IActionResult contactInfoM(int clientCode)
         {
@@ -138,9 +142,9 @@ namespace HopePipeline.Controllers
             cnn.Close();
             return View(clientl);
 
-        }
+        }// GUID --------------------------------------------------GUID should be done for contact----------------------------------------
 
-        public IActionResult detailReferralM(int clientCode)
+        public IActionResult detailReferralM(Guid clientCode)
         {
             
             //var client= new Contact();
@@ -151,7 +155,7 @@ namespace HopePipeline.Controllers
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
-            string query = "SELECT clientCode, fname, lname, dob, guardianName, guardianlName, guardianRelationship, strAddress, gender, guardianEmail, guardianPhone, meeting, youthInDuvalSchool, youthInSchool, issues, currentSchool, zip, grade, currStatus, arrest, school, dateInput, meetingDate, email, reach, moreInfo, reason, referralfname, referrallname FROM refform WHERE clientCode= " + clientCode + ";";
+            string query = "SELECT clientCode, fname, lname, dob, guardianName, guardianlName, guardianRelationship, strAddress, gender, guardianEmail, guardianPhone, meeting, youthInDuvalSchool, youthInSchool, issues, currentSchool, zip, grade, currStatus, arrest, school, dateInput, meetingDate, email, reach, moreInfo, reason, referralfname, referrallname FROM refform WHERE clientCode= '" + clientCode + "';";
 
             command = new SqlCommand(query, cnn);
 
@@ -162,7 +166,8 @@ namespace HopePipeline.Controllers
                 {
 
                     referralDetail client = new referralDetail();
-                    client.clientCode = Convert.ToInt32(dataReader["clientCode"]);
+                    client.clientCode = Guid.Parse(Convert.ToString(dataReader["clientCode"]));
+
 
                     client.fName = Convert.ToString(dataReader["fname"]);
                     if (client.fName == " " || client.fName == "null" || client.fName == "")
@@ -363,7 +368,7 @@ namespace HopePipeline.Controllers
             SqlConnection cnnn;
             cnnn = new SqlConnection(cconnectionString);
             cnnn.Open();
-            object clientcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.client WHERE clientCode = " + form.clientCode + "", cnnn).ExecuteScalar();
+            object clientcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.client WHERE clientCode = '" + form.clientCode + "'", cnnn).ExecuteScalar();
            
             cnnn.Close();
             int cc = (Convert.ToInt16(clientcheck)) + 0;
@@ -580,7 +585,7 @@ namespace HopePipeline.Controllers
                 cnn.Dispose();
                 connection.Close();
             }
-            int message = form.clientCode;
+            Guid message = form.clientCode;
             //return RedirectToAction("detailReferralM?clientCode="+ message +"", "n");
             return RedirectToAction("RefList", "Referral");
         }
@@ -588,7 +593,7 @@ namespace HopePipeline.Controllers
 
 
 
-        public IActionResult editReferralM(int clientCode)
+        public IActionResult editReferralM(Guid clientCode)
         {//this method will display the values from the sql code
             //get the values from specific sql
             //display
@@ -601,7 +606,7 @@ namespace HopePipeline.Controllers
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
-            string query = "SELECT clientCode, fname, lname, dob, guardianName, guardianlName, guardianRelationship, strAddress, gender, guardianEmail, guardianPhone, meeting, youthInDuvalSchool, youthInSchool, issues, currentSchool, zip, grade, currStatus, arrest, school, dateInput, meetingDate, email, reach, moreInfo, reason, referralfname, referrallname FROM refform WHERE clientCode= " + clientCode + ";";
+            string query = "SELECT clientCode, fname, lname, dob, guardianName, guardianlName, guardianRelationship, strAddress, gender, guardianEmail, guardianPhone, meeting, youthInDuvalSchool, youthInSchool, issues, currentSchool, zip, grade, currStatus, arrest, school, dateInput, meetingDate, email, reach, moreInfo, reason, referralfname, referrallname FROM refform WHERE clientCode= '" + clientCode + "';";
 
             command = new SqlCommand(query, cnn);
 
@@ -613,7 +618,8 @@ namespace HopePipeline.Controllers
                 {
 
                     referralBrandi client = new referralBrandi();
-                    client.clientCode = Convert.ToInt32(dataReader["clientCode"]);
+                   // client.clientCode = Convert.ToString(dataReader["clientCode"]);
+                    client.clientCode = Guid.Parse(Convert.ToString(dataReader["clientCode"]));
                     client.fName = Convert.ToString(dataReader["fname"]);
 
 
@@ -764,7 +770,7 @@ namespace HopePipeline.Controllers
 
 
 
-        public IActionResult detailTrackingM(int clientCode)
+        public IActionResult detailTrackingM(Guid clientCode)
         { // referral form I need the firstname, lastname, 
           //sql commands for getting the tracking info
           //displaying the tracking information
@@ -826,7 +832,7 @@ namespace HopePipeline.Controllers
 "dbo.altSchool.altSchool, dbo.altSchool.altSchoolName, dbo.altSchool.altSchoolDate, dbo.altSchool.altSchoolTimes, dbo.altSchool.daysOwed, dbo.altSchool.daysSinceIntake, " +
 "dbo.bully.bullied, dbo.bully.reported, dbo.bully.reportDate, " +
 "dbo.caregiver.careLast, dbo.caregiver.careFirst, dbo.caregiver.genderIdentity as caregender, dbo.caregiver.ethnicity as careethnic, dbo.caregiver.relationship, " +
-"dbo.ccr.levelofService, dbo.ccr.ccrStatus, dbo.ccr.nonEngageReason, dbo.ccr.remedy, dbo.ccr.rearrestRep, dbo.ccr.closureSchool, " +
+"dbo.ccr.levelofService, dbo.ccr.ccrStatus, dbo.ccr.nonEngageReason, dbo.ccr.remedy, dbo.ccr.rearrestRep, dbo.ccr.closureSchool, dbo.ccr.dateInput as trackingdate" +
 "dbo.client.clientLast, dbo.client.clientFirst, dbo.client.dependency, dbo.client.genderIdentity as clientgender, dbo.client.ethnicity as clientethn, dbo.client.dob as clientdob, dbo.client.phoneNumber, " +
 "dbo.comp.compTime, " +
 "dbo.currentStatus.readingLevel, dbo.currentStatus.mathLevel, dbo.currentStatus.currentServices, dbo.currentStatus.inPride, dbo.currentStatus.newFBA, dbo.currentStatus.addService, dbo.currentStatus.servicesGained, " +
@@ -855,7 +861,7 @@ namespace HopePipeline.Controllers
 "LEFT JOIN dbo.legal on dbo.accomodations.clientCode = dbo.legal.clientCode)" +
 "LEFT JOIN dbo.school on dbo.accomodations.clientCode = dbo.school.clientCode)" +
 "LEFT JOIN dbo.refform on dbo.accomodations.clientCode = dbo.refform.clientCode)" +
-"WHERE dbo.accomodations.clientCode =" + clientCode + ";";
+"WHERE dbo.accomodations.clientCode ='" + clientCode + "';";
             command = new SqlCommand(query, cnn);
 
             //SqlDataReader reader = command.ExecuteReader();
@@ -865,7 +871,7 @@ namespace HopePipeline.Controllers
                 {
 
                     trackingDetail client = new trackingDetail();
-                    client.ClientID = Convert.ToInt32(dataReader["clientCode"]);
+                    client.ClientID = Guid.Parse(Convert.ToString(dataReader["clientCode"]));
 
                     client.clientFirstName = Convert.ToString(dataReader["clientFirst"]);
                     if (client.clientFirstName == " " || client.clientFirstName == "null" || client.clientFirstName == "" || cc == 0)
@@ -1212,6 +1218,18 @@ namespace HopePipeline.Controllers
                     if (client.schoolAtClosure == "" || ccrc == 0)
                     { client.schoolAtClosure = "N/A"; }
 
+                    string trackingdate1 = Convert.ToString(dataReader["trackingdate"]);
+                    if (Convert.ToString(dataReader["trackingdate"]).Length > 10)
+                    {
+
+                        string[] spacetrackingdate1 = t.Split(' ');
+                        client.trackingdate = (spacetrackingdate1[0]);
+                    }
+
+
+                    if (client.trackingdate == " " || client.trackingdate == "null" || client.trackingdate == "" || Convert.ToString(dataReader["trackingdate"]).Length < 10)
+                    { client.trackingdate = "N/A"; }
+
                     //is the first referral for the client
 
                     client.emailOfFirstReferralSource = Convert.ToString(dataReader["email"]);
@@ -1547,7 +1565,7 @@ namespace HopePipeline.Controllers
 
 
         }
-        public IActionResult EditTrackingM(int clientCode)
+        public IActionResult EditTrackingM(Guid clientCode)
 
         //edit tracking information in a form format
         {//this method will display the values from the sql code
@@ -1567,7 +1585,7 @@ namespace HopePipeline.Controllers
             "dbo.altSchool.altSchool, dbo.altSchool.altSchoolName, dbo.altSchool.altSchoolDate, dbo.altSchool.altSchoolTimes, dbo.altSchool.daysOwed, dbo.altSchool.daysSinceIntake, " +
             "dbo.bully.bullied, dbo.bully.reported, dbo.bully.reportDate, " +
             "dbo.caregiver.careLast, dbo.caregiver.careFirst, dbo.caregiver.genderIdentity as caregender, dbo.caregiver.ethnicity as careethnic, dbo.caregiver.relationship, " +
-            "dbo.ccr.levelofService, dbo.ccr.ccrStatus, dbo.ccr.nonEngageReason, dbo.ccr.remedy, dbo.ccr.rearrestRep, dbo.ccr.closureSchool, " +
+            "dbo.ccr.levelofService, dbo.ccr.ccrStatus, dbo.ccr.nonEngageReason, dbo.ccr.remedy, dbo.ccr.rearrestRep, dbo.ccr.closureSchool, dbo.ccr.inputDate as trackingdate ," +
             "dbo.client.clientLast, dbo.client.clientFirst, dbo.client.dependency, dbo.client.genderIdentity as clientgender, dbo.client.ethnicity as clientethn, dbo.client.dob as clientdob, dbo.client.phoneNumber, " +
             "dbo.comp.compTime, " +
             "dbo.currentStatus.readingLevel, dbo.currentStatus.mathLevel, dbo.currentStatus.currentServices, dbo.currentStatus.inPride, dbo.currentStatus.newFBA, dbo.currentStatus.addService, dbo.currentStatus.servicesGained, " +
@@ -1596,7 +1614,7 @@ namespace HopePipeline.Controllers
             "LEFT JOIN dbo.legal on dbo.accomodations.clientCode = dbo.legal.clientCode)" +
             "LEFT JOIN dbo.school on dbo.accomodations.clientCode = dbo.school.clientCode)" +
             "LEFT JOIN dbo.refform on dbo.accomodations.clientCode = dbo.refform.clientCode)" +
-            "WHERE dbo.accomodations.clientCode =" + clientCode + ";";
+            "WHERE dbo.accomodations.clientCode ='" + clientCode + "';";
             command = new SqlCommand(query, cnn);
 
 
@@ -1607,7 +1625,7 @@ namespace HopePipeline.Controllers
                 {
 
                     EditTrackingm client = new EditTrackingm();
-                    client.ClientID = Convert.ToInt32(dataReader["clientCode"]);
+                    client.ClientID = Guid.Parse(Convert.ToString(dataReader["clientCode"]));
                     client.clientFirstName = Convert.ToString(dataReader["clientFirst"]);
                     client.clientLastName = Convert.ToString(dataReader["clientLast"]);
                     client.careGender = Convert.ToString(dataReader["caregender"]);
@@ -1620,7 +1638,23 @@ namespace HopePipeline.Controllers
                     else
                     {
                         client.clientDOB = Convert.ToDateTime(dataReader["clientdob"]);
-                        
+                        string answerdob = client.clientDOB.ToString();
+                        int spacedob = answerdob.IndexOf(" ");
+                        string datedob = answerdob.Substring(0, spacedob);
+
+
+                        string[] strlistdob = datedob.Split('/');
+
+
+                        string yeardob = strlistdob[2];
+                        string monthdob = strlistdob[1];
+                        if ((monthdob.Length) == 1)
+                        { monthdob = "0" + monthdob; }
+                        string daydob = strlistdob[0];
+                        if ((daydob.Length) == 1)
+                        { daydob = "0" + daydob; }
+                        string answerb = yeardob + "-" + daydob + "-" + monthdob;
+                        client.stringDateOfBirth = answerb;
                     };
 
 
@@ -1682,6 +1716,23 @@ namespace HopePipeline.Controllers
                     else
                     {
                         client.referralDate = Convert.ToDateTime(dataReader["dateInput"]);
+                        string answer = client.referralDate.ToString();
+                        int space = answer.IndexOf(" ");
+                        string date = answer.Substring(0, space);
+
+
+                        string[] strlist = date.Split('/');
+
+
+                        string year = strlist[2];
+                        string month = strlist[1];
+                        if ((month.Length) == 1)
+                        { month = "0" + month; }
+                        string day = strlist[0];
+                        if ((day.Length) == 1)
+                        { day = "0" + day; }
+                        string answera = year + "-" + day + "-" + month;
+                        client.stringReferralDate = answera;
                     };
                     //client.intakeDate = Convert.ToString(dataReader["intakeDate"]);//------------------------------------Date------------------------------------
 
@@ -1713,6 +1764,30 @@ namespace HopePipeline.Controllers
                     //referral count needs to be inserted here
 
                     client.schoolAtClosure = Convert.ToString(dataReader["closureSchool"]);
+
+                    if (Convert.IsDBNull(dataReader["trackingdate"]))
+                    { client.trackingdate = DateTime.Parse("01/01/1990"); }
+                    else
+                    {
+                        client.trackingdate = Convert.ToDateTime(dataReader["trackingdate"]);
+                        string answertrackingdate = client.trackingdate.ToString();
+                        int spacedtrackingdate = answertrackingdate.IndexOf(" ");
+                        string datetrackingdate = answertrackingdate.Substring(0, spacedtrackingdate);
+
+
+                        string[] strlisttrackingdate = datetrackingdate.Split('/');
+
+
+                        string yeartrackingdate = strlisttrackingdate[2];
+                        string monthtrackingdate = strlisttrackingdate[1];
+                        if ((monthtrackingdate.Length) == 1)
+                        { monthtrackingdate = "0" + monthtrackingdate; }
+                        string daytrackingdate = strlisttrackingdate[0];
+                        if ((daytrackingdate.Length) == 1)
+                        { daytrackingdate = "0" + daytrackingdate; }
+                        string answerI = yeartrackingdate + "-" + daytrackingdate + "-" + monthtrackingdate;
+                        client.stringtrackingdate = answerI;
+                    };
 
                     //is the first referral for the client
 
@@ -1786,6 +1861,23 @@ namespace HopePipeline.Controllers
                     else
                     {
                         client.dateofBully = Convert.ToDateTime(dataReader["reportDate"]);
+                        string answerbully = client.dateofBully.ToString();
+                        int spacebully = answerbully.IndexOf(" ");
+                        string datebully = answerbully.Substring(0, spacebully);
+
+
+                        string[] strlistbully = datebully.Split('/');
+
+
+                        string yearbully = strlistbully[2];
+                        string monthbully = strlistbully[1];
+                        if ((monthbully.Length) == 1)
+                        { monthbully = "0" + monthbully; }
+                        string daybully = strlistbully[0];
+                        if ((daybully.Length) == 1)
+                        { daybully = "0" + daybully; }
+                        string answerdatebully = yearbully + "-" + daybully + "-" + monthbully;
+                        client.stringDateOfBully = answerdatebully;
                     };
 
                     //----------------------------------------------------------------------------Discipline-------------------------------
@@ -1809,7 +1901,24 @@ namespace HopePipeline.Controllers
                     else
                     {
                         client.dateOfAlt = Convert.ToDateTime(dataReader["altSchoolDate"]);
-                        
+                        string answeralt = client.dateOfAlt.ToString();
+                        int spacealt = answeralt.IndexOf(" ");
+                        string datealt = answeralt.Substring(0, spacealt);
+
+
+                        string[] strlistalt = datealt.Split('/');
+
+
+                        string yearalt = strlistalt[2];
+                        string monthalt = strlistalt[1];
+                        if ((monthalt.Length) == 1)
+                        { monthalt = "0" + monthalt; }
+                        string dayalt = strlistalt[0];
+                        if ((dayalt.Length) == 1)
+                        { dayalt = "0" + dayalt; }
+                        string answeraltschool = yearalt + "-" + dayalt + "-" + monthalt;
+                        client.stringDateOfAlt = answeraltschool;
+
                     };
 
                     if (Convert.IsDBNull(dataReader["altSchoolTimes"]))
@@ -1875,7 +1984,7 @@ namespace HopePipeline.Controllers
             cnnn = new SqlConnection(cconnectionString);
             cnnn.Open();//Connect
                         //as you edit the tracking form update the clients referral name, dob, case status
-            object ccrcheckc = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.refform WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
+           
             object clientcheckc = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.refform WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
 
             //if client code is not in the table client ID insert values in table
@@ -1899,7 +2008,7 @@ namespace HopePipeline.Controllers
             object schoolcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.school WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
             cnnn.Close();
             int ccc = (Convert.ToInt16(clientcheckc)) + 0;
-            int ccrcc = (Convert.ToInt16(ccrcheckc)) + 0;
+           
             int bc = (Convert.ToInt16(bullycheck)) + 0;
             int cc = (Convert.ToInt16(clientcheck)) + 0;
             int ac = (Convert.ToInt16(advocacycheck)) + 0;
@@ -1917,38 +2026,7 @@ namespace HopePipeline.Controllers
             int lc = (Convert.ToInt16(legalcheck)) + 0;
             int sc = (Convert.ToInt16(schoolcheck)) + 0;
 
-            if (ccrcc >= 1)
-            {
-
-                // clientcode is not in the table insert the values
-                SqlConnection cnnt;
-                cnnt = new SqlConnection(cconnectionString);
-                using (SqlConnection link = new SqlConnection(cconnectionString))
-                using (SqlCommand ccrcstate = new SqlCommand("", link))
-                {
-                    ccrcstate.CommandText = "UPDATE dbo.refform SET currStatus = @currStatus WHERE clientCode = @clientCode;";
-                    ccrcstate.Parameters.AddWithValue("@clientCode", form.ClientID);
-
-                    SqlParameter reas = ccrcstate.Parameters.AddWithValue("@currStatus", form.caseStatus);
-                    if (form.caseStatus == 1)
-                    {
-                        reas.Value = "Open";
-                    }
-                    if (form.caseStatus == 0)
-                    {
-                        reas.Value = "Closed";
-                    }
-                    if (form.caseStatus == 2)
-                    {
-                        reas.Value = "Closed Non-Engagement";
-                    }
-                    link.Open();
-                    ccrcstate.ExecuteNonQuery();
-                    link.Close();
-                    cnnt.Close();
-                }
-
-            }
+        
             if (ccc >= 1)
             {
                 // clientcode is not in the table insert the values
@@ -2606,7 +2684,7 @@ namespace HopePipeline.Controllers
                     " WHERE  clientCode= @clientCode; " +
 
                    "UPDATE dbo.ccr" +
-                    " SET dbo.ccr.levelofService = @levelofService, dbo.ccr.ccrStatus = @ccrStatus, dbo.ccr.nonEngageReason = @nonEngageReason, dbo.ccr.remedy = @remedy, dbo.ccr.rearrestRep = @rearrestRep, dbo.ccr.closureSchool = @closureSchool " +
+                    " SET dbo.ccr.levelofService = @levelofService, dbo.ccr.ccrStatus = @ccrStatus, dbo.ccr.nonEngageReason = @nonEngageReason, dbo.ccr.remedy = @remedy, dbo.ccr.rearrestRep = @rearrestRep, dbo.ccr.closureSchool = @closureSchool, dbo.ccr.dateInput =@trackingdate " +
                    " WHERE dbo.ccr.clientCode = @clientCode; " +
 
                     "UPDATE dbo.comp" +
@@ -2645,8 +2723,12 @@ namespace HopePipeline.Controllers
                     " SET  grade = @grade,  school = @school,  SchoolRef = @SchoolRef" +
                    " WHERE  clientCode = @clientCode; " +
 
+                     " UPDATE dbo.refInfo" +
+               " SET reFName = @reFName,  reLName = @reLName,  refDate = @refDate,  refEmail = @refEmail " +
+                " WHERE  clientCode = @clientCode; " +
+
                " UPDATE dbo.refform" +
-               " SET email = @email,  referralfname = @referralfname,  referrallname = @referrallname,  dateInput = @dateInput, fname = @fname, lname =@lname, dob= @birthday, currStatus =@currStatus " +
+               " SET email = @email,  referralfname = @referralfname,  referrallname = @referrallname,  dateInput = @dateInput, fname = @fname, lname =@lname, dob= @birthday " +
                 " WHERE  clientCode = @clientCode; ";
 
 
@@ -2812,7 +2894,11 @@ namespace HopePipeline.Controllers
                     {
                         gra.Value = DBNull.Value;
                     }
-
+                    SqlParameter trackingdateCodeParam = command.Parameters.AddWithValue("@trackingdate", form.trackingdate);
+                    if (form.trackingdate == null)
+                    {
+                        trackingdateCodeParam.Value = DBNull.Value;
+                    }
                     SqlParameter comptime = command.Parameters.AddWithValue("@compTime", form.compTime);
                     if (form.compTime == null)
                     {
@@ -2829,7 +2915,7 @@ namespace HopePipeline.Controllers
                         mathLevel.Value = DBNull.Value;
                     }
                     SqlParameter inPride = command.Parameters.AddWithValue("@inPride", form.inPride);
-                    if (form.inPride < 1 || form.inPride > 0)
+                    if (form.inPride > 1 || form.inPride < 0)
                     {
                         inPride.Value = DBNull.Value;
                     }
@@ -2961,6 +3047,11 @@ namespace HopePipeline.Controllers
                     {
                         schoolRef.Value = DBNull.Value;
                     }
+                    SqlParameter referrerEmailinfo = command.Parameters.AddWithValue("@refEmail", form.emailOfFirstReferralSource);
+                    if (form.emailOfFirstReferralSource == null)
+                    {
+                        referrerEmailinfo.Value = DBNull.Value;
+                    }
                     SqlParameter referrerEmail = command.Parameters.AddWithValue("@email", form.emailOfFirstReferralSource);
                     if (form.emailOfFirstReferralSource == null)
                     {
@@ -2969,34 +3060,66 @@ namespace HopePipeline.Controllers
                     //string[] stage1fix = null;
                     string referrals = form.referralSource;
                     var referralnamefix = referrals;
-                    if (referralnamefix != null)
+                    if (referralnamefix != null && (referralnamefix.Contains(" ") || referralnamefix.Contains(",")))
                     {
-                        string[] stage1fix = referralnamefix.Split(' ');
 
-                        SqlParameter referralfname = command.Parameters.AddWithValue("@referralfname", stage1fix[0]);
-                        SqlParameter referrallname = command.Parameters.AddWithValue("@referrallname", stage1fix[1]);
-                        if (stage1fix[0] == null)
+                        if (referralnamefix.Contains(" "))
                         {
-                            referralfname.Value = DBNull.Value;
-
+                            string[] stage1fix = referralnamefix.Split(' ');
+                            SqlParameter referralfname = command.Parameters.AddWithValue("@referralfname", stage1fix[0]);
+                            SqlParameter referralfname1 = command.Parameters.AddWithValue("@reFName", stage1fix[0]);
+                            SqlParameter referrallname = command.Parameters.AddWithValue("@referrallname", stage1fix[1]);
+                            SqlParameter referrallname1 = command.Parameters.AddWithValue("@reLName", stage1fix[1]);
+                            if (stage1fix[0] == null)
+                            {
+                                referralfname.Value = DBNull.Value;
+                                referralfname1.Value = DBNull.Value;
+                            }
+                            if (stage1fix[1] == null)
+                            {
+                                referrallname.Value = DBNull.Value;
+                                referrallname1.Value = DBNull.Value;
+                            }
                         }
-                        if (stage1fix[1] == null)
+                        if (referralnamefix.Contains(","))
                         {
-                            referrallname.Value = DBNull.Value;
+                            string[] stage1fix = referralnamefix.Split(',');
 
+                            SqlParameter referralfname = command.Parameters.AddWithValue("@referralfname", stage1fix[0]);
+                            SqlParameter referralfname1 = command.Parameters.AddWithValue("@reFName", stage1fix[0]);
+                            SqlParameter referrallname = command.Parameters.AddWithValue("@referrallname", stage1fix[1]);
+                            SqlParameter referrallname1 = command.Parameters.AddWithValue("@reLName", stage1fix[1]);
+
+                            if (stage1fix[0] == null)
+                            {
+                                referralfname.Value = DBNull.Value;
+                                referralfname1.Value = DBNull.Value;
+                            }
+                            if (stage1fix[1] == null)
+                            {
+                                referrallname.Value = DBNull.Value;
+                                referrallname1.Value = DBNull.Value;
+                            }
                         }
                     }
                     if (referralnamefix == null)
                     {
                         SqlParameter referralfname = command.Parameters.AddWithValue("@referralfname", null);
-                        SqlParameter referrallname = command.Parameters.AddWithValue("@referrallname", null);
-                    }
+                            SqlParameter referralfname1 = command.Parameters.AddWithValue("@reFName", null);
+                            SqlParameter referrallname = command.Parameters.AddWithValue("@referrallname", null);
+                            SqlParameter referrallname1 = command.Parameters.AddWithValue("@reLName", null);
+                        }
                     SqlParameter referralDate = command.Parameters.AddWithValue("@dateInput", form.referralDate);
                     if (form.referralDate == null)
                     {
                         referralDate.Value = DBNull.Value;
                     }
-                    SqlParameter fNameCodeParam = command.Parameters.AddWithValue("@fName", form.clientFirstName);
+                        SqlParameter referralDate1 = command.Parameters.AddWithValue("@refDate", form.referralDate);
+                        if (form.referralDate == null)
+                        {
+                            referralDate1.Value = DBNull.Value;
+                        }
+                        SqlParameter fNameCodeParam = command.Parameters.AddWithValue("@fName", form.clientFirstName);
                     if (form.clientFirstName == null)
                     {
                         fNameCodeParam.Value = DBNull.Value;
@@ -3011,19 +3134,7 @@ namespace HopePipeline.Controllers
                     {
                         dOBCodeParam.Value = DBNull.Value;
                     }
-                    SqlParameter casestat = command.Parameters.AddWithValue("@currStatus", form.caseStatus);
-                    if (form.caseStatus == 1)
-                    {
-                        casestat.Value = "Open";
-                    }
-                    if (form.caseStatus == 0)
-                    {
-                        casestat.Value = "Closed";
-                    }
-                    if (form.caseStatus == 2)
-                    {
-                        casestat.Value = "Closed Non-Engagment";
-                    }
+                
 
                     connection.Open();
                     command.ExecuteNonQuery();
@@ -3044,6 +3155,32 @@ namespace HopePipeline.Controllers
             return View();
 
         }
+        [HttpPost]
+        public IActionResult Emailreferral( string emailaddress)
+        {
+            Main(emailaddress);
+            //confirmation thank you page for submiting and give email
+            return RedirectToAction("Index", "Home");
 
+        }
+
+        private static void Main(string emailaddress)
+        {
+        //    Execute().Wait();
+        //}
+
+        //static async Task Execute()
+        //{
+        //    var apiKey = Environment.GetEnvironmentVariable("NAME_OF_THE_ENVIRONMENT_VARIABLE_FOR_YOUR_SENDGRID_KEY");
+        //    var client = new SendGridClient(apiKey);
+        //    var from = new EmailAddress("test@example.com", "Example User");
+        //    var subject = "Sending with Twilio SendGrid is Fun";
+        //    var to = new EmailAddress("test@example.com", "Example User");
+        //    var plainTextContent = "and easy to do anywhere, even with C#";
+        //    var htmlContent = "<strong>and easy to do anywhere, even with C#</strong>";
+        //    var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+        //    var response = await client.SendEmailAsync(msg);
+    
+}
     }
 }

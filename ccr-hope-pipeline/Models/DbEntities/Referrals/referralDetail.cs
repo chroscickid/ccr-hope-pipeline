@@ -18,7 +18,7 @@ namespace HopePipeline.Models.DbEntities.Referrals
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
 
-        public int clientCode { get; set; }
+        public Guid clientCode { get; set; }
 
         public string fName { get; set; }
 

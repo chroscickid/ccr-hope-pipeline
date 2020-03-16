@@ -17,7 +17,7 @@ namespace HopePipeline.Models.DbEntities.Tracking
 {
 
         public HopePipeline.Models.referralBrandi referralBrandi { get; set; }
-        public int ClientID { get; set; }
+        public Guid ClientID { get; set; }
         //Demographics
 
 
@@ -85,6 +85,9 @@ namespace HopePipeline.Models.DbEntities.Tracking
         public int courtAdvocacy { get; set; }
         public int staffAdvocacy { get; set; }
         public int rearrestAdvocacy { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? trackingdate { get; set; }
+       
         //end ccr
         //Discipline
 
@@ -110,15 +113,111 @@ namespace HopePipeline.Models.DbEntities.Tracking
         public string carePhone { get; set; }
 
         public int publicAssistance { get; set; }
-
-
-
-
         public string otherLegal { get; set; }
 
 
+        //String representation for date
+        public string stringDateOfAlt { get; set; }
+        public string stringReferralDate { get; set; }
+        public string stringDateOfBully { get; set; }
+        public string stringDateOfBirth { get; set; }
+        public string stringtrackingdate { get; set; }
 
+        //Default Value of edit tracking for hidden variables
+        //HIDDEN VARIABLES
 
+        public string clientFirstNameHidden { get; set; }
+        public string clientLastNameHidden { get; set; }
+        public string careGenderHidden { get; set; }
+        public string clientGenderHidden { get; set; }
+        public string clientEthnicityHidden { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? clientDOBHidden { get; set; }
 
+        public string schoolHidden { get; set; }
+        public string currentGradeHidden { get; set; }
+
+        public string referralSourceHidden { get; set; }
+        public int failCountHidden { get; set; }
+        public int failedGradeHidden { get; set; }
+        public int whichGradeFailedHidden { get; set; }
+        public int bakerHidden { get; set; }
+        public int femHouseHidden { get; set; }
+        public int marchmanHidden { get; set; }
+        public int domVioHidden { get; set; }
+        public int adoptedHidden { get; set; }
+        public int evictedHidden { get; set; }
+        public int incarParentHidden { get; set; }
+        public int asthmaHidden { get; set; }
+        //demographics done
+        //school 
+        public int iepHidden { get; set; }
+        public string iepplan1Hidden { get; set; }
+        public string iepplan2Hidden { get; set; }
+        public string schoolRefHidden { get; set; }
+
+        public string readingLevelHidden { get; set; }
+        public string mathLevelHidden { get; set; }
+        //current iep service???
+        public int inPrideHidden { get; set; }
+        public int newFBAHidden { get; set; }
+        public int accomGainedHidden { get; set; }
+        public int compServiceHidden { get; set; }
+        public string ifWhatServicesHidden { get; set; }
+        public string compTimeHidden { get; set; }
+        public int bulliedHidden { get; set; }
+        public int bullyReportHidden { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? dateofBullyHidden { get; set; }
+        //stilll working on school
+
+        //CCR
+
+        public string levelOfServiceProvidedHidden { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? referralDateHidden { get; set; }
+        public string intakeDateHidden { get; set; }
+        public string nonEngagementReasonHidden { get; set; }
+        public int caseStatusHidden { get; set; }
+        public int legalAdvocacyHidden { get; set; }
+        public string legalAdvoTakenHidden { get; set; }
+        public int remedyResolutionHidden { get; set; }
+        public int rearrestWhileRepresentedHidden { get; set; }
+        public string referralCountHidden { get; set; }
+        public string schoolAtClosureHidden { get; set; }
+        public int firstReferralHidden { get; set; }
+        public string emailOfFirstReferralSourceHidden { get; set; }
+        public int courtAdvocacyHidden { get; set; }
+        public int staffAdvocacyHidden { get; set; }
+        public int rearrestAdvocacyHidden { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? trackingdateHidden { get; set; }
+
+        //end ccr
+        //Discipline
+
+        public int suspendedHidden { get; set; }
+        public int suspendCountHidden { get; set; }
+        public int altSchoolHidden { get; set; }
+        public string altSchoolNameHidden { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? dateOfAltHidden { get; set; }
+        public int timesInAltHidden { get; set; }
+        public int daysOwedHidden { get; set; }
+        public string firstLegalHidden { get; set; }
+        public string secondLegalHidden { get; set; }
+        public int issHidden { get; set; }
+        public int daysSinceIntakeHidden { get; set; }
+        public int ossHidden { get; set; }
+        public string justiceOutcomeHidden { get; set; }
+        //end Discipline
+        //other
+        public string careFirstNameHidden { get; set; }
+        public string careLastNameHidden { get; set; }
+        public string careEthnicityHidden { get; set; }
+        public string carePhoneHidden { get; set; }
+
+        public int publicAssistanceHidden { get; set; }
+        public string otherLegalHidden { get; set; }
     }
 }

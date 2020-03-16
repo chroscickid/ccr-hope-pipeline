@@ -14,18 +14,23 @@
     <style>
         table {
             width: 100%;
+            border: 3px solid #003A62;
+            border-collapse: collapse;
         }
 
-        table, th, td {
+     th, td {
             border: 1px solid black;
             border-collapse: collapse;
         }
 
-        th, td {
-            padding: 15px;
+          td {
+            padding: 11px;
             text-align: left;
         }
-
+           th {
+            padding: 4px;
+            text-align: left;
+        }
         table#t01 tr:nth-child(even) {
             background-color: #e6f3ff;
         }
@@ -56,7 +61,7 @@
 
 
             <tr>
-                <th> Client:&nbsp;@Html.DisplayFor(modelItem => item.lname),&nbsp; @Html.DisplayFor(modelItem => item.fname)</th>
+                <th><h4> Client:&nbsp;@Html.DisplayFor(modelItem => item.lname),&nbsp; @Html.DisplayFor(modelItem => item.fname)</h4></th>
             </tr>
 
             <tr>
@@ -96,7 +101,7 @@
         </table>
         <table id="t01">
             <tr>
-                <th colspan="2"> Referral Souce for Contact</th>
+                <th colspan="2"> <h4>Referral Source Contact</h4></th>
             </tr>
             <tr>
                 <td>

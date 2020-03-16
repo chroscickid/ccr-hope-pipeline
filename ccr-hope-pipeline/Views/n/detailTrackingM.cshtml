@@ -203,6 +203,7 @@
                     @Html.DisplayFor(modelItem => item.school)
                 </td>
             </tr>
+           
             <tr>
                 <td class="t" style="text-align:right">
                     Current Grade:
@@ -333,7 +334,7 @@
 
             </tr>
             <tr>
-                <td class="t" style="text-align:right">Evicted:</td>
+                <td class="t" style="text-align:right">Housing Instability:</td>
 
                 <td>
                     @Html.DisplayFor(modelItem => item.evicted)
@@ -540,13 +541,20 @@
                 </tr>
                 <tr>
 
-                    <td class="t" style="text-align:right">Referral Date and Time </td>
+                    <td class="t" style="text-align:right">Referral Date</td>
                     <td>
                         @Html.DisplayFor(modelItem => item.referralDate)
 
                     </td>
                 </tr>
+                <tr>
 
+                    <td class="t" style="text-align:right">Input Date</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.trackingdate)
+
+                    </td>
+                </tr>
                 <tr>
                     <td class="t" style="text-align:right">School at time of Case Closure</td>
 

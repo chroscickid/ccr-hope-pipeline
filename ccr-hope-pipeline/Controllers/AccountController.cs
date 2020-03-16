@@ -65,7 +65,7 @@ namespace HopePipeline.Controllers
 
             command = new SqlCommand(query, con);
             SqlDataReader reader = command.ExecuteReader();
-
+    
             if (reader.Read())
             {
                 con.Close();
@@ -78,7 +78,7 @@ namespace HopePipeline.Controllers
                 con.Close();
                 return RedirectToAction("Index", "Home");
             }
-
+            
         }
 
         public ViewResult AdminList()

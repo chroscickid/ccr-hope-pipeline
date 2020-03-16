@@ -15,18 +15,24 @@
 
         table {
             width: auto;
-        }
-
-        table, th, td {
-            border: 1px solid black;
+                border: 3px solid #003A62;
             border-collapse: collapse;
         }
 
         th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+         td {
             padding: 11px;
             text-align: left;
         }
-
+         th {
+            padding: 4px;
+            text-align: left;
+            font-family:  Helvetica;
+        }
         table#t01 tr:nth-child(even) {
             background-color: #e6f3ff;
         }
@@ -38,12 +44,14 @@
         table#t01 th {
             background-color: #005199;
             color: white;
+
         }
 
         .t {
             width: 30%;
             table-layout: fixed;
         }
+    
     </style>
 </head>
 <h2>Referral </h2>
@@ -56,17 +64,26 @@
         <table id="t01">
 
             <tr>
-                <td class="t" style="text-align:right"> First Name:</td>
+                <th class="t" style="text-align:left" colspan="2">
+                    <h4>Client:&nbsp;@Html.DisplayFor(modelItem => item.lName),&nbsp;@Html.DisplayFor(modelItem => item.fName)</h4>
 
-                <td>@Html.DisplayFor(modelItem => item.fName)</td>
 
-            </tr>
-            <tr>
-                <td class="t" style="text-align:right"> Last Name: </td>
-
-                <td> @Html.DisplayFor(modelItem => item.lName)</td>
+</th>
 
             </tr>
+
+            @*<tr>
+            <td class="t" style="text-align:right"> First Name:</td>
+
+            <td>@Html.DisplayFor(modelItem => item.fName)</td>
+
+        </tr>
+        <tr>
+            <td class="t" style="text-align:right"> Last Name: </td>
+
+            <td> @Html.DisplayFor(modelItem => item.lName)</td>
+
+        </tr>*@
 
             <tr>
                 <td class="t" style="text-align:right"> Gender Identity:  </td>
@@ -88,7 +105,7 @@
                 <td> @Html.DisplayFor(modelItem => item.guardianlName), @Html.DisplayFor(modelItem => item.guardianName)</td>
 
             </tr>
-        
+
             <tr>
                 <td class="t" style="text-align:right"> Guardian's relationship to the youth:</td>
 
@@ -258,7 +275,7 @@
 
 
 
-            @{int tale = item.clientCode;}
+            @{Guid tale = item.clientCode;}
 
 
         </table>

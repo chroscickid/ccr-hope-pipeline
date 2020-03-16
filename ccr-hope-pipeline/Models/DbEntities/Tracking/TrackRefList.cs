@@ -10,7 +10,7 @@ namespace HopePipeline.Models.DbEntities.Tracking
     {
         public string studentName { get; set; }
         public List<TrackRefRow> list { get; set; }
-        public int ClientCode { get; set; }
+        public Guid ClientCode { get; set; }
     }
 
     public class TrackRefRow

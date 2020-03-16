@@ -16,7 +16,7 @@ namespace HopePipeline.Models
 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
 
-        public int clientCode { get; set; }
+        public Guid clientCode { get; set; }
 
         public string fName { get; set; }
 
@@ -66,8 +66,55 @@ namespace HopePipeline.Models
 
         public string referralfname { get; set; }
         public string referrallname { get; set; }
+        //Hidden variable for javascript edit
+        public string fNameHidden { get; set; }
+
+        public string lNameHidden { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? dOBHidden { get; set; }
+
+        public string guardianNameHidden { get; set; }
+        public string guardianlNameHidden { get; set; }
+        public string guardianRelationshipHidden { get; set; }
+
+        public string addressHidden { get; set; }
+
+        public string genderHidden { get; set; }
+        public string guardianEmailHidden { get; set; }
 
 
+        public string guardianPhoneHidden { get; set; }
+
+        public int meetingHidden { get; set; }
+
+        public int youthInDuvalSchoolHidden { get; set; }
+        public int youthInSchoolHidden { get; set; }
+        public string issuesHidden { get; set; }
+
+        public string currentSchoolHidden { get; set; }
+
+
+        public string zipHidden { get; set; }
+        public string gradeHidden { get; set; }
+
+        public string statusHidden { get; set; }
+
+        public int arrestHidden { get; set; }
+        public string schoolHidden { get; set; }
+        public Nullable<System.DateTime> dateInputHidden { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime? dateHidden { get; set; }
+
+        public string emailHidden { get; set; }
+
+        public string ReachHidden { get; set; }
+        public string moreInfoHidden { get; set; }
+        public string reasonHidden { get; set; }
+
+
+        public string referralfnameHidden { get; set; }
+        public string referrallnameHidden { get; set; }
 
     }
 }

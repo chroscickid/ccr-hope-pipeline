@@ -8,10 +8,10 @@ using System.Data.SqlClient;
 using HopePipeline.Models.DbEntities.Referrals;
 using HopePipeline.Models.DbEntities.Tracking;
 using System.Diagnostics;
-//using SendGrid;
-//using SendGrid.Helpers.Mail;
-//using System;
-//using System.Threading.Tasks;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using System;
+using System.Threading.Tasks;
 
 namespace HopePipeline.Controllers
 {
@@ -26,8 +26,7 @@ namespace HopePipeline.Controllers
             cnn = new SqlConnection(connectionString);
             cnn.Open();
             SqlCommand command = cnn.CreateCommand();
-            object value = new SqlCommand("SELECT MAX(clientCode) FROM refform", cnn).ExecuteScalar();
-          
+           
             Guid clientCode = Guid.NewGuid();
 
             ViewBag.Tessage = clientCode;
@@ -53,7 +52,7 @@ namespace HopePipeline.Controllers
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
-            string query = "INSERT INTO dbo.refform VALUES ('" + form.fName + "', '" + form.lName + "', '" + form.dOB + "', '" + form.clientCode + "', '" + form.guardianName + "', '" + form.guardianlName + "', '" + form.guardianRelationship + "', '" + form.address + "', '" + form.gender + "', '" + form.guardianEmail + "', '" + form.guardianPhone + "', '" + form.meeting + "', '" + form.youthInDuvalSchool + "', '" + form.youthInSchool + "', '" + form.issues + "', '" + form.currentSchool + "', '" + form.zip + "', '" + form.grade + "', 'Pending', '" + form.arrest + "', '" + form.school + "', '" + form.dateInput + "', '" + form.date + "', '" + form.email + "', '" + form.Reach + "', '" + form.moreInfo + "', '" + form.reason + "', '" + form.referralfname + "', '" + form.referrallname + "','"+ 0 +"')";
+            string query = "INSERT INTO dbo.refform VALUES ('" + form.fName + "', '" + form.lName + "', '" + form.dOB + "', '" + form.clientCode + "', '" + form.guardianName + "', '" + form.guardianlName + "', '" + form.guardianRelationship + "', '" + form.address + "', '" + form.gender + "', '" + form.guardianEmail + "', '" + form.guardianPhone + "', '" + form.meeting + "', '" + form.youthInDuvalSchool + "', '" + form.youthInSchool + "', '" + form.issues + "', '" + form.currentSchool + "', '" + form.zip + "', '" + form.grade + "', 'Pending', '" + form.arrest + "', '" + form.school + "', '" + form.dateInput + "', '" + form.date + "', '" + form.email + "', '" + form.Reach + "', '" + form.moreInfo + "', '" + form.reason + "', '" + form.referralfname + "', '" + form.referrallname + "','"+ 0 +"','"+form.nameOrg+"','"+form.youthNu+"','"+form.youthEmail+"','"+form.youthCit+"','"+form.youthOffense+"','"+form.youthImpact+"','"+form.youthAlt+"','"+form.youthSetting+"','"+form.youthInjunction+"');";
             
             command = new SqlCommand(query, cnn);
             
@@ -73,7 +72,7 @@ namespace HopePipeline.Controllers
 
         }//-------------------------------------------------------------End Form Submit Referral GUID DONE
 
-        public IActionResult contactInfoM(int clientCode)
+        public IActionResult contactInfoM(Guid clientCode)
         {
             
             //var client= new Contact();
@@ -84,7 +83,7 @@ namespace HopePipeline.Controllers
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
-            string query = "SELECT fname, lname, guardianName, guardianlName, guardianRelationship, guardianPhone, guardianEmail, strAddress, zip, reach, referrallname, referralfname, email FROM refform WHERE clientCode= " + clientCode + ";";
+            string query = "SELECT fname, lname, guardianName, guardianlName, guardianRelationship, guardianPhone, guardianEmail, strAddress, zip, reach, referrallname, referralfname, email, nameOrg, youthNu, youthEmail  FROM refform WHERE clientCode= '" + clientCode + "';";
 
             command = new SqlCommand(query, cnn);
 
@@ -133,6 +132,17 @@ namespace HopePipeline.Controllers
                     client.remail = Convert.ToString(dataReader["email"]);
                     if (client.remail == " " || client.remail == "null" || client.remail == "")
                     { client.remail = "N/A"; }
+
+                    client.nameOrg = Convert.ToString(dataReader["nameOrg"]);
+                    if (client.nameOrg == " " || client.nameOrg == "null" || client.nameOrg == "")
+                    { client.nameOrg = "N/A"; }
+                    client.youthNu = Convert.ToString(dataReader["youthNu"]);
+                    if (client.youthNu == " " || client.youthNu == "null" || client.youthNu == "")
+                    { client.youthNu = "N/A"; }
+                    client.youthEmail = Convert.ToString(dataReader["youthEmail"]);
+                    if (client.youthEmail == " " || client.youthEmail == "null" || client.youthEmail == "")
+                    { client.youthEmail = "N/A"; }
+
                     clientl.Add(client);
 
                 }
@@ -155,7 +165,7 @@ namespace HopePipeline.Controllers
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
-            string query = "SELECT clientCode, fname, lname, dob, guardianName, guardianlName, guardianRelationship, strAddress, gender, guardianEmail, guardianPhone, meeting, youthInDuvalSchool, youthInSchool, issues, currentSchool, zip, grade, currStatus, arrest, school, dateInput, meetingDate, email, reach, moreInfo, reason, referralfname, referrallname FROM refform WHERE clientCode= '" + clientCode + "';";
+            string query = "SELECT clientCode, fname, lname, dob, guardianName, guardianlName, guardianRelationship, strAddress, gender, guardianEmail, guardianPhone, meeting, youthInDuvalSchool, youthInSchool, issues, currentSchool, zip, grade, currStatus, arrest, school, dateInput, meetingDate, email, reach, moreInfo, reason, referralfname, referrallname, nameOrg, youthNu, youthEmail, youthCit, youthOffense, youthImpact, youthAlt, youthSetting, youthInjunction FROM refform WHERE clientCode= '" + clientCode + "';";
 
             command = new SqlCommand(query, cnn);
 
@@ -322,8 +332,9 @@ namespace HopePipeline.Controllers
                     { client.dateInput = "N/A"; }
 
                      client.date = Convert.ToString(dataReader["meetingDate"]);
-                    if (client.date == " " || client.date == "null" || client.date == "" )
+                    if (client.date == " " || client.date == "null" || client.date == "" || client.date == "1/1/1900 12:00:00 AM")
                     { client.date = "N/A"; }
+
 
 
                     client.email = Convert.ToString(dataReader["email"]);
@@ -347,6 +358,84 @@ namespace HopePipeline.Controllers
                     client.referrallname = Convert.ToString(dataReader["referrallname"]);
                     if (client.referrallname == " " || client.referrallname == "null" || client.referrallname == "")
                     { client.referrallname = "N/A"; }
+                    //new referral info
+                    client.nameOrg = Convert.ToString(dataReader["nameOrg"]);
+                    if (client.nameOrg == " " || client.nameOrg == "null" || client.nameOrg == "")
+                    { client.nameOrg = "N/A"; }
+                    client.youthNu = Convert.ToString(dataReader["youthNu"]);
+                    if (client.youthNu == " " || client.youthNu == "null" || client.youthNu == "")
+                    { client.youthNu = "N/A"; }
+                    client.youthEmail = Convert.ToString(dataReader["youthEmail"]);
+                    if (client.youthEmail == " " || client.youthEmail == "null" || client.youthEmail == "")
+                    { client.youthEmail = "N/A"; }
+
+                    client.youthCit = Convert.ToString(dataReader["youthCit"]);
+                    var ycit = Int32.TryParse(client.youthCit, out int yc);
+                    if (client.youthCit == "1")
+                    { client.youthCit = "Yes"; }
+                    if (client.youthCit == "0")
+                    { client.youthCit = "No"; }
+                    if (client.youthCit == "")
+                    { client.youthCit = "N/A"; }
+                    else
+                    { client.youthCit = client.youthCit; }
+
+
+                    client.youthOffense = Convert.ToString(dataReader["youthOffense"]);
+                    var offense = Int32.TryParse(client.youthOffense, out int ofence);
+                    if (client.youthOffense == "1")
+                    { client.youthOffense = "Yes"; }
+                    if (client.youthOffense == "2")
+                    { client.youthOffense = "Maybe"; }
+                    if (client.youthOffense == "0")
+                    { client.youthOffense = "No"; }
+                    if (client.youthOffense == "")
+                    { client.youthOffense = "N/A"; }
+                    else
+                    { client.youthOffense = client.youthOffense; }
+
+                    client.youthImpact = Convert.ToString(dataReader["youthImpact"]);
+                    if (client.youthImpact == " " || client.youthImpact == "null" || client.youthImpact == "")
+                    { client.youthImpact = "N/A"; }
+
+                    client.youthAlt = Convert.ToString(dataReader["youthAlt"]);
+                    var Alt = Int32.TryParse(client.youthAlt, out int yalt);
+                    if (client.youthAlt == "1")
+                    { client.youthAlt = "Yes"; }
+                    if (client.youthAlt == "2")
+                    { client.youthAlt = "Maybe"; }
+                    if (client.youthAlt == "0")
+                    { client.youthAlt = "No"; }
+                    if (client.youthAlt == "")
+                    { client.youthAlt = "N/A"; }
+                    else
+                    { client.youthAlt = client.youthAlt; }
+
+                    client.youthSetting = Convert.ToString(dataReader["youthSetting"]);
+                    var yset = Int32.TryParse(client.youthSetting, out int ysett);
+                    if (client.youthSetting == "1")
+                    { client.youthSetting = "Yes"; }
+                    if (client.youthSetting == "2")
+                    { client.youthSetting = "Maybe"; }
+                    if (client.youthSetting == "0")
+                    { client.youthSetting = "No"; }
+                    if (client.youthSetting == "")
+                    { client.youthSetting = "N/A"; }
+                    else
+                    { client.youthSetting = client.youthSetting; }
+
+                    client.youthInjunction = Convert.ToString(dataReader["youthInjunction"]);
+                    var Injun = Int32.TryParse(client.youthInjunction, out int ction);
+                    if (client.youthInjunction == "1")
+                    { client.youthInjunction = "Yes"; }
+                    if (client.youthInjunction == "2")
+                    { client.youthInjunction = "Maybe"; }
+                    if (client.youthInjunction == "0")
+                    { client.youthInjunction = "No"; }
+                    if (client.youthInjunction == "")
+                    { client.youthInjunction = "N/A"; }
+                    else
+                    { client.youthInjunction = client.youthInjunction; }
 
                     clientl.Add(client);
 
@@ -441,7 +530,7 @@ namespace HopePipeline.Controllers
             {
                 command.CommandText = "UPDATE dbo.refform " +
                     "SET " +
-                    "fname = @fName, lname = @lName, dob = @dOB, guardianName = @guardianName, guardianlName = @guardianlName, guardianRelationship = @guardianRelationship, strAddress = @strAddress, gender = @gender, guardianEmail = @guardianEmail, guardianPhone = @guardianPhone, meeting = @meeting, youthInDuvalSchool = @youthInDuvalSchool, youthInSchool = @youthInSchool, issues = @issues, zip = @zip, grade = @grade, currStatus = @currStatus, arrest = @arrest, school = @school, dateInput = @dateInput, meetingDate = @meetingDate, email =@email, reach = @reach,moreInfo = @moreInfo, reason = @reason, referralfname = @referralfname, referrallname = @referrallname WHERE clientCode = @clientCode;";
+                    "fname = @fName, lname = @lName, dob = @dOB, guardianName = @guardianName, guardianlName = @guardianlName, guardianRelationship = @guardianRelationship, strAddress = @strAddress, gender = @gender, guardianEmail = @guardianEmail, guardianPhone = @guardianPhone, meeting = @meeting, youthInDuvalSchool = @youthInDuvalSchool, youthInSchool = @youthInSchool, issues = @issues, zip = @zip, grade = @grade, currStatus = @currStatus, arrest = @arrest, school = @school, dateInput = @dateInput, meetingDate = @meetingDate, email =@email, reach = @reach,moreInfo = @moreInfo, reason = @reason, referralfname = @referralfname, referrallname = @referrallname,nameOrg=@nameOrg, youthNu=@youthNu, youthEmail=@youthEmail, youthCit= @youthCit, youthOffense=@youthOffense, youthImpact=@youthImpact, youthAlt= @youthAlt, youthSetting= @youthSetting, youthInjunction =@youthInjunction WHERE clientCode = @clientCode;";
 
                 command.Parameters.AddWithValue("@clientCode", form.clientCode);
 
@@ -526,7 +615,7 @@ namespace HopePipeline.Controllers
                     arr.Value = DBNull.Value;
                 }
                 SqlParameter sc = command.Parameters.AddWithValue("@school", form.school);
-                if (form.school == null)
+                if (form.school == null||form.school == "")
                 {
                     sc.Value = DBNull.Value;
                 }
@@ -580,6 +669,51 @@ namespace HopePipeline.Controllers
                 {
                     gra.Value = DBNull.Value;
                 }
+                SqlParameter nameOrgParam = command.Parameters.AddWithValue("@nameOrg", form.nameOrg);
+                if (form.nameOrg == null)
+                {
+                    nameOrgParam.Value = DBNull.Value;
+                }
+                SqlParameter youthNuParam = command.Parameters.AddWithValue("@youthNu", form.youthNu);
+                if (form.youthNu == null)
+                {
+                    youthNuParam.Value = DBNull.Value;
+                }
+                SqlParameter youthEmailParam = command.Parameters.AddWithValue("@youthEmail", form.youthEmail);
+                if (form.youthEmail == null)
+                {
+                    youthEmailParam.Value = DBNull.Value;
+                }
+                SqlParameter youthCitParam = command.Parameters.AddWithValue("@youthCit", form.youthCit);
+                if (form.youthCit != 0 && form.youthCit != 1)
+                {
+                    youthCitParam.Value = DBNull.Value;
+                }
+                SqlParameter youthOffenseParam = command.Parameters.AddWithValue("@youthOffense", form.youthOffense);
+                if (form.youthOffense != 0 && form.youthOffense != 1 && form.youthOffense != 2)
+                {
+                    youthOffenseParam.Value = DBNull.Value;
+                }
+                SqlParameter youthImpactpara = command.Parameters.AddWithValue("@youthImpact", form.youthImpact);
+                if (form.youthImpact == null)
+                {
+                    youthImpactpara.Value = DBNull.Value;
+                }
+                SqlParameter youthAltParam = command.Parameters.AddWithValue("@youthAlt", form.youthAlt);
+                if (form.youthAlt != 0 && form.youthAlt != 1 && form.youthAlt != 2)
+                {
+                    youthAltParam.Value = DBNull.Value;
+                }
+                SqlParameter youthSettingParam = command.Parameters.AddWithValue("@youthSetting", form.youthSetting);
+                if (form.youthSetting != 0 && form.youthSetting != 1 && form.youthSetting != 2)
+                {
+                    youthSettingParam.Value = DBNull.Value;
+                }
+                SqlParameter youthInjunctionParam = command.Parameters.AddWithValue("@youthInjunction", form.youthInjunction);
+                if (form.youthInjunction != 0 && form.youthInjunction != 1 && form.youthInjunction != 2)
+                {
+                    youthInjunctionParam.Value = DBNull.Value;
+                }
                 connection.Open();
                 command.ExecuteNonQuery();
                 cnn.Dispose();
@@ -606,7 +740,7 @@ namespace HopePipeline.Controllers
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
-            string query = "SELECT clientCode, fname, lname, dob, guardianName, guardianlName, guardianRelationship, strAddress, gender, guardianEmail, guardianPhone, meeting, youthInDuvalSchool, youthInSchool, issues, currentSchool, zip, grade, currStatus, arrest, school, dateInput, meetingDate, email, reach, moreInfo, reason, referralfname, referrallname FROM refform WHERE clientCode= '" + clientCode + "';";
+            string query = "SELECT clientCode, fname, lname, dob, guardianName, guardianlName, guardianRelationship, strAddress, gender, guardianEmail, guardianPhone, meeting, youthInDuvalSchool, youthInSchool, issues, currentSchool, zip, grade, currStatus, arrest, school, dateInput, meetingDate, email, reach, moreInfo, reason, referralfname, referrallname, nameOrg, youthNu, youthEmail, youthCit, youthOffense, youthImpact, youthAlt, youthSetting, youthInjunction FROM refform WHERE clientCode= '" + clientCode + "';";
 
             command = new SqlCommand(query, cnn);
 
@@ -620,6 +754,7 @@ namespace HopePipeline.Controllers
                     referralBrandi client = new referralBrandi();
                    // client.clientCode = Convert.ToString(dataReader["clientCode"]);
                     client.clientCode = Guid.Parse(Convert.ToString(dataReader["clientCode"]));
+
                     client.fName = Convert.ToString(dataReader["fname"]);
 
 
@@ -680,23 +815,14 @@ namespace HopePipeline.Controllers
 
                     client.issues = Convert.ToString(dataReader["issues"]);
 
-
-
                     client.school = Convert.ToString(dataReader["school"]);
-
-
-
+                
 
                     client.zip = Convert.ToString(dataReader["zip"]);
 
-
                     client.grade = Convert.ToString(dataReader["grade"]);
 
-
                     client.status = Convert.ToString(dataReader["currStatus"]);
-
-
-
 
                     if (Convert.IsDBNull(dataReader["arrest"]))
                     { client.arrest = 2; }
@@ -705,15 +831,10 @@ namespace HopePipeline.Controllers
                         client.arrest = Convert.ToInt16(dataReader["arrest"]);
                     };//fix ints}
 
-
                     client.school = Convert.ToString(dataReader["school"]);
 
-
-
-
-
                     if (Convert.IsDBNull(dataReader["dateInput"]))
-                    { client.dateInput = DateTime.Parse("01/01/1970 12:00:00 AM"); }
+                    { client.dateInput = DateTime.Parse("01/01/1900 12:00:00 AM"); }
                     else
                     {
                         client.dateInput = Convert.ToDateTime(dataReader["dateInput"]);
@@ -721,14 +842,11 @@ namespace HopePipeline.Controllers
 
 
                     if (Convert.IsDBNull(dataReader["meetingDate"]))
-                    { client.date = DateTime.Parse("01/01/1970 12:00:00 AM"); }
+                    { client.date = DateTime.Parse("01/01/1900 12:00:00 AM"); }
                     else
                     {
                         client.date = Convert.ToDateTime(dataReader["meetingDate"]);
                     };//fix ints}
-
-
-
 
                     if (Convert.IsDBNull(dataReader["arrest"]))
                     { client.arrest = 2; }
@@ -740,8 +858,6 @@ namespace HopePipeline.Controllers
 
                     client.email = Convert.ToString(dataReader["email"]);
 
-
-
                     client.Reach = Convert.ToString(dataReader["reach"]);
 
                     client.moreInfo = Convert.ToString(dataReader["moreInfo"]);
@@ -752,6 +868,40 @@ namespace HopePipeline.Controllers
                     client.referralfname = Convert.ToString(dataReader["referralfname"]);
 
                     client.referrallname = Convert.ToString(dataReader["referrallname"]);
+                    client.nameOrg = Convert.ToString(dataReader["nameOrg"]);
+                    client.youthNu = Convert.ToString(dataReader["youthNu"]);
+                    client.youthEmail = Convert.ToString(dataReader["youthEmail"]);
+                    if (Convert.IsDBNull(dataReader["youthCit"]))
+                    { client.youthCit = 0; }
+                    else
+                    {
+                        client.youthCit = Convert.ToInt16(dataReader["youthCit"]);
+                    }
+                    if (Convert.IsDBNull(dataReader["youthOffense"]))
+                    { client.youthOffense = 2; }
+                    else
+                    {
+                        client.youthOffense = Convert.ToInt16(dataReader["youthOffense"]);
+                    }
+                    client.youthImpact = Convert.ToString(dataReader["youthImpact"]);
+                    if (Convert.IsDBNull(dataReader["youthAlt"]))
+                    { client.youthAlt = 2; }
+                    else
+                    {
+                        client.youthAlt = Convert.ToInt16(dataReader["youthAlt"]);
+                    }
+                    if (Convert.IsDBNull(dataReader["youthSetting"]))
+                    { client.youthSetting = 2; }
+                    else
+                    {
+                        client.youthSetting = Convert.ToInt16(dataReader["youthSetting"]);
+                    }
+                    if (Convert.IsDBNull(dataReader["youthInjunction"]))
+                    { client.youthInjunction = 2; }
+                    else
+                    {
+                        client.youthInjunction = Convert.ToInt16(dataReader["youthInjunction"]);
+                    }
 
                     ViewBag.Lessage = client;
 
@@ -3158,29 +3308,30 @@ namespace HopePipeline.Controllers
         [HttpPost]
         public IActionResult Emailreferral( string emailaddress)
         {
-            Main(emailaddress);
-            //confirmation thank you page for submiting and give email
+          //  Main(emailaddress);
+            //confirmation thank you page for submiting and give email submit referral
+            Execute().Wait();
             return RedirectToAction("Index", "Home");
 
         }
 
-        private static void Main(string emailaddress)
+        static async Task Execute()
         {
-        //    Execute().Wait();
-        //}
+            //    Execute().Wait();
+            //}
 
-        //static async Task Execute()
-        //{
-        //    var apiKey = Environment.GetEnvironmentVariable("NAME_OF_THE_ENVIRONMENT_VARIABLE_FOR_YOUR_SENDGRID_KEY");
-        //    var client = new SendGridClient(apiKey);
-        //    var from = new EmailAddress("test@example.com", "Example User");
-        //    var subject = "Sending with Twilio SendGrid is Fun";
-        //    var to = new EmailAddress("test@example.com", "Example User");
-        //    var plainTextContent = "and easy to do anywhere, even with C#";
-        //    var htmlContent = "<strong>and easy to do anywhere, even with C#</strong>";
-        //    var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-        //    var response = await client.SendEmailAsync(msg);
-    
-}
+            //static async Task Execute()
+            //{
+            var apiKey = Environment.GetEnvironmentVariable("API_KEY");
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress("n01057930@unf.edu", "Example User");
+            var subject = "Sending with Twilio SendGrid is Fun";
+            var to = new EmailAddress("n01057930@unf.edu", "Example User");
+            var plainTextContent = "and easy to do anywhere, even with C#";
+            var htmlContent = "<strong>and easy to do anywhere, even with C#</strong>";
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var response = await client.SendEmailAsync(msg);
+
+        }
     }
 }

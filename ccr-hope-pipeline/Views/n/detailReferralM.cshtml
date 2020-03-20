@@ -68,22 +68,22 @@
                     <h4>Client:&nbsp;@Html.DisplayFor(modelItem => item.lName),&nbsp;@Html.DisplayFor(modelItem => item.fName)</h4>
 
 
-</th>
+                </th>
 
             </tr>
 
-            @*<tr>
-            <td class="t" style="text-align:right"> First Name:</td>
+            <tr>
+                <td class="t" style="text-align:right"> Youth's email address:</td>
 
-            <td>@Html.DisplayFor(modelItem => item.fName)</td>
+                <td>@Html.DisplayFor(modelItem => item.youthEmail)</td>
 
-        </tr>
-        <tr>
-            <td class="t" style="text-align:right"> Last Name: </td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right"> Youth's phone number: </td>
 
-            <td> @Html.DisplayFor(modelItem => item.lName)</td>
+                <td> @Html.DisplayFor(modelItem => item.youthNu)</td>
 
-        </tr>*@
+            </tr>
 
             <tr>
                 <td class="t" style="text-align:right"> Gender Identity:  </td>
@@ -146,10 +146,12 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.meeting)<br />
                 </td>
-            <tr>
+                
+            @if (item.meeting != "No" ||item.meeting != "Maybe")
+            { <tr>
                 <td class="t" style="text-align:right">Date of Youth's Meeting:</td>
                 <td>@Html.DisplayFor(modelItem => item.date)</td>
-            </tr>
+            </tr>}
 
 
 
@@ -158,6 +160,12 @@
 
                 <td>@Html.DisplayFor(modelItem => item.issues)</td>
 
+
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">Youth is impacted by not being in school because of the following:</td>
+
+                <td>@Html.DisplayFor(modelItem => item.youthImpact)</td>
 
             </tr>
             <tr>
@@ -187,12 +195,29 @@
                     @Html.DisplayFor(modelItem => item.youthInSchool)
                 </td>
             </tr>
-            <tr>
+
+           @{if (item.youthInSchool != "No")
+               { <tr>
                 <td class="t" style="text-align:right"> Where is the youth currently attending school?</td>
 
                 <td> @Html.DisplayFor(modelItem => item.school)</td>
-            </tr>
+            </tr>}
+               }
+            <tr>
+                <td class="t" style="text-align:right">Is youth at risk of placement in alternative school, either Mattie V or Grand Park?</td>
 
+                <td> @Html.DisplayFor(modelItem => item.youthAlt)</td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">Is youth in a self-contained educational setting(i.e. PRIDE)?</td>
+
+                <td> @Html.DisplayFor(modelItem => item.youthSetting)</td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">Has a school staff person taken out an injunction against this youth?</td>
+
+                <td> @Html.DisplayFor(modelItem => item.youthInjunction)</td>
+            </tr>
             <tr>
                 <td class="t" style="text-align:right">
                     Has the youth been arrested?<br />
@@ -201,6 +226,27 @@
                     @Html.DisplayFor(modelItem => item.arrest)
                 </td>
             </tr>
+            @{if (item.arrest == "No")
+                {<tr>
+                <td class="t" style="text-align:right">
+                    If youth has not been arrested, is this an unsuccessful civil citation or diversion case?<br />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.youthCit)
+                </td>
+            </tr>}
+                }
+            @{ if (item.arrest == "Yes")
+                {
+            <tr>
+                <td class="t" style="text-align:right">
+                    Was youth arrested for a school related offense? (For example, battery on a school board employee)<br />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.youthOffense)
+                </td>
+            </tr>}
+                }
             <tr>
                 <td class="t" style="text-align:right">
                     Is there anything else you would like us to know about the youth or their family?<br />
@@ -263,7 +309,13 @@
 
 
             </tr>
+            <tr>
+                <td class="t" style="text-align:right"> Name of organization making referral:</td>
 
+                <td> @Html.DisplayFor(modelItem => item.nameOrg)</td>
+
+
+            </tr>
 
             <tr>
                 <td class="t" style="text-align:right"> File:</td>

@@ -45,19 +45,58 @@
     <script type="text/javascript">
 
         function yesnoCheck() {
-            if (document.getElementById('yesCheck').checked) {
+            if (document.getElementById('yesCheck').checked == true) {
                 document.getElementById('ifYes').style.display = 'block';
-            }
-            else document.getElementById('ifYes').style.display = 'none';
+                document.getElementById('meetinginfo').disabled = false;
 
+            }
+            else {
+                document.getElementById('ifYes').style.display = 'none';
+                document.getElementById('meetinginfo').disabled = true;
+                document.getElementById('meetinginfo').value = null;
+            }
         }
         function yesnoCheck1() {
-            if (document.getElementById('yesclick').checked) {
+            if (document.getElementById('yesclick').checked == true) {
                 document.getElementById('Yes').style.display = 'block';
+                document.getElementById('schoolid').disabled = false;
             }
-            else document.getElementById('Yes').style.display = 'none';
+            else {
+                document.getElementById('Yes').style.display = 'none';
+                document.getElementById('schoolid').disabled = true;
+                 document.getElementById('schoolid').value = null;
+            }
 
         }
+           function yesarrestCheck() {
+            if (document.getElementById('yesarrest').checked) {
+                document.getElementById('ifyesarrest').style.display = 'block';
+                document.getElementById('ifnoarrest').style.display = 'none';
+                //document if yes then other in checked no
+                document.getElementById('value0Cit').checked = true;
+                document.getElementById('value1Cit').checked=false;
+            }
+            else document.getElementById('ifyesarrest').style.display = 'none';
+            if (document.getElementById('noarrest').checked) {
+                document.getElementById('ifnoarrest').style.display = 'block';
+                //document if yes then other in checked no
+                document.getElementById('value0Offense').checked = true;
+                 document.getElementById('value1Offense').checked = false;
+                
+            }
+               else document.getElementById('ifnoarrest').style.display = 'none';
+               if (document.getElementById('maybearrest').checked)
+               {
+                   document.getElementById('ifyesarrest').style.display = 'none';
+                   document.getElementById('ifnoarrest').style.display = 'none';
+                    document.getElementById('value0Offense').checked = true;
+                   document.getElementById('value1Offense').checked = false;
+                   document.getElementById('value0Cit').checked = true;
+                document.getElementById('value1Cit').checked=false;
+               }
+        }
+       
+      
         function myConfirm() {
             var array = []
             var checkboxes = document.querySelectorAll('input[name=array]:checked')
@@ -65,13 +104,15 @@
             for (var i = 0; i < checkboxes.length; i++) {
                 array.push(checkboxes[i].value)
             }
-
+          
             var input = document.getElementById("input");
             var array3 = document.getElementById("array3").value;
             //alert(array3);
-            if (input.checked) {
+            if (input.checked && array3 != "Mother"  && array3 != "mother"  && array3 !="father"  && array3 != "Father" && array3 != "Guardian"  && array3 != "guardian" && array3 != "Family member"  && array3 != "Foster Parent") {
                 //for (var i = 0; i < array3.length; i++)
-                { array.push(array3) }
+                {
+                    array.push(array3)
+                }
             }
 
             //alert(array);
@@ -86,10 +127,38 @@
             for (var i = 0; i < checkboxes1.length; i++) {
                 array1.push(checkboxes1[i].value)
             }
+            var input33 = document.getElementById("input33");
+            var array33 = document.getElementById("array33").value;
+               if (input33.checked) {
+                //for (var i = 0; i < array3.length; i++)
+                { array1.push(array33) }
+            }
 
             document.getElementById("issues0").value = array1;
 
+            var arrayorg = []
+            var checkboxes2 = document.querySelectorAll('input[name=arrayorg]:checked')
 
+            for (var i = 0; i < checkboxes2.length; i++) {
+                arrayorg.push(checkboxes2[i].value)
+            }
+            var checkarrayorg = document.getElementById("checkarrayorg");
+            var finalarrayorg = document.getElementById("finalarrayorg").value;
+            if (checkarrayorg.checked && finalarrayorg != "JFCS CJRG"&& finalarrayorg != "Public Defender's Office"&& finalarrayorg != "WINS HOPE Court") {
+                //for (var i = 0; i < array3.length; i++)
+                { arrayorg.push(finalarrayorg) }
+            }
+
+            document.getElementById("nameOrg").value = arrayorg;
+
+              var arrayImpact = []
+            var checkboxes3 = document.querySelectorAll('input[name=arrayImpact]:checked')
+
+            for (var i = 0; i < checkboxes3.length; i++) {
+               arrayImpact.push(checkboxes3[i].value)
+            }
+          
+            document.getElementById("youthImpact").value = arrayImpact;
 
             if (confirm("Please Confirm you would like to submit the Referral Form")) {
 
@@ -107,9 +176,25 @@
 
             }
             else document.getElementById('array3').removeAttribute('disabled');
-
+            document.getElementById('array3').value= null;
         }
+        //issues
+          function tfunction() {
+            if (!document.getElementById('input33').checked) {
+                document.getElementById('array33').setAttribute('disabled', 'disabled');
 
+            }
+            else document.getElementById('array33').removeAttribute('disabled');
+              document.getElementById('array33').value= null;
+        }//issues
+             function ffunction() {
+            if (!document.getElementById('checkarrayorg').checked) {
+                document.getElementById('finalarrayorg').setAttribute('disabled', 'disabled');
+
+            }
+            else document.getElementById('finalarrayorg').removeAttribute('disabled');
+                  document.getElementById('finalarrayorg').value= null;
+        }
     </script>
 </head>
 <body>
@@ -144,9 +229,23 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2">
+                <td>
                     Referral Source's Email Address:<br />
                     <input type="email" asp-for="email"><br>
+                </td>
+            
+                <td>
+                    Name of organization making referral:<br />
+                    <input type="checkbox" name="arrayorg" value="JFCS CJRG"> &nbsp;JFCS CJRG<br>
+                    <input type="checkbox" name="arrayorg" value="Public Defender''s Office"> &nbsp;Public Defender's Office<br>
+                    <input type="checkbox" name="arrayorg" value="WINS HOPE Court"> &nbsp;WINS HOPE Court<br>
+
+                   <input type="checkbox" id="checkarrayorg" name="checkarrayorg" value="Other" onclick="ffunction()">&nbsp;Other: &nbsp;<input type="text" name="finalarrayorg" id="finalarrayorg" disabled>
+
+
+
+                    <input type="hidden" id="nameOrg" name="nameOrg" asp-for="nameOrg">
+
                 </td>
             </tr>
         </table>
@@ -156,29 +255,39 @@
             </tr>
             <tr>
                 <td>
-                    First Name:<br />
-                    <input type="text" asp-for="fName"><br>
-                </td>
-
-                <td>
-                    Last Name:<br />
+                    Youth's First Name:<br />
+                    <input type="text" asp-for="fName"><br><br />
+                    Youth's Last Name:<br />
                     <input type="text" asp-for="lName"><br>
                 </td>
-                <td>
+
+               
+                <td colspan="2">
 
                     Gender Identity: <br />
 
-                    <input type="radio" name="gender" value="male" asp-for="gender"> He/Him/His<br>
-                    <input type="radio" name="gender" value="female" asp-for="gender"> She/Her/Hers<br>
-                    <input type="radio" name="gender" value="trans*" asp-for="gender"> They/Them/Theirs<br />
-                    <input type="radio" name="gender" value="nonbinaryF" asp-for="gender"> She/They<br>
-                    <input type="radio" name="gender" value="nonbinaryM" asp-for="gender"> He/They<br>
+                    <input type="radio" name="gender" value="male" asp-for="gender"> He/Him/His&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="gender" value="female" asp-for="gender"> She/Her/Hers&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="gender" value="trans*" asp-for="gender"> They/Them/Theirs<br>
+                    <input type="radio" name="gender" value="nonbinaryF" asp-for="gender"> She/They&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="gender" value="nonbinaryM" asp-for="gender"> He/They&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <input type="radio" name="gender" value="neutral" asp-for="gender"> Zie/Zir/Zirs<br />
 
                 </td>
                 <td>
                     Date Of Birth:<br />
                     <input type="date" name="dOB" asp-for="dOB">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                   
+                    Youth's email address:<br />
+                    <input type="email" asp-for="youthEmail">
+                </td>
+                <td colspan="2">
+                    Youth's phone number:<br />
+                    <input type="text" asp-for="youthNu">
                 </td>
             </tr>
 
@@ -201,7 +310,7 @@
                         <input type="checkbox" name="array" value="Family member"> &nbsp;Family member(aunt, uncle, grandmother, grandfather, great grandparent, sibiling, cousin, etc)<br>
                         <input type="checkbox" name="array" value="Foster Parent"> &nbsp;Foster Parent<br>
 
-                        &nbsp;<input type="checkbox" id="input" name="input1" value="Other" onclick="afunction()">&nbsp;Other: &nbsp;<input type="text" name="array" id="array3" disabled>
+                       <input type="checkbox" id="input" name="input1" value="Other" onclick="afunction()">&nbsp;Other: &nbsp;<input type="text" name="array" id="array3" disabled>
 
                         <input type="hidden" id="guardRe" name="guardianRelationship" asp-for="guardianRelationship">
                         <br>
@@ -246,7 +355,7 @@
                     <div id="ifYes" style="display:none">
                         If yes, what is the date and time of the meeting?<br>
                         Date:<br />
-                        <input type="datetime-local" asp-for="date"><br>
+                        <input type="datetime-local" id="meetinginfo"asp-for="date"><br>
 
 
                     </div>
@@ -261,27 +370,52 @@
             </tr>
 
             <tr>
-                <td>
+                <td colspan="2">
                     <div id="checks1">
-                        What issues are currently impacting the youth? Please check all that apply.
-                        <br>  <input type="checkbox" name="array1" value="Failed a grade"> &nbsp;Failed a grade<br>
-                        <input type="checkbox" name="array1" value="Frequently suspended"> &nbsp;Frequently suspended<br>
-                        <input type="checkbox" name="array1" value="In an alternative school setting "> &nbsp;In an alternative school setting (Mattie V., Grand Park, AMI, Pace, etc)<br>
-                        <input type="checkbox" name="array1" value="Has a 504 plan or an IEP"> &nbsp;Has a 504 plan or an IEP<br>
-                        <input type="checkbox" name="array1" value="Not enrolled in school"> &nbsp;Not enrolled in school<br>
-                        <input type="checkbox" name="array1" value="Has a history of being Baker Acted"> &nbsp;Has a history of being Baker Acted<br>
+                        What educational issues are currently impacting the youth? Please check all that apply.
+                        <br>  <input type="checkbox" name="array1" value="Failed a grade or more"> &nbsp;Failed a grade or more<br>
+                        <input type="checkbox" name="array1" value="Frequently suspended, called to be picked up, or told not to come to school"> &nbsp;Frequently suspended, called to be picked up, or told not to come to school<br>
+                        <input type="checkbox" name="array1" value="In an alternative school setting"> &nbsp;In an alternative school setting (Mattie V., Grand Park, AMI, Pace, etc)<br>
+                        <input type="checkbox" name="array1" value="Has a 504 plan or an IEP but is not making academic progress or continues to get in frequent trouble"> &nbsp;Has a 504 plan or an IEP but is not making academic progress or continues to get in frequent trouble<br>
+                        <input type="checkbox" name="array1" value="Not enrolled in school but was previously at a DCPS school"> &nbsp;Not enrolled in school but was previously at a DCPS school<br>
+                        <input type="checkbox" name="array1" value="Has a history of being Baker Acted from school"> &nbsp;Has a history of being Baker Acted from school<br>
                         <input type="checkbox" name="array1" value="Dependent"> &nbsp;Dependent<br>
                         <input type="checkbox" name="array1" value="WINS"> &nbsp;WINS<br>
+                        &nbsp;<input type="checkbox" id="input33" name="input33" value="Other" onclick="tfunction()">&nbsp;Other: &nbsp;<input type="text" name="array33" id="array33" disabled>
 
 
                         <input type="hidden" id="issues0" name="issues" asp-for="issues">
                     </div>
                 </td>
-
+</tr>
+            <tr>
+                <td colspan="2">
+                    Youth is impacted by not being in school because of the following:
+                    <br>  <input type="checkbox" name="arrayImpact" value="suspensions"> &nbsp;suspensions<br>
+                    <input type="checkbox" name="arrayImpact" value="being told to stay home, not come, or being sent home without suspension"> &nbsp;being told to stay home, not come, or being sent home without suspension<br>
+                    <input type="checkbox" name="arrayImpact" value="expulsion"> &nbsp;expulsion<br>
+                    <input type="checkbox" name="arrayImpact" value="dropped out"> &nbsp;dropped out<br>
+                    <input type="checkbox" name="arrayImpact" value="prevented from enrolling"> &nbsp;prevented from enrolling<br>
+                  
+                    <input type="hidden" id="youthImpact" name="youthImpact" asp-for="youthImpact">
+                </td>
+            </tr>
+            <tr>
                 <td>
+
                     Is this youth a student in a Duval County Public School? <br />
                     <select name="youthInDuvalSchool" asp-for="youthInDuvalSchool">
-                        <option value="Select">Please Select an Option</option>
+                        <option value="Select"disabled="disabled"selected>Please Select an Option</option>
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                        <option value="2">Maybe</option>
+
+                    </select><br>
+                </td>
+                <td>
+                   Is youth at risk of placement in alternative school, either Mattie V or Grand Park? <br />
+                    <select name="youthAlt" asp-for="youthAlt">
+                        <option value="Select"disabled="disabled"selected>Please Select an Option</option>
                         <option value="1">Yes</option>
                         <option value="0">No</option>
                         <option value="2">Maybe</option>
@@ -294,7 +428,8 @@
                     What is the youth's grade in school?
                     <br />
                     <select name="Grade" asp-for="grade">
-                        <option value="N/A">Please Select an Option</option>
+                    @{string nullanswer = null; }
+                        <option value="@nullanswer"disabled="disabled"selected>Please Select an Option</option>
                         <option value="Kindergarten">Kindergarten</option>
                         <option value="1st">1st</option>
                         <option value="2nd">2nd</option>
@@ -320,16 +455,45 @@
 
                     <div id="Yes" style="display:none">
                         <br />Where is the youth currently attending school?<br />
-                        <input type="text" name="school" asp-for="school">
+                        <input type="text" name="school" id="schoolid" asp-for="school">
                     </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Is youth in a self-contained educational setting(i.e. PRIDE)?
+                    <br />
+                    Yes <input type="radio" name="youthSetting" value="1" asp-for="youthSetting">&nbsp;&nbsp;
+                    No <input type="radio" name="youthSetting" value="0" asp-for="youthSetting">&nbsp;&nbsp;
+                    Maybe <input type="radio" name="youthSetting" value="2" asp-for="youthSetting"><br>
+                </td>
+                
+                <td>
+                  Has a school staff person taken out an injunction against this youth?
+                    <br />
+                    Yes <input type="radio" name="youthInjunction" value="1" asp-for="youthInjunction">&nbsp;&nbsp;
+                    No <input type="radio" name="youthInjunction" value="0" asp-for="youthInjunction">&nbsp;&nbsp;
+                    Maybe <input type="radio" name="youthInjunction" value="2" asp-for="youthInjunction"><br>
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
                     Has the youth been arrested?<br />
-                    Yes <input type="radio" name="arrest" value="1" asp-for="arrest">&nbsp;&nbsp;
-                    No <input type="radio" name="arrest" value="0" asp-for="arrest">&nbsp;&nbsp;
-                    Maybe <input type="radio" name="arrest" value="2" asp-for="arrest"><br>
+                    Yes <input type="radio" name="arrest" onclick="javascript: yesarrestCheck();" id="yesarrest" value="1" asp-for="arrest">&nbsp;&nbsp;
+                    No <input type="radio" name="arrest" onclick="javascript: yesarrestCheck();" id="noarrest" value="0" asp-for="arrest">&nbsp;&nbsp;
+                    Maybe <input type="radio" name="arrest" onclick="javascript: yesarrestCheck();"id="maybearrest" value="2" asp-for="arrest"><br>
+
+                    <div id="ifnoarrest" style="display:none">
+                        If youth has not been arrested, is this an unsuccessful civil citation or diversion case?<br />
+                        Yes <input type="radio" name="youthCit" value="1" id="value1Cit"asp-for="youthCit">&nbsp;&nbsp;
+                        No <input type="radio" name="youthCit" value="0" id="value0Cit"asp-for="youthCit">&nbsp;&nbsp;<br><br>
+                    </div>
+                    <div id="ifyesarrest" style="display:none">
+                        Was youth arrested for a school related offense? (For example, battery on a school board employee)<br />
+                        Yes <input type="radio" name="youthOffense" value="1" id="value1Offense"asp-for="youthOffense">&nbsp;&nbsp;
+                        No <input type="radio" name="youthOffense" value="0" id="value0Offense"asp-for="youthOffense">&nbsp;&nbsp;
+                        Maybe <input type="radio" name="youthOffense" value="2" asp-for="youthOffense"><br>
+                      </div>
                 </td>
             </tr>
         </table>

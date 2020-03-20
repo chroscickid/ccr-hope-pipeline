@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using ccr_hope_pipeline.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using dotenv.net;
 
 namespace ccr_hope_pipeline
 {
@@ -20,6 +21,7 @@ namespace ccr_hope_pipeline
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            DotEnv.Config();
         }
 
         public IConfiguration Configuration { get; }
@@ -41,6 +43,7 @@ namespace ccr_hope_pipeline
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+        
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,6 +72,8 @@ namespace ccr_hope_pipeline
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+           
         }
+      
     }
 }

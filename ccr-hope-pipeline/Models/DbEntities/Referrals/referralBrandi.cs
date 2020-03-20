@@ -66,6 +66,22 @@ namespace HopePipeline.Models
 
         public string referralfname { get; set; }
         public string referrallname { get; set; }
+
+        public string nameOrg { get; set;}
+
+        public string youthNu { get; set; }
+
+        public string youthEmail { get; set; }
+
+        public int youthCit { get; set; }
+        public int youthOffense { get; set; }
+        public string youthImpact { get; set; }
+        public int youthAlt { get; set; }
+
+        public int youthSetting { get; set; }
+        public int youthInjunction { get; set; }
+       
+        
         //Hidden variable for javascript edit
         public string fNameHidden { get; set; }
 
@@ -115,6 +131,20 @@ namespace HopePipeline.Models
 
         public string referralfnameHidden { get; set; }
         public string referrallnameHidden { get; set; }
+
+        public string nameOrgHidden { get; set; }
+
+        public string youthNuHidden { get; set; }
+
+        public string youthEmailHidden { get; set; }
+
+        public int youthCitHidden { get; set; }
+        public int youthOffenseHidden { get; set; }
+        public string youthImpactHidden { get; set; }
+        public int youthAltHidden { get; set; }
+
+        public int youthSettingHidden { get; set; }
+        public int youthInjunctionHidden { get; set; }
 
     }
 }

@@ -22,5 +22,9 @@ namespace HopePipeline.Models.DbEntities.Referrals
 
         public string zip { get; set; }
         public string reach { get; set; }
+        public string nameOrg { get; set; }
+
+        public string youthNu { get; set; }
+        public string youthEmail { get; set; }
     }
 }

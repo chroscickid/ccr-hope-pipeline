@@ -5,6 +5,9 @@
 
 //Generate Reports
 //...
+require('dotenv').config();
+console.log(process.env);
+
 function addSearchField(count) {
     switch (count) {
         case 1:
@@ -34,4 +37,5 @@ $(document).ready(function () {
             'More Options'
         ]
     });
+
 

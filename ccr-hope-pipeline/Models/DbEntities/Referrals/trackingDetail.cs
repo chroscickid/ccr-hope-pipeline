@@ -8,7 +8,7 @@ namespace HopePipeline.Models.DbEntities.Referrals
     public class trackingDetail
     {
 
-        public int ClientID { get; set; }
+        public Guid ClientID { get; set; }
         //Demographics
 
 
@@ -74,6 +74,8 @@ namespace HopePipeline.Models.DbEntities.Referrals
         public string courtAdvocacy { get; set; }
         public string staffAdvocacy { get; set; }
         public string rearrestAdvocacy { get; set; }
+
+      public string trackingdate { get; set; }
         //end ccr
         //Discipline
 

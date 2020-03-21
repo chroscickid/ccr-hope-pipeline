@@ -14,18 +14,23 @@
     <style>
         table {
             width: 100%;
+            border: 3px solid #003A62;
+            border-collapse: collapse;
         }
 
-        table, th, td {
+     th, td {
             border: 1px solid black;
             border-collapse: collapse;
         }
 
-        th, td {
-            padding: 15px;
+          td {
+            padding: 11px;
             text-align: left;
         }
-
+           th {
+            padding: 4px;
+            text-align: left;
+        }
         table#t01 tr:nth-child(even) {
             background-color: #e6f3ff;
         }
@@ -52,51 +57,57 @@
     <p></p>
     @foreach (var item in Model)
     {
+<table id="t01">
+
+
+    <tr>
+        <th><h4> Client:&nbsp;@Html.DisplayFor(modelItem => item.lname),&nbsp; @Html.DisplayFor(modelItem => item.fname)</h4></th>
+    </tr>
+    <tr>
+        <td>Youth's Phone Number: @Html.DisplayFor(modelItem => item.youthNu)</td>
+    </tr>
+    <tr>
+        <td>Youth's E-mail Address: @Html.DisplayFor(modelItem => item.youthEmail)</td>
+
+    </tr>
+    <tr>
+        <!-- is their a reason you don't ask for first and last name???? -->
+        <td>Primary Caretaker's Name:&nbsp; @Html.DisplayFor(modelItem => item.guardianName) @Html.DisplayFor(modelItem => item.guardianlName)</td>
+    </tr>
+    <tr>
+        <td>
+            Primary Caretaker's Relationship:&nbsp; @Html.DisplayFor(modelItem => item.relationship)
+
+        </td>
+
+    </tr>
+    <tr>
+        <td>Parent/Guardian Phone Number: @Html.DisplayFor(modelItem => item.phone)</td>
+    </tr>
+    <tr>
+        <td>Parent/Guardian's E-mail Address: @Html.DisplayFor(modelItem => item.email)</td>
+
+    </tr>
+    <tr>
+        <td>
+            Street Address: @Html.DisplayFor(modelItem => item.address)<br><br>
+            Zip Code: @Html.DisplayFor(modelItem => item.zip)
+        </td>
+    </tr>
+
+
+    <tr>
+        <td>
+            What is the best way to communicate with the youth/family: @Html.DisplayFor(modelItem => item.reach)
+
+        </td>
+    </tr>
+
+
+</table>
         <table id="t01">
-
-
             <tr>
-                <th> Client:&nbsp;@Html.DisplayFor(modelItem => item.lname),&nbsp; @Html.DisplayFor(modelItem => item.fname)</th>
-            </tr>
-
-            <tr>
-                <!-- is their a reason you don't ask for first and last name???? -->
-                <td>Primary Caretaker's Name:&nbsp; @Html.DisplayFor(modelItem => item.guardianName) @Html.DisplayFor(modelItem => item.guardianlName)</td>
-            </tr>
-            <tr>
-                <td>
-                    Primary Caretaker's Relationship:&nbsp; @Html.DisplayFor(modelItem => item.relationship)
-
-                </td>
-
-            </tr>
-            <tr>
-                <td>Parent/Guardian Phone Number: @Html.DisplayFor(modelItem => item.phone)</td>
-            </tr>
-            <tr>
-                <td>Parent/Guardian's E-mail Address: @Html.DisplayFor(modelItem => item.email)</td>
-
-            </tr>
-            <tr>
-                <td>
-                    Street Address: @Html.DisplayFor(modelItem => item.address)<br><br>
-                    Zip Code: @Html.DisplayFor(modelItem => item.zip)
-                </td>
-            </tr>
-
-
-            <tr>
-                <td>
-                    What is the best way to communicate with the youth/family: @Html.DisplayFor(modelItem => item.reach)
-
-                </td>
-            </tr>
-
-
-        </table>
-        <table id="t01">
-            <tr>
-                <th colspan="2"> Referral Souce for Contact</th>
+                <th colspan="2"> <h4>Referral Source Contact</h4></th>
             </tr>
             <tr>
                 <td>
@@ -109,11 +120,14 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2">
+                <td >
                     Referral Source E-mail Address:  @Html.DisplayFor(modelItem => item.remail)
 
                 </td>
+                <td >
+                    Referral Source Organization:  @Html.DisplayFor(modelItem => item.nameOrg)
 
+                </td>
             </tr>
         </table>
     }

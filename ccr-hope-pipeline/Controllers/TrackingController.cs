@@ -16,7 +16,7 @@ namespace HopePipeline.Controllers
         public string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
 
-        public ViewResult TrackingForm(int clientCode)
+        public ViewResult TrackingForm(Guid clientCode)
         {
             TrackingForm newF = new TrackingForm();
             var relRef = new referralBrandi();
@@ -27,7 +27,7 @@ namespace HopePipeline.Controllers
             cnn.Open();
             newF.ClientID = clientCode;
 
-            string query = "select * from dbo.refform where clientCode = " + clientCode;
+            string query = "select * from dbo.refform where clientCode = "+ "'"+clientCode+"'" + ";";
             command = new SqlCommand(query, cnn);
             SqlDataReader reader = command.ExecuteReader();
 
@@ -100,7 +100,7 @@ namespace HopePipeline.Controllers
         [HttpPost]
         public IActionResult SubmitTracking(TrackingForm sub)
         {
-            int id = sub.ClientID;
+           Guid id = sub.ClientID;
             SqlConnection cnn = new SqlConnection(connectionString);
             SqlCommand command;
             SqlDataAdapter adapter = new SqlDataAdapter();
@@ -111,39 +111,39 @@ namespace HopePipeline.Controllers
             //Took me two weeks
             List<string> qs = new List<String>
             {
-                "INSERT INTO dbo.demographics VALUES (" + id + ")",
-                "INSERT INTO dbo.accomodations VALUES (" + sub.accomGained + "," + sub.compService + ",'" + sub.ifWhatServices + "'," + id + ")",
-                "INSERT INTO dbo.client VALUES ('" + sub.clientLastName + "','" + sub.clientFirstName + "','" + sub.adopted + "','" + sub.clientGender + "','" + sub.clientEthnicity + "','" + sub.clientDOB + "'," + id + ",'" + sub.carePhone + "')",
+                "INSERT INTO dbo.demographics VALUES ('" + id + "')",
+                "INSERT INTO dbo.accomodations VALUES ('" + sub.accomGained + "','" + sub.compService + "','" + sub.ifWhatServices + "','" + id + "')",
+                "INSERT INTO dbo.client VALUES ('" + sub.clientLastName + "','" + sub.clientFirstName + "','" + sub.adopted + "','" + sub.clientGender + "','" + sub.clientEthnicity + "','" + sub.clientDOB + "','" + id + "','" + sub.carePhone + "')",
 
 
 
-                "INSERT INTO dbo.advocacy VALUES (" + sub.rearrestAdvocacy + "," + sub.courtAdvocacy + "," + sub.staffAdvocacy + "," + sub.legalAdvocacy + ",'" + sub.legalAdvoTaken + "'," + id + ")",
-                "INSERT INTO dbo.altSchool VALUES (" + sub.altSchool + ",'" + sub.altSchoolName + "','" + sub.dateOfAlt + "'," + sub.timesInAlt + "," + sub.daysOwed + "," + sub.daysSinceIntake + "," + id + ")",
-                "INSERT INTO dbo.bully VALUES (" + sub.bullied + "," + sub.bullyReport + ",'" + sub.dateofBully + "'," + id + ")",
-                "INSERT INTO dbo.caregiver VALUES ('" + sub.careFirstName + "','" + sub.careLastName + "','" + sub.careGender + "','" + sub.careEthnicity + "'," + "'careRelationship'" + "," + id + ")",
+                "INSERT INTO dbo.advocacy VALUES ('" + sub.rearrestAdvocacy + "','" + sub.courtAdvocacy + "','" + sub.staffAdvocacy + "','" + sub.legalAdvocacy + "','" + sub.legalAdvoTaken + "','" + id + "')",
+                "INSERT INTO dbo.altSchool VALUES ('" + sub.altSchool + "','" + sub.altSchoolName + "','" + sub.dateOfAlt + "','" + sub.timesInAlt + "','" + sub.daysOwed + "','" + sub.daysSinceIntake + "','" + id + "')",
+                "INSERT INTO dbo.bully VALUES ('" + sub.bullied + "','" + sub.bullyReport + "','" + sub.dateofBully + "','" + id + "')",
+                "INSERT INTO dbo.caregiver VALUES ('" + sub.careFirstName + "','" + sub.careLastName + "','" + sub.careGender + "','" + sub.careEthnicity + "'," + "'careRelationship'" + ",'" + id + "')",
 
-                "INSERT dbo.ccr VALUES ('" + sub.levelOfServiceProvided + "'," + sub.caseStatus + ",'" + sub.nonEngagementReason + "'," + sub.remedyResolution + "," + sub.rearrestWhileRepresented + ",'" + sub.schoolAtClosure + "'," + id + ")",
-                "INSERT INTO dbo.comp VALUES (" + sub.compService + ",'" + sub.ifWhatServices + "','" + sub.compTime + "'," + id + ")",
+                "INSERT dbo.ccr VALUES ('" + sub.levelOfServiceProvided + "','" + sub.caseStatus + "','" + sub.nonEngagementReason + "','" + sub.remedyResolution + "','" + sub.rearrestWhileRepresented + "','" + sub.schoolAtClosure + "','" + id + "')",
+                "INSERT INTO dbo.comp VALUES ('" + sub.compService + "','" + sub.ifWhatServices + "','" + sub.compTime + "','" + id + "')",
                 //AddService?
                 //Servicesgained
-                "INSERT INTO dbo.currentStatus VALUES (" + sub.readingLevel + "," + sub.mathLevel + ",'" + "currentServices?" + "'," + sub.inPride + "," + sub.newFBA + "," + 0 + ",'" + "servicesGained" + "'," + id + ")",
-                "INSERT INTO dbo.failed VALUES (" + sub.failedGrade + "," + sub.whichGradeFailed + "," + sub.failCount + "," + id + ")",
-                "INSERT INTO dbo.health VALUES (" + sub.baker + "," + sub.marchman + "," + sub.asthma + "," + id + ")",
-                "INSERT INTO dbo.household VALUES (" + sub.femHouse + "," + sub.domVio + "," + sub.adopted + "," + sub.evicted + "," + sub.incarParent + "," + sub.publicAssistance + "," + id + ")",
+                "INSERT INTO dbo.currentStatus VALUES ('" + sub.readingLevel + "','" + sub.mathLevel + "','" + "currentServices?" + "','" + sub.inPride + "','" + sub.newFBA + "','" + 0 + "','" + "servicesGained" + "','" + id + "')",
+                "INSERT INTO dbo.failed VALUES ('" + sub.failedGrade + "','" + sub.whichGradeFailed + "','" + sub.failCount + "','" + id + "')",
+                "INSERT INTO dbo.health VALUES ('" + sub.baker + "','" + sub.marchman + "','" + sub.asthma + "','" + id + "')",
+                "INSERT INTO dbo.household VALUES ('" + sub.femHouse + "','" + sub.domVio + "','" + sub.adopted + "','" + sub.evicted + "','" + sub.incarParent + "','" + sub.publicAssistance + "','" + id + "')",
                 //addIEP?
                // "INSERT INTO dbo.iep VALUES (" + sub.iep + ",'" + sub.iepplan1 + "'','" + sub.iepplan2 + "'," + "0" + "," + id + ")",
-               "INSERT INTO dbo.iep VALUES (" + sub.iep + ",'" + sub.iepplan1 + "','" + sub.iepplan2 + "'," + "0" + "," + id + ")",
+               "INSERT INTO dbo.iep VALUES ('" + sub.iep + "','" + sub.iepplan1 + "','" + sub.iepplan2 + "','" + "0" + "','" + id + "')",
                 //otherLegal should be in the db?
                 //"INSERT INTO dbo.legal VALUES (" + sub.firstLegal + ",'" + sub.secondLegal + "','" + sub.justiceOutcome + "'," + id + ")",
-                "INSERT INTO dbo.legal VALUES ('" + sub.firstLegal + "','" + sub.secondLegal + "','" + sub.justiceOutcome + "'," + id + ")",
+                "INSERT INTO dbo.legal VALUES ('" + sub.firstLegal + "','" + sub.secondLegal + "','" + sub.justiceOutcome + "','" + id + "')",
                 
                 //"INSERT INTO dbo.school (" + id + "," + sub.currentGrade + ",'" + sub.school + "','" + sub.schoolRef + "')"
-                "INSERT INTO dbo.school (" + id + "," + sub.currentGrade + ",'" + sub.school + "','" + sub.schoolRef + "')"
+                "INSERT INTO dbo.school ('" + id + "','" + sub.currentGrade + "','" + sub.school + "','" + sub.schoolRef + "')"
             };
 
             //Um, this needs to be outside of that for some reason
             int totalSus = sub.iss + sub.oss;
-            qs.Add("INSERT INTO dbo.suspension VALUES(" + sub.suspended + "," + sub.suspendCount + "," + totalSus + "," + sub.iss + "," + sub.oss + "," + 0 + "," + 0 + "," + id + ")");
+            qs.Add("INSERT INTO dbo.suspension VALUES('" + sub.suspended + "','" + sub.suspendCount + "','" + totalSus + "','" + sub.iss + "','" + sub.oss + "','" + 0 + "','" + 0 + "','" + id + "')");
 
             //We now just run through every string in the list, running it as a sql command
             foreach (string query in qs)

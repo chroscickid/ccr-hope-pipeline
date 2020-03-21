@@ -18,7 +18,7 @@ namespace HopePipeline.Models.DbEntities.Referrals
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
 
-        public int clientCode { get; set; }
+        public Guid clientCode { get; set; }
 
         public string fName { get; set; }
 
@@ -69,5 +69,21 @@ namespace HopePipeline.Models.DbEntities.Referrals
 
         public string referralfname { get; set; }
         public string referrallname { get; set; }
+
+        public string nameOrg { get; set; }
+
+        public string youthNu { get; set; }
+        public string youthEmail { get; set; }
+        public string youthCit{ get; set; }
+
+
+        public string youthOffense{ get; set; }
+        public string youthImpact { get; set; }
+
+        public string youthAlt { get; set; }
+
+
+        public string youthSetting { get; set; }
+        public string youthInjunction { get; set; }
     }
 }

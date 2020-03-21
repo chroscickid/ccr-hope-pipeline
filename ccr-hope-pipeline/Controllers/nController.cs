@@ -8,6 +8,10 @@ using System.Data.SqlClient;
 using HopePipeline.Models.DbEntities.Referrals;
 using HopePipeline.Models.DbEntities.Tracking;
 using System.Diagnostics;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using System;
+using System.Threading.Tasks;
 
 namespace HopePipeline.Controllers
 {
@@ -22,21 +26,13 @@ namespace HopePipeline.Controllers
             cnn = new SqlConnection(connectionString);
             cnn.Open();
             SqlCommand command = cnn.CreateCommand();
-            object value = new SqlCommand("SELECT MAX(clientCode) FROM refform", cnn).ExecuteScalar();
-            //value = Convert.ToString(value);
-            int i = 0;
-            if (Convert.IsDBNull(value))
-            {
-                // i = 0;
-                ViewBag.Tessage = i;
-            }
-            if (!Convert.IsDBNull(value))
-            {
-                i = Convert.ToInt32(value);
-                ViewBag.Tessage = i + 1;
-            }
+           
+            Guid clientCode = Guid.NewGuid();
+
+            ViewBag.Tessage = clientCode;
 
             ViewBag.Bessage = DateTime.Now;
+            
 
             //SELECT MAX(Price) AS LargestPrice
             //FROM Products;
@@ -45,7 +41,7 @@ namespace HopePipeline.Controllers
 
             return View();
 
-        }
+        }//GUID Done-------------------------------------------------------------------------Form Referral Method
         [HttpPost]
         public IActionResult submitform(referralBrandi form)
         {
@@ -55,21 +51,28 @@ namespace HopePipeline.Controllers
             SqlCommand command;
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
-            string query = "INSERT INTO dbo.refform VALUES ('" + form.fName + "', '" + form.lName + "', '" + form.dOB + "', '" + form.clientCode + "', '" + form.guardianName + "', '" + form.guardianlName + "', '" + form.guardianRelationship + "', '" + form.address + "', '" + form.gender + "', '" + form.guardianEmail + "', '" + form.guardianPhone + "', '" + form.meeting + "', '" + form.youthInDuvalSchool + "', '" + form.youthInSchool + "', '" + form.issues + "', '" + form.currentSchool + "', '" + form.zip + "', '" + form.grade + "', 'Open', '" + form.arrest + "', '" + form.school + "', '" + form.dateInput + "', '" + form.date + "', '" + form.email + "', '" + form.Reach + "', '" + form.moreInfo + "', '" + form.reason + "', '" + form.referralfname + "', '" + form.referrallname + "')";
+
+            string query = "INSERT INTO dbo.refform VALUES ('" + form.fName + "', '" + form.lName + "', '" + form.dOB + "', '" + form.clientCode + "', '" + form.guardianName + "', '" + form.guardianlName + "', '" + form.guardianRelationship + "', '" + form.address + "', '" + form.gender + "', '" + form.guardianEmail + "', '" + form.guardianPhone + "', '" + form.meeting + "', '" + form.youthInDuvalSchool + "', '" + form.youthInSchool + "', '" + form.issues + "', '" + form.currentSchool + "', '" + form.zip + "', '" + form.grade + "', 'Pending', '" + form.arrest + "', '" + form.school + "', '" + form.dateInput + "', '" + form.date + "', '" + form.email + "', '" + form.Reach + "', '" + form.moreInfo + "', '" + form.reason + "', '" + form.referralfname + "', '" + form.referrallname + "','"+ 0 +"','"+form.nameOrg+"','"+form.youthNu+"','"+form.youthEmail+"','"+form.youthCit+"','"+form.youthOffense+"','"+form.youthImpact+"','"+form.youthAlt+"','"+form.youthSetting+"','"+form.youthInjunction+"');";
             
             command = new SqlCommand(query, cnn);
+            
             SqlDataReader reader = command.ExecuteReader();
+            string fname = form.fName.ToString();
+            string lname = form.lName.ToString();
+            string namestring = fname+ " " + lname;
             reader.Close();
 
             //COnnect to the DB
 
+            ViewBag.Name = namestring;
+            ViewBag.Bessage = DateTime.Now;
             adapter.Dispose();
             command.Dispose();
-            return RedirectToAction("Index", "Home");
+            return View("confirmationM", "n");
 
-        }
+        }//-------------------------------------------------------------End Form Submit Referral GUID DONE
 
-        public IActionResult contactInfoM(int clientCode)
+        public IActionResult contactInfoM(Guid clientCode)
         {
             
             //var client= new Contact();
@@ -80,7 +83,7 @@ namespace HopePipeline.Controllers
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
-            string query = "SELECT fname, lname, guardianName, guardianlName, guardianRelationship, guardianPhone, guardianEmail, strAddress, zip, reach, referrallname, referralfname, email FROM refform WHERE clientCode= " + clientCode + ";";
+            string query = "SELECT fname, lname, guardianName, guardianlName, guardianRelationship, guardianPhone, guardianEmail, strAddress, zip, reach, referrallname, referralfname, email, nameOrg, youthNu, youthEmail  FROM refform WHERE clientCode= '" + clientCode + "';";
 
             command = new SqlCommand(query, cnn);
 
@@ -129,6 +132,17 @@ namespace HopePipeline.Controllers
                     client.remail = Convert.ToString(dataReader["email"]);
                     if (client.remail == " " || client.remail == "null" || client.remail == "")
                     { client.remail = "N/A"; }
+
+                    client.nameOrg = Convert.ToString(dataReader["nameOrg"]);
+                    if (client.nameOrg == " " || client.nameOrg == "null" || client.nameOrg == "")
+                    { client.nameOrg = "N/A"; }
+                    client.youthNu = Convert.ToString(dataReader["youthNu"]);
+                    if (client.youthNu == " " || client.youthNu == "null" || client.youthNu == "")
+                    { client.youthNu = "N/A"; }
+                    client.youthEmail = Convert.ToString(dataReader["youthEmail"]);
+                    if (client.youthEmail == " " || client.youthEmail == "null" || client.youthEmail == "")
+                    { client.youthEmail = "N/A"; }
+
                     clientl.Add(client);
 
                 }
@@ -138,9 +152,9 @@ namespace HopePipeline.Controllers
             cnn.Close();
             return View(clientl);
 
-        }
+        }// GUID --------------------------------------------------GUID should be done for contact----------------------------------------
 
-        public IActionResult detailReferralM(int clientCode)
+        public IActionResult detailReferralM(Guid clientCode)
         {
             
             //var client= new Contact();
@@ -151,7 +165,7 @@ namespace HopePipeline.Controllers
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
-            string query = "SELECT clientCode, fname, lname, dob, guardianName, guardianlName, guardianRelationship, strAddress, gender, guardianEmail, guardianPhone, meeting, youthInDuvalSchool, youthInSchool, issues, currentSchool, zip, grade, currStatus, arrest, school, dateInput, meetingDate, email, reach, moreInfo, reason, referralfname, referrallname FROM refform WHERE clientCode= " + clientCode + ";";
+            string query = "SELECT clientCode, fname, lname, dob, guardianName, guardianlName, guardianRelationship, strAddress, gender, guardianEmail, guardianPhone, meeting, youthInDuvalSchool, youthInSchool, issues, currentSchool, zip, grade, currStatus, arrest, school, dateInput, meetingDate, email, reach, moreInfo, reason, referralfname, referrallname, nameOrg, youthNu, youthEmail, youthCit, youthOffense, youthImpact, youthAlt, youthSetting, youthInjunction FROM refform WHERE clientCode= '" + clientCode + "';";
 
             command = new SqlCommand(query, cnn);
 
@@ -162,7 +176,8 @@ namespace HopePipeline.Controllers
                 {
 
                     referralDetail client = new referralDetail();
-                    client.clientCode = Convert.ToInt32(dataReader["clientCode"]);
+                    client.clientCode = Guid.Parse(Convert.ToString(dataReader["clientCode"]));
+
 
                     client.fName = Convert.ToString(dataReader["fname"]);
                     if (client.fName == " " || client.fName == "null" || client.fName == "")
@@ -317,8 +332,9 @@ namespace HopePipeline.Controllers
                     { client.dateInput = "N/A"; }
 
                      client.date = Convert.ToString(dataReader["meetingDate"]);
-                    if (client.date == " " || client.date == "null" || client.date == "" )
+                    if (client.date == " " || client.date == "null" || client.date == "" || client.date == "1/1/1900 12:00:00 AM")
                     { client.date = "N/A"; }
+
 
 
                     client.email = Convert.ToString(dataReader["email"]);
@@ -342,6 +358,84 @@ namespace HopePipeline.Controllers
                     client.referrallname = Convert.ToString(dataReader["referrallname"]);
                     if (client.referrallname == " " || client.referrallname == "null" || client.referrallname == "")
                     { client.referrallname = "N/A"; }
+                    //new referral info
+                    client.nameOrg = Convert.ToString(dataReader["nameOrg"]);
+                    if (client.nameOrg == " " || client.nameOrg == "null" || client.nameOrg == "")
+                    { client.nameOrg = "N/A"; }
+                    client.youthNu = Convert.ToString(dataReader["youthNu"]);
+                    if (client.youthNu == " " || client.youthNu == "null" || client.youthNu == "")
+                    { client.youthNu = "N/A"; }
+                    client.youthEmail = Convert.ToString(dataReader["youthEmail"]);
+                    if (client.youthEmail == " " || client.youthEmail == "null" || client.youthEmail == "")
+                    { client.youthEmail = "N/A"; }
+
+                    client.youthCit = Convert.ToString(dataReader["youthCit"]);
+                    var ycit = Int32.TryParse(client.youthCit, out int yc);
+                    if (client.youthCit == "1")
+                    { client.youthCit = "Yes"; }
+                    if (client.youthCit == "0")
+                    { client.youthCit = "No"; }
+                    if (client.youthCit == "")
+                    { client.youthCit = "N/A"; }
+                    else
+                    { client.youthCit = client.youthCit; }
+
+
+                    client.youthOffense = Convert.ToString(dataReader["youthOffense"]);
+                    var offense = Int32.TryParse(client.youthOffense, out int ofence);
+                    if (client.youthOffense == "1")
+                    { client.youthOffense = "Yes"; }
+                    if (client.youthOffense == "2")
+                    { client.youthOffense = "Maybe"; }
+                    if (client.youthOffense == "0")
+                    { client.youthOffense = "No"; }
+                    if (client.youthOffense == "")
+                    { client.youthOffense = "N/A"; }
+                    else
+                    { client.youthOffense = client.youthOffense; }
+
+                    client.youthImpact = Convert.ToString(dataReader["youthImpact"]);
+                    if (client.youthImpact == " " || client.youthImpact == "null" || client.youthImpact == "")
+                    { client.youthImpact = "N/A"; }
+
+                    client.youthAlt = Convert.ToString(dataReader["youthAlt"]);
+                    var Alt = Int32.TryParse(client.youthAlt, out int yalt);
+                    if (client.youthAlt == "1")
+                    { client.youthAlt = "Yes"; }
+                    if (client.youthAlt == "2")
+                    { client.youthAlt = "Maybe"; }
+                    if (client.youthAlt == "0")
+                    { client.youthAlt = "No"; }
+                    if (client.youthAlt == "")
+                    { client.youthAlt = "N/A"; }
+                    else
+                    { client.youthAlt = client.youthAlt; }
+
+                    client.youthSetting = Convert.ToString(dataReader["youthSetting"]);
+                    var yset = Int32.TryParse(client.youthSetting, out int ysett);
+                    if (client.youthSetting == "1")
+                    { client.youthSetting = "Yes"; }
+                    if (client.youthSetting == "2")
+                    { client.youthSetting = "Maybe"; }
+                    if (client.youthSetting == "0")
+                    { client.youthSetting = "No"; }
+                    if (client.youthSetting == "")
+                    { client.youthSetting = "N/A"; }
+                    else
+                    { client.youthSetting = client.youthSetting; }
+
+                    client.youthInjunction = Convert.ToString(dataReader["youthInjunction"]);
+                    var Injun = Int32.TryParse(client.youthInjunction, out int ction);
+                    if (client.youthInjunction == "1")
+                    { client.youthInjunction = "Yes"; }
+                    if (client.youthInjunction == "2")
+                    { client.youthInjunction = "Maybe"; }
+                    if (client.youthInjunction == "0")
+                    { client.youthInjunction = "No"; }
+                    if (client.youthInjunction == "")
+                    { client.youthInjunction = "N/A"; }
+                    else
+                    { client.youthInjunction = client.youthInjunction; }
 
                     clientl.Add(client);
 
@@ -363,7 +457,7 @@ namespace HopePipeline.Controllers
             SqlConnection cnnn;
             cnnn = new SqlConnection(cconnectionString);
             cnnn.Open();
-            object clientcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.client WHERE clientCode = " + form.clientCode + "", cnnn).ExecuteScalar();
+            object clientcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.client WHERE clientCode = '" + form.clientCode + "'", cnnn).ExecuteScalar();
            
             cnnn.Close();
             int cc = (Convert.ToInt16(clientcheck)) + 0;
@@ -436,7 +530,7 @@ namespace HopePipeline.Controllers
             {
                 command.CommandText = "UPDATE dbo.refform " +
                     "SET " +
-                    "fname = @fName, lname = @lName, dob = @dOB, guardianName = @guardianName, guardianlName = @guardianlName, guardianRelationship = @guardianRelationship, strAddress = @strAddress, gender = @gender, guardianEmail = @guardianEmail, guardianPhone = @guardianPhone, meeting = @meeting, youthInDuvalSchool = @youthInDuvalSchool, youthInSchool = @youthInSchool, issues = @issues, zip = @zip, grade = @grade, currStatus = @currStatus, arrest = @arrest, school = @school, dateInput = @dateInput, meetingDate = @meetingDate, email =@email, reach = @reach,moreInfo = @moreInfo, reason = @reason, referralfname = @referralfname, referrallname = @referrallname WHERE clientCode = @clientCode;";
+                    "fname = @fName, lname = @lName, dob = @dOB, guardianName = @guardianName, guardianlName = @guardianlName, guardianRelationship = @guardianRelationship, strAddress = @strAddress, gender = @gender, guardianEmail = @guardianEmail, guardianPhone = @guardianPhone, meeting = @meeting, youthInDuvalSchool = @youthInDuvalSchool, youthInSchool = @youthInSchool, issues = @issues, zip = @zip, grade = @grade, currStatus = @currStatus, arrest = @arrest, school = @school, dateInput = @dateInput, meetingDate = @meetingDate, email =@email, reach = @reach,moreInfo = @moreInfo, reason = @reason, referralfname = @referralfname, referrallname = @referrallname,nameOrg=@nameOrg, youthNu=@youthNu, youthEmail=@youthEmail, youthCit= @youthCit, youthOffense=@youthOffense, youthImpact=@youthImpact, youthAlt= @youthAlt, youthSetting= @youthSetting, youthInjunction =@youthInjunction WHERE clientCode = @clientCode;";
 
                 command.Parameters.AddWithValue("@clientCode", form.clientCode);
 
@@ -521,7 +615,7 @@ namespace HopePipeline.Controllers
                     arr.Value = DBNull.Value;
                 }
                 SqlParameter sc = command.Parameters.AddWithValue("@school", form.school);
-                if (form.school == null)
+                if (form.school == null||form.school == "")
                 {
                     sc.Value = DBNull.Value;
                 }
@@ -575,12 +669,57 @@ namespace HopePipeline.Controllers
                 {
                     gra.Value = DBNull.Value;
                 }
+                SqlParameter nameOrgParam = command.Parameters.AddWithValue("@nameOrg", form.nameOrg);
+                if (form.nameOrg == null)
+                {
+                    nameOrgParam.Value = DBNull.Value;
+                }
+                SqlParameter youthNuParam = command.Parameters.AddWithValue("@youthNu", form.youthNu);
+                if (form.youthNu == null)
+                {
+                    youthNuParam.Value = DBNull.Value;
+                }
+                SqlParameter youthEmailParam = command.Parameters.AddWithValue("@youthEmail", form.youthEmail);
+                if (form.youthEmail == null)
+                {
+                    youthEmailParam.Value = DBNull.Value;
+                }
+                SqlParameter youthCitParam = command.Parameters.AddWithValue("@youthCit", form.youthCit);
+                if (form.youthCit != 0 && form.youthCit != 1)
+                {
+                    youthCitParam.Value = DBNull.Value;
+                }
+                SqlParameter youthOffenseParam = command.Parameters.AddWithValue("@youthOffense", form.youthOffense);
+                if (form.youthOffense != 0 && form.youthOffense != 1 && form.youthOffense != 2)
+                {
+                    youthOffenseParam.Value = DBNull.Value;
+                }
+                SqlParameter youthImpactpara = command.Parameters.AddWithValue("@youthImpact", form.youthImpact);
+                if (form.youthImpact == null)
+                {
+                    youthImpactpara.Value = DBNull.Value;
+                }
+                SqlParameter youthAltParam = command.Parameters.AddWithValue("@youthAlt", form.youthAlt);
+                if (form.youthAlt != 0 && form.youthAlt != 1 && form.youthAlt != 2)
+                {
+                    youthAltParam.Value = DBNull.Value;
+                }
+                SqlParameter youthSettingParam = command.Parameters.AddWithValue("@youthSetting", form.youthSetting);
+                if (form.youthSetting != 0 && form.youthSetting != 1 && form.youthSetting != 2)
+                {
+                    youthSettingParam.Value = DBNull.Value;
+                }
+                SqlParameter youthInjunctionParam = command.Parameters.AddWithValue("@youthInjunction", form.youthInjunction);
+                if (form.youthInjunction != 0 && form.youthInjunction != 1 && form.youthInjunction != 2)
+                {
+                    youthInjunctionParam.Value = DBNull.Value;
+                }
                 connection.Open();
                 command.ExecuteNonQuery();
                 cnn.Dispose();
                 connection.Close();
             }
-            int message = form.clientCode;
+            Guid message = form.clientCode;
             //return RedirectToAction("detailReferralM?clientCode="+ message +"", "n");
             return RedirectToAction("RefList", "Referral");
         }
@@ -588,7 +727,7 @@ namespace HopePipeline.Controllers
 
 
 
-        public IActionResult editReferralM(int clientCode)
+        public IActionResult editReferralM(Guid clientCode)
         {//this method will display the values from the sql code
             //get the values from specific sql
             //display
@@ -601,7 +740,7 @@ namespace HopePipeline.Controllers
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
-            string query = "SELECT clientCode, fname, lname, dob, guardianName, guardianlName, guardianRelationship, strAddress, gender, guardianEmail, guardianPhone, meeting, youthInDuvalSchool, youthInSchool, issues, currentSchool, zip, grade, currStatus, arrest, school, dateInput, meetingDate, email, reach, moreInfo, reason, referralfname, referrallname FROM refform WHERE clientCode= " + clientCode + ";";
+            string query = "SELECT clientCode, fname, lname, dob, guardianName, guardianlName, guardianRelationship, strAddress, gender, guardianEmail, guardianPhone, meeting, youthInDuvalSchool, youthInSchool, issues, currentSchool, zip, grade, currStatus, arrest, school, dateInput, meetingDate, email, reach, moreInfo, reason, referralfname, referrallname, nameOrg, youthNu, youthEmail, youthCit, youthOffense, youthImpact, youthAlt, youthSetting, youthInjunction FROM refform WHERE clientCode= '" + clientCode + "';";
 
             command = new SqlCommand(query, cnn);
 
@@ -613,7 +752,9 @@ namespace HopePipeline.Controllers
                 {
 
                     referralBrandi client = new referralBrandi();
-                    client.clientCode = Convert.ToInt32(dataReader["clientCode"]);
+                   // client.clientCode = Convert.ToString(dataReader["clientCode"]);
+                    client.clientCode = Guid.Parse(Convert.ToString(dataReader["clientCode"]));
+
                     client.fName = Convert.ToString(dataReader["fname"]);
 
 
@@ -623,7 +764,7 @@ namespace HopePipeline.Controllers
                     //int space1 = Convert.ToString(dataReader["dob"]).IndexOf(' ');
 
                     if (Convert.IsDBNull(dataReader["dob"]))
-                    { client.dOB = DateTime.Parse("01/01/1970"); }
+                    { client.dOB = DateTime.Parse("01/01/1990"); }
                     else
                     {
                         client.dOB = Convert.ToDateTime(dataReader["dob"]);
@@ -674,23 +815,14 @@ namespace HopePipeline.Controllers
 
                     client.issues = Convert.ToString(dataReader["issues"]);
 
-
-
                     client.school = Convert.ToString(dataReader["school"]);
-
-
-
+                
 
                     client.zip = Convert.ToString(dataReader["zip"]);
 
-
                     client.grade = Convert.ToString(dataReader["grade"]);
 
-
                     client.status = Convert.ToString(dataReader["currStatus"]);
-
-
-
 
                     if (Convert.IsDBNull(dataReader["arrest"]))
                     { client.arrest = 2; }
@@ -699,15 +831,10 @@ namespace HopePipeline.Controllers
                         client.arrest = Convert.ToInt16(dataReader["arrest"]);
                     };//fix ints}
 
-
                     client.school = Convert.ToString(dataReader["school"]);
 
-
-
-
-
                     if (Convert.IsDBNull(dataReader["dateInput"]))
-                    { client.dateInput = DateTime.Parse("01/01/1970 12:00:00 AM"); }
+                    { client.dateInput = DateTime.Parse("01/01/1900 12:00:00 AM"); }
                     else
                     {
                         client.dateInput = Convert.ToDateTime(dataReader["dateInput"]);
@@ -715,14 +842,11 @@ namespace HopePipeline.Controllers
 
 
                     if (Convert.IsDBNull(dataReader["meetingDate"]))
-                    { client.date = DateTime.Parse("01/01/1970 12:00:00 AM"); }
+                    { client.date = DateTime.Parse("01/01/1900 12:00:00 AM"); }
                     else
                     {
                         client.date = Convert.ToDateTime(dataReader["meetingDate"]);
                     };//fix ints}
-
-
-
 
                     if (Convert.IsDBNull(dataReader["arrest"]))
                     { client.arrest = 2; }
@@ -734,8 +858,6 @@ namespace HopePipeline.Controllers
 
                     client.email = Convert.ToString(dataReader["email"]);
 
-
-
                     client.Reach = Convert.ToString(dataReader["reach"]);
 
                     client.moreInfo = Convert.ToString(dataReader["moreInfo"]);
@@ -746,6 +868,40 @@ namespace HopePipeline.Controllers
                     client.referralfname = Convert.ToString(dataReader["referralfname"]);
 
                     client.referrallname = Convert.ToString(dataReader["referrallname"]);
+                    client.nameOrg = Convert.ToString(dataReader["nameOrg"]);
+                    client.youthNu = Convert.ToString(dataReader["youthNu"]);
+                    client.youthEmail = Convert.ToString(dataReader["youthEmail"]);
+                    if (Convert.IsDBNull(dataReader["youthCit"]))
+                    { client.youthCit = 0; }
+                    else
+                    {
+                        client.youthCit = Convert.ToInt16(dataReader["youthCit"]);
+                    }
+                    if (Convert.IsDBNull(dataReader["youthOffense"]))
+                    { client.youthOffense = 2; }
+                    else
+                    {
+                        client.youthOffense = Convert.ToInt16(dataReader["youthOffense"]);
+                    }
+                    client.youthImpact = Convert.ToString(dataReader["youthImpact"]);
+                    if (Convert.IsDBNull(dataReader["youthAlt"]))
+                    { client.youthAlt = 2; }
+                    else
+                    {
+                        client.youthAlt = Convert.ToInt16(dataReader["youthAlt"]);
+                    }
+                    if (Convert.IsDBNull(dataReader["youthSetting"]))
+                    { client.youthSetting = 2; }
+                    else
+                    {
+                        client.youthSetting = Convert.ToInt16(dataReader["youthSetting"]);
+                    }
+                    if (Convert.IsDBNull(dataReader["youthInjunction"]))
+                    { client.youthInjunction = 2; }
+                    else
+                    {
+                        client.youthInjunction = Convert.ToInt16(dataReader["youthInjunction"]);
+                    }
 
                     ViewBag.Lessage = client;
 
@@ -764,11 +920,56 @@ namespace HopePipeline.Controllers
 
 
 
-        public IActionResult detailTrackingM(int clientCode)
+        public IActionResult detailTrackingM(Guid clientCode)
         { // referral form I need the firstname, lastname, 
-            //sql commands for getting the tracking info
-            //displaying the tracking information
-           
+          //sql commands for getting the tracking info
+          //displaying the tracking information
+            SqlConnection cnnn;
+            cnnn = new SqlConnection(cconnectionString);
+            cnnn.Open();//Connect
+
+            //if statments pertaining to if the table doesn't have a clientCode in it display all the variable for the table as N/A
+            //SqlCommand commandd = cnnn.CreateCommand();
+            object bullycheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.bully WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
+            object clientcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.client WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
+            object advocacycheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.advocacy WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
+            object accomodationscheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.accomodations WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
+            object altSchoolcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.altSchool WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
+            object caregivercheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.caregiver WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
+            object ccrcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.ccr WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
+            object compcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.comp WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
+            object currentStatuscheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.currentStatus WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
+            object failedcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.failed WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
+            object healthcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.health WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
+            object householdcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.household WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
+            object suspensioncheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.suspension WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
+            object iepcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.iep WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
+            object legalcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.legal WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
+            object schoolcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.school WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
+            cnnn.Close();
+        
+            int bc = (Convert.ToInt16(bullycheck)) + 0;
+            int cc = (Convert.ToInt16(clientcheck)) + 0;
+            int ac = (Convert.ToInt16(advocacycheck)) + 0;
+            int acc = (Convert.ToInt16(accomodationscheck)) + 0;
+            int asc = (Convert.ToInt16(altSchoolcheck)) + 0;
+            int cgc = (Convert.ToInt16(caregivercheck)) + 0;
+            int ccrc = (Convert.ToInt16(ccrcheck)) + 0;
+            int fc = (Convert.ToInt16(failedcheck)) + 0;
+            int compch = (Convert.ToInt16(compcheck)) + 0;
+            int currentStatusch = (Convert.ToInt16(currentStatuscheck)) + 0;
+            int hc = (Convert.ToInt16(healthcheck)) + 0;
+            int hhc = (Convert.ToInt16(householdcheck)) + 0;
+            int ssc = (Convert.ToInt16(suspensioncheck)) + 0;
+            int iepc = (Convert.ToInt16(iepcheck)) + 0;
+            int lc = (Convert.ToInt16(legalcheck)) + 0;
+            int sc = (Convert.ToInt16(schoolcheck)) + 0;
+
+            //fix the 33 when not radiobuttons
+            //fix levelof service descriptor
+            //
+
+
             List<trackingDetail> clientl = new List<trackingDetail>();
             SqlConnection cnn;
             cnn = new SqlConnection(connectionString);
@@ -781,7 +982,7 @@ namespace HopePipeline.Controllers
 "dbo.altSchool.altSchool, dbo.altSchool.altSchoolName, dbo.altSchool.altSchoolDate, dbo.altSchool.altSchoolTimes, dbo.altSchool.daysOwed, dbo.altSchool.daysSinceIntake, " +
 "dbo.bully.bullied, dbo.bully.reported, dbo.bully.reportDate, " +
 "dbo.caregiver.careLast, dbo.caregiver.careFirst, dbo.caregiver.genderIdentity as caregender, dbo.caregiver.ethnicity as careethnic, dbo.caregiver.relationship, " +
-"dbo.ccr.levelofService, dbo.ccr.ccrStatus, dbo.ccr.nonEngageReason, dbo.ccr.remedy, dbo.ccr.rearrestRep, dbo.ccr.closureSchool, " +
+"dbo.ccr.levelofService, dbo.ccr.ccrStatus, dbo.ccr.nonEngageReason, dbo.ccr.remedy, dbo.ccr.rearrestRep, dbo.ccr.closureSchool, dbo.ccr.dateInput as trackingdate" +
 "dbo.client.clientLast, dbo.client.clientFirst, dbo.client.dependency, dbo.client.genderIdentity as clientgender, dbo.client.ethnicity as clientethn, dbo.client.dob as clientdob, dbo.client.phoneNumber, " +
 "dbo.comp.compTime, " +
 "dbo.currentStatus.readingLevel, dbo.currentStatus.mathLevel, dbo.currentStatus.currentServices, dbo.currentStatus.inPride, dbo.currentStatus.newFBA, dbo.currentStatus.addService, dbo.currentStatus.servicesGained, " +
@@ -810,7 +1011,7 @@ namespace HopePipeline.Controllers
 "LEFT JOIN dbo.legal on dbo.accomodations.clientCode = dbo.legal.clientCode)" +
 "LEFT JOIN dbo.school on dbo.accomodations.clientCode = dbo.school.clientCode)" +
 "LEFT JOIN dbo.refform on dbo.accomodations.clientCode = dbo.refform.clientCode)" +
-"WHERE dbo.accomodations.clientCode =" + clientCode + ";";
+"WHERE dbo.accomodations.clientCode ='" + clientCode + "';";
             command = new SqlCommand(query, cnn);
 
             //SqlDataReader reader = command.ExecuteReader();
@@ -820,14 +1021,14 @@ namespace HopePipeline.Controllers
                 {
 
                     trackingDetail client = new trackingDetail();
-                    client.ClientID = Convert.ToInt32(dataReader["clientCode"]);
+                    client.ClientID = Guid.Parse(Convert.ToString(dataReader["clientCode"]));
 
                     client.clientFirstName = Convert.ToString(dataReader["clientFirst"]);
-                    if (client.clientFirstName == " " || client.clientFirstName == "null" || client.clientFirstName == "")
+                    if (client.clientFirstName == " " || client.clientFirstName == "null" || client.clientFirstName == "" || cc == 0)
                     { client.clientFirstName = "N/A"; }//Done
 
                     client.clientLastName = Convert.ToString(dataReader["clientLast"]);
-                    if (client.clientLastName == " " || client.clientLastName == "null" || client.clientLastName == "")
+                    if (client.clientLastName == " " || client.clientLastName == "null" || client.clientLastName == "" || cc == 0)
                     { client.clientLastName = "N/A"; }//Done
 
                     client.careGender = Convert.ToString(dataReader["caregender"]);
@@ -841,18 +1042,17 @@ namespace HopePipeline.Controllers
                     { client.careGender = "Grandpa"; }
                     if (client.careGender.Contains("Other"))
                     { client.careGender = "Other"; }
-                    if (String.IsNullOrEmpty(Convert.ToString(dataReader["caregender"])))
+                    if (String.IsNullOrEmpty(Convert.ToString(dataReader["caregender"])) || cgc == 0)
                     { client.careGender = "N/A"; }
                     else
                     { client.careGender = client.careGender; }
 
 
-                    if (Convert.IsDBNull(dataReader["clientgender"]))
-                    { client.clientGender = "N/A"; }
 
+                    string time = "";
                     client.clientGender = Convert.ToString(dataReader["clientgender"]);
-
-                    if (client.clientGender.Contains("male"))
+                  time = Convert.ToString(dataReader["clientgender"]);
+                    if (client.clientGender.Contains("male") && !client.clientGender.Contains("female"))
                     { client.clientGender = "He/Him/His"; }
                     if (client.clientGender.Contains("female"))
                     { client.clientGender = "She/Her/Hers"; }
@@ -864,8 +1064,10 @@ namespace HopePipeline.Controllers
                     { client.clientGender = "He/They"; }
                     if (client.clientGender.Contains("neutral"))
                     { client.clientGender = "Zie/Zir/Zirs"; }
+                    if(client.clientGender.Length == 0||cc == 0 )//////////////Something is wrong
+                    { client.clientGender = "N/A"; }
                     else { client.clientGender = client.clientGender; }
-
+               
 
                     client.clientEthnicity = Convert.ToString(dataReader["clientethn"]);
                     if (client.clientEthnicity.Equals("nhWhite") || client.clientEthnicity.Contains("nhWhite"))
@@ -882,18 +1084,26 @@ namespace HopePipeline.Controllers
                     { client.clientEthnicity = "Multiple Ethnicities"; }
                     if (client.clientEthnicity.Equals("notListed") || client.clientEthnicity.Contains("notListed"))
                     { client.clientEthnicity = "Ethnicity Not Listed"; }
-                    if (client.clientEthnicity == "")
+                    if (client.clientEthnicity == "" ||cc ==0)
                     { client.clientEthnicity = "N/A"; }
                     else
                     { client.clientEthnicity = client.clientEthnicity; }
 
 
-                    client.clientDOB = Convert.ToString(dataReader["clientdob"]);
-                    if (client.clientDOB == " " || client.clientDOB == "null" || client.clientDOB == "")
+                    string t = Convert.ToString(dataReader["clientdob"]);
+                    if (Convert.ToString(dataReader["clientdob"]).Length > 10)
+                    {
+                        
+                        string[] spaceclientdob = t.Split(' ');
+                        client.clientDOB =(spaceclientdob[0]); }
+                   
+
+                    if (client.clientDOB == " " || client.clientDOB == "null" || client.clientDOB== "" || Convert.ToString(dataReader["clientdob"]).Length < 10)
                     { client.clientDOB = "N/A"; }
 
+                
                     client.school = Convert.ToString(dataReader["school"]);
-                    if (client.school == " " || client.school == "null" || client.school == "")
+                    if (client.school == " " || client.school == "null" || client.school == "" || sc ==0)
                     { client.school = "N/A"; }
 
                     client.currentGrade = Convert.ToString(dataReader["grade"]);
@@ -924,7 +1134,7 @@ namespace HopePipeline.Controllers
                     { client.currentGrade = "11th Grade"; }
                     if (client.currentGrade == "12")
                     { client.currentGrade = "12th Grade"; }
-                    if (client.currentGrade == "")
+                    if (client.currentGrade == "" || sc ==0)
                     { client.currentGrade = "N/A"; }
                     else { client.currentGrade = client.currentGrade; }
 
@@ -936,7 +1146,7 @@ namespace HopePipeline.Controllers
                     { client.failedGrade = "Yes"; }
                     if (client.failedGrade == "0")
                     { client.failedGrade = "No"; }
-                    if (client.failedGrade == "")
+                    if (client.failedGrade == "" || fc ==0)
                     { client.failedGrade = "N/A"; }
                     else
                     { client.failedGrade = client.failedGrade; }
@@ -968,13 +1178,13 @@ namespace HopePipeline.Controllers
                     { client.whichGradeFailed = "11th Grade"; }
                     if (client.whichGradeFailed == "12")
                     { client.whichGradeFailed = "12th Grade"; }
-                    if (client.whichGradeFailed == "")
+                    if (client.whichGradeFailed == "" || fc ==0)
                     { client.whichGradeFailed = "N/A"; }
                     else
                     { client.whichGradeFailed = client.whichGradeFailed; }
 
                     client.failCount = Convert.ToString(dataReader["failedRepeat"]);
-                    if (client.failCount == "")
+                    if (client.failCount == "" || fc == 0)
                     { client.failCount = "N/A"; }
 
                     client.baker = Convert.ToString(dataReader["bakerActed"]);
@@ -983,7 +1193,7 @@ namespace HopePipeline.Controllers
                     { client.baker = "Yes"; }
                     if (client.baker == "0")
                     { client.baker = "No"; }
-                    if (client.baker == "")
+                    if (client.baker == "" || hc ==0)
                     { client.baker = "N/A"; }
                     else
                     { client.baker = client.baker; }
@@ -993,7 +1203,7 @@ namespace HopePipeline.Controllers
                     { client.marchman = "Yes"; }
                     if (client.marchman == "0")
                     { client.marchman = "No"; }
-                    if (client.marchman == "")
+                    if (client.marchman == "" || hc == 0)
                     { client.marchman = "N/A"; }
                     else
                     { client.marchman = client.marchman; }
@@ -1002,7 +1212,7 @@ namespace HopePipeline.Controllers
                     { client.asthma = "Yes"; }
                     if (client.asthma == "0")
                     { client.asthma = "No"; }
-                    if (client.asthma == "")
+                    if (client.asthma == "" || hc == 0)
                     { client.asthma = "N/A"; }
                     else
                     { client.asthma = client.asthma; }
@@ -1013,7 +1223,7 @@ namespace HopePipeline.Controllers
                     { client.femHouse = "Yes"; }
                     if (client.femHouse == "0")
                     { client.femHouse = "No"; }
-                    if (client.femHouse == "")
+                    if (client.femHouse == "" || hhc == 0)
                     { client.femHouse = "N/A"; }
                     else
                     { client.femHouse = client.femHouse; }
@@ -1023,7 +1233,7 @@ namespace HopePipeline.Controllers
                     { client.domVio = "Yes"; }
                     if (client.domVio == "0")
                     { client.domVio = "No"; }
-                    if (client.domVio == "")
+                    if (client.domVio == "" || hhc == 0)
                     { client.domVio = "N/A"; }
                     else
                     { client.domVio = client.domVio; }
@@ -1033,7 +1243,7 @@ namespace HopePipeline.Controllers
                     { client.adopted = "Yes"; }
                     if (client.adopted == "0")
                     { client.adopted = "No"; }
-                    if (client.adopted == "")
+                    if (client.adopted == "" || hhc == 0)
                     { client.adopted = "N/A"; }
                     else
                     { client.adopted = client.adopted; }
@@ -1043,7 +1253,7 @@ namespace HopePipeline.Controllers
                     { client.evicted = "Yes"; }
                     if (client.evicted == "0")
                     { client.evicted = "No"; }
-                    if (client.evicted == "")
+                    if (client.evicted == "" || hhc == 0)
                     { client.evicted = "N/A"; }
                     else
                     { client.evicted = client.evicted; }
@@ -1053,7 +1263,7 @@ namespace HopePipeline.Controllers
                     { client.incarParent = "Yes"; }
                     if (client.incarParent == "0")
                     { client.incarParent = "No"; }
-                    if (client.incarParent == "")
+                    if (client.incarParent == "" || hhc == 0)
                     { client.incarParent = "N/A"; }
                     else
                     { client.incarParent = client.incarParent; }
@@ -1062,30 +1272,39 @@ namespace HopePipeline.Controllers
                     //accomodations---------------------------------CCR---------------------------------------------------------------
 
                     client.levelOfServiceProvided = Convert.ToString(dataReader["levelofService"]);
-                    if (client.levelOfServiceProvided == "n")
+                    if (!client.levelOfServiceProvided.Contains("info") && !client.levelOfServiceProvided.Contains("service") && !client.levelOfServiceProvided.Contains("full"))
                     { client.levelOfServiceProvided = "None"; }
-                    if (client.levelOfServiceProvided == "info")
+                    if (client.levelOfServiceProvided.Contains("info"))
                     { client.levelOfServiceProvided = "Information/Education"; }
-                    if (client.levelOfServiceProvided == "service")
+                    if (client.levelOfServiceProvided.Contains("service"))
                     { client.levelOfServiceProvided = "Brief Service/Advice"; }
-                    if (client.levelOfServiceProvided == "full")
+                    if (client.levelOfServiceProvided.Contains("full"))
                     { client.levelOfServiceProvided = "Full"; }
-                    if (client.levelOfServiceProvided == "")
+                    if (client.levelOfServiceProvided=="" || ccrc ==0)
                     { client.levelOfServiceProvided = "N/A"; }
                     else
                     { client.levelOfServiceProvided = client.levelOfServiceProvided; }
 
-                    client.referralDate = Convert.ToString(dataReader["dateInput"]);
+                    string dateinputstring = Convert.ToString(dataReader["dateInput"]);
+                    if (Convert.ToString(dataReader["dateInput"]).Length > 10)
+
+                    {
+                        string[] spacedateinput = dateinputstring.Split(' ');
+                        client.referralDate = (spacedateinput[0]);
+                    }
+                    if (client.referralDate == " " || client.referralDate == "null" || client.referralDate == "" || Convert.ToString(dataReader["dateInput"]).Length < 10)
+                    { client.referralDate = "N/A"; }
+
 
                     //Reason for Nonengagement needs to be added
                     client.nonEngagementReason = Convert.ToString(dataReader["nonEngageReason"]);
-                    if (client.nonEngagementReason == "n")
+                    if (client.nonEngagementReason.Contains("n") &&!client.nonEngagementReason.Contains("info"))
                     { client.nonEngagementReason = "Unable to Contact"; }
-                    if (client.nonEngagementReason == "info")
+                    if (client.nonEngagementReason.Contains("info"))
                     { client.nonEngagementReason = "Unable to Complete Intake"; }
-                    if (client.nonEngagementReason == "service")
+                    if (client.nonEngagementReason.Contains("service"))
                     { client.nonEngagementReason = "Family Declined Services"; }
-                    if (client.nonEngagementReason == "")
+                    if (client.nonEngagementReason == "" || ccrc == 0)
                     { client.nonEngagementReason = "N/A"; }
                     else
                     { client.nonEngagementReason = client.nonEngagementReason; }
@@ -1098,7 +1317,7 @@ namespace HopePipeline.Controllers
                     { client.caseStatus = "Closed due to nonengagement"; }
                     if (client.caseStatus == "0")
                     { client.caseStatus = "Closed"; }
-                    if (client.caseStatus == "")
+                    if (client.caseStatus == "" || ccrc == 0)
                     { client.caseStatus = "N/A"; }
                     else
                     { client.caseStatus = client.caseStatus; }
@@ -1110,14 +1329,14 @@ namespace HopePipeline.Controllers
                     { client.legalAdvocacy = "Yes"; }
                     if (client.legalAdvocacy == "0")
                     { client.legalAdvocacy = "No"; }
-                    if (client.legalAdvocacy == "")
+                    if (client.legalAdvocacy == "" || ac == 0)
                     { client.legalAdvocacy = "N/A"; }
                     else
                     { client.legalAdvocacy = client.legalAdvocacy; }
 
                     //done
                     client.legalAdvoTaken = Convert.ToString(dataReader["legalAdvoTaken"]);
-                    if (client.legalAdvoTaken == "")
+                    if (client.legalAdvoTaken == "" || ac == 0)
                     { client.legalAdvoTaken = "N/A"; }
 
                     client.remedyResolution = Convert.ToString(dataReader["remedy"]);
@@ -1126,7 +1345,7 @@ namespace HopePipeline.Controllers
                     { client.remedyResolution = "Yes"; }
                     if (client.remedyResolution.Contains("0"))
                     { client.remedyResolution = "No"; }
-                    if (client.remedyResolution == "")
+                    if (client.remedyResolution == "" || ccrc == 0)
                     { client.remedyResolution = "N/A"; }
                     else
                     { client.remedyResolution = client.remedyResolution; }
@@ -1137,7 +1356,7 @@ namespace HopePipeline.Controllers
                     { client.rearrestWhileRepresented = "Yes"; }
                     if (client.rearrestWhileRepresented == "0")
                     { client.rearrestWhileRepresented = "No"; }
-                    if (client.rearrestWhileRepresented == "")
+                    if (client.rearrestWhileRepresented == "" || ccrc == 0)
                     { client.rearrestWhileRepresented = "N/A"; }
                     else
                     { client.rearrestWhileRepresented = client.rearrestWhileRepresented; }
@@ -1146,8 +1365,20 @@ namespace HopePipeline.Controllers
 
 
                     client.schoolAtClosure = Convert.ToString(dataReader["closureSchool"]);
-                    if (client.schoolAtClosure == "")
+                    if (client.schoolAtClosure == "" || ccrc == 0)
                     { client.schoolAtClosure = "N/A"; }
+
+                    string trackingdate1 = Convert.ToString(dataReader["trackingdate"]);
+                    if (Convert.ToString(dataReader["trackingdate"]).Length > 10)
+                    {
+
+                        string[] spacetrackingdate1 = t.Split(' ');
+                        client.trackingdate = (spacetrackingdate1[0]);
+                    }
+
+
+                    if (client.trackingdate == " " || client.trackingdate == "null" || client.trackingdate == "" || Convert.ToString(dataReader["trackingdate"]).Length < 10)
+                    { client.trackingdate = "N/A"; }
 
                     //is the first referral for the client
 
@@ -1165,7 +1396,7 @@ namespace HopePipeline.Controllers
                     { client.rearrestAdvocacy = "Yes"; }
                     if (client.rearrestAdvocacy == "0")
                     { client.rearrestAdvocacy = "No"; }
-                    if (client.rearrestAdvocacy == "")
+                    if (client.rearrestAdvocacy == "" || ac == 0)
                     { client.rearrestAdvocacy = "N/A"; }
                     else
                     { client.rearrestAdvocacy = client.rearrestAdvocacy; }
@@ -1177,7 +1408,7 @@ namespace HopePipeline.Controllers
                     { client.courtAdvocacy = "Yes"; }
                     if (client.courtAdvocacy == "0")
                     { client.courtAdvocacy = "No"; }
-                    if (client.courtAdvocacy == "")
+                    if (client.courtAdvocacy == "" || ac == 0)
                     { client.courtAdvocacy = "N/A"; }
                     else
                     { client.courtAdvocacy = client.courtAdvocacy; }
@@ -1188,58 +1419,58 @@ namespace HopePipeline.Controllers
                     { client.staffAdvocacy = "Yes"; }
                     if (client.staffAdvocacy == "0")
                     { client.staffAdvocacy = "No"; }
-                    if (client.staffAdvocacy == "")
+                    if (client.staffAdvocacy == "" || ac == 0)
                     { client.staffAdvocacy = "N/A"; }
                     else
                     { client.staffAdvocacy = client.staffAdvocacy; }
 
                     //-------------------------------------------------------School Info----------------------------------------------
                     client.iep = Convert.ToString(dataReader["IEP"]);
-                    if (client.iep == "y")
+                    if (client.iep == "1")
                     { client.iep = "Yes"; }
-                    if (client.iep == "n")
+                    if (client.iep == "0")
                     { client.iep = "No"; }
-                    if (client.iep == "")
+                    if (client.iep == "" ||iepc == 0)
                     { client.iep = "N/A"; }
 
                     client.iepplan1 = Convert.ToString(dataReader["primaryIEP"]);
-                    if (client.iepplan1 == "emo") { client.iepplan1 = "Emotional/Behavioral Disability"; }
-                    if (client.iepplan1 == "gifted") { client.iepplan1 = "Gifted"; }
-                    if (client.iepplan1 == "intell") { client.iepplan1 = "Intellectual Disability"; }
-                    if (client.iepplan1 == "lang") { client.iepplan1 = "Language Impairment"; }
-                    if (client.iepplan1 == "otherHealth") { client.iepplan1 = "Other Health Impairment"; }
-                    if (client.iepplan1 == "specificLearning") { client.iepplan1 = "Specific Learning Disability"; }
-                    if (client.iepplan1 == "speech") { client.iepplan1 = "Speech Impairment"; }
-                    if (client.iepplan1 == "other") { client.iepplan1 = "other"; }
-                    if (client.iepplan1 == "")
+                    if (client.iepplan1.Contains("emo")) { client.iepplan1 = "Emotional/Behavioral Disability"; }
+                    if (client.iepplan1.Contains("gifted")) { client.iepplan1 = "Gifted"; }
+                    if (client.iepplan1.Contains("intell")) { client.iepplan1 = "Intellectual Disability"; }
+                    if (client.iepplan1.Contains("lang")) { client.iepplan1 = "Language Impairment"; }
+                    if (client.iepplan1.Contains("otherHealth")) { client.iepplan1 = "Other Health Impairment"; }
+                    if (client.iepplan1.Contains("specificLearning")) { client.iepplan1 = "Specific Learning Disability"; }
+                    if (client.iepplan1.Contains("speech")) { client.iepplan1 = "Speech Impairment"; }
+                    if (client.iepplan1.Contains("other")) { client.iepplan1 = "other"; }
+                    if (client.iepplan1 == ""||iepc == 0)
                     { client.iepplan1 = "N/A"; }
 
                     client.iepplan2 = Convert.ToString(dataReader["secondaryIEP"]);
-                    if (client.iepplan2 == "emo") { client.iepplan2 = "Emotional/Behavioral Disability"; }
-                    if (client.iepplan2 == "gifted") { client.iepplan2 = "Gifted"; }
-                    if (client.iepplan2 == "intell") { client.iepplan2 = "Intellectual Disability"; }
-                    if (client.iepplan2 == "lang") { client.iepplan2 = "Language Impairment"; }
-                    if (client.iepplan2 == "otherHealth") { client.iepplan2 = "Other Health Impairment"; }
-                    if (client.iepplan2 == "specificLearning") { client.iepplan2 = "Specific Learning Disability"; }
-                    if (client.iepplan2 == "speech") { client.iepplan2 = "Speech Impairment"; }
-                    if (client.iepplan2 == "other") { client.iepplan2 = "other"; }
-                    if (client.iepplan2 == "")
+                    if (client.iepplan2.Contains("emo")) { client.iepplan2 = "Emotional/Behavioral Disability"; }
+                    if (client.iepplan2.Contains("gifted")) { client.iepplan2 = "Gifted"; }
+                    if (client.iepplan2.Contains("intell")) { client.iepplan2 = "Intellectual Disability"; }
+                    if (client.iepplan2.Contains("lang")) { client.iepplan2 = "Language Impairment"; }
+                    if (client.iepplan2.Contains("otherHealth")) { client.iepplan2 = "Other Health Impairment"; }
+                    if (client.iepplan2.Contains("specificLearning")) { client.iepplan2 = "Specific Learning Disability"; }
+                    if (client.iepplan2.Contains("speech")) { client.iepplan2 = "Speech Impairment"; }
+                    if (client.iepplan2.Contains("other")) { client.iepplan2 = "other"; }
+                    if (client.iepplan2 == "" || iepc == 0)
                     { client.iepplan2 = "N/A"; }
 
                     client.schoolRef = Convert.ToString(dataReader["schoolRef"]);
-                    if (client.schoolRef == "")
+                    if (client.schoolRef == "" || sc == 0)
                     { client.schoolRef = "N/A"; }
 
                     client.readingLevel = Convert.ToString(dataReader["readingLevel"]);
                     if (client.readingLevel == "K")
                     { client.readingLevel = "Kindergarten"; }
-                    if (client.readingLevel == "")
+                    if (client.readingLevel == "" || currentStatusch == 0)
                     { client.readingLevel = "N/A"; }
 
                     client.mathLevel = Convert.ToString(dataReader["mathLevel"]);
                     if (client.readingLevel == "K")
                     { client.readingLevel = "Kindergarten"; }
-                    if (client.mathLevel == "")
+                    if (client.mathLevel == "" || currentStatusch == 0)
                     { client.mathLevel = "N/A"; }
 
                     client.inPride = Convert.ToString(dataReader["inPride"]);
@@ -1247,7 +1478,7 @@ namespace HopePipeline.Controllers
                     { client.inPride = "Yes"; }
                     if (client.inPride == "0")
                     { client.inPride = "No"; }
-                    if (client.inPride == "")
+                    if (client.inPride == "" || currentStatusch == 0)
                     { client.inPride = "N/A"; }
                     else
                     { client.inPride = client.inPride; }
@@ -1257,7 +1488,7 @@ namespace HopePipeline.Controllers
                     { client.newFBA = "Yes"; }
                     if (client.newFBA == "0")
                     { client.newFBA = "No"; }
-                    if (client.newFBA == "")
+                    if (client.newFBA == "" || currentStatusch == 0)
                     { client.newFBA = "N/A"; }
                     else
                     { client.newFBA = client.newFBA; }
@@ -1270,7 +1501,7 @@ namespace HopePipeline.Controllers
                     { client.accomGained = "Other"; }
                     if (client.accomGained == "0")
                     { client.accomGained = "No"; }
-                    if (client.accomGained == "")
+                    if (client.accomGained == "" || acc== 0)
                     { client.accomGained = "N/A"; }
                     else
                     { client.accomGained = client.accomGained; }
@@ -1282,18 +1513,18 @@ namespace HopePipeline.Controllers
                     { client.compService = "Yes"; }
                     if (client.compService == "0")
                     { client.compService = "No"; }
-                    if (client.compService == "")
+                    if (client.compService == "" || acc == 0)
                     { client.compService = "N/A"; }
                     else
                     { client.compService = client.compService; }
 
                     //done
                     client.ifWhatServices = Convert.ToString(dataReader["ifWhatServices"]);
-                    if (client.ifWhatServices == "")
+                    if (client.ifWhatServices == "" || acc == 0)
                     { client.ifWhatServices = "N/A"; }
 
                     client.compTime = Convert.ToString(dataReader["compTime"]);
-                    if (client.compTime == "")
+                    if (client.compTime == "" || compch ==0)
                     { client.compTime = "N/A"; }
 
                     client.bullied = Convert.ToString(dataReader["bullied"]);
@@ -1302,7 +1533,7 @@ namespace HopePipeline.Controllers
                     { client.bullied = "Yes"; }
                     if (client.bullied == "0")
                     { client.bullied = "No"; }
-                    if (client.bullied == "")
+                    if (client.bullied == "" || bc ==0)
                     { client.bullied = "N/A"; }
                     else
                     { client.bullied = client.bullied; }
@@ -1313,13 +1544,22 @@ namespace HopePipeline.Controllers
                     { client.bullyReport = "Yes"; }
                     if (client.bullyReport == "0")
                     { client.bullyReport = "No"; }
-                    if (client.bullyReport == "")
+                    if (client.bullyReport == "" || bc == 0)
                     { client.bullyReport = "N/A"; }
                     else
                     { client.bullyReport = client.bullyReport; }
                     //date
-                    client.dateofBully = Convert.ToString(dataReader["reportDate"]);
+                    string reportdatestring = Convert.ToString(dataReader["reportDate"]);
+                    if (Convert.ToString(dataReader["reportDate"]).Length > 10)
 
+                    {string[] spacedateofbully = reportdatestring.Split(' ');
+                        client.dateofBully = (spacedateofbully[0]);
+                    }
+
+                    if (client.dateofBully == " " || client.dateofBully == "null" || client.dateofBully == "" || Convert.ToString(dataReader["reportDate"]).Length < 10)
+                    { client.dateofBully = "N/A"; }
+
+             
                     //----------------------------------------------------------------------------Discipline-------------------------------
                     client.suspended = Convert.ToString(dataReader["suspendedThrice"]);
                     var thrise = Int32.TryParse(client.suspended, out int thris);
@@ -1327,13 +1567,13 @@ namespace HopePipeline.Controllers
                     { client.suspended = "Yes"; }
                     if (client.suspended == "0")
                     { client.suspended = "No"; }
-                    if (client.suspended == "")
+                    if (client.suspended == "" || ssc == 0)
                     { client.suspended = "N/A"; }
                     else
                     { client.suspended = client.suspended; }
 
                     client.suspendCount = Convert.ToString(dataReader["numSuspensions"]);
-                    if (client.suspendCount == "")
+                    if (client.suspendCount == "" || ssc == 0)
                     { client.suspendCount = "N/A"; }
 
                     client.altSchool = Convert.ToString(dataReader["altSchool"]);
@@ -1342,76 +1582,84 @@ namespace HopePipeline.Controllers
                     { client.altSchool = "Yes"; }
                     if (client.altSchool == "0")
                     { client.altSchool = "No"; }
-                    if (client.altSchool == "")
+                    if (client.altSchool == "" || asc ==0)
                     { client.altSchool = "N/A"; }
                     else
                     { client.altSchool = client.altSchool; }
 
                     client.altSchoolName = Convert.ToString(dataReader["altSchoolName"]);
-                    if (client.altSchoolName == "yes")
+                    if (client.altSchoolName.Contains("yes"))
                     { client.altSchoolName = "Mattie V"; }
-                    if (client.altSchoolName == "no")
+                    if (client.altSchoolName.Contains("no"))
                     { client.altSchoolName = "Grand Park"; }
-                    if (client.altSchoolName == "")
+                    if (client.altSchoolName == "" || asc == 0)
                     { client.altSchoolName = "N/A"; }
                     else
                     { client.altSchoolName = client.altSchoolName; }
 
-                    client.dateOfAlt = Convert.ToString(dataReader["altSchoolDate"]);//date-------------------------------------------------------------DODODODO_________DATE_
-                    if (client.dateOfAlt == "")
+                    string altSchoolDatestring = Convert.ToString(dataReader["altSchoolDate"]);
+                  if (Convert.ToString(dataReader["altSchoolDate"]).Length > 10)
+
+                    {
+                        string[] spacealtdate = altSchoolDatestring.Split(' ');
+                        client.dateOfAlt =(spacealtdate[0]);
+                    }
+                
+                    if (client.dateOfAlt == " " || client.dateOfAlt == "null" || client.dateOfAlt == "" || Convert.ToString(dataReader["altSchoolDate"]).Length < 10)
                     { client.dateOfAlt = "N/A"; }
+
                     //int
                     client.timesInAlt = Convert.ToString(dataReader["altSchoolTimes"]);
-                    if (client.timesInAlt == "")
+                    if (client.timesInAlt == "" || asc == 0)
                     { client.timesInAlt = "N/A"; }
 
                     //int
                     client.daysOwed = Convert.ToString(dataReader["daysOwed"]);
-                    if (client.daysOwed == "")
+                    if (client.daysOwed == "" || asc == 0)
                     { client.daysOwed = "N/A"; }
 
                     client.firstLegal = Convert.ToString(dataReader["legalIssues"]);
-                    if (client.firstLegal == "edu")
+                    if (client.firstLegal == "education")
                     { client.firstLegal = "Education"; }
-                    if (client.firstLegal == "juv")
+                    if (client.firstLegal == "juvenilejustice")
                     { client.firstLegal = "Juvenile Justice"; }
                     if (client.firstLegal == "dependency")
                     { client.firstLegal = "Dependency"; }
-                    if (client.firstLegal == "baker")
+                    if (client.firstLegal == "bakeract")
                     { client.firstLegal = "Baker Act"; }
-                    if (client.firstLegal == "famlaw")
+                    if (client.firstLegal == "familylaw")
                     { client.firstLegal = "Family Law"; }
-                    if (client.firstLegal == "immig")
+                    if (client.firstLegal == "immigration")
                     { client.firstLegal = "Immigration"; }
-                    if (client.firstLegal == "publicben")
+                    if (client.firstLegal == "publicbenefits")
                     { client.firstLegal = "Public Benefits"; }
                     if (client.firstLegal == "housing")
                     { client.firstLegal = "Housing"; }
                     if (client.firstLegal == "other")
                     { client.firstLegal = "Other"; }
-                    if (client.firstLegal == "")
+                    if (client.firstLegal == "" || lc == 0)
                     { client.firstLegal = "N/A"; }
 
                     client.secondLegal = Convert.ToString(dataReader["leagalIssues2"]);
-                    if (client.secondLegal == "")
+                    if (client.secondLegal == "" || lc == 0)
                     { client.secondLegal = "N/A"; }
 
 
 
                     client.iss = Convert.ToString(dataReader["ISS"]);
-                    if (client.iss == "")
+                    if (client.iss == "" || ssc ==0)
                     { client.iss = "N/A"; }
                     client.totaldaysdisicpline = Convert.ToString(dataReader["totalDaysSuspended"]);
                     client.oss = Convert.ToString(dataReader["OSS"]);
-                    if (client.oss == "")
+                    if (client.oss == "" || ssc == 0)
                     { client.oss = "N/A"; }
 
                     client.daysSinceIntake = Convert.ToString(dataReader["daysSinceIntake"]);
-                    if (client.daysSinceIntake == "")
+                    if (client.daysSinceIntake == "" || ssc == 0)
                     { client.daysSinceIntake = "N/A"; }
 
                     client.justiceOutcome = Convert.ToString(dataReader["juvJusticeOutcome"]);
-                    if (client.justiceOutcome == "")
+                    if (client.justiceOutcome == "" || lc == 0)
                     { client.justiceOutcome = "N/A"; }
 
                     client.publicAssistance = Convert.ToString(dataReader["publicAssistance"]);
@@ -1420,23 +1668,23 @@ namespace HopePipeline.Controllers
                     { client.publicAssistance = "Yes"; }
                     if (client.publicAssistance == "0")
                     { client.publicAssistance = "No"; }
-                    if (client.publicAssistance == "")
+                    if (client.publicAssistance == "" ||hhc ==0)
                     { client.publicAssistance = "N/A"; }
                     else
                     { client.publicAssistance = client.publicAssistance; }
 
 
                     client.careLastName = Convert.ToString(dataReader["careLast"]);
-                    if (client.careLastName == "")
+                    if (client.careLastName == ""|| cgc == 0)
                     { client.careLastName = "N/A"; }
 
                     client.careFirstName = Convert.ToString(dataReader["careFirst"]);
-                    if (client.careFirstName == "" || client.careFirstName == "null" || String.IsNullOrEmpty(client.careFirstName))
+                    if (client.careFirstName == "" || client.careFirstName == "null" || String.IsNullOrEmpty(client.careFirstName) || cgc == 0)
                     { client.careFirstName = "N/A"; }
 
                     client.carePhone = Convert.ToString(dataReader["phoneNumber"]);
 
-                    if (client.carePhone == "" || client.carePhone == "null" || String.IsNullOrEmpty(client.carePhone))
+                    if (client.carePhone == "" || client.carePhone == "null" || String.IsNullOrEmpty(client.carePhone) || cc == 0)
                     { client.carePhone = "N/A"; }
 
                     client.careEthnicity = Convert.ToString(dataReader["careethnic"]);
@@ -1454,7 +1702,7 @@ namespace HopePipeline.Controllers
                     { client.careEthnicity = "Multiple Ethnicities"; }
                     if (client.careEthnicity.Equals("notListed") || client.careEthnicity.Contains("notListed"))
                     { client.careEthnicity = "Ethnicity Not Listed"; }
-                    if (client.careEthnicity.Equals("null"))
+                    if (client.careEthnicity.Equals("null") || cgc == 0)
                     { client.careEthnicity = "N/A"; }
 
                     clientl.Add(client);
@@ -1467,7 +1715,7 @@ namespace HopePipeline.Controllers
 
 
         }
-        public IActionResult EditTrackingM(int clientCode)
+        public IActionResult EditTrackingM(Guid clientCode)
 
         //edit tracking information in a form format
         {//this method will display the values from the sql code
@@ -1487,7 +1735,7 @@ namespace HopePipeline.Controllers
             "dbo.altSchool.altSchool, dbo.altSchool.altSchoolName, dbo.altSchool.altSchoolDate, dbo.altSchool.altSchoolTimes, dbo.altSchool.daysOwed, dbo.altSchool.daysSinceIntake, " +
             "dbo.bully.bullied, dbo.bully.reported, dbo.bully.reportDate, " +
             "dbo.caregiver.careLast, dbo.caregiver.careFirst, dbo.caregiver.genderIdentity as caregender, dbo.caregiver.ethnicity as careethnic, dbo.caregiver.relationship, " +
-            "dbo.ccr.levelofService, dbo.ccr.ccrStatus, dbo.ccr.nonEngageReason, dbo.ccr.remedy, dbo.ccr.rearrestRep, dbo.ccr.closureSchool, " +
+            "dbo.ccr.levelofService, dbo.ccr.ccrStatus, dbo.ccr.nonEngageReason, dbo.ccr.remedy, dbo.ccr.rearrestRep, dbo.ccr.closureSchool, dbo.ccr.inputDate as trackingdate ," +
             "dbo.client.clientLast, dbo.client.clientFirst, dbo.client.dependency, dbo.client.genderIdentity as clientgender, dbo.client.ethnicity as clientethn, dbo.client.dob as clientdob, dbo.client.phoneNumber, " +
             "dbo.comp.compTime, " +
             "dbo.currentStatus.readingLevel, dbo.currentStatus.mathLevel, dbo.currentStatus.currentServices, dbo.currentStatus.inPride, dbo.currentStatus.newFBA, dbo.currentStatus.addService, dbo.currentStatus.servicesGained, " +
@@ -1516,7 +1764,7 @@ namespace HopePipeline.Controllers
             "LEFT JOIN dbo.legal on dbo.accomodations.clientCode = dbo.legal.clientCode)" +
             "LEFT JOIN dbo.school on dbo.accomodations.clientCode = dbo.school.clientCode)" +
             "LEFT JOIN dbo.refform on dbo.accomodations.clientCode = dbo.refform.clientCode)" +
-            "WHERE dbo.accomodations.clientCode =" + clientCode + ";";
+            "WHERE dbo.accomodations.clientCode ='" + clientCode + "';";
             command = new SqlCommand(query, cnn);
 
 
@@ -1527,13 +1775,39 @@ namespace HopePipeline.Controllers
                 {
 
                     EditTrackingm client = new EditTrackingm();
-                    client.ClientID = Convert.ToInt32(dataReader["clientCode"]);
+                    client.ClientID = Guid.Parse(Convert.ToString(dataReader["clientCode"]));
                     client.clientFirstName = Convert.ToString(dataReader["clientFirst"]);
                     client.clientLastName = Convert.ToString(dataReader["clientLast"]);
                     client.careGender = Convert.ToString(dataReader["caregender"]);
                     client.clientGender = Convert.ToString(dataReader["clientgender"]);
                     client.clientEthnicity = Convert.ToString(dataReader["clientethn"]);
-                    client.clientDOB = Convert.ToString(dataReader["clientdob"]);
+              
+                 
+                      if (Convert.IsDBNull(dataReader["clientdob"]))
+                    { client.clientDOB = DateTime.Parse("01/01/1990"); }
+                    else
+                    {
+                        client.clientDOB = Convert.ToDateTime(dataReader["clientdob"]);
+                        string answerdob = client.clientDOB.ToString();
+                        int spacedob = answerdob.IndexOf(" ");
+                        string datedob = answerdob.Substring(0, spacedob);
+
+
+                        string[] strlistdob = datedob.Split('/');
+
+
+                        string yeardob = strlistdob[2];
+                        string monthdob = strlistdob[1];
+                        if ((monthdob.Length) == 1)
+                        { monthdob = "0" + monthdob; }
+                        string daydob = strlistdob[0];
+                        if ((daydob.Length) == 1)
+                        { daydob = "0" + daydob; }
+                        string answerb = yeardob + "-" + daydob + "-" + monthdob;
+                        client.stringDateOfBirth = answerb;
+                    };
+
+
                     client.school = Convert.ToString(dataReader["school"]);
                     client.currentGrade = Convert.ToString(dataReader["grade"]);
                     client.referralSource = Convert.ToString(dataReader["referralfname"]) + " " + Convert.ToString(dataReader["referrallname"]);
@@ -1586,8 +1860,30 @@ namespace HopePipeline.Controllers
 
                     client.levelOfServiceProvided = Convert.ToString(dataReader["levelofService"]);
 
-                    client.referralDate = Convert.ToString(dataReader["dateInput"]);//----------------------------Date-----------------------------------
+                 
+                    if (Convert.IsDBNull(dataReader["dateInput"]))
+                    { client.referralDate = DateTime.Parse("01/01/1990"); }
+                    else
+                    {
+                        client.referralDate = Convert.ToDateTime(dataReader["dateInput"]);
+                        string answer = client.referralDate.ToString();
+                        int space = answer.IndexOf(" ");
+                        string date = answer.Substring(0, space);
 
+
+                        string[] strlist = date.Split('/');
+
+
+                        string year = strlist[2];
+                        string month = strlist[1];
+                        if ((month.Length) == 1)
+                        { month = "0" + month; }
+                        string day = strlist[0];
+                        if ((day.Length) == 1)
+                        { day = "0" + day; }
+                        string answera = year + "-" + day + "-" + month;
+                        client.stringReferralDate = answera;
+                    };
                     //client.intakeDate = Convert.ToString(dataReader["intakeDate"]);//------------------------------------Date------------------------------------
 
                     //Reason for Nonengagement needs to be added
@@ -1618,6 +1914,30 @@ namespace HopePipeline.Controllers
                     //referral count needs to be inserted here
 
                     client.schoolAtClosure = Convert.ToString(dataReader["closureSchool"]);
+
+                    if (Convert.IsDBNull(dataReader["trackingdate"]))
+                    { client.trackingdate = DateTime.Parse("01/01/1990"); }
+                    else
+                    {
+                        client.trackingdate = Convert.ToDateTime(dataReader["trackingdate"]);
+                        string answertrackingdate = client.trackingdate.ToString();
+                        int spacedtrackingdate = answertrackingdate.IndexOf(" ");
+                        string datetrackingdate = answertrackingdate.Substring(0, spacedtrackingdate);
+
+
+                        string[] strlisttrackingdate = datetrackingdate.Split('/');
+
+
+                        string yeartrackingdate = strlisttrackingdate[2];
+                        string monthtrackingdate = strlisttrackingdate[1];
+                        if ((monthtrackingdate.Length) == 1)
+                        { monthtrackingdate = "0" + monthtrackingdate; }
+                        string daytrackingdate = strlisttrackingdate[0];
+                        if ((daytrackingdate.Length) == 1)
+                        { daytrackingdate = "0" + daytrackingdate; }
+                        string answerI = yeartrackingdate + "-" + daytrackingdate + "-" + monthtrackingdate;
+                        client.stringtrackingdate = answerI;
+                    };
 
                     //is the first referral for the client
 
@@ -1685,7 +2005,30 @@ namespace HopePipeline.Controllers
                     else { client.bullyReport = Convert.ToInt16(dataReader["reported"]); }
 
                     //date
-                    client.dateofBully = Convert.ToString(dataReader["reportDate"]);
+             
+                    if (Convert.IsDBNull(dataReader["reportDate"]))
+                    { client.dateofBully = DateTime.Parse("01/01/1990"); }
+                    else
+                    {
+                        client.dateofBully = Convert.ToDateTime(dataReader["reportDate"]);
+                        string answerbully = client.dateofBully.ToString();
+                        int spacebully = answerbully.IndexOf(" ");
+                        string datebully = answerbully.Substring(0, spacebully);
+
+
+                        string[] strlistbully = datebully.Split('/');
+
+
+                        string yearbully = strlistbully[2];
+                        string monthbully = strlistbully[1];
+                        if ((monthbully.Length) == 1)
+                        { monthbully = "0" + monthbully; }
+                        string daybully = strlistbully[0];
+                        if ((daybully.Length) == 1)
+                        { daybully = "0" + daybully; }
+                        string answerdatebully = yearbully + "-" + daybully + "-" + monthbully;
+                        client.stringDateOfBully = answerdatebully;
+                    };
 
                     //----------------------------------------------------------------------------Discipline-------------------------------
 
@@ -1703,8 +2046,30 @@ namespace HopePipeline.Controllers
 
                     client.altSchoolName = Convert.ToString(dataReader["altSchoolName"]);
 
-                    client.dateOfAlt = Convert.ToString(dataReader["altSchoolDate"]);//date-------------------------------------------------------------DODODODO_________DATE_
+                  if (Convert.IsDBNull(dataReader["altSchoolDate"]))
+                    { client.dateOfAlt = DateTime.Parse("01/01/1990"); }
+                    else
+                    {
+                        client.dateOfAlt = Convert.ToDateTime(dataReader["altSchoolDate"]);
+                        string answeralt = client.dateOfAlt.ToString();
+                        int spacealt = answeralt.IndexOf(" ");
+                        string datealt = answeralt.Substring(0, spacealt);
 
+
+                        string[] strlistalt = datealt.Split('/');
+
+
+                        string yearalt = strlistalt[2];
+                        string monthalt = strlistalt[1];
+                        if ((monthalt.Length) == 1)
+                        { monthalt = "0" + monthalt; }
+                        string dayalt = strlistalt[0];
+                        if ((dayalt.Length) == 1)
+                        { dayalt = "0" + dayalt; }
+                        string answeraltschool = yearalt + "-" + dayalt + "-" + monthalt;
+                        client.stringDateOfAlt = answeraltschool;
+
+                    };
 
                     if (Convert.IsDBNull(dataReader["altSchoolTimes"]))
                     { client.timesInAlt = 33; }
@@ -1721,16 +2086,16 @@ namespace HopePipeline.Controllers
 
 
                     if (Convert.IsDBNull(dataReader["ISS"]))
-                    { client.iss = 33; }
+                    { client.iss = 0; }
                     else { client.iss = Convert.ToInt16(dataReader["ISS"]); }
 
                     if (Convert.IsDBNull(dataReader["OSS"]))
-                    { client.oss = 33; }
+                    { client.oss = 0; }
                     else { client.oss = Convert.ToInt16(dataReader["OSS"]); }
 
 
                     if (Convert.IsDBNull(dataReader["daysSinceIntake"]))
-                    { client.daysSinceIntake = 33; }
+                    { client.daysSinceIntake = 0; }
                     else { client.daysSinceIntake = Convert.ToInt16(dataReader["daysSinceIntake"]); }
 
                     client.justiceOutcome = Convert.ToString(dataReader["juvJusticeOutcome"]);
@@ -1763,15 +2128,15 @@ namespace HopePipeline.Controllers
 
 
         [HttpPost]
-        public IActionResult editTrackingForm(EditTrackingm form)
+        public IActionResult EditTrackingForm(EditTrackingm form)
         {
             SqlConnection cnnn;
             cnnn = new SqlConnection(cconnectionString);
             cnnn.Open();//Connect
                         //as you edit the tracking form update the clients referral name, dob, case status
-            object ccrcheckc = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.refform WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
-            object clientcheckc = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.refform WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
            
+            object clientcheckc = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.refform WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
+
             //if client code is not in the table client ID insert values in table
 
             //SqlCommand commandd = cnnn.CreateCommand();
@@ -1793,7 +2158,7 @@ namespace HopePipeline.Controllers
             object schoolcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.school WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
             cnnn.Close();
             int ccc = (Convert.ToInt16(clientcheckc)) + 0;
-            int ccrcc = (Convert.ToInt16(ccrcheckc)) + 0;
+           
             int bc = (Convert.ToInt16(bullycheck)) + 0;
             int cc = (Convert.ToInt16(clientcheck)) + 0;
             int ac = (Convert.ToInt16(advocacycheck)) + 0;
@@ -1811,39 +2176,8 @@ namespace HopePipeline.Controllers
             int lc = (Convert.ToInt16(legalcheck)) + 0;
             int sc = (Convert.ToInt16(schoolcheck)) + 0;
 
-            if (ccrc >= 1)
-            {
-
-                // clientcode is not in the table insert the values
-                SqlConnection cnnt;
-                cnnt = new SqlConnection(cconnectionString);
-                using (SqlConnection link = new SqlConnection(cconnectionString))
-                using (SqlCommand ccrcstate = new SqlCommand("", link))
-                {
-                    ccrcstate.CommandText = "UPDATE dbo.refform SET currStatus = @currStatus WHERE clientCode = @clientCode;";
-                    ccrcstate.Parameters.AddWithValue("@clientCode", form.ClientID);
-
-                    SqlParameter reas = ccrcstate.Parameters.AddWithValue("@currStatus", form.caseStatus);
-                    if (form.caseStatus == 1)
-                    {
-                        reas.Value = "Open";
-                    }
-                    if (form.caseStatus == 0)
-                    {
-                        reas.Value = "Closed";
-                    }
-                    if (form.caseStatus == 2)
-                    {
-                        reas.Value = "Closed Non-Engagement";
-                    }
-                    link.Open();
-                    ccrcstate.ExecuteNonQuery();
-                    link.Close();
-                    cnnt.Close();
-                }
-
-            }
-            if (cc >= 1)
+        
+            if (ccc >= 1)
             {
                 // clientcode is not in the table insert the values
                 SqlConnection cnnt;
@@ -1867,11 +2201,11 @@ namespace HopePipeline.Controllers
                         morea.Value = DBNull.Value;
                     }
 
-                   // SqlParameter rfnas = stateclient.Parameters.AddWithValue("@birthday", form.clientDOB);/////////////////////-Date
-                   // if (form.clientDOB == null)
-                   // {
-                     //   rfnas.Value = DBNull.Value;
-                   // }
+                    // SqlParameter rfnas = stateclient.Parameters.AddWithValue("@birthday", form.clientDOB);/////////////////////-Date
+                    // if (form.clientDOB == null)
+                    // {
+                    //   rfnas.Value = DBNull.Value;
+                    // }
 
                     link.Open();
                     stateclient.ExecuteNonQuery();
@@ -2500,7 +2834,7 @@ namespace HopePipeline.Controllers
                     " WHERE  clientCode= @clientCode; " +
 
                    "UPDATE dbo.ccr" +
-                    " SET dbo.ccr.levelofService = @levelofService, dbo.ccr.ccrStatus = @ccrStatus, dbo.ccr.nonEngageReason = @nonEngageReason, dbo.ccr.remedy = @remedy, dbo.ccr.rearrestRep = @rearrestRep, dbo.ccr.closureSchool = @closureSchool " +
+                    " SET dbo.ccr.levelofService = @levelofService, dbo.ccr.ccrStatus = @ccrStatus, dbo.ccr.nonEngageReason = @nonEngageReason, dbo.ccr.remedy = @remedy, dbo.ccr.rearrestRep = @rearrestRep, dbo.ccr.closureSchool = @closureSchool, dbo.ccr.dateInput =@trackingdate " +
                    " WHERE dbo.ccr.clientCode = @clientCode; " +
 
                     "UPDATE dbo.comp" +
@@ -2539,8 +2873,12 @@ namespace HopePipeline.Controllers
                     " SET  grade = @grade,  school = @school,  SchoolRef = @SchoolRef" +
                    " WHERE  clientCode = @clientCode; " +
 
+                     " UPDATE dbo.refInfo" +
+               " SET reFName = @reFName,  reLName = @reLName,  refDate = @refDate,  refEmail = @refEmail " +
+                " WHERE  clientCode = @clientCode; " +
+
                " UPDATE dbo.refform" +
-               " SET email = @email,  referralfname = @referralfname,  referrallname = @referrallname,  dateInput = @dateInput, fname = @fname, lname =@lname, dob= @birthday, currStatus =@currStatus " +
+               " SET email = @email,  referralfname = @referralfname,  referrallname = @referrallname,  dateInput = @dateInput, fname = @fname, lname =@lname, dob= @birthday " +
                 " WHERE  clientCode = @clientCode; ";
 
 
@@ -2706,7 +3044,11 @@ namespace HopePipeline.Controllers
                     {
                         gra.Value = DBNull.Value;
                     }
-
+                    SqlParameter trackingdateCodeParam = command.Parameters.AddWithValue("@trackingdate", form.trackingdate);
+                    if (form.trackingdate == null)
+                    {
+                        trackingdateCodeParam.Value = DBNull.Value;
+                    }
                     SqlParameter comptime = command.Parameters.AddWithValue("@compTime", form.compTime);
                     if (form.compTime == null)
                     {
@@ -2723,7 +3065,7 @@ namespace HopePipeline.Controllers
                         mathLevel.Value = DBNull.Value;
                     }
                     SqlParameter inPride = command.Parameters.AddWithValue("@inPride", form.inPride);
-                    if (form.inPride < 1 || form.inPride > 0)
+                    if (form.inPride > 1 || form.inPride < 0)
                     {
                         inPride.Value = DBNull.Value;
                     }
@@ -2855,34 +3197,79 @@ namespace HopePipeline.Controllers
                     {
                         schoolRef.Value = DBNull.Value;
                     }
+                    SqlParameter referrerEmailinfo = command.Parameters.AddWithValue("@refEmail", form.emailOfFirstReferralSource);
+                    if (form.emailOfFirstReferralSource == null)
+                    {
+                        referrerEmailinfo.Value = DBNull.Value;
+                    }
                     SqlParameter referrerEmail = command.Parameters.AddWithValue("@email", form.emailOfFirstReferralSource);
                     if (form.emailOfFirstReferralSource == null)
                     {
                         referrerEmail.Value = DBNull.Value;
                     }
-
+                    //string[] stage1fix = null;
                     string referrals = form.referralSource;
                     var referralnamefix = referrals;
-                    string[] stage1fix = referralnamefix.Split(' ');
-
-                    SqlParameter referralfname = command.Parameters.AddWithValue("@referralfname", stage1fix[0]);
-                    SqlParameter referrallname = command.Parameters.AddWithValue("@referrallname", stage1fix[1]);
-                    if (stage1fix[0] == null)
+                    if (referralnamefix != null && (referralnamefix.Contains(" ") || referralnamefix.Contains(",")))
                     {
-                        referralfname.Value = DBNull.Value;
-                        
-                    }
-                    if (stage1fix[1] == null)
-                    {
-                        referrallname.Value = DBNull.Value;
 
+                        if (referralnamefix.Contains(" "))
+                        {
+                            string[] stage1fix = referralnamefix.Split(' ');
+                            SqlParameter referralfname = command.Parameters.AddWithValue("@referralfname", stage1fix[0]);
+                            SqlParameter referralfname1 = command.Parameters.AddWithValue("@reFName", stage1fix[0]);
+                            SqlParameter referrallname = command.Parameters.AddWithValue("@referrallname", stage1fix[1]);
+                            SqlParameter referrallname1 = command.Parameters.AddWithValue("@reLName", stage1fix[1]);
+                            if (stage1fix[0] == null)
+                            {
+                                referralfname.Value = DBNull.Value;
+                                referralfname1.Value = DBNull.Value;
+                            }
+                            if (stage1fix[1] == null)
+                            {
+                                referrallname.Value = DBNull.Value;
+                                referrallname1.Value = DBNull.Value;
+                            }
+                        }
+                        if (referralnamefix.Contains(","))
+                        {
+                            string[] stage1fix = referralnamefix.Split(',');
+
+                            SqlParameter referralfname = command.Parameters.AddWithValue("@referralfname", stage1fix[0]);
+                            SqlParameter referralfname1 = command.Parameters.AddWithValue("@reFName", stage1fix[0]);
+                            SqlParameter referrallname = command.Parameters.AddWithValue("@referrallname", stage1fix[1]);
+                            SqlParameter referrallname1 = command.Parameters.AddWithValue("@reLName", stage1fix[1]);
+
+                            if (stage1fix[0] == null)
+                            {
+                                referralfname.Value = DBNull.Value;
+                                referralfname1.Value = DBNull.Value;
+                            }
+                            if (stage1fix[1] == null)
+                            {
+                                referrallname.Value = DBNull.Value;
+                                referrallname1.Value = DBNull.Value;
+                            }
+                        }
                     }
+                    if (referralnamefix == null)
+                    {
+                        SqlParameter referralfname = command.Parameters.AddWithValue("@referralfname", null);
+                            SqlParameter referralfname1 = command.Parameters.AddWithValue("@reFName", null);
+                            SqlParameter referrallname = command.Parameters.AddWithValue("@referrallname", null);
+                            SqlParameter referrallname1 = command.Parameters.AddWithValue("@reLName", null);
+                        }
                     SqlParameter referralDate = command.Parameters.AddWithValue("@dateInput", form.referralDate);
                     if (form.referralDate == null)
                     {
                         referralDate.Value = DBNull.Value;
                     }
-                    SqlParameter fNameCodeParam = command.Parameters.AddWithValue("@fName", form.clientFirstName);
+                        SqlParameter referralDate1 = command.Parameters.AddWithValue("@refDate", form.referralDate);
+                        if (form.referralDate == null)
+                        {
+                            referralDate1.Value = DBNull.Value;
+                        }
+                        SqlParameter fNameCodeParam = command.Parameters.AddWithValue("@fName", form.clientFirstName);
                     if (form.clientFirstName == null)
                     {
                         fNameCodeParam.Value = DBNull.Value;
@@ -2897,19 +3284,7 @@ namespace HopePipeline.Controllers
                     {
                         dOBCodeParam.Value = DBNull.Value;
                     }
-                    SqlParameter casestat = command.Parameters.AddWithValue("@currStatus", form.caseStatus);
-                    if (form.caseStatus == 1)
-                    {
-                        casestat.Value = "Open";
-                    }
-                    if (form.caseStatus == 0)
-                    {
-                        casestat.Value = "Closed";
-                    }
-                    if (form.caseStatus == 2)
-                    {
-                        casestat.Value = "Closed Non-Engagment";
-                    }
+                
 
                     connection.Open();
                     command.ExecuteNonQuery();
@@ -2920,8 +3295,9 @@ namespace HopePipeline.Controllers
                 }
                 //int message = form.ClientID;
                 //return RedirectToAction("detailReferralM?clientCode="+ message +"", "n");
-                return RedirectToAction("TrackingList", "Tracking");
+               return RedirectToAction("TrackingList", "Tracking");
             }
+           
         }
         public IActionResult confirmationM()
         {
@@ -2929,6 +3305,33 @@ namespace HopePipeline.Controllers
             return View();
 
         }
+        [HttpPost]
+        public IActionResult Emailreferral( string emailaddress)
+        {
+          //  Main(emailaddress);
+            //confirmation thank you page for submiting and give email submit referral
+            Execute().Wait();
+            return RedirectToAction("Index", "Home");
 
+        }
+
+        static async Task Execute()
+        {
+            //    Execute().Wait();
+            //}
+
+            //static async Task Execute()
+            //{
+            var apiKey = Environment.GetEnvironmentVariable("API_KEY");
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress("n01057930@unf.edu", "Example User");
+            var subject = "Sending with Twilio SendGrid is Fun";
+            var to = new EmailAddress("n01057930@unf.edu", "Example User");
+            var plainTextContent = "and easy to do anywhere, even with C#";
+            var htmlContent = "<strong>and easy to do anywhere, even with C#</strong>";
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var response = await client.SendEmailAsync(msg);
+
+        }
     }
 }

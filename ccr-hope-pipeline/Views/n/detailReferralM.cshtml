@@ -15,18 +15,24 @@
 
         table {
             width: auto;
-        }
-
-        table, th, td {
-            border: 1px solid black;
+                border: 3px solid #003A62;
             border-collapse: collapse;
         }
 
         th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+         td {
             padding: 11px;
             text-align: left;
         }
-
+         th {
+            padding: 4px;
+            text-align: left;
+            font-family:  Helvetica;
+        }
         table#t01 tr:nth-child(even) {
             background-color: #e6f3ff;
         }
@@ -38,12 +44,14 @@
         table#t01 th {
             background-color: #005199;
             color: white;
+
         }
 
         .t {
             width: 30%;
             table-layout: fixed;
         }
+    
     </style>
 </head>
 <h2>Referral </h2>
@@ -56,15 +64,24 @@
         <table id="t01">
 
             <tr>
-                <td class="t" style="text-align:right"> First Name:</td>
+                <th class="t" style="text-align:left" colspan="2">
+                    <h4>Client:&nbsp;@Html.DisplayFor(modelItem => item.lName),&nbsp;@Html.DisplayFor(modelItem => item.fName)</h4>
 
-                <td>@Html.DisplayFor(modelItem => item.fName)</td>
+
+                </th>
+
+            </tr>
+
+            <tr>
+                <td class="t" style="text-align:right"> Youth's email address:</td>
+
+                <td>@Html.DisplayFor(modelItem => item.youthEmail)</td>
 
             </tr>
             <tr>
-                <td class="t" style="text-align:right"> Last Name: </td>
+                <td class="t" style="text-align:right"> Youth's phone number: </td>
 
-                <td> @Html.DisplayFor(modelItem => item.lName)</td>
+                <td> @Html.DisplayFor(modelItem => item.youthNu)</td>
 
             </tr>
 
@@ -88,7 +105,7 @@
                 <td> @Html.DisplayFor(modelItem => item.guardianlName), @Html.DisplayFor(modelItem => item.guardianName)</td>
 
             </tr>
-        
+
             <tr>
                 <td class="t" style="text-align:right"> Guardian's relationship to the youth:</td>
 
@@ -129,10 +146,12 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.meeting)<br />
                 </td>
-            <tr>
+                
+            @if (item.meeting != "No" ||item.meeting != "Maybe")
+            { <tr>
                 <td class="t" style="text-align:right">Date of Youth's Meeting:</td>
                 <td>@Html.DisplayFor(modelItem => item.date)</td>
-            </tr>
+            </tr>}
 
 
 
@@ -141,6 +160,12 @@
 
                 <td>@Html.DisplayFor(modelItem => item.issues)</td>
 
+
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">Youth is impacted by not being in school because of the following:</td>
+
+                <td>@Html.DisplayFor(modelItem => item.youthImpact)</td>
 
             </tr>
             <tr>
@@ -170,12 +195,29 @@
                     @Html.DisplayFor(modelItem => item.youthInSchool)
                 </td>
             </tr>
-            <tr>
+
+           @{if (item.youthInSchool != "No")
+               { <tr>
                 <td class="t" style="text-align:right"> Where is the youth currently attending school?</td>
 
                 <td> @Html.DisplayFor(modelItem => item.school)</td>
-            </tr>
+            </tr>}
+               }
+            <tr>
+                <td class="t" style="text-align:right">Is youth at risk of placement in alternative school, either Mattie V or Grand Park?</td>
 
+                <td> @Html.DisplayFor(modelItem => item.youthAlt)</td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">Is youth in a self-contained educational setting(i.e. PRIDE)?</td>
+
+                <td> @Html.DisplayFor(modelItem => item.youthSetting)</td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">Has a school staff person taken out an injunction against this youth?</td>
+
+                <td> @Html.DisplayFor(modelItem => item.youthInjunction)</td>
+            </tr>
             <tr>
                 <td class="t" style="text-align:right">
                     Has the youth been arrested?<br />
@@ -184,6 +226,27 @@
                     @Html.DisplayFor(modelItem => item.arrest)
                 </td>
             </tr>
+            @{if (item.arrest == "No")
+                {<tr>
+                <td class="t" style="text-align:right">
+                    If youth has not been arrested, is this an unsuccessful civil citation or diversion case?<br />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.youthCit)
+                </td>
+            </tr>}
+                }
+            @{ if (item.arrest == "Yes")
+                {
+            <tr>
+                <td class="t" style="text-align:right">
+                    Was youth arrested for a school related offense? (For example, battery on a school board employee)<br />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.youthOffense)
+                </td>
+            </tr>}
+                }
             <tr>
                 <td class="t" style="text-align:right">
                     Is there anything else you would like us to know about the youth or their family?<br />
@@ -246,7 +309,13 @@
 
 
             </tr>
+            <tr>
+                <td class="t" style="text-align:right"> Name of organization making referral:</td>
 
+                <td> @Html.DisplayFor(modelItem => item.nameOrg)</td>
+
+
+            </tr>
 
             <tr>
                 <td class="t" style="text-align:right"> File:</td>
@@ -258,7 +327,7 @@
 
 
 
-            @{int tale = item.clientCode;}
+            @{Guid tale = item.clientCode;}
 
 
         </table>

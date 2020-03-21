@@ -23,7 +23,7 @@ namespace HopePipeline.Controllers
             SqlCommand command;
             cnn.Open();
 
-            string query = "select fname, lname, dob, clientCode from dbo.refform WHERE currStatus = 'Pending';";
+            string query = "select fname, lname, dob, clientCode from dbo.refform WHERE assignRef = 0;";
             command = new SqlCommand(query, cnn);
             SqlDataReader reader = command.ExecuteReader();
 

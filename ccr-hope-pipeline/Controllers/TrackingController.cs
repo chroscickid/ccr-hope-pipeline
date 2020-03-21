@@ -27,15 +27,14 @@ namespace HopePipeline.Controllers
             cnn.Open();
             newF.ClientID = clientCode;
 
-            string query = "select * from dbo.refform where clientCode = "+ "'"+clientCode+"'" + ";";
+            string query = "select * from dbo.refform where clientCode = '" + clientCode + "'";
             command = new SqlCommand(query, cnn);
             SqlDataReader reader = command.ExecuteReader();
 
             //I hate this. This is just vile 😒
             //We are basically just putting a referral in the tracking model so we
             //can autopopulate values in the tracking form
-            while (reader.Read())
-            {
+          
                 while (reader.Read())
                 {
                    relRef.address = reader.GetString(reader.GetOrdinal("strAddress"));
@@ -52,8 +51,11 @@ namespace HopePipeline.Controllers
                     relRef.email = reader.GetString(reader.GetOrdinal("email"));
                     relRef.fName = reader.GetString(reader.GetOrdinal("fname"));
                     relRef.gender = reader.GetString(reader.GetOrdinal("gender"));
-                    relRef.grade = reader.GetString(reader.GetOrdinal("grade"));
-                    if (!reader.IsDBNull(reader.GetOrdinal("guardianEmail")))
+                    if (!reader.IsDBNull(reader.GetOrdinal("grade")))
+                    {
+                        relRef.guardianEmail = reader.GetString(reader.GetOrdinal("grade"));
+                    }
+                 if (!reader.IsDBNull(reader.GetOrdinal("guardianEmail")))
                     {
                         relRef.guardianEmail = reader.GetString(reader.GetOrdinal("guardianEmail"));
                     }
@@ -88,7 +90,7 @@ namespace HopePipeline.Controllers
 
                 }
 
-            }
+            
             reader.Close();
 
             //We push it into the model that gets sent to the view
@@ -100,7 +102,8 @@ namespace HopePipeline.Controllers
         [HttpPost]
         public IActionResult SubmitTracking(TrackingForm sub)
         {
-           Guid id = sub.ClientID;
+           // int id = sub.ClientID;
+            Guid id = Guid.NewGuid();
             SqlConnection cnn = new SqlConnection(connectionString);
             SqlCommand command;
             SqlDataAdapter adapter = new SqlDataAdapter();
@@ -111,39 +114,39 @@ namespace HopePipeline.Controllers
             //Took me two weeks
             List<string> qs = new List<String>
             {
-                "INSERT INTO dbo.demographics VALUES ('" + id + "')",
-                "INSERT INTO dbo.accomodations VALUES ('" + sub.accomGained + "','" + sub.compService + "','" + sub.ifWhatServices + "','" + id + "')",
-                "INSERT INTO dbo.client VALUES ('" + sub.clientLastName + "','" + sub.clientFirstName + "','" + sub.adopted + "','" + sub.clientGender + "','" + sub.clientEthnicity + "','" + sub.clientDOB + "','" + id + "','" + sub.carePhone + "')",
+                "INSERT INTO dbo.demographics VALUES (" + id + ")",
+                "INSERT INTO dbo.accomodations VALUES (" + sub.accomGained + "," + sub.compService + ",'" + sub.ifWhatServices + "'," + id + ")",
+                "INSERT INTO dbo.client VALUES ('" + sub.clientLastName + "','" + sub.clientFirstName + "','" + sub.adopted + "','" + sub.clientGender + "','" + sub.clientEthnicity + "','" + sub.clientDOB + "'," + id + ",'" + sub.carePhone + "')",
 
 
 
-                "INSERT INTO dbo.advocacy VALUES ('" + sub.rearrestAdvocacy + "','" + sub.courtAdvocacy + "','" + sub.staffAdvocacy + "','" + sub.legalAdvocacy + "','" + sub.legalAdvoTaken + "','" + id + "')",
-                "INSERT INTO dbo.altSchool VALUES ('" + sub.altSchool + "','" + sub.altSchoolName + "','" + sub.dateOfAlt + "','" + sub.timesInAlt + "','" + sub.daysOwed + "','" + sub.daysSinceIntake + "','" + id + "')",
-                "INSERT INTO dbo.bully VALUES ('" + sub.bullied + "','" + sub.bullyReport + "','" + sub.dateofBully + "','" + id + "')",
-                "INSERT INTO dbo.caregiver VALUES ('" + sub.careFirstName + "','" + sub.careLastName + "','" + sub.careGender + "','" + sub.careEthnicity + "'," + "'careRelationship'" + ",'" + id + "')",
+                "INSERT INTO dbo.advocacy VALUES (" + sub.rearrestAdvocacy + "," + sub.courtAdvocacy + "," + sub.staffAdvocacy + "," + sub.legalAdvocacy + ",'" + sub.legalAdvoTaken + "'," + id + ")",
+                "INSERT INTO dbo.altSchool VALUES (" + sub.altSchool + ",'" + sub.altSchoolName + "','" + sub.dateOfAlt + "'," + sub.timesInAlt + "," + sub.daysOwed + "," + sub.daysSinceIntake + "," + id + ")",
+                "INSERT INTO dbo.bully VALUES (" + sub.bullied + "," + sub.bullyReport + ",'" + sub.dateofBully + "'," + id + ")",
+                "INSERT INTO dbo.caregiver VALUES ('" + sub.careFirstName + "','" + sub.careLastName + "','" + sub.careGender + "','" + sub.careEthnicity + "'," + "'careRelationship'" + "," + id + ")",
 
-                "INSERT dbo.ccr VALUES ('" + sub.levelOfServiceProvided + "','" + sub.caseStatus + "','" + sub.nonEngagementReason + "','" + sub.remedyResolution + "','" + sub.rearrestWhileRepresented + "','" + sub.schoolAtClosure + "','" + id + "')",
-                "INSERT INTO dbo.comp VALUES ('" + sub.compService + "','" + sub.ifWhatServices + "','" + sub.compTime + "','" + id + "')",
+                "INSERT dbo.ccr VALUES ('" + sub.levelOfServiceProvided + "'," + sub.caseStatus + ",'" + sub.nonEngagementReason + "'," + sub.remedyResolution + "," + sub.rearrestWhileRepresented + ",'" + sub.schoolAtClosure + "'," + id + ")",
+                "INSERT INTO dbo.comp VALUES (" + sub.compService + ",'" + sub.ifWhatServices + "','" + sub.compTime + "'," + id + ")",
                 //AddService?
                 //Servicesgained
-                "INSERT INTO dbo.currentStatus VALUES ('" + sub.readingLevel + "','" + sub.mathLevel + "','" + "currentServices?" + "','" + sub.inPride + "','" + sub.newFBA + "','" + 0 + "','" + "servicesGained" + "','" + id + "')",
-                "INSERT INTO dbo.failed VALUES ('" + sub.failedGrade + "','" + sub.whichGradeFailed + "','" + sub.failCount + "','" + id + "')",
-                "INSERT INTO dbo.health VALUES ('" + sub.baker + "','" + sub.marchman + "','" + sub.asthma + "','" + id + "')",
-                "INSERT INTO dbo.household VALUES ('" + sub.femHouse + "','" + sub.domVio + "','" + sub.adopted + "','" + sub.evicted + "','" + sub.incarParent + "','" + sub.publicAssistance + "','" + id + "')",
+                "INSERT INTO dbo.currentStatus VALUES (" + sub.readingLevel + "," + sub.mathLevel + ",'" + "currentServices?" + "'," + sub.inPride + "," + sub.newFBA + "," + 0 + ",'" + "servicesGained" + "'," + id + ")",
+                "INSERT INTO dbo.failed VALUES (" + sub.failedGrade + "," + sub.whichGradeFailed + "," + sub.failCount + "," + id + ")",
+                "INSERT INTO dbo.health VALUES (" + sub.baker + "," + sub.marchman + "," + sub.asthma + "," + id + ")",
+                "INSERT INTO dbo.household VALUES (" + sub.femHouse + "," + sub.domVio + "," + sub.adopted + "," + sub.evicted + "," + sub.incarParent + "," + sub.publicAssistance + "," + id + ")",
                 //addIEP?
                // "INSERT INTO dbo.iep VALUES (" + sub.iep + ",'" + sub.iepplan1 + "'','" + sub.iepplan2 + "'," + "0" + "," + id + ")",
-               "INSERT INTO dbo.iep VALUES ('" + sub.iep + "','" + sub.iepplan1 + "','" + sub.iepplan2 + "','" + "0" + "','" + id + "')",
+               "INSERT INTO dbo.iep VALUES (" + sub.iep + ",'" + sub.iepplan1 + "','" + sub.iepplan2 + "'," + "0" + "," + id + ")",
                 //otherLegal should be in the db?
                 //"INSERT INTO dbo.legal VALUES (" + sub.firstLegal + ",'" + sub.secondLegal + "','" + sub.justiceOutcome + "'," + id + ")",
-                "INSERT INTO dbo.legal VALUES ('" + sub.firstLegal + "','" + sub.secondLegal + "','" + sub.justiceOutcome + "','" + id + "')",
+                "INSERT INTO dbo.legal VALUES ('" + sub.firstLegal + "','" + sub.secondLegal + "','" + sub.justiceOutcome + "'," + id + ")",
                 
                 //"INSERT INTO dbo.school (" + id + "," + sub.currentGrade + ",'" + sub.school + "','" + sub.schoolRef + "')"
-                "INSERT INTO dbo.school ('" + id + "','" + sub.currentGrade + "','" + sub.school + "','" + sub.schoolRef + "')"
+                "INSERT INTO dbo.school (" + id + "," + sub.currentGrade + ",'" + sub.school + "','" + sub.schoolRef + "')"
             };
 
             //Um, this needs to be outside of that for some reason
             int totalSus = sub.iss + sub.oss;
-            qs.Add("INSERT INTO dbo.suspension VALUES('" + sub.suspended + "','" + sub.suspendCount + "','" + totalSus + "','" + sub.iss + "','" + sub.oss + "','" + 0 + "','" + 0 + "','" + id + "')");
+            qs.Add("INSERT INTO dbo.suspension VALUES(" + sub.suspended + "," + sub.suspendCount + "," + totalSus + "," + sub.iss + "," + sub.oss + "," + 0 + "," + 0 + "," + id + ")");
 
             //We now just run through every string in the list, running it as a sql command
             foreach (string query in qs)
@@ -188,9 +191,13 @@ namespace HopePipeline.Controllers
                         break;
 
                 }
-                //We push information from the query into a row and onto the list of rows
-                TrackingRow row = new TrackingRow { lname = reader.GetString(0), fname = reader.GetString(1), status = statusString, clientCode = reader.GetInt32(3), phoneNumber = reader.GetString(4) };
 
+                //We push information from the query into a row and onto the list of rows
+                TrackingRow row = new TrackingRow { lname = reader.GetString(0), fname = reader.GetString(1), status = statusString, clientCode = reader.GetGuid(3), phoneNumber = reader.GetString(4) };
+                string mDate = lastMeeting(row.clientCode);
+                if (mDate.Equals(""))
+                    mDate = "No meetings";
+                row.lastMeeting = mDate;
                 results.Add(row);
             }
             reader.Close();
@@ -201,21 +208,54 @@ namespace HopePipeline.Controllers
         [HttpPost]
         public IActionResult AddMeeting(Meeting meet)
         {
+
+            Guid g = Guid.NewGuid();
+
             SqlConnection cnn = new SqlConnection(connectionString);
             SqlCommand command;
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
-            string query = "INSERT INTO meetings VALUES ('" + meet.MeetingDate.ToString("yyyy-MM-dd") + "','" + meet.MeetingPurpose + "','" + meet.MeetingNotes + "'," + meet.clientCode + ")";
+            string query = "INSERT INTO meetings VALUES ('" + meet.MeetingDate.ToString("yyyy-MM-dd") + "','" + meet.MeetingPurpose + "','" + meet.MeetingNotes + "'," + meet.clientCode + ",'" + g + "')";
 
             command = new SqlCommand(query, cnn);
             SqlDataReader reader = command.ExecuteReader();
             reader.Close();
 
 
-            return RedirectToAction("MeetingList", meet.clientCode);
+            //  return RedirectToAction("MeetingList", meet.clientCode);
+            return Redirect("MeetingList?clientCode=" + meet.clientCode);
         }
 
-        public ViewResult MeetingList(int clientCode)
+        public string lastMeeting(Guid clientCode)
+        {
+            var results = new List<DateTime>();
+            SqlConnection cnn;
+            cnn = new SqlConnection(connectionString);
+            SqlCommand command;
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            cnn.Open();
+
+            string query = "select meetingDate from meetings where clientCode =" + clientCode;
+            command = new SqlCommand(query, cnn);
+            SqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                if(!reader.IsDBNull(0))
+                {
+                    //We push information from the query into a row and onto the list of rows
+                    results.Add(reader.GetDateTime(0));
+                }
+            }
+            reader.Close();
+            results.Sort();
+
+            if (results.Count != 0)
+                return results[0].ToString("MM-dd-yyyy");
+            else
+                return "";
+        }
+
+        public ViewResult MeetingList(Guid clientCode)
         {
             var results = new List<Meeting>();
             var sendme = new MeetingList();
@@ -289,7 +329,7 @@ namespace HopePipeline.Controllers
 
                 }
                 //We push information from the query into a row and onto the list of rows
-                TrackingRow row = new TrackingRow { lname = reader.GetString(0), fname = reader.GetString(1), status = statusString, clientCode = reader.GetInt32(3), phoneNumber = reader.GetString(4) };
+                TrackingRow row = new TrackingRow { lname = reader.GetString(0), fname = reader.GetString(1), status = statusString, clientCode = reader.GetGuid(3), phoneNumber = reader.GetString(4) };
 
                 results.Add(row);
             }
@@ -313,7 +353,7 @@ namespace HopePipeline.Controllers
 
                 }
                 //We push information from the query into a row and onto the list of rows
-                TrackingRow row = new TrackingRow { lname = reader2.GetString(0), fname = reader2.GetString(1), status = statusString, clientCode = reader2.GetInt32(3), phoneNumber = reader2.GetString(4) };
+                TrackingRow row = new TrackingRow { lname = reader2.GetString(0), fname = reader2.GetString(1), status = statusString, clientCode = reader2.GetGuid(3), phoneNumber = reader2.GetString(4) };
 
                 results.Add(row);
             }
@@ -382,7 +422,7 @@ namespace HopePipeline.Controllers
             return RedirectToAction("TrackingList");
 
         }
-        public ViewResult AssignTrackingList(int clientCode)
+        public ViewResult AssignTrackingList(Guid clientCode)
         {
             var results = new List<TrackingRow>();
             SqlConnection cnn;
@@ -411,7 +451,7 @@ namespace HopePipeline.Controllers
 
                 }
                 //We push information from the query into a row and onto the list of rows
-                TrackingRow row = new TrackingRow { lname = reader.GetString(0), fname = reader.GetString(1), status = statusString, clientCode = reader.GetInt32(3), phoneNumber = reader.GetString(4) };
+                TrackingRow row = new TrackingRow { lname = reader.GetString(0), fname = reader.GetString(1), status = statusString, clientCode = reader.GetGuid(3), phoneNumber = reader.GetString(4) };
 
                 results.Add(row);
             }

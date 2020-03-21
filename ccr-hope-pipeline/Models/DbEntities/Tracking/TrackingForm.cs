@@ -12,7 +12,7 @@ namespace HopePipeline.Models.DbEntities.Tracking
     public class TrackingForm
     {
         public HopePipeline.Models.referralBrandi referralBrandi { get; set; }
-        public int ClientID { get; set; }
+        public Guid ClientID { get; set; }
         public string referralSource { get; set; }
 
         public string clientFirstName { get; set; }

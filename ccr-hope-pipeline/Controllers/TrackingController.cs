@@ -16,7 +16,7 @@ namespace HopePipeline.Controllers
         public string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
 
-        public ViewResult TrackingForm(int clientCode)
+        public ViewResult TrackingForm(Guid clientCode)
         {
             TrackingForm newF = new TrackingForm();
             var relRef = new referralBrandi();
@@ -27,7 +27,7 @@ namespace HopePipeline.Controllers
             cnn.Open();
             newF.ClientID = clientCode;
 
-            string query = "select * from dbo.refform where clientCode = " + clientCode;
+            string query = "select * from dbo.refform where clientCode = '" + clientCode + "'";
             command = new SqlCommand(query, cnn);
             SqlDataReader reader = command.ExecuteReader();
 
@@ -51,8 +51,11 @@ namespace HopePipeline.Controllers
                     relRef.email = reader.GetString(reader.GetOrdinal("email"));
                     relRef.fName = reader.GetString(reader.GetOrdinal("fname"));
                     relRef.gender = reader.GetString(reader.GetOrdinal("gender"));
-                    relRef.grade = reader.GetString(reader.GetOrdinal("grade"));
-                    if (!reader.IsDBNull(reader.GetOrdinal("guardianEmail")))
+                    if (!reader.IsDBNull(reader.GetOrdinal("grade")))
+                    {
+                        relRef.guardianEmail = reader.GetString(reader.GetOrdinal("grade"));
+                    }
+                 if (!reader.IsDBNull(reader.GetOrdinal("guardianEmail")))
                     {
                         relRef.guardianEmail = reader.GetString(reader.GetOrdinal("guardianEmail"));
                     }
@@ -99,7 +102,8 @@ namespace HopePipeline.Controllers
         [HttpPost]
         public IActionResult SubmitTracking(TrackingForm sub)
         {
-            int id = sub.ClientID;
+           // int id = sub.ClientID;
+            Guid id = Guid.NewGuid();
             SqlConnection cnn = new SqlConnection(connectionString);
             SqlCommand command;
             SqlDataAdapter adapter = new SqlDataAdapter();
@@ -189,7 +193,7 @@ namespace HopePipeline.Controllers
                 }
 
                 //We push information from the query into a row and onto the list of rows
-                TrackingRow row = new TrackingRow { lname = reader.GetString(0), fname = reader.GetString(1), status = statusString, clientCode = reader.GetInt32(3), phoneNumber = reader.GetString(4) };
+                TrackingRow row = new TrackingRow { lname = reader.GetString(0), fname = reader.GetString(1), status = statusString, clientCode = reader.GetGuid(3), phoneNumber = reader.GetString(4) };
                 string mDate = lastMeeting(row.clientCode);
                 if (mDate.Equals(""))
                     mDate = "No meetings";
@@ -222,7 +226,7 @@ namespace HopePipeline.Controllers
             return Redirect("MeetingList?clientCode=" + meet.clientCode);
         }
 
-        public string lastMeeting(int clientCode)
+        public string lastMeeting(Guid clientCode)
         {
             var results = new List<DateTime>();
             SqlConnection cnn;
@@ -251,7 +255,7 @@ namespace HopePipeline.Controllers
                 return "";
         }
 
-        public ViewResult MeetingList(int clientCode)
+        public ViewResult MeetingList(Guid clientCode)
         {
             var results = new List<Meeting>();
             var sendme = new MeetingList();
@@ -325,7 +329,7 @@ namespace HopePipeline.Controllers
 
                 }
                 //We push information from the query into a row and onto the list of rows
-                TrackingRow row = new TrackingRow { lname = reader.GetString(0), fname = reader.GetString(1), status = statusString, clientCode = reader.GetInt32(3), phoneNumber = reader.GetString(4) };
+                TrackingRow row = new TrackingRow { lname = reader.GetString(0), fname = reader.GetString(1), status = statusString, clientCode = reader.GetGuid(3), phoneNumber = reader.GetString(4) };
 
                 results.Add(row);
             }
@@ -349,7 +353,7 @@ namespace HopePipeline.Controllers
 
                 }
                 //We push information from the query into a row and onto the list of rows
-                TrackingRow row = new TrackingRow { lname = reader2.GetString(0), fname = reader2.GetString(1), status = statusString, clientCode = reader2.GetInt32(3), phoneNumber = reader2.GetString(4) };
+                TrackingRow row = new TrackingRow { lname = reader2.GetString(0), fname = reader2.GetString(1), status = statusString, clientCode = reader2.GetGuid(3), phoneNumber = reader2.GetString(4) };
 
                 results.Add(row);
             }
@@ -418,7 +422,7 @@ namespace HopePipeline.Controllers
             return RedirectToAction("TrackingList");
 
         }
-        public ViewResult AssignTrackingList(int clientCode)
+        public ViewResult AssignTrackingList(Guid clientCode)
         {
             var results = new List<TrackingRow>();
             SqlConnection cnn;
@@ -447,7 +451,7 @@ namespace HopePipeline.Controllers
 
                 }
                 //We push information from the query into a row and onto the list of rows
-                TrackingRow row = new TrackingRow { lname = reader.GetString(0), fname = reader.GetString(1), status = statusString, clientCode = reader.GetInt32(3), phoneNumber = reader.GetString(4) };
+                TrackingRow row = new TrackingRow { lname = reader.GetString(0), fname = reader.GetString(1), status = statusString, clientCode = reader.GetGuid(3), phoneNumber = reader.GetString(4) };
 
                 results.Add(row);
             }

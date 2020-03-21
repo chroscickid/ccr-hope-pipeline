@@ -23,7 +23,7 @@ namespace HopePipeline.Controllers
             SqlCommand command;
             cnn.Open();
 
-            string query = "select fname, lname, dob, clientCode from dbo.refform WHERE currStatus = 'Open';";
+            string query = "select fname, lname, dob, clientCode from dbo.refform WHERE assignRef = 0;";
             command = new SqlCommand(query, cnn);
             SqlDataReader reader = command.ExecuteReader();
 
@@ -35,7 +35,7 @@ namespace HopePipeline.Controllers
                     fname = reader.GetString(reader.GetOrdinal("fname")),
                     lname = reader.GetString(1),
                     dob = reader.GetDateTime(2).ToString("dd MMMM yyyy"),
-                    clientCode = reader.GetInt32(3)
+                    clientCode = reader.GetGuid(3)
                 };
                 results.Add(row);
             }
@@ -85,7 +85,7 @@ namespace HopePipeline.Controllers
                     fname = reader.GetString(reader.GetOrdinal("fname")),
                     lname = reader.GetString(1),
                     dob = reader.GetDateTime(2).ToString("dd MMMM yyyy"),
-                    clientCode = reader.GetInt32(3)
+                    clientCode = reader.GetGuid(3)
                 };
                 results.Add(row);
             }
@@ -101,7 +101,7 @@ namespace HopePipeline.Controllers
                     fname = reader.GetString(reader.GetOrdinal("fname")),
                     lname = reader.GetString(1),
                     dob = reader.GetDateTime(2).ToString("dd MMMM yyyy"),
-                    clientCode = reader.GetInt32(3)
+                    clientCode = reader.GetGuid(3)
                 };
                 results.Add(row);
 
@@ -134,7 +134,7 @@ namespace HopePipeline.Controllers
                     fname = reader.GetString(reader.GetOrdinal("fname")),
                     lname = reader.GetString(1),
                     dob = reader.GetDateTime(2).ToString("dd MMMM yyyy"),
-                    clientCode = reader.GetInt32(3)
+                    clientCode = reader.GetGuid(3)
                 };
                 results.Add(row);
             }

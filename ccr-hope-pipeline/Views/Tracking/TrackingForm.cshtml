@@ -394,7 +394,7 @@
                     <option value="multi">Multiple Ethnicities</option>
                     <option value="notListed">Ethnicity Not Listed</option>
                 </select>
-                <input type="tel" asp-for="carePhone" placeholder="Caretaker Phone Number" required/>
+                <input type="tel" asp-for="carePhone" placeholder="Caretaker Phone Number" class="field-style field-full align-none" required/>
             </li>
 
 
@@ -434,7 +434,7 @@
             </li>
 
             <li>
-                Evicted?<br />
+                Housing instablity?<br />
                 <input asp-for="evicted" type="radio" value="1"> Yes
                 <br />
                 <input asp-for="evicted" type="radio" value="0" checked /> No
@@ -524,7 +524,7 @@
             </li>
 
             <li>
-                <label>Does the youth have an IEP/504 Plan? </label><br />
+                Does the youth have an IEP/504 Plan?<br />
                 Yes <input asp-for="iep" type="radio" id="yesIEP" value="1"> <br />
                 No  <input asp-for="iep" type="radio" id="noIEP" value="0" required/><br />
                 <br />
@@ -592,7 +592,7 @@
             </li>
 
             <li>
-                <label>Additional Compensatory Services</label>
+                Additional Compensatory Services
                 <br />
                 <input asp-for="compService" type="radio" id="yesComp" value="1" > Yes<br />
                 <input asp-for="compService" type="radio" id="noComp" value="0" checked> No<br />
@@ -615,7 +615,7 @@
             </li>
 
             <li>
-                <label>Bullied</label><br />
+                Bullied<br />
                 <input asp-for="bullied" type="radio" id="yesBullied" value="1"> Yes <br />
                 <input asp-for="bullied" type="radio" id="noBullied" value="0" checked> No <br />
                 <br />
@@ -647,7 +647,7 @@
         <ul>
             <li>
 
-                <label>Suspended more than three times in a year? </label> <br />
+                Suspended more than three times in a year?<br />
                 Yes <input asp-for="suspended" type="radio" id="yesSus" value="1"> &nbsp;
                 No <input asp-for="suspended" type="radio" id="noSus" value="0" checked/>  &nbsp;
                 <br />
@@ -686,7 +686,7 @@
             </li>
 
             <li>
-                <label>Alternative School</label><br />
+                Alternative School<br />
                 Yes <input asp-for="altSchool" type="radio" id="yesAlt" value="1"> &nbsp;
                 No <input asp-for="altSchool" type="radio" id="noAlt" value="0" checked/> &nbsp;
                 <br />
@@ -739,7 +739,6 @@
                     <option value="education" id="edu">Education</option>
                     <option value="juvenilejustice" id="juv">Juvenile Justice</option>
                     <option value="dependency" id="dependency">Dependency</option>
-                    <option value="bakeract" id="edu">Baker Act</option>
                     <option value="familylaw" id="famlaw">Family Law</option>
                     <option value="immigration" id="immig">Immigration</option>
                     <option value="publicbenefits" id="publicben">Public Benefits</option>
@@ -825,7 +824,7 @@
             </li>
 
             <li>
-                <label> Is this the first referral? </label>
+                Is this the first referral?
                 <br />
 
                 <input asp-for="firstReferral" type="radio" id="yesRef" value="1">

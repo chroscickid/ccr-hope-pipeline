@@ -145,6 +145,47 @@
         #noSus:checked ~ #ifNoSus {
             display: block;
         }
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            position: fixed;
+            width: 100%;
+            top: 55px;
+        }
+
+            /* Style the buttons inside the tab */
+            .tab button {
+                background-color: inherit;
+                float: left;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 14px 16px;
+                transition: 0.3s;
+                font-size: 17px;
+                display: block;
+            }
+
+        }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        /* Create an active/current tablink class */
+        .tab button.active {
+            background-color: #ccc;
+        }
+
+        /* Style the tab content */
+        .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
+        }
     </style>
 
     <script>
@@ -185,7 +226,16 @@
 <body>
 
     <h1> Center for Children's Rights Tracking Form </h1>
-
+    <div class="tab">
+        <nav aria-label="Page navigation example">
+            
+                <button class="tablinks active" onclick="pagination(this.id)" id="1">Demographic Information</button>
+                <button class="tablinks" onclick="pagination(this.id)" id="2">School Information</button>
+                <button class="tablinks" onclick="pagination(this.id)" id="3">Discipline Information</button>
+                <button class="tablinks" onclick="pagination(this.id)" id="4">Center for Children's Rights Information</button>
+            
+        </nav>
+    </div>
     <form asp-controller="Tracking" asp-action="SubmitTracking" method="post">
         <input asp-for="ClientID" type="hidden" class="field-style field-full align-none" placeholder="Client ID" value="@Model.ClientID" />
         @{
@@ -264,7 +314,7 @@
 
                     <td>
                         School: <br>
-                        <input asp-for="school" type="text" class="field-style field-full align-none" name="school" value="@refMove.school"  required />
+                        <input asp-for="school" type="text" class="field-style field-full align-none" name="school" value="@refMove.school" required />
                     </td>
                 </tr>
 
@@ -460,320 +510,322 @@
                         <input asp-for="asthma" type="radio" value="0" checked /> No
                     </td>
                 </tr>
+            </table>
+
         </div>
-        </table>
 
 
 
 
-                <div id="page2">
-                    <table id="t01">
+        <div id="page2">
+            <table id="t01">
 
-                        <tr>
-                            <th colspan="3">School Information </th>
-                        </tr>
+                <tr>
+                    <th colspan="3">School Information </th>
+                </tr>
 
-                        <tr>
-                            <td>
-                                School at time of Referral
-                                <br />
-                                <input asp-for="schoolRef" type="text" class="field-style field-full align-none" value="@refMove.school" required />
-                                <br />
-                            </td>
-
-                         
-                            <td colspan="2">
-                                Current Reading Level
-                                <br />
-                                <select asp-for="readingLevel" id="readingLevel" class="field-style field-full align-none" placeholder="Reading Level" required>
-                                    <option value="13" label="Other"></option>
-                                    <option value="0" label="K"></option>
-                                    <option value="1" label="1"></option>
-                                    <option value="2" label="2"></option>
-                                    <option value="3" label="3"></option>
-                                    <option value="4" label="4"></option>
-                                    <option value="5" label="5"></option>
-                                    <option value="6" label="6"></option>
-                                    <option value="7" label="7"></option>
-                                    <option value="8" label="8"></option>
-                                    <option value="9" label="9"></option>
-                                    <option value="10" label="10"></option>
-                                    <option value="11" label="11"></option>
-                                    <option value="12" label="12"></option>
-                                </select>
-                                <br />
-                                <br />
-
-                                Current Math Level
-                                <br />
-                                <select asp-for="mathLevel" id="mathLevel" class="field-style field-full align-none" required>
-                                    <option value="13" label="Other"></option>
-                                    <option value="K" label="K"></option>
-                                    <option value="1" label="1"></option>
-                                    <option value="2" label="2"></option>
-                                    <option value="3" label="3"></option>
-                                    <option value="4" label="4"></option>
-                                    <option value="5" label="5"></option>
-                                    <option value="6" label="6"></option>
-                                    <option value="7" label="7"></option>
-                                    <option value="8" label="8"></option>
-                                    <option value="9" label="9"></option>
-                                    <option value="10" label="10"></option>
-                                    <option value="11" label="11"></option>
-                                    <option value="12" label="12"></option>
-                                </select>
-                                <br />
-                                <br />
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                Does the youth have an IEP/504 Plan?<br />
-                                <input asp-for="iep" type="radio" id="yesIEP" value="1"> Yes <br />
-                                <input asp-for="iep" type="radio" id="noIEP" value="0" required /> No<br />
-
-                                <div id="ifYesIEP">
-                                    Primary IEP/504 Plan<br />
-                                    <input asp-for="iepplan1" type="radio" id="emo" value="emo"> Emotional/Behavioral Disability<br />
-                                    <input asp-for="iepplan1" type="radio" id="gifted" value="gifted" /> Gifted<br />
-                                    <input asp-for="iepplan1" type="radio" id="intellectual" value="intell"> Intellectual Disability<br />
-                                    <input asp-for="iepplan1" type="radio" id="language" value="lang" /> Language Impairment<br />
-                                    <input asp-for="iepplan1" type="radio" id="otherHealth" value="otherHealth" /> Other Health Impairment<br />
-                                    <input asp-for="iepplan1" type="radio" id="specificLearning" value="specificLearning"> Specific Learning Disability<br />
-                                    <input asp-for="iepplan1" type="radio" id="speech" value="speech" /> Speech Impairment<br />
-                                    <input asp-for="iepplan1" type="radio" id="other" value="other"> Other <br />
-                                    <br />
-                                    <br />
-
-                                    Secondary IEP/504 Plan<br />
-                                    <input asp-for="iepplan2" type="radio" id="none" value="none"> None<br />
-                                    <input asp-for="iepplan2" type="radio" id="emo" value="emo"> Emotional/Behavioral Disability<br />
-                                    <input asp-for="iepplan2" type="radio" id="gifted" value="gifted" /> Gifted<br />
-                                    <input asp-for="iepplan2" type="radio" id="intellectual" value="intell"> Intellectual Disability<br />
-                                    <input asp-for="iepplan2" type="radio" id="language" value="lang" /> Language Impairment<br />
-                                    <input asp-for="iepplan2" type="radio" id="otherHealth" value="otherHealth" /> Other Health Impairment<br />
-                                    <input asp-for="iepplan2" type="radio" id="specificLearning" value="specificLearning"> Specific Learning Disability<br />
-                                    <input asp-for="iepplan2" type="radio" id="speech" value="speech" /> Speech Impairment<br />
-                                    <input asp-for="iepplan2" type="radio" id="other" value="other"> Other <br />
-                                    <br />
-                                    <br />
-                                </div>
-
-                                <div id="ifNoIEP">
-
-                                </div>
-                            </td>
-
-                            <td>
-                                In Pride
-                                <br />
-                                <input asp-for="inPride" type="radio" id="inPride" value="1"> Yes
-                                <br />
-                                <input asp-for="inPride" type="radio" id="notInPride" value="0" checked /> No
-                                <br />
-                            </td>
-
-                            <td>
-                                New FBA
-                                <br />
-                                <input asp-for="newFBA" type="radio" id="newFBA" value="1"> Yes
-                                <br />
-                                <input asp-for="newFBA" type="radio" id="noNewFBA" value="0" checked /> No
-                                <br />
-                            </td>
-
-                        </tr>
+                <tr>
+                    <td>
+                        School at time of Referral
+                        <br />
+                        <input asp-for="schoolRef" type="text" class="field-style field-full align-none" value="@refMove.school" required />
+                        <br />
+                    </td>
 
 
-                        <tr>
-                            <td>
-                                Addititonal Accomodations Gained
-                                <br />
-                                <input asp-for="accomGained" type="radio" value="1"> Yes
-                                <br />
-                                <input asp-for="accomGained" type="radio" value="0" checked /> No
-                                <br />
-                                <input asp-for="accomGained" type="radio" value="2" /> Other
-                                <br />
-                            </td>
+                    <td colspan="2">
+                        Current Reading Level
+                        <br />
+                        <select asp-for="readingLevel" id="readingLevel" class="field-style field-full align-none" placeholder="Reading Level" required>
+                            <option value="13" label="Other"></option>
+                            <option value="0" label="K"></option>
+                            <option value="1" label="1"></option>
+                            <option value="2" label="2"></option>
+                            <option value="3" label="3"></option>
+                            <option value="4" label="4"></option>
+                            <option value="5" label="5"></option>
+                            <option value="6" label="6"></option>
+                            <option value="7" label="7"></option>
+                            <option value="8" label="8"></option>
+                            <option value="9" label="9"></option>
+                            <option value="10" label="10"></option>
+                            <option value="11" label="11"></option>
+                            <option value="12" label="12"></option>
+                        </select>
+                        <br />
+                        <br />
 
-                            <td>
-                                Additional Compensatory Services
-                                <br />
-                                <input asp-for="compService" type="radio" id="yesComp" value="1"> Yes<br />
-                                <input asp-for="compService" type="radio" id="noComp" value="0" checked> No<br />
-                                <br />
-                                <br />
+                        Current Math Level
+                        <br />
+                        <select asp-for="mathLevel" id="mathLevel" class="field-style field-full align-none" required>
+                            <option value="13" label="Other"></option>
+                            <option value="K" label="K"></option>
+                            <option value="1" label="1"></option>
+                            <option value="2" label="2"></option>
+                            <option value="3" label="3"></option>
+                            <option value="4" label="4"></option>
+                            <option value="5" label="5"></option>
+                            <option value="6" label="6"></option>
+                            <option value="7" label="7"></option>
+                            <option value="8" label="8"></option>
+                            <option value="9" label="9"></option>
+                            <option value="10" label="10"></option>
+                            <option value="11" label="11"></option>
+                            <option value="12" label="12"></option>
+                        </select>
+                        <br />
+                        <br />
+                    </td>
+                </tr>
 
-                                <div id="ifYesComp">
-                                    If yes, what services?
-                                    <input asp-for="ifWhatServices" type="text" class="field-style field-full align-none" />
-                                    <br />
-                                    <br />
-                                    How much time have they spent using these compensatory services?
-                                    <input asp-for="compTime" type="text" class="field-style field-full align-none" />
+                <tr>
+                    <td>
+                        Does the youth have an IEP/504 Plan?<br />
+                        <input asp-for="iep" type="radio" id="yesIEP" value="1"> Yes <br />
+                        <input asp-for="iep" type="radio" id="noIEP" value="0" required /> No<br />
 
-                                </div>
+                        <div id="ifYesIEP">
+                            Primary IEP/504 Plan<br />
+                            <input asp-for="iepplan1" type="radio" id="emo" value="emo"> Emotional/Behavioral Disability<br />
+                            <input asp-for="iepplan1" type="radio" id="gifted" value="gifted" /> Gifted<br />
+                            <input asp-for="iepplan1" type="radio" id="intellectual" value="intell"> Intellectual Disability<br />
+                            <input asp-for="iepplan1" type="radio" id="language" value="lang" /> Language Impairment<br />
+                            <input asp-for="iepplan1" type="radio" id="otherHealth" value="otherHealth" /> Other Health Impairment<br />
+                            <input asp-for="iepplan1" type="radio" id="specificLearning" value="specificLearning"> Specific Learning Disability<br />
+                            <input asp-for="iepplan1" type="radio" id="speech" value="speech" /> Speech Impairment<br />
+                            <input asp-for="iepplan1" type="radio" id="other" value="other"> Other <br />
+                            <br />
+                            <br />
 
-                                <div id="ifNoComp">
+                            Secondary IEP/504 Plan<br />
+                            <input asp-for="iepplan2" type="radio" id="none" value="none"> None<br />
+                            <input asp-for="iepplan2" type="radio" id="emo" value="emo"> Emotional/Behavioral Disability<br />
+                            <input asp-for="iepplan2" type="radio" id="gifted" value="gifted" /> Gifted<br />
+                            <input asp-for="iepplan2" type="radio" id="intellectual" value="intell"> Intellectual Disability<br />
+                            <input asp-for="iepplan2" type="radio" id="language" value="lang" /> Language Impairment<br />
+                            <input asp-for="iepplan2" type="radio" id="otherHealth" value="otherHealth" /> Other Health Impairment<br />
+                            <input asp-for="iepplan2" type="radio" id="specificLearning" value="specificLearning"> Specific Learning Disability<br />
+                            <input asp-for="iepplan2" type="radio" id="speech" value="speech" /> Speech Impairment<br />
+                            <input asp-for="iepplan2" type="radio" id="other" value="other"> Other <br />
+                            <br />
+                            <br />
+                        </div>
 
-                                </div>
-                            </td>
+                        <div id="ifNoIEP">
 
-                            <td>
-                                Bullied<br />
-                                <input asp-for="bullied" type="radio" id="yesBullied" value="1"> Yes <br />
-                                <input asp-for="bullied" type="radio" id="noBullied" value="0" checked> No <br />
-                                <br />
-                                <br />
+                        </div>
+                    </td>
 
-                                <div id="ifYesBullied">
-                                    If yes, was it reported? <br />
-                                    <input asp-for="bullyReport" type="radio" id="yesRep" value="1"> Yes <br />
-                                    <input asp-for="bullyReport" type="radio" id="noRep" value="0"> No <br />
-                                    <br />
-                                    <!-- Need to fix the report date automatically showing-->
-                                </div>
+                    <td>
+                        In Pride
+                        <br />
+                        <input asp-for="inPride" type="radio" id="inPride" value="1"> Yes
+                        <br />
+                        <input asp-for="inPride" type="radio" id="notInPride" value="0" checked /> No
+                        <br />
+                    </td>
 
-                                <div id="ifNoReport">
-                                    Date of report <br />
-                                    <input asp-for="dateofBully" type="date" id="dateofBully" class="field-style field-full align-none" min="2001-01-01" max="2050-12-31"> <br />
-                                    <br />
-                                    <br />
-                                </div>
+                    <td>
+                        New FBA
+                        <br />
+                        <input asp-for="newFBA" type="radio" id="newFBA" value="1"> Yes
+                        <br />
+                        <input asp-for="newFBA" type="radio" id="noNewFBA" value="0" checked /> No
+                        <br />
+                    </td>
 
-                                <div id="ifNoBullied">
-
-                                </div>
-                            </td>
-                        </tr>
-</div>
-
-
-
-
-                <div id="page3" hidden>
-                    <table id="t01">
-                        <tr>
-                            <th colspan="4">Discipline</th>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                Suspended more than three times in a year?<br />
-                                <input asp-for="suspended" type="radio" id="yesSus" value="1"> Yes <br/>
-                                <input asp-for="suspended" type="radio" id="noSus" value="0" checked /> No <br/>
-                                <br />
-
-                                <div id="ifYesSus" class="field-style field-full align-none">
-                                    If yes, how many times have they been suspended?<br />
-                                    <select asp-for="suspendCount" required>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                        <option value="6">7</option>
-                                        <option value="7">7</option>
-                                        <option value="8">8</option>
-                                        <option value="9">9</option>
-                                        <option value="10+">10+</option>
-                                    </select>
-                                    <br />
-
-                                </div>
-
-                                <div id="ifNoSus">
-                                </div>
-                            </td>
-
-                            <td colspan="2">
-                                How many days have they spent in ISS?<br />
-                                <input asp-for="iss" type="number" required /> <br />
-                                <br />
-                                How many days have they spent in OSS?<br />
-                                <input asp-for="oss" type="number" required />
-
-                                <br />
-                                <br />
-                            </td>
-
-                            <td>
-                                Alternative School?<br />
-                                Yes <input asp-for="altSchool" type="radio" id="yesAlt" value="1"> &nbsp;
-                                No <input asp-for="altSchool" type="radio" id="noAlt" value="0" checked /> &nbsp;
-                                <br />
-
-                                <div id="ifYesAlt">
-                                    If yes, which school?<br />
-                                    <input asp-for="altSchoolName" type="radio" id="Mattie" value="yes"> Mattie V  <br />
-                                    <input asp-for="altSchoolName" type="radio" id="Grand" value="no" /> Grand Park <br />
-                                    <br />
-                                    <br />
-
-                                    How many times was the youth in an alternative school?<br />
-                                    <select asp-for="timesInAlt" class="field-style field-full align-none">
-                                        <option value="0" id="1">0</option>
-                                        <option value="1" id="1">1</option>
-                                        <option value="2" id="2">2</option>
-                                        <option value="3" id="3">3+</option>
-                                    </select>
-                                    What day did the student enter the alternative school <br />
-                                    <input asp-for="dateOfAlt" type="datetime-local" class="field-style field-full align-none" id="dateOfAlt"
-                                           min="2000-06-07T00:00" max="2060-06-14T00:00">
-                                    <br />
-                            </td>
-                    </div>
-            </tr>
-
-            <tr>
-                <td>
-                    How many days owed:<br />
-                    <input asp-for="daysOwed" type="number" class="field-style field-full align-none" required> <br />
-                    <br />
+                </tr>
 
 
-                    <div id="ifNoAlt">
-                    </div>
-                </td>
+                <tr>
+                    <td>
+                        Addititonal Accomodations Gained
+                        <br />
+                        <input asp-for="accomGained" type="radio" value="1"> Yes
+                        <br />
+                        <input asp-for="accomGained" type="radio" value="0" checked /> No
+                        <br />
+                        <input asp-for="accomGained" type="radio" value="2" /> Other
+                        <br />
+                    </td>
 
-                <td>
-                    Total Days since Intake: <br />
-                    <input asp-for="daysSinceIntake" type="number" id="dateintake" class="field-style field-full align-none"> <br />
-                </td>
+                    <td>
+                        Additional Compensatory Services
+                        <br />
+                        <input asp-for="compService" type="radio" id="yesComp" value="1"> Yes<br />
+                        <input asp-for="compService" type="radio" id="noComp" value="0" checked> No<br />
+                        <br />
+                        <br />
 
-                <td>
-                    Juvenile Justice Outcome: <br />
-                    <input asp-for="justiceOutcome" type="text" class="field-style field-full align-none"> <br />
-                </td>
+                        <div id="ifYesComp">
+                            If yes, what services?
+                            <input asp-for="ifWhatServices" type="text" class="field-style field-full align-none" />
+                            <br />
+                            <br />
+                            How much time have they spent using these compensatory services?
+                            <input asp-for="compTime" type="text" class="field-style field-full align-none" />
 
-                <td>
-                    <br />
-                    Other legal issues:<br />
-                    <select asp-for="firstLegal" class="field-style field-full align-none">
-                        <option value="education" id="edu">Education</option>
-                        <option value="juvenilejustice" id="juv">Juvenile Justice</option>
-                        <option value="dependency" id="dependency">Dependency</option>
-                        <option value="familylaw" id="famlaw">Family Law</option>
-                        <option value="immigration" id="immig">Immigration</option>
-                        <option value="publicbenefits" id="publicben">Public Benefits</option>
-                        <option value="housing" id="housing">Housing</option>
-                        <option value="other" id="other">Other</option>
-                    </select>
-                    <br />
-                    <br />
-                    <input asp-for="secondLegal" type="text" class="field-style field-full align-none" />
+                        </div>
 
-                </td>
-            </tr>
-            </div>
-        </table>
+                        <div id="ifNoComp">
 
-        <div id="page4" >
+                        </div>
+                    </td>
+
+                    <td>
+                        Bullied<br />
+                        <input asp-for="bullied" type="radio" id="yesBullied" value="1"> Yes <br />
+                        <input asp-for="bullied" type="radio" id="noBullied" value="0" checked> No <br />
+                        <br />
+                        <br />
+
+                        <div id="ifYesBullied">
+                            If yes, was it reported? <br />
+                            <input asp-for="bullyReport" type="radio" id="yesRep" value="1"> Yes <br />
+                            <input asp-for="bullyReport" type="radio" id="noRep" value="0"> No <br />
+                            <br />
+                            <!-- Need to fix the report date automatically showing-->
+                        </div>
+
+                        <div id="ifNoReport">
+                            Date of report <br />
+                            <input asp-for="dateofBully" type="date" id="dateofBully" class="field-style field-full align-none" min="2001-01-01" max="2050-12-31"> <br />
+                            <br />
+                            <br />
+                        </div>
+
+                        <div id="ifNoBullied">
+
+                        </div>
+                    </td>
+                </tr>
+                </table>
+        </div>
+
+
+
+
+        <div id="page3">
+            <table id="t01">
+                <tr>
+                    <th colspan="4">Discipline</th>
+                </tr>
+
+                <tr>
+                    <td>
+                        Suspended more than three times in a year?<br />
+                        <input asp-for="suspended" type="radio" id="yesSus" value="1"> Yes <br />
+                        <input asp-for="suspended" type="radio" id="noSus" value="0" checked /> No <br />
+                        <br />
+
+                        <div id="ifYesSus" class="field-style field-full align-none">
+                            If yes, how many times have they been suspended?<br />
+                            <select asp-for="suspendCount" required>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">7</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10+">10+</option>
+                            </select>
+                            <br />
+
+                        </div>
+
+                        <div id="ifNoSus">
+                        </div>
+                    </td>
+
+                    <td colspan="2">
+                        How many days have they spent in ISS?<br />
+                        <input asp-for="iss" type="number" required /> <br />
+                        <br />
+                        How many days have they spent in OSS?<br />
+                        <input asp-for="oss" type="number" required />
+
+                        <br />
+                        <br />
+                    </td>
+
+                    <td>
+                        Alternative School?<br />
+                        Yes <input asp-for="altSchool" type="radio" id="yesAlt" value="1"> &nbsp;
+                        No <input asp-for="altSchool" type="radio" id="noAlt" value="0" checked /> &nbsp;
+                        <br />
+
+                        <div id="ifYesAlt">
+                            If yes, which school?<br />
+                            <input asp-for="altSchoolName" type="radio" id="Mattie" value="yes"> Mattie V  <br />
+                            <input asp-for="altSchoolName" type="radio" id="Grand" value="no" /> Grand Park <br />
+                            <br />
+                            <br />
+
+                            How many times was the youth in an alternative school?<br />
+                            <select asp-for="timesInAlt" class="field-style field-full align-none">
+                                <option value="0" id="1">0</option>
+                                <option value="1" id="1">1</option>
+                                <option value="2" id="2">2</option>
+                                <option value="3" id="3">3+</option>
+                            </select>
+                            What day did the student enter the alternative school <br />
+                            <input asp-for="dateOfAlt" type="datetime-local" class="field-style field-full align-none" id="dateOfAlt"
+                                   min="2000-06-07T00:00" max="2060-06-14T00:00">
+                            <br />
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        How many days owed:<br />
+                        <input asp-for="daysOwed" type="number" class="field-style field-full align-none" required> <br />
+                        <br />
+
+
+                        <div id="ifNoAlt">
+                        </div>
+                    </td>
+
+                    <td>
+                        Total Days since Intake: <br />
+                        <input asp-for="daysSinceIntake" type="number" id="dateintake" class="field-style field-full align-none"> <br />
+                    </td>
+
+                    <td>
+                        Juvenile Justice Outcome: <br />
+                        <input asp-for="justiceOutcome" type="text" class="field-style field-full align-none"> <br />
+                    </td>
+
+                    <td>
+                        <br />
+                        Other legal issues:<br />
+                        <select asp-for="firstLegal" class="field-style field-full align-none">
+                            <option value="education" id="edu">Education</option>
+                            <option value="juvenilejustice" id="juv">Juvenile Justice</option>
+                            <option value="dependency" id="dependency">Dependency</option>
+                            <option value="familylaw" id="famlaw">Family Law</option>
+                            <option value="immigration" id="immig">Immigration</option>
+                            <option value="publicbenefits" id="publicben">Public Benefits</option>
+                            <option value="housing" id="housing">Housing</option>
+                            <option value="other" id="other">Other</option>
+                        </select>
+                        <br />
+                        <br />
+                        <input asp-for="secondLegal" type="text" class="field-style field-full align-none" />
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="page4">
             <table id="t01">
 
                 <tr>
                     <th colspan="5">Center for Children's Rights Information</th>
                 </tr>
-                
+
                 <tr>
                     <td colspan="2">
                         Referral Date and Time:
@@ -795,16 +847,16 @@
                         <input asp-for="schoolAtClosure" type="text" class="field-style field-full align-none" id="school" /> <br />
                     </td>
 
-                    </tr>
-              
-                
+                </tr>
+
+
                 <tr>
                     <td colspan="2">
                         Email of First Referral Source: <br />
                         <input asp-for="emailOfFirstReferralSource" type="text" class="field-style field-full align-none" id="referralemail" required /> <br />
                     </td>
-               
-                
+
+
                     <td>
                         Level of Service Provided: <br />
                         <input asp-for="levelOfServiceProvided" type="radio" id="none" value="n" checked> None<br />
@@ -821,14 +873,14 @@
                         <input asp-for="nonEngagementReason" type="radio" id="declined" value="service"> Family Declined Services<br />
                         <br />
                     </td>
-                    </tr>
-              
+                </tr>
+
                 <tr>
                     <td>
-                        <input asp-for="caseStatus" type="hidden" id="openclose" value="1"> Open<br />
+                        <input asp-for="caseStatus" type="hidden" id="openclose" value="1"><br />
                     </td>
-                
-                
+
+
                     <td colspan="3">
                         Legal Advocacy? <br />
                         <input asp-for="legalAdvocacy" type="radio" id="yes" value="1"> Yes<br />
@@ -866,13 +918,13 @@
 
                         </div>
                     </td>
-            
+
                     <td>
                         Advocacy at Court? <br />
                         <input asp-for="courtAdvocacy" type="radio" id="yes" value="1"> Yes <br />
                         <input asp-for="courtAdvocacy" type="radio" id="no" value="0" checked /> No <br />
                     </td>
-                    </tr>
+                </tr>
                 <tr>
 
                     <td colspan="3">
@@ -900,18 +952,4 @@
     </form>
 </body>
 </html>
-
-<div>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li id="butt1" class="page-item">
-                <a onclick="pagination(this.id)" id="1" class="page-link">Demographics (1)<span class="sr-only"></span></a>
-            </li>
-
-            <li id="butt2" class="page-item"><a onclick="pagination(this.id)" id="2" class="page-link">School (2)</a></li>
-            <li id="butt3" class="page-item"><a class="page-link" onclick="pagination(this.id)" id="3">Discipline (3)</a></li>
-            <li id="butt4" class="page-item"><a class="page-link" onclick="pagination(this.id)" id="4">CCR (4)</a></li>
-        </ul>
-    </nav>
-</div>
 

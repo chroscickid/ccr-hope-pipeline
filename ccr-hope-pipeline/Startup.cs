@@ -12,7 +12,6 @@ using Microsoft.EntityFrameworkCore;
 using ccr_hope_pipeline.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ccr_hope_pipeline
 {
@@ -21,6 +20,7 @@ namespace ccr_hope_pipeline
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            //DotEnv.Config();
         }
 
         public IConfiguration Configuration { get; }
@@ -42,19 +42,7 @@ namespace ccr_hope_pipeline
             services.AddDefaultIdentity<IdentityUser>().AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-
-
-
-            services.AddMvc(config =>
-            {
-                // using Microsoft.AspNetCore.Mvc.Authonrization;
-                // using Microsoft.AspNetCore.Authorization;
-                var policy = new AuthorizationPolicyBuilder()
-                                 .RequireAuthenticatedUser()
-                                 .Build();
-              //  config.Filters.Add(new AuthorizeFilter(policy));
-            })
-               .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
 
@@ -91,6 +79,8 @@ namespace ccr_hope_pipeline
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+           
         }
+      
     }
 }

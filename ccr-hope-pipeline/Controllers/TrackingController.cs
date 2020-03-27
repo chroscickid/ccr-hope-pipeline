@@ -103,7 +103,8 @@ namespace HopePipeline.Controllers
         public IActionResult SubmitTracking(TrackingForm sub)
         {
            // int id = sub.ClientID;
-            Guid id = Guid.NewGuid();
+            Guid ident = Guid.NewGuid();
+            string id = "'" + ident + "'";
             SqlConnection cnn = new SqlConnection(connectionString);
             SqlCommand command;
             SqlDataAdapter adapter = new SqlDataAdapter();
@@ -125,7 +126,7 @@ namespace HopePipeline.Controllers
                 "INSERT INTO dbo.bully VALUES (" + sub.bullied + "," + sub.bullyReport + ",'" + sub.dateofBully + "'," + id + ")",
                 "INSERT INTO dbo.caregiver VALUES ('" + sub.careFirstName + "','" + sub.careLastName + "','" + sub.careGender + "','" + sub.careEthnicity + "'," + "'careRelationship'" + "," + id + ")",
 
-                "INSERT dbo.ccr VALUES ('" + sub.levelOfServiceProvided + "'," + sub.caseStatus + ",'" + sub.nonEngagementReason + "'," + sub.remedyResolution + "," + sub.rearrestWhileRepresented + ",'" + sub.schoolAtClosure + "'," + id + ")",
+                "INSERT dbo.ccr VALUES ('" + sub.levelOfServiceProvided + "'," + sub.caseStatus + ",'" + sub.nonEngagementReason + "'," + sub.remedyResolution + "," + sub.rearrestWhileRepresented + ",'" + sub.schoolAtClosure + "'," + id + "," + sub.intakeDate + ")",
                 "INSERT INTO dbo.comp VALUES (" + sub.compService + ",'" + sub.ifWhatServices + "','" + sub.compTime + "'," + id + ")",
                 //AddService?
                 //Servicesgained
@@ -215,7 +216,7 @@ namespace HopePipeline.Controllers
             SqlCommand command;
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
-            string query = "INSERT INTO meetings VALUES ('" + meet.MeetingDate.ToString("yyyy-MM-dd") + "','" + meet.MeetingPurpose + "','" + meet.MeetingNotes + "'," + meet.clientCode + ",'" + g + "')";
+            string query = "INSERT INTO meetings VALUES ('" + meet.MeetingDate.ToString("yyyy-MM-dd") + "','" + meet.MeetingPurpose + "','" + meet.MeetingNotes + "','" + meet.clientCode + "','" + g + "')";
 
             command = new SqlCommand(query, cnn);
             SqlDataReader reader = command.ExecuteReader();
@@ -235,7 +236,7 @@ namespace HopePipeline.Controllers
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
-            string query = "select meetingDate from meetings where clientCode =" + clientCode;
+            string query = "select meetingDate from meetings where clientCode = '" + clientCode + "'";
             command = new SqlCommand(query, cnn);
             SqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
@@ -265,7 +266,7 @@ namespace HopePipeline.Controllers
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
-            string query = "select * from meetings where clientCode = " + clientCode;
+            string query = "select * from meetings where clientCode = '" + clientCode + "'";
             command = new SqlCommand(query, cnn);
             SqlDataReader reader = command.ExecuteReader();
 
@@ -279,7 +280,7 @@ namespace HopePipeline.Controllers
             reader.Close();
 
             sendme.list = results;
-            query = "select clientLast, clientFirst from client where clientCode = " + clientCode;
+            query = "select clientLast, clientFirst from client where clientCode = '" + clientCode + "'";
             command = new SqlCommand(query, cnn);
             reader = command.ExecuteReader();
             while (reader.Read())
@@ -363,7 +364,7 @@ namespace HopePipeline.Controllers
 
         public string DeleteSqlCommand(string table, int clientCode)
         {
-            string spoop = "DELETE FROM " + table + " WHERE ClientCode = " + clientCode + ";";
+            string spoop = "DELETE FROM " + table + " WHERE ClientCode = '" + clientCode + "';";
             return spoop;
 
         }
@@ -414,7 +415,7 @@ namespace HopePipeline.Controllers
             SqlCommand command;
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
-            string query = "UPDATE ccr SET ccrStatus = " + status + "WHERE clientCode = " + clientCode;
+            string query = "UPDATE ccr SET ccrStatus = " + status + "WHERE clientCode = '" + clientCode + "'";
             command = new SqlCommand(query, cnn);
             SqlDataReader reader = command.ExecuteReader();
             reader.Close();
@@ -463,7 +464,7 @@ namespace HopePipeline.Controllers
             return View("AssignTrackingList", mod);
         }
 
-        public IActionResult AssignSpecific(int clientCode, int refCode)
+        public IActionResult AssignSpecific(Guid clientCode, Guid refCode)
         {
             SqlConnection cnn;
             cnn = new SqlConnection(connectionString);
@@ -471,8 +472,8 @@ namespace HopePipeline.Controllers
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
-            string q1 = "INSERT INTO referral VALUES (" + refCode + "," + clientCode + ")";
-            string q2 = "UPDATE refform SET currStatus = 'Closed' WHERE clientCode = " + refCode;
+            string q1 = "INSERT INTO referral VALUES ('" + refCode + "','" + clientCode + "')";
+            string q2 = "UPDATE refform SET assignRef = 1 WHERE clientCode = '" + refCode + "'";
             command = new SqlCommand(q1, cnn);
             SqlDataReader reader = command.ExecuteReader();
             command = new SqlCommand(q2, cnn);
@@ -485,7 +486,7 @@ namespace HopePipeline.Controllers
         }
 
 
-        public IActionResult ViewTrackRefs(int clientCode)
+        public IActionResult ViewTrackRefs(Guid clientCode)
         {
             SqlConnection cnn;
             cnn = new SqlConnection(connectionString);
@@ -494,7 +495,7 @@ namespace HopePipeline.Controllers
             cnn.Open();
             var mod = new TrackRefList();
 
-            string q1 = "SELECT * FROM referral WHERE clientCode = " + clientCode;
+            string q1 = "SELECT * FROM referral WHERE clientCode = '" + clientCode + "'";
             command = new SqlCommand(q1, cnn);
             SqlDataReader reader = command.ExecuteReader();
             var refCodeList = new List<int>();
@@ -512,7 +513,7 @@ namespace HopePipeline.Controllers
                 SqlDataReader reader2 = command.ExecuteReader();
                 while (reader2.Read())
                 {
-                    var row = new TrackRefRow { firstName = reader2.GetString(0), lastName = reader2.GetString(1), refCode = reader.GetInt32(2) };
+                    var row = new TrackRefRow { firstName = reader2.GetString(0), lastName = reader2.GetString(1), refCode = reader.GetGuid(2) };
                     mod.list.Add(row);
                 }
                 reader2.Close();

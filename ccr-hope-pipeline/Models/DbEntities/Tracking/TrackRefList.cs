@@ -17,7 +17,7 @@ namespace HopePipeline.Models.DbEntities.Tracking
     {
         public string firstName { get; set; }
         public string lastName { get; set; }
-        public int refCode { get; set; }
+        public Guid refCode { get; set; }
 
     }
 }

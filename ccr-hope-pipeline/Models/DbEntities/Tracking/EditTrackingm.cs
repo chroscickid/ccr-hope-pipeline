@@ -33,6 +33,7 @@ namespace HopePipeline.Models.DbEntities.Tracking
         public string currentGrade { get; set; }
 
         public string referralSource { get; set; }
+        public string referrallSource { get; set; }
         public int failCount { get; set; }
         public int failedGrade { get; set; }
         public int whichGradeFailed { get; set; }
@@ -210,6 +211,7 @@ namespace HopePipeline.Models.DbEntities.Tracking
         public int daysSinceIntakeHidden { get; set; }
         public int ossHidden { get; set; }
         public string justiceOutcomeHidden { get; set; }
+        public string referrallSourceHidden { get; set; }
         //end Discipline
         //other
         public string careFirstNameHidden { get; set; }

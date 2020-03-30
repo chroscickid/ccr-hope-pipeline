@@ -4,22 +4,19 @@
 }
 
 
-
-
-
-
 <!DOCTYPE html>
 <html>
 <head>
+
+    <meta charset="UTF-8" />
     <style>
         table {
-                
-                 width: 100%;
-                border: 3px solid #003A62;
+            width: 100%;
+            border: 3px solid #003A62;
             border-collapse: collapse;
         }
 
-   th, td {
+        th, td {
             border: 1px solid black;
             border-collapse: collapse;
         }
@@ -64,51 +61,149 @@
             else {
                 document.getElementById('Yes').style.display = 'none';
                 document.getElementById('schoolid').disabled = true;
-                 document.getElementById('schoolid').value = null;
+                document.getElementById('schoolid').value = null;
             }
 
         }
-           function yesarrestCheck() {
+        function yesarrestCheck() {
             if (document.getElementById('yesarrest').checked) {
                 document.getElementById('ifyesarrest').style.display = 'block';
                 document.getElementById('ifnoarrest').style.display = 'none';
                 //document if yes then other in checked no
                 document.getElementById('value0Cit').checked = true;
-                document.getElementById('value1Cit').checked=false;
+                document.getElementById('value1Cit').checked = false;
             }
             else document.getElementById('ifyesarrest').style.display = 'none';
             if (document.getElementById('noarrest').checked) {
                 document.getElementById('ifnoarrest').style.display = 'block';
                 //document if yes then other in checked no
                 document.getElementById('value0Offense').checked = true;
-                 document.getElementById('value1Offense').checked = false;
-                
+                document.getElementById('value1Offense').checked = false;
+
             }
-               else document.getElementById('ifnoarrest').style.display = 'none';
-               if (document.getElementById('maybearrest').checked)
-               {
-                   document.getElementById('ifyesarrest').style.display = 'none';
-                   document.getElementById('ifnoarrest').style.display = 'none';
-                    document.getElementById('value0Offense').checked = true;
-                   document.getElementById('value1Offense').checked = false;
-                   document.getElementById('value0Cit').checked = true;
-                document.getElementById('value1Cit').checked=false;
-               }
+            else document.getElementById('ifnoarrest').style.display = 'none';
+            if (document.getElementById('maybearrest').checked) {
+                document.getElementById('ifyesarrest').style.display = 'none';
+                document.getElementById('ifnoarrest').style.display = 'none';
+                document.getElementById('value0Offense').checked = true;
+                document.getElementById('value1Offense').checked = false;
+                document.getElementById('value0Cit').checked = true;
+                document.getElementById('value1Cit').checked = false;
+            }
         }
-       
+ 
+        function validation() {
+            var at = "\u0040";
+            //textbox
+            //referral first name only alpha
+            var inputtext = document.getElementById('referralfname').value;
+            var reflastname = document.getElementById('referrallname').value;
+            var lnamewarn = document.getElementById('fName').value;
+            var fnamewarn = document.getElementById('lName').value;
+            var guardianNamewarn = document.getElementById('guardianName').value;
+            var guardianlNamewarn = document.getElementById('guardianlName').value;
+            var youthphonewarn = document.getElementById('youthphone').value;
+            var parentphonewarn = document.getElementById('parentphone').value;
+            var zipwarn = document.getElementById('zip').value;
+                 //email
+            var parentemailwarn = document.getElementById('parentemail').value;
+            var youthemailwarn = document.getElementById('youthemail').value;
+            var refemailwarn = document.getElementById('refemail').value;
+            //dob
+            var dobwarn = document.getElementById('dob').value;
       
+            //address validate/phone number validate/zip code validation
+            //NOT DONE YET LENGTH
+            var letters = /^[A-Za-z]+$/;
+            var phoneno = /^[1-9]\d{2}-\d{3}-\d{4}/;
+            var zipno = /^\d{5}$/;
+            var email =" /^[a-zA-Z0-9_\-.]+"+at +"[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$/";
+            if ((!inputtext.match(letters) && inputtext.length != 0) || (!reflastname.match(letters) && reflastname.length != 0)
+                || (!lnamewarn.match(letters) && lnamewarn.length != 0) || (!fnamewarn.match(letters) && fnamewarn.length != 0)
+                || (!guardianNamewarn.match(letters) && guardianNamewarn.length != 0) || (!guardianlNamewarn.match(letters) && guardianlNamewarn.length != 0)
+                || (!youthphonewarn.match(phoneno) && youthphonewarn.length != 0) || (!parentphonewarn.match(phoneno) && parentphonewarn.length != 0) ||
+                (!inputtext.checkValidity()) || (!reflastname.checkValidity()) || (!lnamewarn.checkValidity()) || (!fnamewarn.checkValidity()) || (!guardianNamewarn.checkValidity())
+                || (!guardianlNamewarn.checkValidity())  || (!parentphonewarn.checkValidity())
+                ||(!parentemailwarn.checkValidity())||(!youthemailwarn.checkValidity())||(!refemailwarn.checkValidity())||(!dobwarn.checkValidity())
+
+            ) {
+                //reffirstname//reflast name/ lastname/first name//guardian name//phone
+                if (!inputtext.match(letters) && inputtext.length != 0) { document.getElementById('reffname').innerHTML = 'Please input alphabet characters only'; }
+                else { document.getElementById('reffname').innerHTML = ''; }
+                if (!reflastname.match(letters) && reflastname.length != 0) { document.getElementById('reflname').innerHTML = 'Please input alphabet characters only'; }
+                else { document.getElementById('reflname').innerHTML = ''; }
+                if (!lnamewarn.match(letters) && lnamewarn.length != 0) { document.getElementById('fNameerror').innerHTML = 'Please input alphabet characters only'; }
+                else { document.getElementById('fNameerror').innerHTML = ''; }
+                if (!fnamewarn.match(letters) && fnamewarn.length != 0) { document.getElementById('lNameerror').innerHTML = 'Please input alphabet characters only'; }
+                else { document.getElementById('lNameerror').innerHTML = ''; }
+                if (!guardianNamewarn.match(letters) && guardianNamewarn.length != 0) { document.getElementById('guardianNameError').innerHTML = 'Please input alphabet characters only'; }
+                else { document.getElementById('guardianNameError').innerHTML = ''; }
+                if (!guardianlNamewarn.match(letters) && guardianlNamewarn.length != 0) { document.getElementById('guardianlNameError').innerHTML = 'Please input alphabet characters only'; }
+                else { document.getElementById('guardianlNameError').innerHTML = ''; }
+                if (!youthphonewarn.match(phoneno) && youthphonewarn.length != 0) { document.getElementById('youthphoneError').innerHTML = 'Please format your phone numbers as ###-###-####'; }
+                else { document.getElementById('youthphoneError').innerHTML = ''; }
+                if ((!parentphonewarn.match(phoneno) && parentphonewarn.length != 0)) { document.getElementById('parentphoneError').innerHTML = 'Please format your phone numbers as ###-###-####'; }
+                else { document.getElementById('parentphoneError').innerHTML = ''; }
+                if (!zipwarn.match(zipno) && zipwarn.length != 0) { document.getElementById('zipError').innerHTML = 'Please only enter 5 digits'; }
+                else { document.getElementById('zipError').innerHTML = ''; }
+                  if (!inputtext.checkValidity()) {
+                    document.getElementById("inputtextValid").innerHTML = inputtext.validationMessage; }
+                else {document.getElementById("inputtextValid").innerHTML = ""; }
+                 if (!reflastname.checkValidity()) {
+                    document.getElementById("reflastnameValid").innerHTML = reflastname.validationMessage; }
+                else { document.getElementById("reflastnameValid").innerHTML = ""; }
+                 if (!lnamewarn.checkValidity()) {
+                    document.getElementById("lnamewarnValid").innerHTML = lnamewarn.validationMessage; }
+                else { document.getElementById("lnamewarnValid").innerHTML = ""; }
+                if (!fnamewarn.checkValidity()) {
+                    document.getElementById("fnamewarnValid").innerHTML = fnamewarn.validationMessage; }
+                else { document.getElementById("fnamewarnValid").innerHTML = ""; }
+                if (!guardianNamewarn.checkValidity()) {
+                    document.getElementById("guardianNamewarnValid").innerHTML = guardianNamewarn.validationMessage; }
+                else { document.getElementById("guardianNamewarnValid").innerHTML = ""; }
+                if (!guardianlNamewarn.checkValidity()) {
+                    document.getElementById("guardianlNamewarnValid").innerHTML = guardianlNamewarn.validationMessage; }
+                else { document.getElementById("guardianlNamewarnValid").innerHTML = ""; }
+                if (!parentphonewarn.checkValidity()) {
+                    document.getElementById("parentphonewarnValid").innerHTML = parentphonewarn.validationMessage; }
+                else { document.getElementById("parentphonewarnValid").innerHTML = ""; }
+                if (!parentemailwarn.checkValidity()) {
+                    document.getElementById("parentemailwarnValid").innerHTML = parentemailwarn.validationMessage; }
+                else { document.getElementById("parentemailwarnValid").innerHTML = ""; }
+                if (!youthemailwarn.checkValidity()) {
+                    document.getElementById("youthemailwarnValid").innerHTML = youthemailwarn.validationMessage; }
+                else { document.getElementById("youthemailwarnValid").innerHTML = ""; }
+                    if (!refemailwarn.checkValidity()) {
+                    document.getElementById("refemailwarnValid").innerHTML = refemailwarn.validationMessage; }
+                else { document.getElementById("refemailwarnValid").innerHTML = ""; }
+                   if (!dobwarn.checkValidity()) {
+                    document.getElementById("dobwarnValid").innerHTML = dobwarn.validationMessage; }
+                else { document.getElementById("dobwarnValid").innerHTML = ""; }
+
+                return false;
+
+               // if (!inpObj.checkValidity()) {
+    //document.getElementById("demo").innerHTML = inpObj.validationMessage;
+            }
+            else
+            //textbox
+            { return true; }
+
+        }
         function myConfirm() {
+
+
             var array = []
             var checkboxes = document.querySelectorAll('input[name=array]:checked')
             // alert(checkboxes);
             for (var i = 0; i < checkboxes.length; i++) {
                 array.push(checkboxes[i].value)
             }
-          
+
             var input = document.getElementById("input");
             var array3 = document.getElementById("array3").value;
             //alert(array3);
-            if (input.checked && array3 != "Mother"  && array3 != "mother"  && array3 !="father"  && array3 != "Father" && array3 != "Guardian"  && array3 != "guardian" && array3 != "Family member"  && array3 != "Foster Parent") {
+            if (input.checked && array3 != "Mother" && array3 != "mother" && array3 != "father" && array3 != "Father" && array3 != "Guardian" && array3 != "guardian" && array3 != "Family member" && array3 != "Foster Parent") {
                 //for (var i = 0; i < array3.length; i++)
                 {
                     array.push(array3)
@@ -129,7 +224,7 @@
             }
             var input33 = document.getElementById("input33");
             var array33 = document.getElementById("array33").value;
-               if (input33.checked) {
+            if (input33.checked) {
                 //for (var i = 0; i < array3.length; i++)
                 { array1.push(array33) }
             }
@@ -144,30 +239,129 @@
             }
             var checkarrayorg = document.getElementById("checkarrayorg");
             var finalarrayorg = document.getElementById("finalarrayorg").value;
-            if (checkarrayorg.checked && finalarrayorg != "JFCS CJRG"&& finalarrayorg != "Public Defender's Office"&& finalarrayorg != "WINS HOPE Court") {
+            if (checkarrayorg.checked && finalarrayorg != "JFCS CJRG" && finalarrayorg != "Public Defender's Office" && finalarrayorg != "WINS HOPE Court") {
                 //for (var i = 0; i < array3.length; i++)
                 { arrayorg.push(finalarrayorg) }
             }
 
             document.getElementById("nameOrg").value = arrayorg;
 
-              var arrayImpact = []
+            var arrayImpact = []
             var checkboxes3 = document.querySelectorAll('input[name=arrayImpact]:checked')
 
             for (var i = 0; i < checkboxes3.length; i++) {
-               arrayImpact.push(checkboxes3[i].value)
+                arrayImpact.push(checkboxes3[i].value)
             }
-          
+
             document.getElementById("youthImpact").value = arrayImpact;
+//let try this so if statement return false else (if confirm)
+                //textbox
+            //referral first name only alpha
+            var inputtext = document.getElementById('referralfname').value;
+            var reflastname = document.getElementById('referrallname').value;
+            var lnamewarn = document.getElementById('fName').value;
+            var fnamewarn = document.getElementById('lName').value;
+            var guardianNamewarn = document.getElementById('guardianName').value;
+            var guardianlNamewarn = document.getElementById('guardianlName').value;
+            var youthphonewarn = document.getElementById('youthphone').value;
+            var parentphonewarn = document.getElementById('parentphone').value;
+            var zipwarn = document.getElementById('zip').value;
+                 //email
+            var parentemailwarn = document.getElementById('parentemail').value;
+            var youthemailwarn = document.getElementById('youthemail').value;
+            var refemailwarn = document.getElementById('refemail').value;
+            //dob
+            var dobwarn = document.getElementById('dob').value;
+      
+            //address validate/phone number validate/zip code validation
+            //NOT DONE YET LENGTH
+            var letters = /^[A-Za-z]+$/;
+            var phoneno = /^[1-9]\d{2}-\d{3}-\d{4}/;
+            var zipno = /^\d{5}$/;
+           
+      var email =/^[a-zA-Z0-9_\-.]+\u0040[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$/;
+         
+            if ((!inputtext.match(letters) && inputtext.length != 0) || (!reflastname.match(letters) && reflastname.length != 0)
+                || (!lnamewarn.match(letters) && lnamewarn.length != 0) || (!fnamewarn.match(letters) && fnamewarn.length != 0)
+                || (!guardianNamewarn.match(letters) && guardianNamewarn.length != 0) || (!guardianlNamewarn.match(letters) && guardianlNamewarn.length != 0)
+                || (!youthphonewarn.match(phoneno) && youthphonewarn.length != 0) || (!parentphonewarn.match(phoneno) && parentphonewarn.length != 0) || (!zipwarn.match(zipno) && zipwarn.length != 0)||
+                (inputtext.length == 0) || (reflastname.length == 0) || (lnamewarn.length == 0) || (fnamewarn.length == 0) || (guardianNamewarn.length == 0)
+                || (guardianlNamewarn.length == 0)  || (parentphonewarn.length == 0)
+                ||(!parentemailwarn.match(email)&& parentemailwarn.length != 0)||(!youthemailwarn.match(email)&& youthemailwarn.length != 0)||(!refemailwarn.match(email)&& refemailwarn.length != 0)||(dobwarn.length == 0))
 
-            if (confirm("Please Confirm you would like to submit the Referral Form")) {
-
-
-                return true;
-            }
-            else {
+            {
+                //reffirstname//reflast name/ lastname/first name//guardian name//phone
+                if (!inputtext.match(letters) && inputtext.length != 0) { document.getElementById('reffname').innerHTML = 'Please input alphabet characters only'; }
+                else { document.getElementById('reffname').innerHTML = ''; }
+                if (!reflastname.match(letters) && reflastname.length != 0) { document.getElementById('reflname').innerHTML = 'Please input alphabet characters only'; }
+                else { document.getElementById('reflname').innerHTML = ''; }
+                if (!lnamewarn.match(letters) && lnamewarn.length != 0) { document.getElementById('fNameerror').innerHTML = 'Please input alphabet characters only'; }
+                else { document.getElementById('fNameerror').innerHTML = ''; }
+                if (!fnamewarn.match(letters) && fnamewarn.length != 0) { document.getElementById('lNameerror').innerHTML = 'Please input alphabet characters only'; }
+                else { document.getElementById('lNameerror').innerHTML = ''; }
+                if (!guardianNamewarn.match(letters) && guardianNamewarn.length != 0) { document.getElementById('guardianNameError').innerHTML = 'Please input alphabet characters only'; }
+                else { document.getElementById('guardianNameError').innerHTML = ''; }
+                if (!guardianlNamewarn.match(letters) && guardianlNamewarn.length != 0) { document.getElementById('guardianlNameError').innerHTML = 'Please input alphabet characters only'; }
+                else { document.getElementById('guardianlNameError').innerHTML = ''; }
+                if (!youthphonewarn.match(phoneno) && youthphonewarn.length != 0) { document.getElementById('youthphoneError').innerHTML = 'Please format your phone numbers as ###-###-####'; }
+                else { document.getElementById('youthphoneError').innerHTML = ''; }
+                if ((!parentphonewarn.match(phoneno) && parentphonewarn.length != 0)) { document.getElementById('parentphoneError').innerHTML = 'Please format your phone numbers as ###-###-####'; }
+                else { document.getElementById('parentphoneError').innerHTML = ''; }
+                if (!zipwarn.match(zipno) && zipwarn.length != 0) { document.getElementById('zipError').innerHTML = 'Please only enter 5 digits'; }
+                else { document.getElementById('zipError').innerHTML = ''; }
+                  if (inputtext.length == 0) {
+                    document.getElementById('inputtextValid').innerHTML = 'This field is required'; }
+                else {document.getElementById('inputtextValid').innerHTML = ''; }
+                 if (reflastname.length == 0) {
+                    document.getElementById('reflastnameValid').innerHTML = 'This field is required'; }
+                else { document.getElementById('reflastnameValid').innerHTML = ''; }
+                 if (lnamewarn.length == 0) {
+                    document.getElementById('lnamewarnValid').innerHTML = 'This field is required'; }
+                else { document.getElementById('lnamewarnValid').innerHTML = ''; }
+                if (fnamewarn.length ==0) {
+                    document.getElementById('fnamewarnValid').innerHTML =  'This field is required'; }
+                else { document.getElementById('fnamewarnValid').innerHTML = ''; }
+                if (guardianNamewarn.length ==0) {
+                    document.getElementById('guardianNamewarnValid').innerHTML =  'This field is required'; }
+                else { document.getElementById('guardianNamewarnValid').innerHTML = ''; }
+                if (guardianlNamewarn.length==0) {
+                    document.getElementById('guardianlNamewarnValid').innerHTML = 'This field is required'; }
+                else { document.getElementById('guardianlNamewarnValid').innerHTML = ''; }
+                if (parentphonewarn.length==0) {
+                    document.getElementById('parentphonewarnValid').innerHTML ='This field is required'; }
+                else { document.getElementById('parentphonewarnValid').innerHTML = ''; }
+                if (!parentemailwarn.match(email)&& parentemailwarn.length != 0) {
+                    document.getElementById('parentemailwarnValid').innerHTML = 'This is not a valid email address'; }
+                else { document.getElementById('parentemailwarnValid').innerHTML = ''; }
+                if (!youthemailwarn.match(email)&& youthemailwarn.length != 0) {
+                  document.getElementById('youthemailwarnValid').innerHTML = 'This is not a valid email address'; }
+             else { document.getElementById('youthemailwarnValid').innerHTML = ''; }
+                   if (!refemailwarn.match(email)&& refemailwarn.length != 0) {
+                   document.getElementById('refemailwarnValid').innerHTML = 'This is not a valid email address'; }
+               else { document.getElementById('refemailwarnValid').innerHTML = ''; }
+                   if (dobwarn.length==0) {
+                   document.getElementById('dobwarnValid').innerHTML = 'This field is required'; }
+               else { document.getElementById('dobwarnValid').innerHTML = ''; }
+                alert("You will need to correct the error's in red before submitting this referral");
                 return false;
-                event.preventDefault();
+
+               // if (!inpObj.checkValidity()) {
+    //document.getElementById("demo").innerHTML = inpObj.validationMessage;
+            }
+            
+
+
+          else {
+
+                if (confirm("Please Confirm you would like to submit the Referral Form")) {
+
+
+                    return true;
+                }
+                else {
+                    return false;
+                    event.preventDefault();
+                }
             }
         }
         function afunction() {
@@ -176,29 +370,28 @@
 
             }
             else document.getElementById('array3').removeAttribute('disabled');
-            document.getElementById('array3').value= null;
+            document.getElementById('array3').value = null;
         }
         //issues
-          function tfunction() {
+        function tfunction() {
             if (!document.getElementById('input33').checked) {
                 document.getElementById('array33').setAttribute('disabled', 'disabled');
 
             }
             else document.getElementById('array33').removeAttribute('disabled');
-              document.getElementById('array33').value= null;
+            document.getElementById('array33').value = null;
         }//issues
-             function ffunction() {
+        function ffunction() {
             if (!document.getElementById('checkarrayorg').checked) {
                 document.getElementById('finalarrayorg').setAttribute('disabled', 'disabled');
 
             }
             else document.getElementById('finalarrayorg').removeAttribute('disabled');
-                  document.getElementById('finalarrayorg').value= null;
+            document.getElementById('finalarrayorg').value = null;
         }
     </script>
 </head>
 <body>
-
 
 
     <!-- Decision after login by authorized user -->
@@ -209,7 +402,7 @@
 
     <!-- register should only be provided by authorized personal so not for any user till logged in and authorized user will have to register new users
     1.1 Login Page -->
-    <form asp-action="submitform" asp-controller="n" method="post">
+    <form asp-action="submitform" asp-controller="n" method="post"  >
         <input type="hidden" name="clientCode" asp-for="clientCode" value="@ViewBag.Tessage">
         <input type="hidden" name="dateInput" asp-for="dateInput" value="@ViewBag.Bessage">
         <p></p>
@@ -221,26 +414,31 @@
             <tr>
                 <td>
                     Referral Source's First Name:<br />
-                    <input type="text" name="referralfname" asp-for="referralfname"><br>
+                    <input type="text" name="referralfname" asp-for="referralfname" id="referralfname" maxlength="20" ><br>
+                    <p style="color:red" id="reffname"></p>
+                    <p style="color:red" id="inputtextValid"></p>
                 </td>
                 <td>
                     Referral Source's Last Name:<br />
-                    <input type="text" name="referrallname" asp-for="referrallname"><br>
+                    <input type="text" name="referrallname" asp-for="referrallname" id="referrallname" maxlength="20" ><br>
+                    <p style="color:red" id="reflname"></p>
+                    <p style="color:red" id="reflastnameValid"></p>
                 </td>
             </tr>
             <tr>
                 <td>
                     Referral Source's Email Address:<br />
-                    <input type="email" asp-for="email"><br>
+                    <input type="email" asp-for="email" id="refemail" >
+                    <p style="color:red" id="refemailwarnValid"></p>
                 </td>
-            
+
                 <td>
                     Name of organization making referral:<br />
                     <input type="checkbox" name="arrayorg" value="JFCS CJRG"> &nbsp;JFCS CJRG<br>
-                    <input type="checkbox" name="arrayorg" value="Public Defender''s Office"> &nbsp;Public Defender's Office<br>
+                    <input type="checkbox" name="arrayorg" value="Public Defender's Office"> &nbsp;Public Defender's Office<br>
                     <input type="checkbox" name="arrayorg" value="WINS HOPE Court"> &nbsp;WINS HOPE Court<br>
 
-                   <input type="checkbox" id="checkarrayorg" name="checkarrayorg" value="Other" onclick="ffunction()">&nbsp;Other: &nbsp;<input type="text" name="finalarrayorg" id="finalarrayorg" disabled>
+                    <input type="checkbox" id="checkarrayorg" name="checkarrayorg" value="Other" onclick="ffunction()">&nbsp;Other: &nbsp;<input type="text" name="finalarrayorg" id="finalarrayorg" maxlength="50" disabled>
 
 
 
@@ -256,12 +454,16 @@
             <tr>
                 <td>
                     Youth's First Name:<br />
-                    <input type="text" asp-for="fName"><br><br />
+                    <input type="text" asp-for="fName" id="fName" maxlength="20">
+                    <p style="color:red" id="fNameerror"></p>
+                    <p style="color:red" id="fnamewarnValid"></p>
                     Youth's Last Name:<br />
-                    <input type="text" asp-for="lName"><br>
+                    <input type="text" asp-for="lName" id="lName" maxlength="20">
+                    <p style="color:red" id="lNameerror"></p>
+                    <p style="color:red" id="lnamewarnValid"></p>
                 </td>
 
-               
+
                 <td colspan="2">
 
                     Gender Identity: <br />
@@ -276,18 +478,22 @@
                 </td>
                 <td>
                     Date Of Birth:<br />
-                    <input type="date" name="dOB" asp-for="dOB">
+                    <input type="date" name="dOB" asp-for="dOB"  id="dob"><br/>
+                    <p style="color:red" id="dobwarnValid"></p>
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
-                   
+
                     Youth's email address:<br />
-                    <input type="email" asp-for="youthEmail">
+                    <input type="email" asp-for="youthEmail" id="youthemail" maxlength="50">
+                  
+                    <p style="color:red" id="youthemailwarnValid"></p>
                 </td>
                 <td colspan="2">
                     Youth's phone number:<br />
-                    <input type="text" asp-for="youthNu">
+                    <input type="text" asp-for="youthNu" id="youthphone" maxlength="12">
+                    <p style="color:red" id="youthphoneError"></p>
                 </td>
             </tr>
 
@@ -295,9 +501,14 @@
                 <!-- is their a reason you don't ask for first and last name???? -->
                 <td>
                     Primary Caretaker's First Name:<br />
-                    <input type="text" name="guardianName" asp-for="guardianName"><br /><br />
+                    <input type="text" name="guardianName" asp-for="guardianName" id="guardianName" maxlength="20" >
+                    <p style="color:red" id="guardianNameError"></p>
+
+                    <p style="color:red" id="guardianNamewarnValid"></p>
                     Primary Caretaker's Last Name:<br />
-                    <input type="text" name="guardianlName" asp-for="guardianlName">
+                    <input type="text" name="guardianlName" asp-for="guardianlName" id="guardianlName" maxlength="20">
+                    <p style="color:red" id="guardianlNameError"></p>
+                    <p style="color:red" id="guardianlNamewarnValid"></p>
                 </td>
 
                 <td colspan="2">
@@ -310,7 +521,7 @@
                         <input type="checkbox" name="array" value="Family member"> &nbsp;Family member(aunt, uncle, grandmother, grandfather, great grandparent, sibiling, cousin, etc)<br>
                         <input type="checkbox" name="array" value="Foster Parent"> &nbsp;Foster Parent<br>
 
-                       <input type="checkbox" id="input" name="input1" value="Other" onclick="afunction()">&nbsp;Other: &nbsp;<input type="text" name="array" id="array3" disabled>
+                        <input type="checkbox" id="input" name="input1" value="Other" onclick="afunction()">&nbsp;Other: &nbsp;<input type="text" name="array" id="array3" disabled maxlength="20">
 
                         <input type="hidden" id="guardRe" name="guardianRelationship" asp-for="guardianRelationship">
                         <br>
@@ -321,24 +532,27 @@
 
                 <td>
                     Street Address:<br />
-                    <input type="text" asp-for="address">
+                    <input type="text" asp-for="address" maxlength="50">
                     <br><br>
                     Zip Code:<br />
-                    <input type="text" asp-for="zip">
+                    <input type="text" asp-for="zip" id="zip" maxlength="5">
+                    <p style="color:red" id="zipError"></p>
                 </td>
             </tr>
 
             <tr>
                 <td colspan="2">
                     Parent/Guardian's email address:<br />
-                    <input type="email" asp-for="guardianEmail">
-
+                    <input type="email" asp-for="guardianEmail" id="parentemail" maxlength="50">
+                    <p style="color:red" id="parentemailwarnValid"></p>
 
                 </td>
 
                 <td colspan="2">
                     Parent/Guardian phone number:<br />
-                    <input type="text" asp-for="guardianPhone">
+                    <input type="text" asp-for="guardianPhone" id="parentphone" maxlength="12" >
+                    <p style="color:red" id="parentphoneError"></p>
+                    <p style="color:red" id="parentphonewarnValid"></p>
                 </td>
             </tr>
             <tr>
@@ -355,7 +569,7 @@
                     <div id="ifYes" style="display:none">
                         If yes, what is the date and time of the meeting?<br>
                         Date:<br />
-                        <input type="datetime-local" id="meetinginfo"asp-for="date"><br>
+                        <input type="datetime-local" id="meetinginfo" asp-for="date"><br>
 
 
                     </div>
@@ -381,13 +595,13 @@
                         <input type="checkbox" name="array1" value="Has a history of being Baker Acted from school"> &nbsp;Has a history of being Baker Acted from school<br>
                         <input type="checkbox" name="array1" value="Dependent"> &nbsp;Dependent<br>
                         <input type="checkbox" name="array1" value="WINS"> &nbsp;WINS<br>
-                        &nbsp;<input type="checkbox" id="input33" name="input33" value="Other" onclick="tfunction()">&nbsp;Other: &nbsp;<input type="text" name="array33" id="array33" disabled>
+                        &nbsp;<input type="checkbox" id="input33" name="input33" value="Other" onclick="tfunction()">&nbsp;Other: &nbsp;<input type="text" name="array33" id="array33" disabled maxlength="50">
 
 
                         <input type="hidden" id="issues0" name="issues" asp-for="issues">
                     </div>
                 </td>
-</tr>
+            </tr>
             <tr>
                 <td colspan="2">
                     Youth is impacted by not being in school because of the following:
@@ -396,7 +610,7 @@
                     <input type="checkbox" name="arrayImpact" value="expulsion"> &nbsp;expulsion<br>
                     <input type="checkbox" name="arrayImpact" value="dropped out"> &nbsp;dropped out<br>
                     <input type="checkbox" name="arrayImpact" value="prevented from enrolling"> &nbsp;prevented from enrolling<br>
-                  
+
                     <input type="hidden" id="youthImpact" name="youthImpact" asp-for="youthImpact">
                 </td>
             </tr>
@@ -405,7 +619,7 @@
 
                     Is this youth a student in a Duval County Public School? <br />
                     <select name="youthInDuvalSchool" asp-for="youthInDuvalSchool">
-                        <option value="Select"disabled="disabled"selected>Please Select an Option</option>
+                        <option value="Select" disabled="disabled" selected>Please Select an Option</option>
                         <option value="1">Yes</option>
                         <option value="0">No</option>
                         <option value="2">Maybe</option>
@@ -413,9 +627,9 @@
                     </select><br>
                 </td>
                 <td>
-                   Is youth at risk of placement in alternative school, either Mattie V or Grand Park? <br />
+                    Is youth at risk of placement in alternative school, either Mattie V or Grand Park? <br />
                     <select name="youthAlt" asp-for="youthAlt">
-                        <option value="Select"disabled="disabled"selected>Please Select an Option</option>
+                        <option value="Select" disabled="disabled" selected>Please Select an Option</option>
                         <option value="1">Yes</option>
                         <option value="0">No</option>
                         <option value="2">Maybe</option>
@@ -428,8 +642,8 @@
                     What is the youth's grade in school?
                     <br />
                     <select name="Grade" asp-for="grade">
-                    @{string nullanswer = null; }
-                        <option value="@nullanswer"disabled="disabled"selected>Please Select an Option</option>
+                        @{string nullanswer = null; }
+                        <option value="@nullanswer" disabled="disabled" selected>Please Select an Option</option>
                         <option value="Kindergarten">Kindergarten</option>
                         <option value="1st">1st</option>
                         <option value="2nd">2nd</option>
@@ -455,7 +669,7 @@
 
                     <div id="Yes" style="display:none">
                         <br />Where is the youth currently attending school?<br />
-                        <input type="text" name="school" id="schoolid" asp-for="school">
+                        <input type="text" name="school" id="schoolid" asp-for="school" maxlength="50">
                     </div>
                 </td>
             </tr>
@@ -467,9 +681,9 @@
                     No <input type="radio" name="youthSetting" value="0" asp-for="youthSetting">&nbsp;&nbsp;
                     Maybe <input type="radio" name="youthSetting" value="2" asp-for="youthSetting"><br>
                 </td>
-                
+
                 <td>
-                  Has a school staff person taken out an injunction against this youth?
+                    Has a school staff person taken out an injunction against this youth?
                     <br />
                     Yes <input type="radio" name="youthInjunction" value="1" asp-for="youthInjunction">&nbsp;&nbsp;
                     No <input type="radio" name="youthInjunction" value="0" asp-for="youthInjunction">&nbsp;&nbsp;
@@ -481,19 +695,19 @@
                     Has the youth been arrested?<br />
                     Yes <input type="radio" name="arrest" onclick="javascript: yesarrestCheck();" id="yesarrest" value="1" asp-for="arrest">&nbsp;&nbsp;
                     No <input type="radio" name="arrest" onclick="javascript: yesarrestCheck();" id="noarrest" value="0" asp-for="arrest">&nbsp;&nbsp;
-                    Maybe <input type="radio" name="arrest" onclick="javascript: yesarrestCheck();"id="maybearrest" value="2" asp-for="arrest"><br>
+                    Maybe <input type="radio" name="arrest" onclick="javascript: yesarrestCheck();" id="maybearrest" value="2" asp-for="arrest"><br>
 
                     <div id="ifnoarrest" style="display:none">
                         If youth has not been arrested, is this an unsuccessful civil citation or diversion case?<br />
-                        Yes <input type="radio" name="youthCit" value="1" id="value1Cit"asp-for="youthCit">&nbsp;&nbsp;
-                        No <input type="radio" name="youthCit" value="0" id="value0Cit"asp-for="youthCit">&nbsp;&nbsp;<br><br>
+                        Yes <input type="radio" name="youthCit" value="1" id="value1Cit" asp-for="youthCit">&nbsp;&nbsp;
+                        No <input type="radio" name="youthCit" value="0" id="value0Cit" asp-for="youthCit">&nbsp;&nbsp;<br><br>
                     </div>
                     <div id="ifyesarrest" style="display:none">
                         Was youth arrested for a school related offense? (For example, battery on a school board employee)<br />
-                        Yes <input type="radio" name="youthOffense" value="1" id="value1Offense"asp-for="youthOffense">&nbsp;&nbsp;
-                        No <input type="radio" name="youthOffense" value="0" id="value0Offense"asp-for="youthOffense">&nbsp;&nbsp;
+                        Yes <input type="radio" name="youthOffense" value="1" id="value1Offense" asp-for="youthOffense">&nbsp;&nbsp;
+                        No <input type="radio" name="youthOffense" value="0" id="value0Offense" asp-for="youthOffense">&nbsp;&nbsp;
                         Maybe <input type="radio" name="youthOffense" value="2" asp-for="youthOffense"><br>
-                      </div>
+                    </div>
                 </td>
             </tr>
         </table>
@@ -505,14 +719,16 @@
 
             <tr>
                 <td>
-                    Is there anything else you would like us to know about the youth or their family?<br />
-                    ​<textarea id="txtArea" rows="5" cols="150" name="moreInfo" asp-for="moreInfo"></textarea>
+                    Is there anything else you would like us to know about the youth or their family?<i style=color:blue>* </i><br />
+                    ​<textarea id="txtArea" rows="5" cols="150" name="moreInfo" asp-for="moreInfo" maxlength="225"></textarea>
+                    <br /><sub style=color:blue><i>*225 characters max</i></sub>
                 </td>
             </tr>
             <tr>
                 <td>
-                    Reason for Referral?<br />
-                    ​<textarea id="txtArea" rows="5" cols="150" name="reason" asp-for="reason"></textarea>
+                    Reason for Referral?<i style=color:blue>* </i><br />
+                    ​<textarea id="txtArea" rows="5" cols="150" name="reason" asp-for="reason" maxlength="225"></textarea>
+                    <br /><sub style=color:blue><i>*225 characters max</i></sub>
                 </td>
             </tr>
             <tr>
@@ -537,7 +753,7 @@
         </table><br />
 
 
-        <button type="submit" onclick="return myConfirm();">Submit</button>
+        <button type="submit"onclick="return myConfirm()" >Submit</button>
     </form>
 
 </body>

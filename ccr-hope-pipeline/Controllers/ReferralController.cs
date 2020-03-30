@@ -121,7 +121,7 @@ namespace HopePipeline.Controllers
             SqlCommand command;
             cnn.Open();
 
-            string query = "select fname, lname, dob, clientCode from dbo.refform WHERE currStatus = 'Closed';";
+            string query = "select fname, lname, dob, clientCode from dbo.refform WHERE assignRef = 1;";
             command = new SqlCommand(query, cnn);
             SqlDataReader reader = command.ExecuteReader();
 
@@ -141,7 +141,7 @@ namespace HopePipeline.Controllers
             reader.Close();
             cnn.Close();
 
-            return View("RefList", results);
+            return View("AssignedList", results);
         }
 
 

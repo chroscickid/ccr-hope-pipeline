@@ -13,14 +13,14 @@
 <div id="addMeeting">
     <form asp-controller="Tracking" asp-action="AddMeeting" method="post">
         <input type="hidden" name="clientCode" value="@Model.clientCode" />
-        <p>Date <input id="today" type="date" name="meetingDate" /></p>
-        <p>Purpose <input type="text" name="MeetingPurpose" /></p>
-        <p>Notes </p>
-        <input type="text" name="MeetingNotes" />   
+        <p>Date: <input id="today" type="date" name="meetingDate" /></p>
+        <p>Purpose: <input type="text" name="MeetingPurpose" /></p>
+        <p>Notes: </p>
+        <textarea name="MeetingNotes"></textarea>   
+        </br> </br>
         <button type="submit">Submit</button>
     </form>
 </div>
-<h2>Meeting List</h2>
 @{ if(Model.list.Count == 0)
     {
         <h3>Sorry, there are no associated meetings for this student</h3>

@@ -167,7 +167,7 @@
                 display: block;
             }
 
-        }
+        
 
         /* Change background color of buttons on hover */
         .tab button:hover {
@@ -194,30 +194,51 @@
             var page2 = document.getElementById("page2");
             var page3 = document.getElementById("page3");
             var page4 = document.getElementById("page4");
+            var tab1 = document.getElementById("tab1");
+            var tab2 = document.getElementById("tab2");
+            var tab3 = document.getElementById("tab3");
+            var tab4 = document.getElementById("tab4");
+
             switch (id) {
-                case "1":
+                case "tab1":
                     page1.style.display = "block";
                     page2.style.display = "none";
                     page3.style.display = "none";
                     page4.style.display = "none";
+                    tab1.className = "tablinks active";
+                    tab2.className = "tablinks";
+                    tab3.className = "tablinks";
+                    tab4.className = "tablinks";
                     break;
-                case "2":
+                case "tab2":
                     page1.style.display = "none";
                     page2.style.display = "block";
                     page3.style.display = "none";
                     page4.style.display = "none";
+                     tab1.className = "tablinks";
+                    tab2.className = "tablinks active";
+                    tab3.className = "tablinks";
+                    tab4.className = "tablinks";
                     break;
-                case "3":
+                case "tab3":
                     page1.style.display = "none";
                     page2.style.display = "none";
                     page3.style.display = "block";
                     page4.style.display = "none";
+                     tab1.className = "tablinks";
+                    tab2.className = "tablinks";
+                    tab3.className = "tablinks active";
+                    tab4.className = "tablinks";
                     break;
-                case "4":
+                case "tab4":
                     page1.style.display = "none";
                     page2.style.display = "none";
                     page3.style.display = "none";
                     page4.style.display = "block";
+                    tab1.className = "tablinks";
+                    tab2.className = "tablinks";
+                    tab3.className = "tablinks";
+                    tab4.className = "tablinks active";
                     break;
             }
         }
@@ -229,10 +250,10 @@
     <div class="tab">
         <nav aria-label="Page navigation example">
             
-                <button class="tablinks active" onclick="pagination(this.id)" id="1">Demographic Information</button>
-                <button class="tablinks" onclick="pagination(this.id)" id="2">School Information</button>
-                <button class="tablinks" onclick="pagination(this.id)" id="3">Discipline Information</button>
-                <button class="tablinks" onclick="pagination(this.id)" id="4">Center for Children's Rights Information</button>
+                <button class="tablinks active" onclick="pagination(this.id)" id="tab1">Demographic Information</button>
+                <button class="tablinks" onclick="pagination(this.id)" id="tab2">School Information</button>
+                <button class="tablinks" onclick="pagination(this.id)" id="tab3">Discipline Information</button>
+                <button class="tablinks" onclick="pagination(this.id)" id="tab4">Center for Children's Rights Information</button>
             
         </nav>
     </div>
@@ -435,7 +456,7 @@
                             <option value="multi">Multiple Ethnicities</option>
                             <option value="notListed">Ethnicity Not Listed</option>
                         </select>
-                        <br></br>
+                        <br>
                         Caretaker Phone Number: <br />
                         <input type="tel" asp-for="carePhone" class="field-style field-full align-none" required />
                     </td>
@@ -517,7 +538,7 @@
 
 
 
-        <div id="page2">
+        <div id="page2" hidden>
             <table id="t01">
 
                 <tr>
@@ -705,7 +726,7 @@
 
 
 
-        <div id="page3">
+        <div id="page3" hidden>
             <table id="t01">
                 <tr>
                     <th colspan="4">Discipline</th>
@@ -820,7 +841,7 @@
             </table>
         </div>
 
-        <div id="page4">
+        <div id="page4" hidden>
             <table id="t01">
 
                 <tr>

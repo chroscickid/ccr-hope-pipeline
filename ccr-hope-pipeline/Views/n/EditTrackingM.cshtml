@@ -1251,14 +1251,14 @@
 <br />
 <h2> Center for Children's Rights Tracking Form Edit</h2>
 <hr />
-<form asp-action="EditTrackingForm" asp-controller="n"  class="form-style-9" method="post">
+<form asp-action="EditTrackingForm" asp-controller="n"   method="post">
 
     <div id="Demographic Information" class="tabcontent" style="display:block">
 
         <table id="t01">
             <tr>
                 <td class="t" style="text-align:left" colspan="2">
-                    <input asp-for="ClientID" type="hidden" class="field-style field-full align-none" value="@info.ClientID" />
+                    <input asp-for="ClientID" type="hidden"  value="@info.ClientID" />
 
                     <h2><b>Demographic Information</b></h2>
                 </td>
@@ -1267,7 +1267,7 @@
             <tr>
                 <td class="t" style="text-align:right">  Youth's First Name </td>
                 <td>
-                    <input asp-for="clientFirstName" id="clientFirstName" type="text" class="field-style field-split align-left" value="@info.clientFirstName" required />
+                    <input asp-for="clientFirstName" id="clientFirstName" type="text"  value="@info.clientFirstName"  maxlength="20" required />
 
                     <input type="hidden" id="clientFirstNameHidden" asp-for="clientFirstNameHidden" value="@info.clientFirstName">
                 </td>
@@ -1277,7 +1277,7 @@
                     Youth's Last Name
                 </td>
                 <td>
-                    <input asp-for="clientLastName" id="clientLastName" type="text" class="field-style field-split align-right" value="@info.clientLastName" required />
+                    <input asp-for="clientLastName" id="clientLastName" type="text"  value="@info.clientLastName" maxlength="20"  required />
 
                     <input type="hidden" id="clientLastNameHidden" asp-for="clientLastNameHidden" value="@info.clientLastName">
 
@@ -1289,7 +1289,7 @@
 
                 </td>
                 <td>
-                    <input asp-for="clientDOB" type="date" min="2001-01-01" max="2050-12-31" class="field-style field-full align-none" id="clientDOB" value="@info.stringDateOfBirth" required>
+                    <input asp-for="clientDOB" type="date" min="2001-01-01" max="2050-12-31"  id="clientDOB" value="@info.stringDateOfBirth" required>
                     <input type="hidden" asp-for="clientDOBHidden" value="@info.stringDateOfBirth" id="clientDOBHidden">
 
                 </td>
@@ -1336,7 +1336,7 @@
                     Ethnicity
                 </td>
                 <td>
-                    <select asp-for="clientEthnicity" class="field-style field-full align-none">
+                    <select asp-for="clientEthnicity" >
                         @{if (info.clientEthnicity == "nhWhite")
                             {
                                 <option value="nhWhite" selected>Non Hispanic White</option>
@@ -1403,7 +1403,7 @@
                     School
                 </td>
                 <td>
-                    <input asp-for="school" type="text" class="field-style field-full align-none" size="60" value="@info.school" />
+                    <input asp-for="school" type="text"  size="60" value="@info.school" maxlength="60" />
                     <input type="hidden" asp-for="schoolHidden" value="@info.school">
                 </td>
             </tr>
@@ -1412,7 +1412,7 @@
                     Grade Level
                 </td>
                 <td>
-                    <select asp-for="currentGrade" class="field-style field-full align-none">
+                    <select asp-for="currentGrade" >
                         @{if (info.currentGrade == "0")
                             {
                                 <option value="0"  selected>Kindergarten</option>
@@ -1547,7 +1547,7 @@
                     <div id="ifYe">
                         <br>
                         If yes, which grade?<br />
-                        <select asp-for="whichGradeFailed" id="mathLevel" class="field-style field-full align-none">
+                        <select asp-for="whichGradeFailed" id="mathLevel" >
                             @{if (info.whichGradeFailed == 0)
                                 {
                                     <option value="0" selected>Kindergarten</option>
@@ -1660,7 +1660,7 @@
                         <br />
 
                         How many times? <br />
-                        <input asp-for="failCount" type="number" value="@info.failCount" />
+                        <input asp-for="failCount" type="number" value="@info.failCount" maxlength="2" />
                         <input type="hidden" asp-for="failCountHidden" value="@info.failCount">
                         <br />
                         <br />
@@ -1682,7 +1682,7 @@
                     <br />
                 </td>
                 <td>
-                    <input asp-for="careFirstName" class="field-style field-full align-none" value="@info.careFirstName" id="careFirstName">
+                    <input asp-for="careFirstName"  value="@info.careFirstName" id="careFirstName" maxlength="20">
                     <br />
                     <input type="hidden" asp-for="careFirstNameHidden" value="@info.careFirstName" id="careFirstNameHidden">
                 </td>
@@ -1694,7 +1694,7 @@
                 </td>
                 <td>
                    
-                    <input asp-for="careLastName" asptype="text" id="careLastName" class="field-style field-full align-none" value="@info.careLastName">
+                    <input asp-for="careLastName" asptype="text" id="careLastName" value="@info.careLastName" maxlength="20">
                     <br />
                     <input type="hidden" asp-for="careLastNameHidden" value="@info.careLastName" id="careLastNameHidden">
                 </td>
@@ -1760,7 +1760,7 @@
                 </td>
                 <td>
                    
-                    <select asp-for="careEthnicity" class="field-style field-full align-none" id="careethnic">
+                    <select asp-for="careEthnicity" id="careethnic">
                         @{if (info.careEthnicity == "nhWhite")
                             {
                                 <option value="nhWhite" selected>Non Hispanic White</option>
@@ -1829,7 +1829,7 @@
                 </td>
                 <td>
                    
-                    <input type="tel" asp-for="carePhone" id="carePhone" value="@info.carePhone" />
+                    <input type="tel" asp-for="carePhone" id="carePhone" value="@info.carePhone" maxlength="12"/>
                     <input type="hidden" asp-for="carePhoneHidden" id="carePhoneHidden" value="@info.carePhone">
                     <br />
                 </td>
@@ -2021,7 +2021,7 @@
                         <br />
                     </td>
                     <td>
-                        <input asp-for="schoolRef" type="text" class="field-style field-full align-none" size="60"  id="schoolRef" value="@info.schoolRef" />
+                        <input asp-for="schoolRef" type="text"  size="60"  id="schoolRef" value="@info.schoolRef" maxlength="60"/>
                         <input type="hidden" asp-for="schoolRefHidden" value="@info.schoolRef" id="schoolRefHidden">
                         <br />
                     </td>
@@ -2032,7 +2032,7 @@
                         <br />
                     </td>
                     <td>
-                        <select asp-for="readingLevel" id="readingLevel" class="field-style field-full align-none">
+                        <select asp-for="readingLevel" id="readingLevel" >
                             @{if (info.readingLevel == "13")
                                 {
                                     <option value="13" label="Other" selected></option>
@@ -2158,7 +2158,7 @@
                         <br />
                     </td>
                     <td>
-                        <select asp-for="mathLevel" id="mathLevel" class="field-style field-full align-none">
+                        <select asp-for="mathLevel" id="mathLevel" >
                             @{if (info.mathLevel == "13")
                                 {
                                     <option value="13" label="Other" selected></option>
@@ -2508,12 +2508,12 @@
                         <input type="hidden" asp-for="compServiceHidden" value="@info.compService" id="compServiceHidden">
                         <div id="ifYesComp">
                             If yes, what services?
-                            <input asp-for="ifWhatServices" type="text" value="@info.ifWhatServices" id="ifWhatServices" class="field-style field-full align-none" />
+                            <input asp-for="ifWhatServices" type="text" value="@info.ifWhatServices" id="ifWhatServices" maxlength="60" />
                             <input type="hidden" asp-for="ifWhatServicesHidden" value="@info.ifWhatServices" id="ifWhatServicesHidden">
                             <br />
                             <br />
                             How much time have they spent using these compensatory services?
-                            <input asp-for="compTime" type="text" value="@info.compTime" id="compTime" class="field-style field-full align-none" />
+                            <input asp-for="compTime" type="text" value="@info.compTime" id="compTime" maxlength="20" />
                             <input type="hidden" asp-for="compTimeHidden" value="@info.compTime" id="compTimeHidden">
                         </div>
 
@@ -2618,7 +2618,7 @@
                         <input type="hidden" asp-for="suspendedHidden" value="@info.suspended">
 
 
-                        <div id="ifYesSus" class="field-style field-full align-none">
+                        <div id="ifYesSus" >
                             If yes, how many times have they been suspended?<br />
                             <select asp-for="suspendCount" id="suspendCount">
                                 @{if (info.suspendCount == 4)
@@ -2695,7 +2695,7 @@
                         How many days have they spent in ISS?
                     </td>
                     <td>
-                        <input asp-for="iss" value="@info.iss" type="number" id="iss" />
+                        <input asp-for="iss" value="@info.iss" type="number" id="iss" maxlength="3" />
                         <input type="hidden" asp-for="issHidden" value="@info.iss" id="issHidden">
                     </td>
                 </tr>
@@ -2704,7 +2704,7 @@
                         How many days have they spent in OSS?
                     </td>
                     <td>
-                        <input asp-for="oss" type="number" value="@info.oss" id="oss" />
+                        <input asp-for="oss" type="number" value="@info.oss" id="oss"  maxlength="3"/>
                         <input type="hidden" asp-for="ossHidden" value="@info.oss" id="ossHidden">
 
                     </td>
@@ -2746,7 +2746,7 @@
                            
 
                             How many times was the youth in an alternative school?&nbsp;
-                            <select asp-for="timesInAlt" class="field-style field-full align-none" id="timesInAlt">
+                            <select asp-for="timesInAlt"  id="timesInAlt">
                                 @{if (info.timesInAlt == 0)
                                     {
                                         <option value="0" id="1" selected>0</option>
@@ -2801,13 +2801,13 @@
                                 }*@
                             <br />
                             What day did the student enter the alternative school<br>
-                            <input asp-for="dateOfAlt" type="date" class="field-style field-full align-none" id="dateOfAlt"
+                            <input asp-for="dateOfAlt" type="date"  id="dateOfAlt"
                                    value="@info.stringDateOfAlt" min="2001-01-01" max="2050-12-31">
                             <br />
                             <input type="hidden" asp-for="dateOfAltHidden" value="@info.stringDateOfAlt" id="dateOfAltHidden">
                             <br />
                                 How many days owed?<br />
-                        <input asp-for="daysOwed" type="number" value="@info.daysOwed" id="daysOwed" class="field-style field-full align-none"> <br />
+                        <input asp-for="daysOwed" type="number" value="@info.daysOwed" id="daysOwed"  maxlength="3"> <br />
                         <input type="hidden" asp-for="daysOwedHidden" value="@info.daysOwed" id="daysOwedHidden">
                         <br />
                         </div>
@@ -2825,7 +2825,7 @@
                         Total Days of Discipline Since Intake 
                     </td>
                     <td>
-                        <input asp-for="daysSinceIntake" type="text" id="dateintake" value="@info.daysSinceIntake" class="field-style field-full align-none">
+                        <input asp-for="daysSinceIntake" type="text" id="dateintake" value="@info.daysSinceIntake"  maxlength="3">
                         <input type="hidden" asp-for="daysSinceIntakeHidden" value="@info.daysSinceIntake" id="daysSinceIntakeHidden">
                     </td>
                 </tr>
@@ -2834,7 +2834,7 @@
                         Juvenile Justice Outcome 
                     </td>
                     <td>
-                        <input asp-for="justiceOutcome" type="text" value="@info.justiceOutcome" id="justiceOutcome" class="field-style field-full align-none">
+                        <input asp-for="justiceOutcome" type="text" value="@info.justiceOutcome" id="justiceOutcome"  maxlength="30">
                         <input type="hidden" asp-for="justiceOutcomeHidden" value="@info.justiceOutcome" id="justiceOutcomeHidden">
                         <br />
                     </td>
@@ -2844,7 +2844,7 @@
                         Other legal issues?
                     </td>
                     <td>
-                        <select asp-for="firstLegal" class="field-style field-full align-none" id="firstLegal">
+                        <select asp-for="firstLegal"  id="firstLegal">
                             @{if (info.firstLegal == "education")
                                 {
                                     <option value="education" id="edu" selected>Education</option>
@@ -2928,7 +2928,7 @@
                        State Legal Issue if not Listed above 
                     </td>
                     <td>
-                        <input asp-for="secondLegal" type="text" value="@info.secondLegal" id="secondLegal" class="field-style field-full align-none" />
+                        <input asp-for="secondLegal" type="text" value="@info.secondLegal" id="secondLegal"  maxlength="50"/>
                         <input type="hidden" asp-for="secondLegalHidden" value="@info.secondLegal" id="secondLegalHidden"><br />
 
                     </td>
@@ -2955,7 +2955,7 @@
                         Referral Date
                     </td>
                     <td>
-                        <input asp-for="referralDate" type="date" class="field-style field-full align-none" id="refdate"
+                        <input asp-for="referralDate" type="date"  id="refdate"
                                value="@info.stringReferralDate"
                                min="2001-01-01" max="2050-12-31">
 
@@ -2967,7 +2967,7 @@
                         Intake Date
                     </td>
                     <td>
-                        <input asp-for="trackingdate" type="date" id="intdate" class="field-style field-full align-none" min="2005-01-01" max="2050-12-31" value="@info.stringtrackingdate">
+                        <input asp-for="trackingdate" type="date" id="intdate"  min="2005-01-01" max="2050-12-31" value="@info.stringtrackingdate">
 
                         <input type="hidden" asp-for="trackingdateHidden" value="@info.stringtrackingdate" id="trackingdateHidden"><br />
                     </td>
@@ -2977,7 +2977,7 @@
                         School at time of Case Closure
                     </td>
                     <td>
-                        <input asp-for="schoolAtClosure" type="text" value="@info.schoolAtClosure" id="schoolAtClosure" size="60"  class="field-style field-full align-none" />
+                        <input asp-for="schoolAtClosure" type="text" value="@info.schoolAtClosure" id="schoolAtClosure" maxlength="60" size="60" />
 
                         <input type="hidden" asp-for="schoolAtClosureHidden" value="@info.schoolAtClosure" id="schoolAtClosureHidden"><br />
                     </td>
@@ -2988,7 +2988,7 @@
                         Referral Source First Name
                     </td>
                     <td>
-                        <input asp-for="referralSource" type="text" class="field-style field-full align-none" value="@info.referralSource" id="referralSource" required />
+                        <input asp-for="referralSource" type="text"  value="@info.referralSource" id="referralSource" maxlength="20" required />
                         <input type="hidden" asp-for="referralSourceHidden" value="@info.referralSource" id="referralSourceHidden">
                     </td>
                 </tr>
@@ -2999,7 +2999,7 @@
                         Referral Source Last Name
                     </td>
                     <td>
-                        <input asp-for="referrallSource" type="text" class="field-style field-full align-none" value="@info.referrallSource" id="referrallSource" required />
+                        <input asp-for="referrallSource" type="text"  value="@info.referrallSource" id="referrallSource" maxlength="20" required />
                         <input type="hidden" asp-for="referrallSourceHidden" value="@info.referrallSource" id="referrallSourceHidden">
                     </td>
                 </tr>
@@ -3008,7 +3008,7 @@
                         Email of First Referral Source
                     </td>
                     <td>
-                        <input asp-for="emailOfFirstReferralSource" type="text" value="@info.emailOfFirstReferralSource" class="field-style field-full align-none" id="referralemail" /> <br />
+                        <input asp-for="emailOfFirstReferralSource" type="text" value="@info.emailOfFirstReferralSource"  id="referralemail" maxlength="50"/> <br />
                         <input type="hidden" asp-for="emailOfFirstReferralSourceHidden" value="@info.emailOfFirstReferralSource" id="emailOfFirstReferralSourceHidden">
                     </td>
                 </tr>
@@ -3111,7 +3111,7 @@
 
                     </td>
                     <td>
-                        <input asp-for="legalAdvoTaken" type="text" value="@info.legalAdvoTaken" id="legalAdvoTaken" class="field-style field-split align-left" />
+                        <input asp-for="legalAdvoTaken" type="text" value="@info.legalAdvoTaken" id="legalAdvoTaken"  maxlength="60"/>
                         <input type="hidden" asp-for="legalAdvoTakenHidden" value="@info.legalAdvoTaken" id="legalAdvoTakenHidden">
                     </td>
                 </tr>

@@ -3547,25 +3547,27 @@ namespace HopePipeline.Controllers
         {
           //  Main(emailaddress);
             //confirmation thank you page for submiting and give email submit referral
-            Execute().Wait();
+            Execute(emailaddress).Wait();
+
             return RedirectToAction("Index", "Home");
 
         }
 
-        static async Task Execute()
+        static async Task Execute(string emailaddress)
         {
             //    Execute().Wait();
             //}
+           
 
             //static async Task Execute()
             //{
             var apiKey = Environment.GetEnvironmentVariable("API_KEY");
             var client = new SendGridClient(apiKey);
-            var from = new EmailAddress("n01057930@unf.edu", "Example User");
-            var subject = "Sending with Twilio SendGrid is Fun";
-            var to = new EmailAddress("n01057930@unf.edu", "Example User");
-            var plainTextContent = "and easy to do anywhere, even with C#";
-            var htmlContent = "<strong>and easy to do anywhere, even with C#</strong>";
+            var from = new EmailAddress("n01057930@unf.edu", "The Center for Children's Rights");
+            var subject = "Ex. The Center for Children's Rights Referral Confirmation";
+            var to = new EmailAddress(emailaddress, "Referral Source");
+            var plainTextContent = "Waiting for the template form from betsy on what is wanted in this section";
+            var htmlContent = "<strong>Waiting for the template form from betsy on what is wanted in this section</strong>";
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             var response = await client.SendEmailAsync(msg);
 

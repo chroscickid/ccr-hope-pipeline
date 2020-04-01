@@ -269,7 +269,7 @@ namespace HopePipeline.Controllers
             while (reader.Read())
             {
                 //We push information from the query into a row and onto the list of rows
-                Meeting meet = new Meeting { MeetingDate = reader.GetDateTime(0), MeetingPurpose = reader.GetString(1), MeetingNotes = reader.GetString(2), meetingCode = reader.GetGuid(5) };
+                Meeting meet = new Meeting { MeetingDate = reader.GetDateTime(0), MeetingPurpose = reader.GetString(1), MeetingNotes = reader.GetString(2), meetingCode = reader.GetGuid(4) };
 
                 results.Add(meet);
             }

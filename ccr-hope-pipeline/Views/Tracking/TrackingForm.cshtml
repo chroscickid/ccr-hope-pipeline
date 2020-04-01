@@ -258,6 +258,7 @@
         </nav>
     </div>
     <form asp-controller="Tracking" asp-action="SubmitTracking" method="post">
+        <div asp-validation-summary="ModelOnly"></div>
         <input asp-for="ClientID" type="hidden" class="field-style field-full align-none" placeholder="Client ID" value="@Model.ClientID" />
         @{
             var refMove = Model.referralBrandi;
@@ -270,7 +271,8 @@
                 <tr>
                     <td>
                         Referral Source's Name:<br />
-                        <input asp-for="referralSource" type="text" name="referral" placeholder="Referral Source" value="@refMove.referralfname @refMove.referrallname" required />
+                        <input asp-for="reffname" type="text" name="referral" placeholder="Referral Source First Name" value="@refMove.referralfname" maxlength="20" />
+                        <input asp-for="reflname" type="text" name="referral" placeholder="Referral Source Last Name" value="@refMove.referrallname" maxlength="20" />
                     </td>
 
                     <td>
@@ -457,8 +459,11 @@
                             <option value="notListed">Ethnicity Not Listed</option>
                         </select>
                         <br>
+                        <div class="form-group">
                         Caretaker Phone Number: <br />
                         <input type="tel" asp-for="carePhone" class="field-style field-full align-none" required />
+                        <span asp-validation-for="carePhone" class="text-danger"></span>
+                            </div>
                     </td>
                 </tr>
 

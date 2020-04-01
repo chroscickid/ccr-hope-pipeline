@@ -11,6 +11,7 @@ namespace HopePipeline.Models.DbEntities.Meetings
         public string MeetingPurpose { get; set; }
         public string MeetingNotes { get; set; }
         public Guid clientCode { get; set; }
+        public Guid meetingCode { get; set; }
 
     }
 

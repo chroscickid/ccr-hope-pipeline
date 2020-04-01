@@ -13,7 +13,8 @@ namespace HopePipeline.Models.DbEntities.Tracking
     {
         public HopePipeline.Models.referralBrandi referralBrandi { get; set; }
         public Guid ClientID { get; set; }
-        public string referralSource { get; set; }
+        public string reffname { get; set; }
+        public string reflname { get; set; }
 
         public string clientFirstName { get; set; }
         public string clientLastName { get; set; }
@@ -28,6 +29,7 @@ namespace HopePipeline.Models.DbEntities.Tracking
         public string careFirstName { get; set; }
         public string careLastName { get; set; }
         public string careEthnicity { get; set; }
+        [Phone]
         public string carePhone { get; set; }
         public string schoolRef { get; set; }
         public string readingLevel { get; set; }

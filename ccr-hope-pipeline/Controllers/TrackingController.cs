@@ -105,8 +105,7 @@ namespace HopePipeline.Controllers
         [HttpPost]
         public IActionResult SubmitTracking(TrackingForm sub)
         {
-           // int id = sub.ClientID;
-            Guid ident = Guid.NewGuid();
+           Guid ident = Guid.NewGuid();
             string id = "'" + ident + "'";
             SqlConnection cnn = new SqlConnection(connectionString);
             SqlCommand command;
@@ -131,21 +130,15 @@ namespace HopePipeline.Controllers
 
                 "INSERT dbo.ccr VALUES ('" + sub.levelOfServiceProvided + "'," + sub.caseStatus + ",'" + sub.nonEngagementReason + "'," + sub.remedyResolution + "," + sub.rearrestWhileRepresented + ",'" + sub.schoolAtClosure + "'," + id + "," + sub.intakeDate + ")",
                 "INSERT INTO dbo.comp VALUES (" + sub.compService + ",'" + sub.ifWhatServices + "','" + sub.compTime + "'," + id + ")",
-                //AddService?
-                //Servicesgained
+                
                 "INSERT INTO dbo.currentStatus VALUES (" + sub.readingLevel + "," + sub.mathLevel + ",'" + "currentServices?" + "'," + sub.inPride + "," + sub.newFBA + "," + 0 + ",'" + "servicesGained" + "'," + id + ")",
                 "INSERT INTO dbo.failed VALUES (" + sub.failedGrade + "," + sub.whichGradeFailed + "," + sub.failCount + "," + id + ")",
                 "INSERT INTO dbo.health VALUES (" + sub.baker + "," + sub.marchman + "," + sub.asthma + "," + id + ")",
                 "INSERT INTO dbo.household VALUES (" + sub.femHouse + "," + sub.domVio + "," + sub.adopted + "," + sub.evicted + "," + sub.incarParent + "," + sub.publicAssistance + "," + id + ")",
-                //addIEP?
-               // "INSERT INTO dbo.iep VALUES (" + sub.iep + ",'" + sub.iepplan1 + "'','" + sub.iepplan2 + "'," + "0" + "," + id + ")",
                "INSERT INTO dbo.iep VALUES (" + sub.iep + ",'" + sub.iepplan1 + "','" + sub.iepplan2 + "'," + "0" + "," + id + ")",
-                //otherLegal should be in the db?
-                //"INSERT INTO dbo.legal VALUES (" + sub.firstLegal + ",'" + sub.secondLegal + "','" + sub.justiceOutcome + "'," + id + ")",
                 "INSERT INTO dbo.legal VALUES ('" + sub.firstLegal + "','" + sub.secondLegal + "','" + sub.justiceOutcome + "'," + id + ")",
-                
-                //"INSERT INTO dbo.school (" + id + "," + sub.currentGrade + ",'" + sub.school + "','" + sub.schoolRef + "')"
-                "INSERT INTO dbo.school (" + id + "," + sub.currentGrade + ",'" + sub.school + "','" + sub.schoolRef + "')"
+                "INSERT INTO dbo.refinfo VALUES ('" + sub.reffname + "','" + sub.reflname + "','" + sub.referralDate + "'," + id + ",'" + sub.emailOfFirstReferralSource + "')",
+                "INSERT INTO dbo.school VALUES (" + id + "," + sub.currentGrade + ",'" + sub.school + "','" + sub.schoolRef + "')"
             };
 
             //Um, this needs to be outside of that for some reason
@@ -276,7 +269,7 @@ namespace HopePipeline.Controllers
             while (reader.Read())
             {
                 //We push information from the query into a row and onto the list of rows
-                Meeting meet = new Meeting { MeetingDate = reader.GetDateTime(0), MeetingPurpose = reader.GetString(1), MeetingNotes = reader.GetString(2) };
+                Meeting meet = new Meeting { MeetingDate = reader.GetDateTime(0), MeetingPurpose = reader.GetString(1), MeetingNotes = reader.GetString(2), meetingCode = reader.GetGuid(5) };
 
                 results.Add(meet);
             }
@@ -298,6 +291,23 @@ namespace HopePipeline.Controllers
 
 
             return View("MeetingList", sendme);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteMeeting(Guid meetingCode, Guid clientCode)
+        {
+            SqlConnection cnn;
+            cnn = new SqlConnection(connectionString);
+            SqlCommand command;
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            cnn.Open();
+            string query = "DELETE from dbo.meeting WHERE meetingCode = '" + meetingCode + "';";
+            command = new SqlCommand(query, cnn);
+            SqlDataReader reader = command.ExecuteReader();
+            reader.Close();
+
+            return RedirectToAction("MeetingList", clientCode);
+
         }
 
 
@@ -502,6 +512,7 @@ namespace HopePipeline.Controllers
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
             var mod = new TrackRefList();
+            mod.list = new List<TrackRefRow>();
 
             string q1 = "SELECT * FROM referral WHERE clientCode = '" + clientCode + "'";
             command = new SqlCommand(q1, cnn);

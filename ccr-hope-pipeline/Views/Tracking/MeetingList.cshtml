@@ -13,8 +13,8 @@
 <div id="addMeeting">
     <form asp-controller="Tracking" asp-action="AddMeeting" method="post">
         <input type="hidden" name="clientCode" value="@Model.clientCode" />
-        <p>Date: <input id="today" type="date" name="meetingDate" /></p>
-        <p>Purpose: <input type="text" name="MeetingPurpose" /></p>
+        <p>Date: <input id="today" type="date" name="meetingDate" required/></p>
+        <p>Purpose: <input type="text" name="MeetingPurpose" required/></p>
         <p>Notes: </p>
         <textarea name="MeetingNotes"></textarea>   
         </br> </br>
@@ -39,6 +39,9 @@
                     <th>
                         Notes
                     </th>
+                    <th>
+
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -54,6 +57,9 @@
                 </td>
                 <td>
                     @row.MeetingNotes
+                </td>
+                <td>
+                    <a asp-controller="Tracking" asp-action="DeleteMeeting" asp-route-meetingCode="@row.meetingCode" asp-route-clientCode="@Model.clientCode">Delete</a>
                 </td>
             </tr>            
         }

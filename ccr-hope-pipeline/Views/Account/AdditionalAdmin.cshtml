@@ -4,83 +4,89 @@
     ViewData["Title"] = "Additional Admin";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width = device-width, initial-scale=1">
-    <title>AdditionalAdmin</title>
-    <style>
-         body {
-             font-family: Arial, Helvetica, sans-serif;
-         }
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">*@
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css">
 
-         input[type=text], input[type=password], input[type=email] {
-             width: 100%;
-             padding: 12px 20px;
-             margin: 8px 0;
-             display: inline-block;
-             border: 1px solid #ccc;
-             box-sizing: border-box;
-         }
+        body {
+            font-family: 'Varela Round', sans-serif;
+        }
+        
 
-         input[type=submit] {
-             background-color: #09335e;
-             color: white;
-             padding: 10px 18px;
-             width: auto;
-             border: none;
-             border-radius: 4px;
-             cursor: pointer;
-         }
+        input[type=text], input[type=password], input[type=email] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
 
-         .cancelbtn {
-             width: auto;
-             padding: 10px 18px;
-             color: white;
-             background-color: #f44336;
-             border: none;
-             border-radius: 4px;
-             cursor: pointer;
-         }
+        input[type=submit] {
+            background-color: #09335e;
+            color: white;
+            padding: 10px 18px;
+            width: auto;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
 
-
-         .form-style-9 ul li .field-style {
-             box-sizing: border-box;
-             -webkit-box-sizing: border-box;
-             -moz-box-sizing: border-box;
-             padding: 8px;
-             outline: none;
-             border: 1px solid #B0CFE0;
-             -webkit-transition: all 0.30s ease-in-out;
-             -moz-transition: all 0.30s ease-in-out;
-             -o-transition: all 0.30s ease-in-out;
-         }
-
-             .form-style-9 ul li .field-style:focus {
-                 box-shadow: 0 0 5px #B0CFE0;
-                 border: 1px solid #B0CFE0;
-             }
-
-         .form-style-9 ul li .field-split {
-             width: 49%;
-         }
+        .cancelbtn {
+            width: auto;
+            padding: 10px 18px;
+            color: white;
+            background-color: #f44336;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
 
 
-         .form-style-9 ul li input.align-left {
-             float: left;
-         }
+        .form-style-9 ul li .field-style {
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            padding: 8px;
+            outline: none;
+            border: 1px solid #B0CFE0;
+            -webkit-transition: all 0.30s ease-in-out;
+            -moz-transition: all 0.30s ease-in-out;
+            -o-transition: all 0.30s ease-in-out;
+        }
 
-         .form-style-9 ul li input.align-right {
-             float: right;
-         }
+            .form-style-9 ul li .field-style:focus {
+                box-shadow: 0 0 5px #B0CFE0;
+                border: 1px solid #B0CFE0;
+            }
 
-         #menu li {
-             list-style-type: none;
-         }
+        .form-style-9 ul li .field-split {
+            width: 49%;
+        }
 
-         /*var pass = document.getElementById("pass"), confirm_password = document.getElementById("pass2");
+
+        .form-style-9 ul li input.align-left {
+            float: left;
+        }
+
+        .form-style-9 ul li input.align-right {
+            float: right;
+        }
+
+        #menu li {
+            list-style-type: none;
+        }
+
+        /*var pass = document.getElementById("pass"), confirm_password = document.getElementById("pass2");
 
              function validatePassword()
         {
@@ -151,17 +157,20 @@
     </script>
 
     <li class="container">
+        <p> </p>
+        &nbsp;
+        <p> </p>
+        <p> </p>
         <h3>Create a new administrator account</h3>
-        <p></p>
+
         @*<form method="post" asp-controller="Account" asp-action="Verify">*@
         <form asp-action="newaccount" asp-controller="account" class="form-style-9" ul id="menu" method=post oninput='up2.setCustomValidity(up2.value != up.value ? "Passwords do not match." : "")'>
-            <p></p>
-            <p></p>
-            <p></p>
-            &nbsp;
+
             @*//add styling so that they are on same line*@
 
             <ul>
+                <p></p>
+
                 <label for="text"><b>First Name & Last Name</b></label>
                 <li>
                     <input type="text" asp-for="firstname" placeholder="First Name" class="field-style field-split align-left" name="firstname" required="">

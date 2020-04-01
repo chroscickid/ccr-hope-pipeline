@@ -1,44 +1,26 @@
 ﻿@model HopePipeline.Models.DbEntities.Login.Account;
 @{
-    ViewData["Title"] = "Admin Login";
+	ViewData["Title"] = "Admin Login";
 }
 
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width = device-width, initial-scale=1">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	@**<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">*@
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<style type="text/css">
+		body {
+			font-family: 'Varela Round', sans-serif;
+		}
 
-    <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .form-style-9 
-        {
-            max-width: 1000px;
-            background: #FAFAFA;
-            padding: 60px;
-            margin: 50px auto;
-            border-radius: 10px;
-            border: 6px solid #305A72;
-        }
-
-            .form-style-9 ul li .field-style 
-            {
-                box-sizing: border-box;
-                -webkit-box-sizing: border-box;
-                -moz-box-sizing: border-box;
-                padding: 8px;
-                outline: none;
-                border: 1px solid #B0CFE0;
-                -webkit-transition: all 0.30s ease-in-out;
-                -moz-transition: all 0.30s ease-in-out;
-                -o-transition: all 0.30s ease-in-out;
-            }
-
-
-        input[type=text], input[type=password] 
-        {
+		 input[type=text], input[type=password], input[type=email] {
             width: 100%;
             padding: 12px 20px;
             margin: 8px 0;
@@ -46,8 +28,7 @@
             border: 1px solid #ccc;
             box-sizing: border-box;
         }
-
-        input[type=submit] {
+		 .login {
             background-color: #09335e;
             color: white;
             padding: 10px 18px;
@@ -66,33 +47,158 @@
             border-radius: 4px;
             cursor: pointer;
         }
+        .modal-login {
+            color: #636363;
+            width: 350px;
+        }
 
+            .modal-login .modal-content {
+                padding: 20px;
+                border-radius: 5px;
+                border: none;
+            }
+
+            .modal-login .modal-header {
+                border-bottom: none;
+                position: relative;
+                justify-content: center;
+            }
+
+            .modal-login h4 {
+                text-align: center;
+                font-size: 26px;
+                margin: 30px 0 -15px;
+            }
+
+            .modal-login .form-control:focus {
+                border-color: #70c5c0;
+            }
+
+            .modal-login .form-control, .modal-login .btn {
+                min-height: 40px;
+                border-radius: 3px;
+            }
+
+            .modal-login .close {
+                position: absolute;
+                top: -5px;
+                right: -5px;
+            }
+
+            .modal-login .modal-footer {
+                background: #ecf0f1;
+                border-color: #dee4e7;
+                text-align: center;
+                justify-content: center;
+                margin: 0 -20px -20px;
+                border-radius: 5px;
+                font-size: 13px;
+            }
+
+				.modal-login .modal-footer a {
+					color: #999;
+				}
+
+			.modal-login .avatar {
+				position: absolute;
+				margin: 0 auto;
+				left: 0;
+				right: 0;
+				top: -70px;
+				width: 95px;
+				height: 95px;
+				border-radius: 50%;
+				z-index: 9;
+				background: #09335e;
+				padding: 15px;
+				box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+			}
+
+				.modal-login .avatar img {
+					width: 100%;
+				}
+
+			.modal-login.modal-dialog {
+				margin-top: 80px;
+			}
+
+			.modal-login .btn {
+				color: #fff;
+				border-radius: 4px;
+				background: #09335e;
+				line-height: normal;
+				border: none;
+			}
+
+				.modal-login .btn:hover, .modal-login .btn:focus {
+					background: #09335e;
+					outline: none;
+					transition: all 0.2s;
+				}
+
+		.trigger-btn {
+			display: inline-block;
+			margin: 100px auto;
+		}
+		        .back {
+            background: #e2e2e2;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+        }
+
+        .div-center {
+            width: 400px;
+            height: 400px;
+            background-color: #fff;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            max-width: 100%;
+            max-height: 100%;
+            overflow: auto;
+            padding: 1em 2em;
+            border-bottom: 2px solid #ccc;
+            display: table;
+        }
+
+        div.content {
+            display: table-cell;
+            vertical-align: middle;
+        }
+	
     </style>
 </head>
 <body>
     <div class="container">
-      
-        <p></p>
-        @ViewBag.error
-    <form method="post" class="form-style-9" asp-controller="Account" asp-action="Verify">
-        <h3>Administrator Log In</h3>
-        <br />
-        <label for="email"><b>Username/Email</b></label>
-        <input type="text" placeholder="Enter Username" name="email" required="" asp-for="email">
-        <p></p>
-        <label for="pass"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="pass" required="" asp-for="pass">
-        <p></p>
-        <button type="button" onclick="javascript:history.back().style.display='none'" class="cancelbtn" OnClientClick="JavaScript:window.history.back(1);return false;">Cancel </button>
-        &nbsp;&nbsp;
-        @Html.AntiForgeryToken()
-        &nbsp;&nbsp;
-        <input type="submit" value="Login">
-        <p></p>
-        <h5><a asp-controller="Home" asp-action="ForgotPassword">Forgot Password?</a></h5>
+        <div-center>
+            <p></p>
+            @ViewBag.error
 
-        <p></p>
-    </form>
+            <form method="post" class="form-style-9" asp-controller="Account" asp-action="Verify">
+                <h3>Administrator Log In</h3>
+                <br />
+                <label for="email"><b>Username/Email:</b></label>
+                <input type="text" placeholder="Enter Username" name="email" required="" asp-for="email">
+                <p></p>
+                <label for="pass"><b>Password:</b></label>
+                <input type="password" placeholder="Enter Password" name="pass" required="" asp-for="pass">
+                <p></p>
+                <button type="button" onclick="javascript:history.back().style.display='none'" class="cancelbtn" OnClientClick="JavaScript:window.history.back(1);return false;">Cancel </button>
+                &nbsp;&nbsp;
+                @Html.AntiForgeryToken()
+                &nbsp;&nbsp;
+                <input type="submit" class="login" value="Login">
+                <p></p>
+                <h5><a asp-controller="Home" asp-action="ForgotPassword">Forgot Password?</a></h5>
+
+                <p></p>
+            </form>
     </div>
+
 </body>
 </html>

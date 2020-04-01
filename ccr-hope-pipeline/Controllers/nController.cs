@@ -1572,7 +1572,7 @@ namespace HopePipeline.Controllers
                     { client.emailOfFirstReferralSource = "N/A"; }
 
                     client.referralSource = Convert.ToString(dataReader["refFName"]) + " " + Convert.ToString(dataReader["refLName"]);
-                    if (client.referralSource == "")
+                    if (client.referralSource == " ")
                     { client.referralSource = "N/A"; }
 
                     client.rearrestAdvocacy = Convert.ToString(dataReader["rearrestAdvo"]);
@@ -1900,6 +1900,7 @@ namespace HopePipeline.Controllers
 
 
         }
+       
         public IActionResult EditTrackingM(Guid clientCode)
 
         //edit tracking information in a form format

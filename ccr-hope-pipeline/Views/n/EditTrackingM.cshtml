@@ -1,14 +1,14 @@
 ﻿@model HopePipeline.Models.DbEntities.Tracking.EditTrackingm;
 @{
     ViewData["Title"] = "EditTrackingForm";
- Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 
 }
 
 <style>
     table {
-            width: 100%;
-        }
+        width: 100%;
+    }
 
     table, th, td {
         border: 1px solid black;
@@ -132,7 +132,7 @@
         display: block;
     }
 
-    #ifYesBullied, #ifNoBullied,#ifYesReport, #ifNoReport {
+    #ifYesBullied, #ifNoBullied, #ifYesReport, #ifNoReport {
         display: none;
     }
 
@@ -185,23 +185,22 @@
     #noSus:checked ~ #ifNoSus {
         display: block;
     }
-      
 </style>
 
 <script>
-     function Information(evt, Specific) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-            document.getElementById(Specific).style.display = "block";
-            evt.currentTarget.className += " active";
+    function Information(evt, Specific) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
         }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(Specific).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
 
     //function editConfirm() {
     //    //Referral Source begin
@@ -212,7 +211,7 @@
     //    if (referralSource != referralSourceHidden) { var rS = "\n The Client's referralSource has been changed to " + referralSource + ""; }
 
     //    //ReferralSource End
-        //    //Referral Source begin
+    //    //Referral Source begin
 
     //    var rS = "";
     //    var referrallsource = document.getElementById("referrallsource").value;
@@ -1232,7 +1231,7 @@
     //            return false;
     //            event.preventDefault();
     //        }
-     //   }
+    //   }
 </script>
 @{
     var info = ViewBag.LSessage;
@@ -1251,23 +1250,23 @@
 <br />
 <h2> Center for Children's Rights Tracking Form Edit</h2>
 <hr />
-<form asp-action="EditTrackingForm" asp-controller="n"   method="post">
+<form asp-action="EditTrackingForm" asp-controller="n" class="field-style field-full align-none" method="post">
 
     <div id="Demographic Information" class="tabcontent" style="display:block">
 
         <table id="t01">
             <tr>
                 <td class="t" style="text-align:left" colspan="2">
-                    <input asp-for="ClientID" type="hidden"  value="@info.ClientID" />
+                    <input asp-for="ClientID" type="hidden" value="@info.ClientID" />
 
                     <h2><b>Demographic Information</b></h2>
                 </td>
             </tr>
-         
+
             <tr>
                 <td class="t" style="text-align:right">  Youth's First Name </td>
                 <td>
-                    <input asp-for="clientFirstName" id="clientFirstName" type="text"  value="@info.clientFirstName"  maxlength="20" required />
+                    <input asp-for="clientFirstName" id="clientFirstName" type="text" value="@info.clientFirstName" maxlength="20"  />
 
                     <input type="hidden" id="clientFirstNameHidden" asp-for="clientFirstNameHidden" value="@info.clientFirstName">
                 </td>
@@ -1277,7 +1276,7 @@
                     Youth's Last Name
                 </td>
                 <td>
-                    <input asp-for="clientLastName" id="clientLastName" type="text"  value="@info.clientLastName" maxlength="20"  required />
+                    <input asp-for="clientLastName" id="clientLastName" type="text" value="@info.clientLastName" maxlength="20"  />
 
                     <input type="hidden" id="clientLastNameHidden" asp-for="clientLastNameHidden" value="@info.clientLastName">
 
@@ -1289,7 +1288,7 @@
 
                 </td>
                 <td>
-                    <input asp-for="clientDOB" type="date" min="2001-01-01" max="2050-12-31"  id="clientDOB" value="@info.stringDateOfBirth" required>
+                    <input asp-for="clientDOB" type="date"  max="2050-12-31" id="clientDOB" value="@info.stringDateOfBirth" >
                     <input type="hidden" asp-for="clientDOBHidden" value="@info.stringDateOfBirth" id="clientDOBHidden">
 
                 </td>
@@ -1336,7 +1335,7 @@
                     Ethnicity
                 </td>
                 <td>
-                    <select asp-for="clientEthnicity" >
+                    <select asp-for="clientEthnicity">
                         @{if (info.clientEthnicity == "nhWhite")
                             {
                                 <option value="nhWhite" selected>Non Hispanic White</option>
@@ -1403,7 +1402,7 @@
                     School
                 </td>
                 <td>
-                    <input asp-for="school" type="text"  size="60" value="@info.school" maxlength="60" />
+                    <input asp-for="school" type="text" size="60" value="@info.school" maxlength="60" />
                     <input type="hidden" asp-for="schoolHidden" value="@info.school">
                 </td>
             </tr>
@@ -1412,39 +1411,39 @@
                     Grade Level
                 </td>
                 <td>
-                    <select asp-for="currentGrade" >
+                    <select asp-for="currentGrade">
                         @{if (info.currentGrade == "0")
                             {
-                                <option value="0"  selected>Kindergarten</option>
+                                <option value="0" selected>Kindergarten</option>
                             }
                             else
                             {
-                                <option value="0"  id="currentGrade0">Kindergarten</option>
+                                <option value="0" id="currentGrade0">Kindergarten</option>
                             }}
                         @{if (info.currentGrade == "1")
                             {
-                                <option value="1"  selected>1st Grade</option>
+                                <option value="1" selected>1st Grade</option>
                             }
                             else
                             {
-                                <option value="1"  id="currentGrade1">1st Grade</option>
+                                <option value="1" id="currentGrade1">1st Grade</option>
                             }}
 
                         @{if (info.currentGrade == "2")
                             {
-                                <option value="2"  selected>2nd Grade</option>
+                                <option value="2" selected>2nd Grade</option>
                             }
                             else
                             {
-                                <option value="2"  id="currentGrade2">2nd Grade</option>
+                                <option value="2" id="currentGrade2">2nd Grade</option>
                             }}
                         @{if (info.currentGrade == "3")
                             {
-                                <option value="3"  selected>3rd Grade</option>
+                                <option value="3" selected>3rd Grade</option>
                             }
                             else
                             {
-                                <option value="3"  id="currentGrade3">3rd Grade</option>
+                                <option value="3" id="currentGrade3">3rd Grade</option>
                             }}
                         @{if (info.currentGrade == "4")
                             {
@@ -1452,19 +1451,19 @@
                             }
                             else
                             {
-                                <option value="4"  id="currentGrade4">4th Grade</option>
+                                <option value="4" id="currentGrade4">4th Grade</option>
                             }}
                         @{if (info.currentGrade == "5")
                             {
-                                <option value="5"  selected>5th Grade</option>
+                                <option value="5" selected>5th Grade</option>
                             }
                             else
                             {
-                                <option value="5"  id="currentGrade5">5th Grade</option>
+                                <option value="5" id="currentGrade5">5th Grade</option>
                             }}
                         @{if (info.currentGrade == "6")
                             {
-                                <option value="6"  selected>6th Grade</option>
+                                <option value="6" selected>6th Grade</option>
                             }
                             else
                             {
@@ -1476,23 +1475,23 @@
                             }
                             else
                             {
-                                <option value="7"  id="currentGrade7">7th Grade</option>
+                                <option value="7" id="currentGrade7">7th Grade</option>
                             }}
                         @{if (info.currentGrade == "8")
                             {
-                                <option value="8"  selected>8th Grade</option>
+                                <option value="8" selected>8th Grade</option>
                             }
                             else
                             {
-                                <option value="8"  id="currentGrade8">8th Grade</option>
+                                <option value="8" id="currentGrade8">8th Grade</option>
                             }}
                         @{if (info.currentGrade == "9")
                             {
-                                <option value="9"  selected>9th Grade</option>
+                                <option value="9" selected>9th Grade</option>
                             }
                             else
                             {
-                                <option value="9"  id="currentGrade9">9th Grade</option>
+                                <option value="9" id="currentGrade9">9th Grade</option>
                             }}
                         @{if (info.currentGrade == "10")
                             {
@@ -1500,23 +1499,23 @@
                             }
                             else
                             {
-                                <option value="10"  id="currentGrade10">10th Grade</option>
+                                <option value="10" id="currentGrade10">10th Grade</option>
                             }}
                         @{if (info.currentGrade == "11")
                             {
-                                <option value="11"  selected>11th Grade</option>
+                                <option value="11" selected>11th Grade</option>
                             }
                             else
                             {
-                                <option value="11"  id="currentGrade11">11th Grade</option>
+                                <option value="11" id="currentGrade11">11th Grade</option>
                             }}
                         @{if (info.currentGrade == "12")
                             {
-                                <option value="12"  selected>12th Grade</option>
+                                <option value="12" selected>12th Grade</option>
                             }
                             else
                             {
-                                <option value="12"  id="currentGrade12">12th Grade</option>
+                                <option value="12" id="currentGrade12">12th Grade</option>
                             }}
 
 
@@ -1543,11 +1542,11 @@
                         { <input asp-for="failedGrade" type="radio" name="failedGrade" id="noGrade" value="0"> } }
                     &nbsp;
                     <input type="hidden" asp-for="failedGradeHidden" value="@info.failedGrade">
-                    
+
                     <div id="ifYe">
                         <br>
                         If yes, which grade?<br />
-                        <select asp-for="whichGradeFailed" id="mathLevel" >
+                        <select asp-for="whichGradeFailed" id="mathLevel">
                             @{if (info.whichGradeFailed == 0)
                                 {
                                     <option value="0" selected>Kindergarten</option>
@@ -1682,7 +1681,7 @@
                     <br />
                 </td>
                 <td>
-                    <input asp-for="careFirstName"  value="@info.careFirstName" id="careFirstName" maxlength="20">
+                    <input asp-for="careFirstName" value="@info.careFirstName" id="careFirstName" maxlength="20">
                     <br />
                     <input type="hidden" asp-for="careFirstNameHidden" value="@info.careFirstName" id="careFirstNameHidden">
                 </td>
@@ -1690,10 +1689,10 @@
             <tr>
                 <td class="t" style="text-align:right">
 
-                Caregiver Last Name
+                    Caregiver Last Name
                 </td>
                 <td>
-                   
+
                     <input asp-for="careLastName" asptype="text" id="careLastName" value="@info.careLastName" maxlength="20">
                     <br />
                     <input type="hidden" asp-for="careLastNameHidden" value="@info.careLastName" id="careLastNameHidden">
@@ -1703,7 +1702,7 @@
                     <br />Caregivers relation to youth:
                 </td>
                 <td>
-                   
+
                     @{ if (info.careGender.Contains("Mother"))
                         {
                             <input asp-for="careGender" type="radio" name="careGender" value="Mother" checked>
@@ -1759,7 +1758,7 @@
                     Caregivers Ethnicity
                 </td>
                 <td>
-                   
+
                     <select asp-for="careEthnicity" id="careethnic">
                         @{if (info.careEthnicity == "nhWhite")
                             {
@@ -1825,11 +1824,11 @@
             </tr>
             <tr>
                 <td class="t" style="text-align:right">
-                Caregivers Phone Number
+                    Caregivers Phone Number
                 </td>
                 <td>
-                   
-                    <input type="tel" asp-for="carePhone" id="carePhone" value="@info.carePhone" maxlength="12"/>
+
+                    <input type="tel" asp-for="carePhone" id="carePhone" value="@info.carePhone" maxlength="12" />
                     <input type="hidden" asp-for="carePhoneHidden" id="carePhoneHidden" value="@info.carePhone">
                     <br />
                 </td>
@@ -2021,7 +2020,7 @@
                         <br />
                     </td>
                     <td>
-                        <input asp-for="schoolRef" type="text"  size="60"  id="schoolRef" value="@info.schoolRef" maxlength="60"/>
+                        <input asp-for="schoolRef" type="text" size="60" id="schoolRef" value="@info.schoolRef" maxlength="60" />
                         <input type="hidden" asp-for="schoolRefHidden" value="@info.schoolRef" id="schoolRefHidden">
                         <br />
                     </td>
@@ -2032,7 +2031,7 @@
                         <br />
                     </td>
                     <td>
-                        <select asp-for="readingLevel" id="readingLevel" >
+                        <select asp-for="readingLevel" id="readingLevel">
                             @{if (info.readingLevel == "13")
                                 {
                                     <option value="13" label="Other" selected></option>
@@ -2043,76 +2042,76 @@
                                 }}
                             @{if (info.readingLevel == "0")
                                 {
-                                    <option value="0"  selected>Kindergarten</option>
+                                    <option value="0" selected>Kindergarten</option>
                                 }
                                 else
                                 {
-                                    <option value="0"  id="read0">Kindergarten</option>
+                                    <option value="0" id="read0">Kindergarten</option>
                                 }}
                             @{if (info.readingLevel == "1")
                                 {
-                                    <option value="1"  selected>1st Grade</option>
+                                    <option value="1" selected>1st Grade</option>
                                 }
                                 else
                                 {
-                                    <option value="1"  id="read1">1st Grade</option>
+                                    <option value="1" id="read1">1st Grade</option>
                                 }}
 
                             @{if (info.readingLevel == "2")
                                 {
-                                    <option value="2"  selected>2nd Grade</option>
+                                    <option value="2" selected>2nd Grade</option>
                                 }
                                 else
                                 {
-                                    <option value="2"  id="read2">2nd Grade</option>
+                                    <option value="2" id="read2">2nd Grade</option>
                                 }}
                             @{if (info.readingLevel == "3")
                                 {
-                                    <option value="3"  selected>3rd Grade</option>
+                                    <option value="3" selected>3rd Grade</option>
                                 }
                                 else
                                 {
-                                    <option value="3"  id="read3">3rd Grade</option>
+                                    <option value="3" id="read3">3rd Grade</option>
                                 }}
                             @{if (info.readingLevel == "4")
                                 {
-                                    <option value="4"  selected>4th Grade</option>
+                                    <option value="4" selected>4th Grade</option>
                                 }
                                 else
                                 {
-                                    <option value="4"  id="read4">4th Grade</option>
+                                    <option value="4" id="read4">4th Grade</option>
                                 }}
                             @{if (info.readingLevel == "5")
                                 {
-                                    <option value="5"  selected>5th Grade</option>
+                                    <option value="5" selected>5th Grade</option>
                                 }
                                 else
                                 {
-                                    <option value="5"  id="read5">5th Grade</option>
+                                    <option value="5" id="read5">5th Grade</option>
                                 }}
                             @{if (info.readingLevel == "6")
                                 {
-                                    <option value="6"  selected>6th Grade</option>
+                                    <option value="6" selected>6th Grade</option>
                                 }
                                 else
                                 {
-                                    <option value="6"  id="read6">6th Grade</option>
+                                    <option value="6" id="read6">6th Grade</option>
                                 }}
                             @{if (info.readingLevel == "7")
                                 {
-                                    <option value="7"  selected>7th Grade</option>
+                                    <option value="7" selected>7th Grade</option>
                                 }
                                 else
                                 {
-                                    <option value="7"  id="read7">7th Grade</option>
+                                    <option value="7" id="read7">7th Grade</option>
                                 }}
                             @{if (info.readingLevel == "8")
                                 {
-                                    <option value="8"  selected>8th Grade</option>
+                                    <option value="8" selected>8th Grade</option>
                                 }
                                 else
                                 {
-                                    <option value="8"  id="read8">8th Grade</option>
+                                    <option value="8" id="read8">8th Grade</option>
                                 }}
                             @{if (info.readingLevel == "9")
                                 {
@@ -2124,27 +2123,27 @@
                                 }}
                             @{if (info.readingLevel == "10")
                                 {
-                                    <option value="10"  selected>10th Grade</option>
+                                    <option value="10" selected>10th Grade</option>
                                 }
                                 else
                                 {
-                                    <option value="10"  id="read10">10th Grade</option>
+                                    <option value="10" id="read10">10th Grade</option>
                                 }}
                             @{if (info.readingLevel == "11")
                                 {
-                                    <option value="11"  selected>11th Grade</option>
+                                    <option value="11" selected>11th Grade</option>
                                 }
                                 else
                                 {
-                                    <option value="11"  id="read11">11th Grade</option>
+                                    <option value="11" id="read11">11th Grade</option>
                                 }}
                             @{if (info.readingLevel == "12")
                                 {
-                                    <option value="12"  selected>12th Grade</option>
+                                    <option value="12" selected>12th Grade</option>
                                 }
                                 else
                                 {
-                                    <option value="12"  id="read12">12th Grade</option>
+                                    <option value="12" id="read12">12th Grade</option>
                                 }}
 
                         </select>
@@ -2158,7 +2157,7 @@
                         <br />
                     </td>
                     <td>
-                        <select asp-for="mathLevel" id="mathLevel" >
+                        <select asp-for="mathLevel" id="mathLevel">
                             @{if (info.mathLevel == "13")
                                 {
                                     <option value="13" label="Other" selected></option>
@@ -2169,36 +2168,36 @@
                                 }}
                             @{if (info.mathLevel == "0")
                                 {
-                                    <option value="0"  selected>Kindergarten</option>
+                                    <option value="0" selected>Kindergarten</option>
                                 }
                                 else
                                 {
-                                    <option value="0" >Kindergarten</option>
+                                    <option value="0">Kindergarten</option>
                                 }}
                             @{if (info.mathLevel == "1")
                                 {
-                                    <option value="1"  selected>1st Grade</option>
+                                    <option value="1" selected>1st Grade</option>
                                 }
                                 else
                                 {
-                                    <option value="1" >1st Grade</option>
+                                    <option value="1">1st Grade</option>
                                 }}
 
                             @{if (info.mathLevel == "2")
                                 {
-                                    <option value="2"  selected>2nd Grade</option>
+                                    <option value="2" selected>2nd Grade</option>
                                 }
                                 else
                                 {
-                                    <option value="2" >2nd Grade</option>
+                                    <option value="2">2nd Grade</option>
                                 }}
                             @{if (info.mathLevel == "3")
                                 {
-                                    <option value="3"  selected>3rd Grade</option>
+                                    <option value="3" selected>3rd Grade</option>
                                 }
                                 else
                                 {
-                                    <option value="3" >3rd Grade</option>
+                                    <option value="3">3rd Grade</option>
                                 }}
                             @{if (info.mathLevel == "4")
                                 {
@@ -2206,23 +2205,23 @@
                                 }
                                 else
                                 {
-                                    <option value="4" >4th Grade</option>
+                                    <option value="4">4th Grade</option>
                                 }}
                             @{if (info.mathLevel == "5")
                                 {
-                                    <option value="5"  selected>5th Grade</option>
+                                    <option value="5" selected>5th Grade</option>
                                 }
                                 else
                                 {
-                                    <option value="5" >5th Grade</option>
+                                    <option value="5">5th Grade</option>
                                 }}
                             @{if (info.mathLevel == "6")
                                 {
-                                    <option value="6"  selected>6th Grade</option>
+                                    <option value="6" selected>6th Grade</option>
                                 }
                                 else
                                 {
-                                    <option value="6" >6th Grade</option>
+                                    <option value="6">6th Grade</option>
                                 }}
                             @{if (info.mathLevel == "7")
                                 {
@@ -2230,7 +2229,7 @@
                                 }
                                 else
                                 {
-                                    <option value="7" >7th Grade</option>
+                                    <option value="7">7th Grade</option>
                                 }}
                             @{if (info.mathLevel == "8")
                                 {
@@ -2238,23 +2237,23 @@
                                 }
                                 else
                                 {
-                                    <option value="8" >8th Grade</option>
+                                    <option value="8">8th Grade</option>
                                 }}
                             @{if (info.mathLevel == "9")
                                 {
-                                    <option value="9"  selected>9th Grade</option>
+                                    <option value="9" selected>9th Grade</option>
                                 }
                                 else
                                 {
-                                    <option value="9" >9th Grade</option>
+                                    <option value="9">9th Grade</option>
                                 }}
                             @{if (info.mathLevel == "10")
                                 {
-                                    <option value="10"  selected>10th Grade</option>
+                                    <option value="10" selected>10th Grade</option>
                                 }
                                 else
                                 {
-                                    <option value="10" >10th Grade</option>
+                                    <option value="10">10th Grade</option>
                                 }}
                             @{if (info.mathLevel == "11")
                                 {
@@ -2262,11 +2261,11 @@
                                 }
                                 else
                                 {
-                                    <option value="11" >11th Grade</option>
+                                    <option value="11">11th Grade</option>
                                 }}
                             @{if (info.mathLevel == "12")
                                 {
-                                    <option value="12"  selected>12th Grade</option>
+                                    <option value="12" selected>12th Grade</option>
                                 }
                                 else
                                 {
@@ -2275,7 +2274,7 @@
 
                         </select>
                         <input type="hidden" asp-for="mathLevelHidden" value="@info.mathLevel" id="mathLevelHidden">
-                      
+
                     </td>
                 </tr>
                 <tr>
@@ -2463,7 +2462,7 @@
                     <td class="t" style="text-align:right">
 
                         Addititonal Accomodations Gained
-                        
+
                     </td>
                     <td>
                         @{if (info.accomGained == 1)
@@ -2491,7 +2490,7 @@
                 <tr>
                     <td class="t" style="text-align:right">
                         <label>Additional Compensatory Services</label>
-                        
+
                     </td>
                     <td>
                         @{if (info.compService == 1)
@@ -2539,7 +2538,7 @@
                         No <br />
                         <input type="hidden" asp-for="bulliedHidden" value="@info.bullied">
                         <br />
-                     
+
 
                         <div id="ifYesBullied">
                             If yes, was it reported? <br />
@@ -2555,17 +2554,17 @@
                             No <br />
                             <input type="hidden" asp-for="bullyReportHidden" value="@info.bullyReport">
                             <br />
-                            
+
                             <div id="ifYesReport">
 
                                 Date of report <br />
-                                <input asp-for="dateofBully" type="date" id="dateofBully" value="@info.stringDateOfBully" min="2001-01-01" max="2050-12-31"> <br />
+                                <input asp-for="dateofBully" type="date" id="dateofBully" value="@info.stringDateOfBully"  max="2050-12-31"> <br />
                                 <input type="hidden" asp-for="dateofBullyHidden" value="@info.stringDateOfBully" id="dateofBullyHidden">
-                             
+
                             </div>
 
                         </div>
-                    
+
 
                         <div id="ifNoBullied">
 
@@ -2591,7 +2590,7 @@
                 <tr>
                     <td class="t" style="text-align:right">
                         <label>Suspended more than three times in a year? </label>
-                       
+
                     </td>
                     <td>
                         Yes
@@ -2618,7 +2617,7 @@
                         <input type="hidden" asp-for="suspendedHidden" value="@info.suspended">
 
 
-                        <div id="ifYesSus" >
+                        <div id="ifYesSus">
                             If yes, how many times have they been suspended?<br />
                             <select asp-for="suspendCount" id="suspendCount">
                                 @{if (info.suspendCount == 4)
@@ -2704,7 +2703,7 @@
                         How many days have they spent in OSS?
                     </td>
                     <td>
-                        <input asp-for="oss" type="number" value="@info.oss" id="oss"  maxlength="3"/>
+                        <input asp-for="oss" type="number" value="@info.oss" id="oss" maxlength="3" />
                         <input type="hidden" asp-for="ossHidden" value="@info.oss" id="ossHidden">
 
                     </td>
@@ -2743,10 +2742,10 @@
                             Grand Park <br />
                             <br />
                             <input type="hidden" asp-for="altSchoolNameHidden" value="@info.altSchoolName">
-                           
+
 
                             How many times was the youth in an alternative school?&nbsp;
-                            <select asp-for="timesInAlt"  id="timesInAlt">
+                            <select asp-for="timesInAlt" id="timesInAlt">
                                 @{if (info.timesInAlt == 0)
                                     {
                                         <option value="0" id="1" selected>0</option>
@@ -2801,15 +2800,15 @@
                                 }*@
                             <br />
                             What day did the student enter the alternative school<br>
-                            <input asp-for="dateOfAlt" type="date"  id="dateOfAlt"
-                                   value="@info.stringDateOfAlt" min="2001-01-01" max="2050-12-31">
+                            <input asp-for="dateOfAlt" type="date" id="dateOfAlt"
+                                   value="@info.stringDateOfAlt"  max="2050-12-31">
                             <br />
                             <input type="hidden" asp-for="dateOfAltHidden" value="@info.stringDateOfAlt" id="dateOfAltHidden">
                             <br />
-                                How many days owed?<br />
-                        <input asp-for="daysOwed" type="number" value="@info.daysOwed" id="daysOwed"  maxlength="3"> <br />
-                        <input type="hidden" asp-for="daysOwedHidden" value="@info.daysOwed" id="daysOwedHidden">
-                        <br />
+                            How many days owed?<br />
+                            <input asp-for="daysOwed" type="number" value="@info.daysOwed" id="daysOwed" maxlength="3"> <br />
+                            <input type="hidden" asp-for="daysOwedHidden" value="@info.daysOwed" id="daysOwedHidden">
+                            <br />
                         </div>
 
 
@@ -2822,19 +2821,19 @@
                 <tr>
                     <td class="t" style="text-align:right">
 
-                        Total Days of Discipline Since Intake 
+                        Total Days of Discipline Since Intake
                     </td>
                     <td>
-                        <input asp-for="daysSinceIntake" type="text" id="dateintake" value="@info.daysSinceIntake"  maxlength="3">
+                        <input asp-for="daysSinceIntake" type="text" id="dateintake" value="@info.daysSinceIntake" maxlength="3">
                         <input type="hidden" asp-for="daysSinceIntakeHidden" value="@info.daysSinceIntake" id="daysSinceIntakeHidden">
                     </td>
                 </tr>
                 <tr>
                     <td class="t" style="text-align:right">
-                        Juvenile Justice Outcome 
+                        Juvenile Justice Outcome
                     </td>
                     <td>
-                        <input asp-for="justiceOutcome" type="text" value="@info.justiceOutcome" id="justiceOutcome"  maxlength="30">
+                        <input asp-for="justiceOutcome" type="text" value="@info.justiceOutcome" id="justiceOutcome" maxlength="30">
                         <input type="hidden" asp-for="justiceOutcomeHidden" value="@info.justiceOutcome" id="justiceOutcomeHidden">
                         <br />
                     </td>
@@ -2844,7 +2843,7 @@
                         Other legal issues?
                     </td>
                     <td>
-                        <select asp-for="firstLegal"  id="firstLegal">
+                        <select asp-for="firstLegal" id="firstLegal">
                             @{if (info.firstLegal == "education")
                                 {
                                     <option value="education" id="edu" selected>Education</option>
@@ -2925,10 +2924,10 @@
                 </tr>
                 <tr>
                     <td class="t" style="text-align:right">
-                       State Legal Issue if not Listed above 
+                        State Legal Issue if not Listed above
                     </td>
                     <td>
-                        <input asp-for="secondLegal" type="text" value="@info.secondLegal" id="secondLegal"  maxlength="50"/>
+                        <input asp-for="secondLegal" type="text" value="@info.secondLegal" id="secondLegal" maxlength="50" />
                         <input type="hidden" asp-for="secondLegalHidden" value="@info.secondLegal" id="secondLegalHidden"><br />
 
                     </td>
@@ -2955,9 +2954,9 @@
                         Referral Date
                     </td>
                     <td>
-                        <input asp-for="referralDate" type="date"  id="refdate"
+                        <input asp-for="referralDate" type="date" id="refdate"
                                value="@info.stringReferralDate"
-                               min="2001-01-01" max="2050-12-31">
+                                max="2050-12-31">
 
                         <input type="hidden" asp-for="referralDateHidden" value="@info.stringReferralDate" id="referralDateHidden"><br />
                     </td>
@@ -2967,7 +2966,7 @@
                         Intake Date
                     </td>
                     <td>
-                        <input asp-for="trackingdate" type="date" id="intdate"  min="2005-01-01" max="2050-12-31" value="@info.stringtrackingdate">
+                        <input asp-for="trackingdate" type="date" id="intdate"  max="2050-12-31" value="@info.stringtrackingdate">
 
                         <input type="hidden" asp-for="trackingdateHidden" value="@info.stringtrackingdate" id="trackingdateHidden"><br />
                     </td>
@@ -2984,22 +2983,22 @@
                 </tr>
                 <tr>
                     <td class="t" style="text-align:right">
-                       
+
                         Referral Source First Name
                     </td>
                     <td>
-                        <input asp-for="referralSource" type="text"  value="@info.referralSource" id="referralSource" maxlength="20" required />
+                        <input asp-for="referralSource" type="text" value="@info.referralSource" id="referralSource" maxlength="20" />
                         <input type="hidden" asp-for="referralSourceHidden" value="@info.referralSource" id="referralSourceHidden">
                     </td>
                 </tr>
                 <tr>
                     <td class="t" style="text-align:right">
-                        
+
 
                         Referral Source Last Name
                     </td>
                     <td>
-                        <input asp-for="referrallSource" type="text"  value="@info.referrallSource" id="referrallSource" maxlength="20" required />
+                        <input asp-for="referrallSource" type="text" value="@info.referrallSource" id="referrallSource" maxlength="20"  />
                         <input type="hidden" asp-for="referrallSourceHidden" value="@info.referrallSource" id="referrallSourceHidden">
                     </td>
                 </tr>
@@ -3008,7 +3007,7 @@
                         Email of First Referral Source
                     </td>
                     <td>
-                        <input asp-for="emailOfFirstReferralSource" type="text" value="@info.emailOfFirstReferralSource"  id="referralemail" maxlength="50"/> <br />
+                        <input asp-for="emailOfFirstReferralSource" type="text" value="@info.emailOfFirstReferralSource" id="referralemail" maxlength="50" /> <br />
                         <input type="hidden" asp-for="emailOfFirstReferralSourceHidden" value="@info.emailOfFirstReferralSource" id="emailOfFirstReferralSourceHidden">
                     </td>
                 </tr>
@@ -3111,7 +3110,7 @@
 
                     </td>
                     <td>
-                        <input asp-for="legalAdvoTaken" type="text" value="@info.legalAdvoTaken" id="legalAdvoTaken"  maxlength="60"/>
+                        <input asp-for="legalAdvoTaken" type="text" value="@info.legalAdvoTaken" id="legalAdvoTaken" maxlength="60" />
                         <input type="hidden" asp-for="legalAdvoTakenHidden" value="@info.legalAdvoTaken" id="legalAdvoTakenHidden">
                     </td>
                 </tr>

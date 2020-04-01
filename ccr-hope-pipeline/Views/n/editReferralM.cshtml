@@ -1410,14 +1410,7 @@
                     <td>
                         <br />
                         <select name="youthAlt" asp-for="youthAlt" id="youthAltId">
-                            @{if (data.youthAlt != 1 || data.youthAlt != 0 || data.youthAlt != 2)
-                                {
-                                    <option disabled="disabled" selected>Please Select an Option</option>
-                                }
-                                else
-                                {
-                                    <option disabled="disabled" > Please Select an Option </option>
-                                } }
+                      
                             @{if (data.youthAlt == 1)
                                 {
                                     <option value="1" selected>Yes</option>
@@ -1454,14 +1447,7 @@
                     <td>
                         <br />
                         <select name="youthSetting" asp-for="youthSetting" id="youthSettingId">
-                            @{if (data.youthSetting != 1 || data.youthSetting != 0 || data.youthSetting != 2)
-                                {
-                                    <option disabled="disabled" selected>Please Select an Option</option>
-                                }
-                                else
-                                {
-                                    <option disabled="disabled"> Please Select an Option </option>
-                                } }
+                     
                             @{if (data.youthSetting == 1)
                                 {
                                     <option value="1" selected>Yes</option>
@@ -1498,14 +1484,7 @@
                     <td>
                         <br />
                         <select name="youthInjunction" asp-for="youthInjunction" id="youthInjunctionId">
-                            @{if (data.youthInjunction != 1 || data.youthInjunction != 0 || data.youthInjunction != 2)
-                                {
-                                    <option disabled="disabled" selected>Please Select an Option</option>
-                                }
-                                else
-                                {
-                                    <option disabled="disabled"> Please Select an Option </option>
-                                } }
+                        
                             @{if (data.youthInjunction == 1)
                                 {
                                     <option value="1" selected>Yes</option>

@@ -52,10 +52,196 @@ namespace HopePipeline.Controllers
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
-            string query = "INSERT INTO dbo.refform VALUES ('" + form.fName + "', '" + form.lName + "', '" + form.dOB + "', '" + form.clientCode + "', '" + form.guardianName + "', '" + form.guardianlName + "', '" + form.guardianRelationship + "', '" + form.address + "', '" + form.gender + "', '" + form.guardianEmail + "', '" + form.guardianPhone + "', '" + form.meeting + "', '" + form.youthInDuvalSchool + "', '" + form.youthInSchool + "', '" + form.issues + "', '" + form.currentSchool + "', '" + form.zip + "', '" + form.grade + "', 'Pending', '" + form.arrest + "', '" + form.school + "', '" + form.dateInput + "', '" + form.date + "', '" + form.email + "', '" + form.Reach + "', '" + form.moreInfo + "', '" + form.reason + "', '" + form.referralfname + "', '" + form.referrallname + "','"+ 0 +"','"+form.nameOrg+"','"+form.youthNu+"','"+form.youthEmail+"','"+form.youthCit+"','"+form.youthOffense+"','"+form.youthImpact+"','"+form.youthAlt+"','"+form.youthSetting+"','"+form.youthInjunction+"');";
+            string query = "INSERT INTO dbo.refform VALUES (@fName, @lName , @dOB , @clientCode, @guardianName,@guardianlName , @guardianRelationship, @address, @gender, @guardianEmail, @guardianPhone, @meeting, @youthInDuvalSchool, @youthInSchool, @issues, @currentSchool, @zip, @grade, @Pending, @arrest, @school , @dateInput, @date, @email, @Reach, @moreInfo,  @reason , @referralfname, @referrallname, @0 , @nameOrg ,@youthNu, @youthEmail, @youthCit, @youthOffense, @youthImpact, @youthAlt, @youthSetting, @youthInjunction);";
             
             command = new SqlCommand(query, cnn);
+            //Pass values to Parameters
+            SqlParameter fNamecheck = command.Parameters.AddWithValue("@fName", form.fName);
+            if (form.fName == null)
+            {
+                fNamecheck.Value = DBNull.Value;
+            }
+            SqlParameter lNamecheck = command.Parameters.AddWithValue("@lName", form.lName);
+            if (form.lName == null)
+            {
+               lNamecheck.Value = DBNull.Value;
+            }
+            SqlParameter dOBcheck = command.Parameters.AddWithValue("@dOB", form.dOB);//check
+            if (form.dOB == null)
+            {
+                dOBcheck.Value = DBNull.Value;
+            }
+
+            command.Parameters.AddWithValue("@clientCode", form.clientCode);
+            SqlParameter guardianNamecheck =command.Parameters.AddWithValue("@guardianName", form.guardianName);
+            if (form.guardianName == null)
+            {
+                guardianNamecheck.Value = DBNull.Value;
+            }
+            SqlParameter guardianlNamecheck = command.Parameters.AddWithValue("@guardianlName", form.guardianlName);
+            if (form.guardianlName == null)
+            {
+                guardianlNamecheck.Value = DBNull.Value;
+            }
+            SqlParameter guardianRelationshipcheck = command.Parameters.AddWithValue("@guardianRelationship", form.guardianRelationship);
+            if (form.guardianRelationship == null)
+            {
+                guardianRelationshipcheck.Value = DBNull.Value;
+            }
+            SqlParameter addresscheck = command.Parameters.AddWithValue("@address", form.address);
+            if (form.address == null)
+            {
+                addresscheck.Value = DBNull.Value;
+            }
+            SqlParameter gendercheck = command.Parameters.AddWithValue("@gender", form.gender);
+            if (form.gender == null)
+            {
+                gendercheck.Value = DBNull.Value;
+            }
+            SqlParameter guardianEmailcheck = command.Parameters.AddWithValue("@guardianEmail", form.guardianEmail);
+            if (form.guardianEmail == null)
+            {
+                guardianEmailcheck.Value = DBNull.Value;
+            }
+            SqlParameter guardianPhonecheck =  command.Parameters.AddWithValue("@guardianPhone", form.guardianPhone);
+            if (form.guardianPhone == null)
+            {
+                guardianPhonecheck.Value = DBNull.Value;
+            }
+            SqlParameter meetingcheck = command.Parameters.AddWithValue("@meeting", form.meeting);
+            if (form.meeting != 0 && form.meeting !=1 && form.meeting !=2)
+            {
+                meetingcheck.Value = DBNull.Value;
+            }
+            SqlParameter youthInDuvalSchoolcheck = command.Parameters.AddWithValue("@youthInDuvalSchool", form.youthInDuvalSchool);
+            if (form.youthInDuvalSchool != 0 && form.youthInDuvalSchool != 1 && form.youthInDuvalSchool != 2)
+            {
+                youthInDuvalSchoolcheck.Value = DBNull.Value;
+            }
+            SqlParameter youthInSchoolcheck = command.Parameters.AddWithValue("@youthInSchool", form.youthInSchool);
+            if (form.youthInSchool != 0 && form.youthInSchool != 1 && form.youthInSchool != 2)
+            {
+                youthInSchoolcheck.Value = DBNull.Value;
+            }
+            SqlParameter issuescheck = command.Parameters.AddWithValue("@issues", form.issues);
+            if (form.issues == null)
+            {
+                issuescheck.Value = DBNull.Value;
+            }
+           SqlParameter currentschoolcheck = command.Parameters.AddWithValue("@currentSchool", "null");
             
+            SqlParameter zipcheck =  command.Parameters.AddWithValue("@zip", form.zip);
+            if (form.zip == null)
+            {
+                zipcheck.Value = DBNull.Value;
+            }
+            SqlParameter gradecheck = command.Parameters.AddWithValue("@grade", form.grade);
+            if (form.grade == null)
+            {
+                gradecheck.Value = DBNull.Value;
+            }
+            command.Parameters.AddWithValue("@Pending", "Pending");
+
+            SqlParameter arrestcheck = command.Parameters.AddWithValue("@arrest", form.arrest);
+            if (form.arrest != 0 && form.arrest != 1 && form.arrest != 2)
+            {
+                arrestcheck.Value = DBNull.Value;
+            }
+            SqlParameter schoolcheck = command.Parameters.AddWithValue("@school", form.school);
+            if (form.school == null)
+            {
+                schoolcheck.Value = DBNull.Value;
+            }
+            SqlParameter dateInputcheck = command.Parameters.AddWithValue("@dateInput", form.dateInput);
+            if (form.dateInput == null)
+            {
+                dateInputcheck.Value = DBNull.Value;
+            }
+            SqlParameter datecheck = command.Parameters.AddWithValue("@date", form.date);
+            if (form.date == null)
+            {
+                datecheck.Value = DBNull.Value;
+            }
+            SqlParameter emailcheck = command.Parameters.AddWithValue("@email", form.email);
+            if (form.email == null)
+            {
+                emailcheck.Value = DBNull.Value;
+            }
+            SqlParameter Reachcheck = command.Parameters.AddWithValue("@Reach", form.Reach);
+            if (form.Reach == null)
+            {
+                Reachcheck.Value = DBNull.Value;
+            }
+            SqlParameter moreInfocheck = command.Parameters.AddWithValue("@moreInfo", form.moreInfo);
+            if (form.moreInfo == null)
+            {
+                moreInfocheck.Value = DBNull.Value;
+            }
+            SqlParameter reasoncheck = command.Parameters.AddWithValue("@reason", form.reason);
+            if (form.reason == null)
+            {
+                reasoncheck.Value = DBNull.Value;
+            }
+            SqlParameter referralfnamecheck = command.Parameters.AddWithValue("@referralfname", form.referralfname);
+            if (form.referralfname == null)
+            {
+                referralfnamecheck.Value = DBNull.Value;
+            }
+            SqlParameter referrallnamecheck = command.Parameters.AddWithValue("@referrallname", form.referrallname);
+            if (form.referrallname == null)
+            {
+                referrallnamecheck.Value = DBNull.Value;
+            }
+            command.Parameters.AddWithValue("@0", 0);
+            SqlParameter nameOrgcheck = command.Parameters.AddWithValue("@nameOrg", form.nameOrg);
+            if (form.nameOrg == null)
+            {
+                nameOrgcheck.Value = DBNull.Value;
+            }
+            SqlParameter youthNucheck = command.Parameters.AddWithValue("@youthNu", form.youthNu);
+            if (form.youthNu == null)
+            {
+                youthNucheck.Value = DBNull.Value;
+            }
+            SqlParameter youthEmailcheck = command.Parameters.AddWithValue("@youthEmail", form.youthEmail);
+            if (form.youthEmail == null)
+            {
+                youthEmailcheck.Value = DBNull.Value;
+            }
+            SqlParameter youthCitcheck = command.Parameters.AddWithValue("@youthCit", form.youthCit);
+            if (form.youthCit != 0 && form.youthCit != 1 )
+            {
+                youthCitcheck.Value = DBNull.Value;
+            }
+            SqlParameter youthOffensecheck = command.Parameters.AddWithValue("@youthOffense", form.youthOffense);
+            if (form.youthOffense != 0 && form.youthOffense != 1 && form.youthOffense != 2)
+            {
+                youthOffensecheck.Value = DBNull.Value;
+            }
+            SqlParameter youthImpactcheck = command.Parameters.AddWithValue("@youthImpact", form.youthImpact);
+            if (form.youthImpact == null)
+            {
+                youthImpactcheck.Value = DBNull.Value;
+            }
+            SqlParameter youthAltcheck = command.Parameters.AddWithValue("@youthAlt", form.youthAlt);//not done
+            if (form.youthAlt != 0 && form.youthAlt != 1 && form.youthAlt != 2)
+            {
+                youthAltcheck.Value = DBNull.Value;
+            }
+            SqlParameter youthSettingcheck = command.Parameters.AddWithValue("@youthSetting", form.youthSetting);//not done
+            if (form.youthSetting != 0 && form.youthSetting != 1 && form.youthSetting != 2)
+            {
+                youthSettingcheck.Value = DBNull.Value;
+            }
+            SqlParameter youthInjunctioncheck = command.Parameters.AddWithValue("@youthInjunction", form.youthInjunction);//not done
+            if (form.youthInjunction != 0 && form.youthInjunction != 1 && form.youthInjunction != 2)
+            {
+                youthInjunctioncheck.Value = DBNull.Value;
+            }
+
+
+
+
             SqlDataReader reader = command.ExecuteReader();
             string fname = form.fName.ToString();
             string lname = form.lName.ToString();
@@ -244,7 +430,7 @@ namespace HopePipeline.Controllers
 
 
                     client.meeting = Convert.ToString(dataReader["meeting"]);
-                    var gar = Int32.TryParse(client.meeting, out int meet);
+                   // var gar = Int32.TryParse(client.meeting, out int meet);
                     if (client.meeting == "1")
                     { client.meeting = "Yes"; }
                     if (client.meeting == "2")
@@ -258,7 +444,7 @@ namespace HopePipeline.Controllers
 
 
                     client.youthInDuvalSchool = Convert.ToString(dataReader["youthInDuvalSchool"]);
-                    var gart = Int32.TryParse(client.youthInDuvalSchool, out int tss);
+                   // var gart = Int32.TryParse(client.youthInDuvalSchool, out int tss);
                     if (client.youthInDuvalSchool == "1")
                     { client.youthInDuvalSchool = "Yes"; }
                     if (client.youthInDuvalSchool == "2")
@@ -271,7 +457,7 @@ namespace HopePipeline.Controllers
                     { client.youthInDuvalSchool = client.youthInDuvalSchool; }
 
                     client.youthInSchool = Convert.ToString(dataReader["youthInSchool"]);
-                    var garth = Int32.TryParse(client.youthInSchool, out int tsss);
+                   // var garth = Int32.TryParse(client.youthInSchool, out int tsss);
                     if (client.youthInSchool == "1")
                     { client.youthInSchool = "Yes"; }
                     if (client.youthInSchool == "2")
@@ -308,7 +494,7 @@ namespace HopePipeline.Controllers
 
 
                     client.arrest = Convert.ToString(dataReader["arrest"]);
-                    var garthy = Int32.TryParse(client.arrest, out int tssss);
+                   // var garthy = Int32.TryParse(client.arrest, out int tssss);
                     if (client.arrest == "1")
                     { client.arrest = "Yes"; }
                     if (client.arrest == "2")
@@ -370,7 +556,7 @@ namespace HopePipeline.Controllers
                     { client.youthEmail = "N/A"; }
 
                     client.youthCit = Convert.ToString(dataReader["youthCit"]);
-                    var ycit = Int32.TryParse(client.youthCit, out int yc);
+                   // var ycit = Int32.TryParse(client.youthCit, out int yc);
                     if (client.youthCit == "1")
                     { client.youthCit = "Yes"; }
                     if (client.youthCit == "0")
@@ -382,7 +568,7 @@ namespace HopePipeline.Controllers
 
 
                     client.youthOffense = Convert.ToString(dataReader["youthOffense"]);
-                    var offense = Int32.TryParse(client.youthOffense, out int ofence);
+                   // var offense = Int32.TryParse(client.youthOffense, out int ofence);
                     if (client.youthOffense == "1")
                     { client.youthOffense = "Yes"; }
                     if (client.youthOffense == "2")
@@ -399,7 +585,7 @@ namespace HopePipeline.Controllers
                     { client.youthImpact = "N/A"; }
 
                     client.youthAlt = Convert.ToString(dataReader["youthAlt"]);
-                    var Alt = Int32.TryParse(client.youthAlt, out int yalt);
+                   // var Alt = Int32.TryParse(client.youthAlt, out int yalt);
                     if (client.youthAlt == "1")
                     { client.youthAlt = "Yes"; }
                     if (client.youthAlt == "2")
@@ -412,7 +598,7 @@ namespace HopePipeline.Controllers
                     { client.youthAlt = client.youthAlt; }
 
                     client.youthSetting = Convert.ToString(dataReader["youthSetting"]);
-                    var yset = Int32.TryParse(client.youthSetting, out int ysett);
+                 //   var yset = Int32.TryParse(client.youthSetting, out int ysett);
                     if (client.youthSetting == "1")
                     { client.youthSetting = "Yes"; }
                     if (client.youthSetting == "2")
@@ -425,7 +611,7 @@ namespace HopePipeline.Controllers
                     { client.youthSetting = client.youthSetting; }
 
                     client.youthInjunction = Convert.ToString(dataReader["youthInjunction"]);
-                    var Injun = Int32.TryParse(client.youthInjunction, out int ction);
+                   // var Injun = Int32.TryParse(client.youthInjunction, out int ction);
                     if (client.youthInjunction == "1")
                     { client.youthInjunction = "Yes"; }
                     if (client.youthInjunction == "2")
@@ -930,22 +1116,22 @@ namespace HopePipeline.Controllers
 
             //if statments pertaining to if the table doesn't have a clientCode in it display all the variable for the table as N/A
             //SqlCommand commandd = cnnn.CreateCommand();
-            object bullycheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.bully WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
-            object clientcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.client WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
-            object advocacycheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.advocacy WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
-            object accomodationscheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.accomodations WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
-            object altSchoolcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.altSchool WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
-            object caregivercheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.caregiver WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
-            object ccrcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.ccr WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
-            object compcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.comp WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
-            object currentStatuscheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.currentStatus WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
-            object failedcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.failed WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
-            object healthcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.health WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
-            object householdcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.household WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
-            object suspensioncheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.suspension WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
-            object iepcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.iep WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
-            object legalcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.legal WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
-            object schoolcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.school WHERE clientCode = " + clientCode + "", cnnn).ExecuteScalar();
+            object bullycheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.bully WHERE clientCode = '" + clientCode + "'", cnnn).ExecuteScalar();
+            object clientcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.client WHERE clientCode = '" + clientCode + "'", cnnn).ExecuteScalar();
+            object advocacycheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.advocacy WHERE clientCode = '" + clientCode + "'", cnnn).ExecuteScalar();
+            object accomodationscheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.accomodations WHERE clientCode = '" + clientCode + "'", cnnn).ExecuteScalar();
+            object altSchoolcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.altSchool WHERE clientCode = '" + clientCode + "'", cnnn).ExecuteScalar();
+            object caregivercheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.caregiver WHERE clientCode = '" + clientCode + "'", cnnn).ExecuteScalar();
+            object ccrcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.ccr WHERE clientCode = '" + clientCode + "'", cnnn).ExecuteScalar();
+            object compcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.comp WHERE clientCode = '" + clientCode + "'", cnnn).ExecuteScalar();
+            object currentStatuscheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.currentStatus WHERE clientCode = '" + clientCode + "'", cnnn).ExecuteScalar();
+            object failedcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.failed WHERE clientCode = '" + clientCode + "'", cnnn).ExecuteScalar();
+            object healthcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.health WHERE clientCode = '" + clientCode + "'", cnnn).ExecuteScalar();
+            object householdcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.household WHERE clientCode = '" + clientCode + "'", cnnn).ExecuteScalar();
+            object suspensioncheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.suspension WHERE clientCode = '" + clientCode + "'", cnnn).ExecuteScalar();
+            object iepcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.iep WHERE clientCode = '" + clientCode + "'", cnnn).ExecuteScalar();
+            object legalcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.legal WHERE clientCode = '" + clientCode + "'", cnnn).ExecuteScalar();
+            object schoolcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.school WHERE clientCode = '" + clientCode + "'", cnnn).ExecuteScalar();
             cnnn.Close();
         
             int bc = (Convert.ToInt16(bullycheck)) + 0;
@@ -982,18 +1168,17 @@ namespace HopePipeline.Controllers
 "dbo.altSchool.altSchool, dbo.altSchool.altSchoolName, dbo.altSchool.altSchoolDate, dbo.altSchool.altSchoolTimes, dbo.altSchool.daysOwed, dbo.altSchool.daysSinceIntake, " +
 "dbo.bully.bullied, dbo.bully.reported, dbo.bully.reportDate, " +
 "dbo.caregiver.careLast, dbo.caregiver.careFirst, dbo.caregiver.genderIdentity as caregender, dbo.caregiver.ethnicity as careethnic, dbo.caregiver.relationship, " +
-"dbo.ccr.levelofService, dbo.ccr.ccrStatus, dbo.ccr.nonEngageReason, dbo.ccr.remedy, dbo.ccr.rearrestRep, dbo.ccr.closureSchool, dbo.ccr.dateInput as trackingdate" +
+"dbo.ccr.levelofService, dbo.ccr.ccrStatus, dbo.ccr.nonEngageReason, dbo.ccr.remedy, dbo.ccr.rearrestRep, dbo.ccr.closureSchool, dbo.ccr.dateInput as trackingdate," +
 "dbo.client.clientLast, dbo.client.clientFirst, dbo.client.dependency, dbo.client.genderIdentity as clientgender, dbo.client.ethnicity as clientethn, dbo.client.dob as clientdob, dbo.client.phoneNumber, " +
 "dbo.comp.compTime, " +
 "dbo.currentStatus.readingLevel, dbo.currentStatus.mathLevel, dbo.currentStatus.currentServices, dbo.currentStatus.inPride, dbo.currentStatus.newFBA, dbo.currentStatus.addService, dbo.currentStatus.servicesGained, " +
 "dbo.failed.gradeFailed, dbo.failed.whichGrade, dbo.failed.failedRepeat, " +
 "dbo.health.bakerActed, dbo.health.marchmanActed, dbo.health.asthma, " +
 "dbo.household.femLed, dbo.household.domVio, dbo.household.adopted, dbo.household.evicted, dbo.household.incarParent, dbo.household.publicAssistance, " +
-//"dbo.referral.referralDate, dbo.referral.intakeDate, dbo.referral.referral1, dbo.referral.referral2, dbo.referral.referral3, dbo.referral.referrerName, dbo.referral.referrerEmail, " +
 "dbo.suspension.suspendedThrice, dbo.suspension.numSuspensions, dbo.suspension.totalDaysSuspended, dbo.suspension.ISS, dbo.suspension.OSS, dbo.suspension.daysofDiscipline, dbo.suspension.disciplineSinceIntake, " +
 "dbo.iep.IEP, dbo.iep.primaryIEP, dbo.iep.secondaryIEP, dbo.iep.addIEp, dbo.legal.legalIssues, dbo.legal.leagalIssues2, dbo.legal.juvJusticeOutcome, " +
 "dbo.school.grade, dbo.school.school, dbo.school.SchoolRef, " +
-"dbo.refform.email, dbo.refform.referralfname, dbo.refform.referrallname, dbo.refform.dateInput" +
+"dbo.refInfo.refFName, dbo.refInfo.refLName, dbo.refInfo.refDate, dbo.refInfo.refEmail" +
 " FROM (((((((((((((((((dbo.accomodations  LEFT JOIN dbo.advocacy  on dbo.accomodations.clientCode = dbo.advocacy.clientCode)" +
 "LEFT JOIN dbo.altSchool on dbo.accomodations.clientCode = dbo.altSchool.clientCode) " +
 "LEFT JOIN dbo.bully on dbo.accomodations.clientCode = dbo.bully.clientCode) " +
@@ -1010,8 +1195,8 @@ namespace HopePipeline.Controllers
 "LEFT JOIN dbo.iep on dbo.accomodations.clientCode = dbo.iep.clientCode) " +
 "LEFT JOIN dbo.legal on dbo.accomodations.clientCode = dbo.legal.clientCode)" +
 "LEFT JOIN dbo.school on dbo.accomodations.clientCode = dbo.school.clientCode)" +
-"LEFT JOIN dbo.refform on dbo.accomodations.clientCode = dbo.refform.clientCode)" +
-"WHERE dbo.accomodations.clientCode ='" + clientCode + "';";
+"LEFT JOIN dbo.refInfo on dbo.accomodations.clientCode = dbo.refInfo.clientCode) " +
+"WHERE dbo.accomodations.clientCode = '" + clientCode + "';";
             command = new SqlCommand(query, cnn);
 
             //SqlDataReader reader = command.ExecuteReader();
@@ -1049,9 +1234,9 @@ namespace HopePipeline.Controllers
 
 
 
-                    string time = "";
+                  //  string time = "";
                     client.clientGender = Convert.ToString(dataReader["clientgender"]);
-                  time = Convert.ToString(dataReader["clientgender"]);
+                //  time = Convert.ToString(dataReader["clientgender"]);
                     if (client.clientGender.Contains("male") && !client.clientGender.Contains("female"))
                     { client.clientGender = "He/Him/His"; }
                     if (client.clientGender.Contains("female"))
@@ -1141,7 +1326,7 @@ namespace HopePipeline.Controllers
 
 
                     client.failedGrade = Convert.ToString(dataReader["gradeFailed"]);
-                    var failgr = Int32.TryParse(client.failedGrade, out int failg);
+                  //  var failgr = Int32.TryParse(client.failedGrade, out int failg);
                     if (client.failedGrade == "1")
                     { client.failedGrade = "Yes"; }
                     if (client.failedGrade == "0")
@@ -1188,7 +1373,7 @@ namespace HopePipeline.Controllers
                     { client.failCount = "N/A"; }
 
                     client.baker = Convert.ToString(dataReader["bakerActed"]);
-                    var bak = Int32.TryParse(client.baker, out int abk);
+                   // var bak = Int32.TryParse(client.baker, out int abk);
                     if (client.baker == "1")
                     { client.baker = "Yes"; }
                     if (client.baker == "0")
@@ -1198,7 +1383,7 @@ namespace HopePipeline.Controllers
                     else
                     { client.baker = client.baker; }
                     client.marchman = Convert.ToString(dataReader["marchmanActed"]);
-                    var madmarch = Int32.TryParse(client.marchman, out int marchmad);
+                  //  var madmarch = Int32.TryParse(client.marchman, out int marchmad);
                     if (client.marchman == "1")
                     { client.marchman = "Yes"; }
                     if (client.marchman == "0")
@@ -1218,7 +1403,7 @@ namespace HopePipeline.Controllers
                     { client.asthma = client.asthma; }
                     //household- all int
                     client.femHouse = Convert.ToString(dataReader["femLed"]);
-                    var hfem = Int32.TryParse(client.femHouse, out int femh);
+                  //  var hfem = Int32.TryParse(client.femHouse, out int femh);
                     if (client.femHouse == "1")
                     { client.femHouse = "Yes"; }
                     if (client.femHouse == "0")
@@ -1228,7 +1413,7 @@ namespace HopePipeline.Controllers
                     else
                     { client.femHouse = client.femHouse; }
                     client.domVio = Convert.ToString(dataReader["domVio"]);
-                    var vd = Int32.TryParse(client.domVio, out int dv);
+                  //  var vd = Int32.TryParse(client.domVio, out int dv);
                     if (client.domVio == "1")
                     { client.domVio = "Yes"; }
                     if (client.domVio == "0")
@@ -1238,7 +1423,7 @@ namespace HopePipeline.Controllers
                     else
                     { client.domVio = client.domVio; }
                     client.adopted = Convert.ToString(dataReader["adopted"]);
-                    var adopt = Int32.TryParse(client.adopted, out int adop);
+                //    var adopt = Int32.TryParse(client.adopted, out int adop);
                     if (client.adopted == "1")
                     { client.adopted = "Yes"; }
                     if (client.adopted == "0")
@@ -1248,7 +1433,7 @@ namespace HopePipeline.Controllers
                     else
                     { client.adopted = client.adopted; }
                     client.evicted = Convert.ToString(dataReader["evicted"]);
-                    var ev = Int32.TryParse(client.evicted, out int evict);
+                   // var ev = Int32.TryParse(client.evicted, out int evict);
                     if (client.evicted == "1")
                     { client.evicted = "Yes"; }
                     if (client.evicted == "0")
@@ -1258,7 +1443,7 @@ namespace HopePipeline.Controllers
                     else
                     { client.evicted = client.evicted; }
                     client.incarParent = Convert.ToString(dataReader["incarParent"]);
-                    var incarp = Int32.TryParse(client.incarParent, out int incarpare);
+                  //  var incarp = Int32.TryParse(client.incarParent, out int incarpare);
                     if (client.incarParent == "1")
                     { client.incarParent = "Yes"; }
                     if (client.incarParent == "0")
@@ -1285,14 +1470,14 @@ namespace HopePipeline.Controllers
                     else
                     { client.levelOfServiceProvided = client.levelOfServiceProvided; }
 
-                    string dateinputstring = Convert.ToString(dataReader["dateInput"]);
-                    if (Convert.ToString(dataReader["dateInput"]).Length > 10)
+                    string dateinputstring = Convert.ToString(dataReader["refDate"]);
+                    if (Convert.ToString(dataReader["refDate"]).Length > 10)
 
                     {
                         string[] spacedateinput = dateinputstring.Split(' ');
                         client.referralDate = (spacedateinput[0]);
                     }
-                    if (client.referralDate == " " || client.referralDate == "null" || client.referralDate == "" || Convert.ToString(dataReader["dateInput"]).Length < 10)
+                    if (client.referralDate == " " || client.referralDate == "null" || client.referralDate == "" || Convert.ToString(dataReader["refDate"]).Length < 10)
                     { client.referralDate = "N/A"; }
 
 
@@ -1310,7 +1495,7 @@ namespace HopePipeline.Controllers
                     { client.nonEngagementReason = client.nonEngagementReason; }
 
                     client.caseStatus = Convert.ToString(dataReader["ccrStatus"]);
-                    var cstat = Int32.TryParse(client.caseStatus, out int csta);
+                 //   var cstat = Int32.TryParse(client.caseStatus, out int csta);
                     if (client.caseStatus == "1")
                     { client.caseStatus = "Open"; }
                     if (client.caseStatus == "2")
@@ -1324,7 +1509,7 @@ namespace HopePipeline.Controllers
 
                     client.legalAdvocacy = Convert.ToString(dataReader["legalAdvo"]);
 
-                    var legadvo = Int32.TryParse(client.staffAdvocacy, out int legalad);
+                  //  var legadvo = Int32.TryParse(client.staffAdvocacy, out int legalad);
                     if (client.legalAdvocacy == "1")
                     { client.legalAdvocacy = "Yes"; }
                     if (client.legalAdvocacy == "0")
@@ -1340,7 +1525,7 @@ namespace HopePipeline.Controllers
                     { client.legalAdvoTaken = "N/A"; }
 
                     client.remedyResolution = Convert.ToString(dataReader["remedy"]);
-                    var remre = Int32.TryParse(client.remedyResolution, out int rereed);
+                   // var remre = Int32.TryParse(client.remedyResolution, out int rereed);
                     if (client.remedyResolution.Contains("1"))
                     { client.remedyResolution = "Yes"; }
                     if (client.remedyResolution.Contains("0"))
@@ -1351,7 +1536,7 @@ namespace HopePipeline.Controllers
                     { client.remedyResolution = client.remedyResolution; }
 
                     client.rearrestWhileRepresented = Convert.ToString(dataReader["rearrestRep"]);
-                    var rwr = Int32.TryParse(client.rearrestWhileRepresented, out int rwrep);
+                   // var rwr = Int32.TryParse(client.rearrestWhileRepresented, out int rwrep);
                     if (client.rearrestWhileRepresented == "1")
                     { client.rearrestWhileRepresented = "Yes"; }
                     if (client.rearrestWhileRepresented == "0")
@@ -1368,7 +1553,7 @@ namespace HopePipeline.Controllers
                     if (client.schoolAtClosure == "" || ccrc == 0)
                     { client.schoolAtClosure = "N/A"; }
 
-                    string trackingdate1 = Convert.ToString(dataReader["trackingdate"]);
+                  //  string trackingdate1 = Convert.ToString(dataReader["trackingdate"]);
                     if (Convert.ToString(dataReader["trackingdate"]).Length > 10)
                     {
 
@@ -1382,16 +1567,16 @@ namespace HopePipeline.Controllers
 
                     //is the first referral for the client
 
-                    client.emailOfFirstReferralSource = Convert.ToString(dataReader["email"]);
+                    client.emailOfFirstReferralSource = Convert.ToString(dataReader["refEmail"]);
                     if (client.emailOfFirstReferralSource == "")
                     { client.emailOfFirstReferralSource = "N/A"; }
 
-                    client.referralSource = Convert.ToString(dataReader["referralfname"]) + " " + Convert.ToString(dataReader["referrallname"]);
+                    client.referralSource = Convert.ToString(dataReader["refFName"]) + " " + Convert.ToString(dataReader["refLName"]);
                     if (client.referralSource == "")
                     { client.referralSource = "N/A"; }
 
                     client.rearrestAdvocacy = Convert.ToString(dataReader["rearrestAdvo"]);
-                    var rearrestad = Int32.TryParse(client.rearrestAdvocacy, out int readvoca);
+                //    var rearrestad = Int32.TryParse(client.rearrestAdvocacy, out int readvoca);
                     if (client.rearrestAdvocacy == "1")
                     { client.rearrestAdvocacy = "Yes"; }
                     if (client.rearrestAdvocacy == "0")
@@ -1403,7 +1588,7 @@ namespace HopePipeline.Controllers
                     //int
 
                     client.courtAdvocacy = Convert.ToString(dataReader["courtAdvo"]);
-                    var coadvocacy = Int32.TryParse(client.courtAdvocacy, out int couadvocacy);
+                   // var coadvocacy = Int32.TryParse(client.courtAdvocacy, out int couadvocacy);
                     if (client.courtAdvocacy == "1")
                     { client.courtAdvocacy = "Yes"; }
                     if (client.courtAdvocacy == "0")
@@ -1414,7 +1599,7 @@ namespace HopePipeline.Controllers
                     { client.courtAdvocacy = client.courtAdvocacy; }
                     //int
                     client.staffAdvocacy = Convert.ToString(dataReader["staffingAdvo"]);
-                    var stadvoc = Int32.TryParse(client.staffAdvocacy, out int staffadvo);
+                    //var stadvoc = Int32.TryParse(client.staffAdvocacy, out int staffadvo);
                     if (client.staffAdvocacy == "1")
                     { client.staffAdvocacy = "Yes"; }
                     if (client.staffAdvocacy == "0")
@@ -1494,7 +1679,7 @@ namespace HopePipeline.Controllers
                     { client.newFBA = client.newFBA; }
 
                     client.accomGained = Convert.ToString(dataReader["accomGained"]);
-                    var acgained = Int32.TryParse(client.accomGained, out int acg);
+                   // var acgained = Int32.TryParse(client.accomGained, out int acg);
                     if (client.accomGained == "1")
                     { client.accomGained = "Yes"; }
                     if (client.accomGained == "2")
@@ -1508,7 +1693,7 @@ namespace HopePipeline.Controllers
                     //int
 
                     client.compService = Convert.ToString(dataReader["compServices"]);
-                    var compser = Int32.TryParse(client.compService, out int compserv);
+                   // var compser = Int32.TryParse(client.compService, out int compserv);
                     if (client.compService == "1")
                     { client.compService = "Yes"; }
                     if (client.compService == "0")
@@ -1528,7 +1713,7 @@ namespace HopePipeline.Controllers
                     { client.compTime = "N/A"; }
 
                     client.bullied = Convert.ToString(dataReader["bullied"]);
-                    var bulle = Int32.TryParse(client.bullied, out int bulli);
+                  //  var bulle = Int32.TryParse(client.bullied, out int bulli);
                     if (client.bullied == "1")
                     { client.bullied = "Yes"; }
                     if (client.bullied == "0")
@@ -1539,7 +1724,7 @@ namespace HopePipeline.Controllers
                     { client.bullied = client.bullied; }
                     //int count
                     client.bullyReport = Convert.ToString(dataReader["reported"]);
-                    var bullere = Int32.TryParse(client.bullyReport, out int bullire);
+                 //   var bullere = Int32.TryParse(client.bullyReport, out int bullire);
                     if (client.bullyReport == "1")
                     { client.bullyReport = "Yes"; }
                     if (client.bullyReport == "0")
@@ -1562,7 +1747,7 @@ namespace HopePipeline.Controllers
              
                     //----------------------------------------------------------------------------Discipline-------------------------------
                     client.suspended = Convert.ToString(dataReader["suspendedThrice"]);
-                    var thrise = Int32.TryParse(client.suspended, out int thris);
+                   // var thrise = Int32.TryParse(client.suspended, out int thris);
                     if (client.suspended == "1")
                     { client.suspended = "Yes"; }
                     if (client.suspended == "0")
@@ -1577,7 +1762,7 @@ namespace HopePipeline.Controllers
                     { client.suspendCount = "N/A"; }
 
                     client.altSchool = Convert.ToString(dataReader["altSchool"]);
-                    var altsch = Int32.TryParse(client.altSchool, out int altschoo);
+                  //  var altsch = Int32.TryParse(client.altSchool, out int altschoo);
                     if (client.altSchool == "1")
                     { client.altSchool = "Yes"; }
                     if (client.altSchool == "0")
@@ -1663,7 +1848,7 @@ namespace HopePipeline.Controllers
                     { client.justiceOutcome = "N/A"; }
 
                     client.publicAssistance = Convert.ToString(dataReader["publicAssistance"]);
-                    var publicass = Int32.TryParse(client.publicAssistance, out int publicassis);
+                   // var publicass = Int32.TryParse(client.publicAssistance, out int publicassis);
                     if (client.publicAssistance == "1")
                     { client.publicAssistance = "Yes"; }
                     if (client.publicAssistance == "0")
@@ -1735,7 +1920,7 @@ namespace HopePipeline.Controllers
             "dbo.altSchool.altSchool, dbo.altSchool.altSchoolName, dbo.altSchool.altSchoolDate, dbo.altSchool.altSchoolTimes, dbo.altSchool.daysOwed, dbo.altSchool.daysSinceIntake, " +
             "dbo.bully.bullied, dbo.bully.reported, dbo.bully.reportDate, " +
             "dbo.caregiver.careLast, dbo.caregiver.careFirst, dbo.caregiver.genderIdentity as caregender, dbo.caregiver.ethnicity as careethnic, dbo.caregiver.relationship, " +
-            "dbo.ccr.levelofService, dbo.ccr.ccrStatus, dbo.ccr.nonEngageReason, dbo.ccr.remedy, dbo.ccr.rearrestRep, dbo.ccr.closureSchool, dbo.ccr.inputDate as trackingdate ," +
+            "dbo.ccr.levelofService, dbo.ccr.ccrStatus, dbo.ccr.nonEngageReason, dbo.ccr.remedy, dbo.ccr.rearrestRep, dbo.ccr.closureSchool, dbo.ccr.dateInput as trackingdate ," +
             "dbo.client.clientLast, dbo.client.clientFirst, dbo.client.dependency, dbo.client.genderIdentity as clientgender, dbo.client.ethnicity as clientethn, dbo.client.dob as clientdob, dbo.client.phoneNumber, " +
             "dbo.comp.compTime, " +
             "dbo.currentStatus.readingLevel, dbo.currentStatus.mathLevel, dbo.currentStatus.currentServices, dbo.currentStatus.inPride, dbo.currentStatus.newFBA, dbo.currentStatus.addService, dbo.currentStatus.servicesGained, " +
@@ -1746,8 +1931,9 @@ namespace HopePipeline.Controllers
             "dbo.suspension.suspendedThrice, dbo.suspension.numSuspensions, dbo.suspension.totalDaysSuspended, dbo.suspension.ISS, dbo.suspension.OSS, dbo.suspension.daysofDiscipline, dbo.suspension.disciplineSinceIntake, " +
             "dbo.iep.IEP, dbo.iep.primaryIEP, dbo.iep.secondaryIEP, dbo.iep.addIEp, dbo.legal.legalIssues, dbo.legal.leagalIssues2, dbo.legal.juvJusticeOutcome, " +
             "dbo.school.grade, dbo.school.school, dbo.school.SchoolRef, " +
-            "dbo.refform.email, dbo.refform.referralfname, dbo.refform.referrallname, dbo.refform.dateInput" +
-            " FROM (((((((((((((((((dbo.accomodations  LEFT JOIN dbo.advocacy  on dbo.accomodations.clientCode = dbo.advocacy.clientCode)" +
+            "dbo.refform.email, dbo.refform.referralfname, dbo.refform.referrallname, dbo.refform.dateInput," +
+            "dbo.refInfo.refFName, dbo.refInfo.refLName, dbo.refInfo.refDate, dbo.refInfo.refEmail" +
+            " FROM ((((((((((((((((((dbo.accomodations  LEFT JOIN dbo.advocacy  on dbo.accomodations.clientCode = dbo.advocacy.clientCode)" +
             "LEFT JOIN dbo.altSchool on dbo.accomodations.clientCode = dbo.altSchool.clientCode) " +
             "LEFT JOIN dbo.bully on dbo.accomodations.clientCode = dbo.bully.clientCode) " +
             "LEFT JOIN dbo.caregiver on dbo.accomodations.clientCode = dbo.caregiver.clientCode) " +
@@ -1764,6 +1950,7 @@ namespace HopePipeline.Controllers
             "LEFT JOIN dbo.legal on dbo.accomodations.clientCode = dbo.legal.clientCode)" +
             "LEFT JOIN dbo.school on dbo.accomodations.clientCode = dbo.school.clientCode)" +
             "LEFT JOIN dbo.refform on dbo.accomodations.clientCode = dbo.refform.clientCode)" +
+            "LEFT JOIN dbo.refInfo on dbo.accomodations.clientCode = dbo.refInfo.clientCode)" +
             "WHERE dbo.accomodations.clientCode ='" + clientCode + "';";
             command = new SqlCommand(query, cnn);
 
@@ -1810,7 +1997,8 @@ namespace HopePipeline.Controllers
 
                     client.school = Convert.ToString(dataReader["school"]);
                     client.currentGrade = Convert.ToString(dataReader["grade"]);
-                    client.referralSource = Convert.ToString(dataReader["referralfname"]) + " " + Convert.ToString(dataReader["referrallname"]);
+                    client.referralSource = Convert.ToString(dataReader["refFName"]);
+                    client.referrallSource = Convert.ToString(dataReader["refLName"]);
                     if (Convert.IsDBNull(dataReader["gradeFailed"]))
                     { client.failedGrade = 33; }
                     else { client.failedGrade = Convert.ToInt16(dataReader["gradeFailed"]); }
@@ -1861,11 +2049,11 @@ namespace HopePipeline.Controllers
                     client.levelOfServiceProvided = Convert.ToString(dataReader["levelofService"]);
 
                  
-                    if (Convert.IsDBNull(dataReader["dateInput"]))
+                    if (Convert.IsDBNull(dataReader["refDate"]))
                     { client.referralDate = DateTime.Parse("01/01/1990"); }
                     else
                     {
-                        client.referralDate = Convert.ToDateTime(dataReader["dateInput"]);
+                        client.referralDate = Convert.ToDateTime(dataReader["refDate"]);
                         string answer = client.referralDate.ToString();
                         int space = answer.IndexOf(" ");
                         string date = answer.Substring(0, space);
@@ -1941,7 +2129,7 @@ namespace HopePipeline.Controllers
 
                     //is the first referral for the client
 
-                    client.emailOfFirstReferralSource = Convert.ToString(dataReader["email"]);
+                    client.emailOfFirstReferralSource = Convert.ToString(dataReader["refEmail"]);
 
 
 
@@ -2135,27 +2323,28 @@ namespace HopePipeline.Controllers
             cnnn.Open();//Connect
                         //as you edit the tracking form update the clients referral name, dob, case status
            
-            object clientcheckc = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.refform WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
+            object clientcheckc = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.refform WHERE clientCode = '" + form.ClientID + "'", cnnn).ExecuteScalar();
 
             //if client code is not in the table client ID insert values in table
 
             //SqlCommand commandd = cnnn.CreateCommand();
-            object bullycheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.bully WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
-            object clientcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.client WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
-            object advocacycheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.advocacy WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
-            object accomodationscheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.accomodations WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
-            object altSchoolcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.altSchool WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
-            object caregivercheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.caregiver WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
-            object ccrcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.ccr WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
-            object compcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.comp WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
-            object currentStatuscheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.currentStatus WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
-            object failedcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.failed WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
-            object healthcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.health WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
-            object householdcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.household WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
-            object suspensioncheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.suspension WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
-            object iepcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.iep WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
-            object legalcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.legal WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
-            object schoolcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.school WHERE clientCode = " + form.ClientID + "", cnnn).ExecuteScalar();
+            object bullycheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.bully WHERE clientCode = '" + form.ClientID + "'", cnnn).ExecuteScalar();
+            object clientcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.client WHERE clientCode = '" + form.ClientID + "'", cnnn).ExecuteScalar();
+            object advocacycheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.advocacy WHERE clientCode = '" + form.ClientID + "'", cnnn).ExecuteScalar();
+            object accomodationscheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.accomodations WHERE clientCode = '" + form.ClientID + "'", cnnn).ExecuteScalar();
+            object altSchoolcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.altSchool WHERE clientCode = '" + form.ClientID + "'", cnnn).ExecuteScalar();
+            object caregivercheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.caregiver WHERE clientCode = '" + form.ClientID + "'", cnnn).ExecuteScalar();
+            object ccrcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.ccr WHERE clientCode = '" + form.ClientID + "'", cnnn).ExecuteScalar();
+            object compcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.comp WHERE clientCode = '" + form.ClientID + "'", cnnn).ExecuteScalar();
+            object currentStatuscheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.currentStatus WHERE clientCode = '" + form.ClientID + "'", cnnn).ExecuteScalar();
+            object failedcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.failed WHERE clientCode = '" + form.ClientID + "'", cnnn).ExecuteScalar();
+            object healthcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.health WHERE clientCode = '" + form.ClientID + "'", cnnn).ExecuteScalar();
+            object householdcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.household WHERE clientCode = '" + form.ClientID + "'", cnnn).ExecuteScalar();
+            object suspensioncheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.suspension WHERE clientCode = '" + form.ClientID + "'", cnnn).ExecuteScalar();
+            object iepcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.iep WHERE clientCode = '" + form.ClientID + "'", cnnn).ExecuteScalar();
+            object legalcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.legal WHERE clientCode = '" + form.ClientID + "'", cnnn).ExecuteScalar();
+            object schoolcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.school WHERE clientCode = '" + form.ClientID + "'", cnnn).ExecuteScalar();
+            object refcheck = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.refInfo WHERE clientCode = '" + form.ClientID + "'", cnnn).ExecuteScalar();
             cnnn.Close();
             int ccc = (Convert.ToInt16(clientcheckc)) + 0;
            
@@ -2175,8 +2364,53 @@ namespace HopePipeline.Controllers
             int iepc = (Convert.ToInt16(iepcheck)) + 0;
             int lc = (Convert.ToInt16(legalcheck)) + 0;
             int sc = (Convert.ToInt16(schoolcheck)) + 0;
+            int ri = (Convert.ToInt16(refcheck)) + 0;
 
-        
+            if (ri == 0)
+            {
+                SqlConnection cnnt;
+                cnnt = new SqlConnection(cconnectionString);
+                using (SqlConnection link = new SqlConnection(cconnectionString))
+                using (SqlCommand stateclientq = new SqlCommand("", link))
+                {
+                    Debug.WriteLine("Send to debug output.");
+                    stateclientq.CommandText = "INSERT INTO dbo.refInfo (refFName,  refLName,  refDate, clientCode, refEmail) VALUES (@reFName,  @refLName, @refDate, @clientCode, @refEmail);";
+
+                    //, dob = @birthday //need to add this when it is working and null bday is accepted
+                    stateclientq.Parameters.AddWithValue("@clientCode", form.ClientID);
+                    //----------------------------------------------Demographics--------------------------------
+                    SqlParameter firstref = stateclientq.Parameters.AddWithValue("@reFName", form.referralSource);
+                    if (form.referralSource == null)
+                    {
+                        firstref.Value = DBNull.Value;
+                    }
+                    SqlParameter lastref= stateclientq.Parameters.AddWithValue("@refLName", form.referrallSource);
+                    if (form.referrallSource == null)
+                    {
+                        lastref.Value = DBNull.Value;
+                    }
+                    SqlParameter refemaill = stateclientq.Parameters.AddWithValue("@refEmail", form.emailOfFirstReferralSource);
+                    if (form.emailOfFirstReferralSource == null)
+                    {
+                        refemaill.Value = DBNull.Value;
+                    }
+                    SqlParameter refdates = stateclientq.Parameters.AddWithValue("@refDate", form.referralDate);
+                    if (form.referralDate == null)
+                    {
+                        refdates.Value = DBNull.Value;
+                    }
+                    // SqlParameter rfnas = stateclient.Parameters.AddWithValue("@birthday", form.clientDOB);/////////////////////-Date
+                    // if (form.clientDOB == null)
+                    // {
+                    //   rfnas.Value = DBNull.Value;
+                    // }
+
+                    link.Open();
+                    stateclientq.ExecuteNonQuery();
+                    link.Close();
+                    cnnt.Close();
+                }
+            }
             if (ccc >= 1)
             {
                 // clientcode is not in the table insert the values
@@ -2410,8 +2644,17 @@ namespace HopePipeline.Controllers
                         gin.Value = DBNull.Value;
                     }
 
-                    SqlParameter tok = altschoolstate.Parameters.AddWithValue("@daysOwed", form.daysOwed);
-                    SqlParameter daysSinceIntake = altschoolstate.Parameters.AddWithValue("@daysSinceIntake", form.daysSinceIntake);
+                    SqlParameter tok = altschoolstate.Parameters.AddWithValue("@daysOwed", form.daysOwed);//may work may not
+                    if ((form.daysOwed.ToString()).Length ==0)
+                    {
+                        tok.Value = DBNull.Value;
+                    }
+
+                    SqlParameter daysSinceIntake = altschoolstate.Parameters.AddWithValue("@daysSinceIntake", form.daysSinceIntake);//may not work
+                    if ((form.daysSinceIntake.ToString()).Length == 0)
+                    {
+                        daysSinceIntake.Value = DBNull.Value;
+                    }
                     link.Open();
                     altschoolstate.ExecuteNonQuery();
                     link.Close();
@@ -2693,10 +2936,18 @@ namespace HopePipeline.Controllers
                         numSuspensions.Value = DBNull.Value;
                     }
                     SqlParameter totalDaysSuspended = susstate.Parameters.AddWithValue("@totalDaysSuspended", (form.iss + form.oss));
+                    if ((form.iss.ToString().Length == 0 )&& (form.oss.ToString().Length != 0))
+                    { totalDaysSuspended.Value = form.oss; }
+                    if ((form.oss.ToString().Length == 0) && (form.iss.ToString().Length != 0))
+                    { totalDaysSuspended.Value = form.iss; }
+                    if (form.iss.ToString().Length == 0 && (form.iss.ToString().Length ==0))
+                    { totalDaysSuspended.Value = DBNull.Value; }
                     SqlParameter ISS = susstate.Parameters.AddWithValue("@ISS", form.iss);
-
+                    if ((form.iss.ToString().Length == 0))
+                    { ISS.Value = DBNull.Value; }
                     SqlParameter OSS = susstate.Parameters.AddWithValue("@OSS", form.oss);
-
+                    if ((form.oss.ToString().Length == 0))
+                    { OSS.Value = DBNull.Value; }
                     link.Open();
                     susstate.ExecuteNonQuery();
                     link.Close();
@@ -2874,7 +3125,7 @@ namespace HopePipeline.Controllers
                    " WHERE  clientCode = @clientCode; " +
 
                      " UPDATE dbo.refInfo" +
-               " SET reFName = @reFName,  reLName = @reLName,  refDate = @refDate,  refEmail = @refEmail " +
+               " SET refFName = @reFName,  refLName = @reLName,  refDate = @refDate,  refEmail = @refEmail " +
                 " WHERE  clientCode = @clientCode; " +
 
                " UPDATE dbo.refform" +
@@ -2992,7 +3243,15 @@ namespace HopePipeline.Controllers
                     }
 
                     SqlParameter tok = command.Parameters.AddWithValue("@daysOwed", form.daysOwed);
+                    if ((form.daysOwed.ToString()).Length == 0)
+                    {
+                        tok.Value = DBNull.Value;
+                    }
                     SqlParameter daysSinceIntake = command.Parameters.AddWithValue("@daysSinceIntake", form.daysSinceIntake);
+                    if ((form.daysSinceIntake.ToString()).Length == 0)
+                    {
+                        daysSinceIntake.Value = DBNull.Value;
+                    }
                     SqlParameter stat = command.Parameters.AddWithValue("@careLast", form.careLastName);
                     if (form.careLastName == null)
                     {
@@ -3148,9 +3407,18 @@ namespace HopePipeline.Controllers
                         numSuspensions.Value = DBNull.Value;
                     }
                     SqlParameter totalDaysSuspended = command.Parameters.AddWithValue("@totalDaysSuspended", (form.iss + form.oss));
+                    if ((form.iss.ToString().Length == 0) && (form.oss.ToString().Length != 0))
+                    { totalDaysSuspended.Value = form.oss; }
+                    if ((form.oss.ToString().Length == 0) && (form.iss.ToString().Length != 0))
+                    { totalDaysSuspended.Value = form.iss; }
+                    if (form.iss.ToString().Length == 0 && (form.iss.ToString().Length == 0))
+                    { totalDaysSuspended.Value = DBNull.Value; }
                     SqlParameter ISS = command.Parameters.AddWithValue("@ISS", form.iss);
-
+                    if ((form.oss.ToString().Length == 0))
+                    { ISS.Value = DBNull.Value; }
                     SqlParameter OSS = command.Parameters.AddWithValue("@OSS", form.oss);
+                    if ((form.oss.ToString().Length == 0))
+                    { OSS.Value = DBNull.Value; }
                     SqlParameter IEP = command.Parameters.AddWithValue("@IEP", form.iep);
                     if (form.iep < 0 || form.iep > 1)
                     {
@@ -3207,58 +3475,27 @@ namespace HopePipeline.Controllers
                     {
                         referrerEmail.Value = DBNull.Value;
                     }
-                    //string[] stage1fix = null;
-                    string referrals = form.referralSource;
-                    var referralnamefix = referrals;
-                    if (referralnamefix != null && (referralnamefix.Contains(" ") || referralnamefix.Contains(",")))
+                    SqlParameter referrerNamefirstrefform = command.Parameters.AddWithValue("@referralfname", form.referralSource);
+                    if (form.referralSource == null)
                     {
-
-                        if (referralnamefix.Contains(" "))
-                        {
-                            string[] stage1fix = referralnamefix.Split(' ');
-                            SqlParameter referralfname = command.Parameters.AddWithValue("@referralfname", stage1fix[0]);
-                            SqlParameter referralfname1 = command.Parameters.AddWithValue("@reFName", stage1fix[0]);
-                            SqlParameter referrallname = command.Parameters.AddWithValue("@referrallname", stage1fix[1]);
-                            SqlParameter referrallname1 = command.Parameters.AddWithValue("@reLName", stage1fix[1]);
-                            if (stage1fix[0] == null)
-                            {
-                                referralfname.Value = DBNull.Value;
-                                referralfname1.Value = DBNull.Value;
-                            }
-                            if (stage1fix[1] == null)
-                            {
-                                referrallname.Value = DBNull.Value;
-                                referrallname1.Value = DBNull.Value;
-                            }
-                        }
-                        if (referralnamefix.Contains(","))
-                        {
-                            string[] stage1fix = referralnamefix.Split(',');
-
-                            SqlParameter referralfname = command.Parameters.AddWithValue("@referralfname", stage1fix[0]);
-                            SqlParameter referralfname1 = command.Parameters.AddWithValue("@reFName", stage1fix[0]);
-                            SqlParameter referrallname = command.Parameters.AddWithValue("@referrallname", stage1fix[1]);
-                            SqlParameter referrallname1 = command.Parameters.AddWithValue("@reLName", stage1fix[1]);
-
-                            if (stage1fix[0] == null)
-                            {
-                                referralfname.Value = DBNull.Value;
-                                referralfname1.Value = DBNull.Value;
-                            }
-                            if (stage1fix[1] == null)
-                            {
-                                referrallname.Value = DBNull.Value;
-                                referrallname1.Value = DBNull.Value;
-                            }
-                        }
+                        referrerNamefirstrefform.Value = DBNull.Value;
                     }
-                    if (referralnamefix == null)
+                    SqlParameter referrerNamefirstt = command.Parameters.AddWithValue("@reFName", form.referralSource);
+                    if (form.referralSource == null)
                     {
-                        SqlParameter referralfname = command.Parameters.AddWithValue("@referralfname", null);
-                            SqlParameter referralfname1 = command.Parameters.AddWithValue("@reFName", null);
-                            SqlParameter referrallname = command.Parameters.AddWithValue("@referrallname", null);
-                            SqlParameter referrallname1 = command.Parameters.AddWithValue("@reLName", null);
-                        }
+                        referrerNamefirstt.Value = DBNull.Value;
+                    }
+                    SqlParameter referrerNamelastrefform = command.Parameters.AddWithValue("@referrallname", form.referrallSource);
+                    if (form.referrallSource == null)
+                    {
+                        referrerNamelastrefform.Value = DBNull.Value;
+                    }
+                    SqlParameter referrerNamelastt = command.Parameters.AddWithValue("@reLName", form.referrallSource);
+                    if (form.referrallSource == null)
+                    {
+                        referrerNamelastt.Value = DBNull.Value;
+                    }
+                   
                     SqlParameter referralDate = command.Parameters.AddWithValue("@dateInput", form.referralDate);
                     if (form.referralDate == null)
                     {
@@ -3310,25 +3547,27 @@ namespace HopePipeline.Controllers
         {
           //  Main(emailaddress);
             //confirmation thank you page for submiting and give email submit referral
-            Execute().Wait();
+            Execute(emailaddress).Wait();
+
             return RedirectToAction("Index", "Home");
 
         }
 
-        static async Task Execute()
+        static async Task Execute(string emailaddress)
         {
             //    Execute().Wait();
             //}
+           
 
             //static async Task Execute()
             //{
             var apiKey = Environment.GetEnvironmentVariable("API_KEY");
             var client = new SendGridClient(apiKey);
-            var from = new EmailAddress("n01057930@unf.edu", "Example User");
-            var subject = "Sending with Twilio SendGrid is Fun";
-            var to = new EmailAddress("n01057930@unf.edu", "Example User");
-            var plainTextContent = "and easy to do anywhere, even with C#";
-            var htmlContent = "<strong>and easy to do anywhere, even with C#</strong>";
+            var from = new EmailAddress("n01057930@unf.edu", "The Center for Children's Rights");
+            var subject = "Ex. The Center for Children's Rights Referral Confirmation";
+            var to = new EmailAddress(emailaddress, "Referral Source");
+            var plainTextContent = "Waiting for the template form from betsy on what is wanted in this section";
+            var htmlContent = "<strong>Waiting for the template form from betsy on what is wanted in this section</strong>";
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             var response = await client.SendEmailAsync(msg);
 

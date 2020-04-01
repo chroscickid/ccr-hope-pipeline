@@ -49,7 +49,7 @@
             table-layout: fixed;
         }
     </style>
-    <script>
+    <script type="text/javascript">
         function editConfirm() {
              var arrayorg = []
             var checkboxes2 = document.querySelectorAll('input[name=arrayorg]:checked')
@@ -110,487 +110,573 @@
             document.getElementById("youthImpact").value = arrayImpact;
             //array impact
 
+            //required
+                      //required data
+            var inputtextwarn = document.getElementById("referralfname").value;
+           var reflastnamewarn = document.getElementById("referrallname").value;
+           var lnamewarn = document.getElementById("fName").value;
+           var fnamewarn = document.getElementById("lName").value;
+           var guardianNamewarn = document.getElementById("guardianName").value;
+          var guardianlNamewarn = document.getElementById("guardianlName").value;
+         var youthphonewarn = document.getElementById("youthNu").value;
+         var parentphonewarn = document.getElementById("guardianPhone").value;
+           var zipwarn = document.getElementById("zip").value;
+          //       //email
+       var parentemailwarn = document.getElementById("guardianEmail").value;
+            var youthemailwarn = document.getElementById("youthEmail").value;
+           var refemailwarn = document.getElementById("refemail").value;
+          //  //dob
+          var dobwarn = document.getElementById("dOB").value;
+   
+          //  //address validate/phone number validate/zip code validation
+          //  //NOT DONE YET LENGTH
+          var letters = /^[A-Za-z]+$/;
+          var phoneno = /^[1-9]\d{2}-\d{3}-\d{4}/;
+          var zipno = /^\d{5}$/;
+           
+     var email =/^[a-zA-Z0-9_\-.]+\u0040[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$/;
+         
+            if ((!inputtextwarn.match(letters) && inputtextwarn.length != 0) || (!reflastnamewarn.match(letters) && reflastnamewarn.length != 0)
+                || (!lnamewarn.match(letters) && lnamewarn.length != 0) || (!fnamewarn.match(letters) && fnamewarn.length != 0)
+                || (!guardianNamewarn.match(letters) && guardianNamewarn.length != 0) || (!guardianlNamewarn.match(letters) && guardianlNamewarn.length != 0)
+                || (!youthphonewarn.match(phoneno) && youthphonewarn.length != 0) || (!parentphonewarn.match(phoneno) && parentphonewarn.length != 0) || (!zipwarn.match(zipno) && zipwarn.length != 0)
+                || (!parentemailwarn.match(email) && parentemailwarn.length != 0) || (!youthemailwarn.match(email) && youthemailwarn.length != 0) || (!refemailwarn.match(email) && refemailwarn.length != 0)
+            || (dobwarn.length == 0))
+            {
+                //reffirstname//reflast name/ lastname/first name//guardian name//phone
+                if (!inputtextwarn.match(letters) && inputtextwarn.length != 0) { document.getElementById("reffnameError").innerHTML = "Please input alphabet characters only"; }
+                else { document.getElementById("reffnameError").innerHTML = ""; }
+                  if (!reflastnamewarn.match(letters) && reflastnamewarn.length != 0) { document.getElementById('reflnameError').innerHTML = 'Please input alphabet characters only'; }
+                else { document.getElementById('reflnameError').innerHTML = ''; }
+                  if (!lnamewarn.match(letters) && lnamewarn.length != 0) { document.getElementById('fNameerror').innerHTML = 'Please input alphabet characters only'; }
+                else { document.getElementById('fNameerror').innerHTML = ''; }
+                if (!fnamewarn.match(letters) && fnamewarn.length != 0) { document.getElementById('lNameerror').innerHTML = 'Please input alphabet characters only'; }
+                else { document.getElementById('lNameerror').innerHTML = ''; }
+                  if (!guardianNamewarn.match(letters) && guardianNamewarn.length != 0) { document.getElementById('guardianNameError').innerHTML = 'Please input alphabet characters only'; }
+                else { document.getElementById('guardianNameError').innerHTML = ''; }
+                if (!guardianlNamewarn.match(letters) && guardianlNamewarn.length != 0) { document.getElementById('guardianlNameError').innerHTML = 'Please input alphabet characters only'; }
+                else { document.getElementById('guardianlNameError').innerHTML = ''; }
+                 if (!youthphonewarn.match(phoneno) && youthphonewarn.length != 0) { document.getElementById('youthphoneError').innerHTML = 'Please format your phone numbers as ###-###-####'; }
+                else { document.getElementById('youthphoneError').innerHTML = ''; }
+                if ((!parentphonewarn.match(phoneno) && parentphonewarn.length != 0)) { document.getElementById('parentphoneError').innerHTML = 'Please format your phone numbers as ###-###-####'; }
+                else { document.getElementById('parentphoneError').innerHTML = ''; }
+                if (!zipwarn.match(zipno) && zipwarn.length != 0) { document.getElementById('zipError').innerHTML = 'Please only enter 5 digits'; }
+                else { document.getElementById('zipError').innerHTML = ''; }
+                    if (inputtextwarn.length == 0) {
+                    document.getElementById('inputtextValid').innerHTML = 'This field is required';
+                }
+                else { document.getElementById('inputtextValid').innerHTML = ''; }
+                if (reflastnamewarn.length == 0) {
+                    document.getElementById('reflastnameValid').innerHTML = 'This field is required';
+                }
+                else { document.getElementById('reflastnameValid').innerHTML = ''; }
+                if (lnamewarn.length == 0) {
+                    document.getElementById('lnamewarnValid').innerHTML = 'This field is required';
+                }
+                else { document.getElementById('lnamewarnValid').innerHTML = ''; }
+                 if (fnamewarn.length == 0) {
+                    document.getElementById('fnamewarnValid').innerHTML = 'This field is required';
+                }
+                else { document.getElementById('fnamewarnValid').innerHTML = ''; }
+                if (guardianNamewarn.length == 0) {
+                    document.getElementById('guardianNamewarnValid').innerHTML = 'This field is required';
+                }
+                else { document.getElementById('guardianNamewarnValid').innerHTML = ''; }
+                if (guardianlNamewarn.length == 0) {
+                    document.getElementById('guardianlNamewarnValid').innerHTML = 'This field is required';
+                }
+                else { document.getElementById('guardianlNamewarnValid').innerHTML = ''; }
+                if (parentphonewarn.length == 0) {
+                    document.getElementById('parentphonewarnValid').innerHTML = 'This field is required';
+                }
+                else { document.getElementById('parentphonewarnValid').innerHTML = ''; }
+                if (!parentemailwarn.match(email) && parentemailwarn.length != 0) {
+                    document.getElementById('parentemailwarnValid').innerHTML = 'This is not a valid email address';
+                }
+                else { document.getElementById('parentemailwarnValid').innerHTML = ''; }
+                if (!youthemailwarn.match(email) && youthemailwarn.length != 0) {
+                    document.getElementById('youthemailwarnValid').innerHTML = 'This is not a valid email address';
+                }
+                else { document.getElementById('youthemailwarnValid').innerHTML = ''; }
+                if (!refemailwarn.match(email) && refemailwarn.length != 0) {
+                    document.getElementById('refemailwarnValid').innerHTML = 'This is not a valid email address';
+                }
+                else { document.getElementById('refemailwarnValid').innerHTML = ''; }
+                     if (dobwarn.length == 0) {
+                    document.getElementById('dobwarnValid').innerHTML = 'This field is required';
+                }
+                else { document.getElementById('dobwarnValid').innerHTML = ''; }
+                alert("You will need to correct the error's in red before submitting this referral");
+                return false;
+
+   
+            }
+            else {
 
 
+                //end required start else
 
-            //begin CHANGE CONFIRM-------------------------------------------------------------------------------
-            //youthCit
+
+                //begin CHANGE CONFIRM-------------------------------------------------------------------------------
+                //youthCit
                 var youthCitname = "";
-            var yCit = "";
+                var yCit = "";
 
-            if (((document.getElementById('value1Cit').defaultChecked)==false) &&((document.getElementById('value1Cit').checked) == true))
-            {
-                var youthCit = "1";
-                var youthCitname = "is in a unsuccessful civil citation or diversion case";
-            }
-                        if (((document.getElementById('value0Cit').defaultChecked)==false) && ((document.getElementById('value0Cit').checked) == true))
-            {
-                var youthCit = "0";
-                var youthCitname= "is not in a unsuccessful civil citation or diversion case";
-            }
-         
-            if (youthCit != null) { var yCit = '\n The clients information has been changed to ' + youthCitname + '\n'; }
+                if (((document.getElementById('value1Cit').defaultChecked) == false) && ((document.getElementById('value1Cit').checked) == true)) {
+                    var youthCit = "1";
+                    var youthCitname = "is in a unsuccessful civil citation or diversion case";
+                }
+                if (((document.getElementById('value0Cit').defaultChecked) == false) && ((document.getElementById('value0Cit').checked) == true)) {
+                    var youthCit = "0";
+                    var youthCitname = "is not in a unsuccessful civil citation or diversion case";
+                }
 
-            //youthOffense
+                if (youthCit != null) { var yCit = '\n The clients information has been changed to ' + youthCitname + '\n'; }
+
+                //youthOffense
                 var youthOffensename = "";
-            var youthOf = "";
+                var youthOf = "";
 
-            if (((document.getElementById('value1Offense').defaultChecked)==false) &&((document.getElementById('value1Offense').checked) == true))
-            {
-                var youthOffense = "1";
-                var youthOffensename = "was arrested for a school related offense";
-            }
-                        if (((document.getElementById('value0Offense').defaultChecked)==false) && ((document.getElementById('value0Offense').checked) == true))
-            {
-                var youthOffense = "0";
-                var youthOffensename= "was not arrested for a school related offense";
-            }
-                        if ( ((document.getElementById('value2Offense').defaultChecked)==false) &&((document.getElementById('value2Offense').checked) == true) )
-            {
-                var youthOffense = "2";
-                var youthOffensename = "don't know if the youth was arrested for a school related offense";
-            }
-            
-            if (youthOffense != null) { var youthOf = '\n The clients information has been changed to ' + youthOffensename + '\n'; }
+                if (((document.getElementById('value1Offense').defaultChecked) == false) && ((document.getElementById('value1Offense').checked) == true)) {
+                    var youthOffense = "1";
+                    var youthOffensename = "was arrested for a school related offense";
+                }
+                if (((document.getElementById('value0Offense').defaultChecked) == false) && ((document.getElementById('value0Offense').checked) == true)) {
+                    var youthOffense = "0";
+                    var youthOffensename = "was not arrested for a school related offense";
+                }
+                if (((document.getElementById('value2Offense').defaultChecked) == false) && ((document.getElementById('value2Offense').checked) == true)) {
+                    var youthOffense = "2";
+                    var youthOffensename = "don't know if the youth was arrested for a school related offense";
+                }
 
-            //First Name Working
-            var fNam = "";
-           var fName = document.getElementById("fName").value;
-        var fNameHidden = document.getElementById("fNameHidden").value;
-        //text
-            if (fName != fNameHidden)
-        { var fNam = "\n The Clients first name has been changed to " + fName + "\n"; }
-//first Name Working
-            //Last Name
-               var lNam= "";
-           var lName = document.getElementById("lName").value;
-        var lNameHidden = document.getElementById("lNameHidden").value;
-        //text
-            if (lName != lNameHidden)
-            { var lNam= "\n The Clients last name has been changed to " + lName + "\n"; }
-            //Last Name
-            //Gender Identity
-            var gendername = "";
-            var gen = "";
-          
-            if ((document.getElementById('male')) && ((document.getElementById('male').checked) == true))
-            { var gender = "male";
-                var gendername = 'He/Him/His';
-            }
-             if ((document.getElementById('female1')) && ((document.getElementById('female1').checked) == true))
-            { var gender = "female";
-                var gendername = 'She/Her/Hers';
-            }
-             if ((document.getElementById('gender3')) && ((document.getElementById('gender3').checked) == true))
-            { var gender = "trans*";
-                var gendername = 'They/Them/Theirs';
-            }
-               if ((document.getElementById('gender4')) && ((document.getElementById('gender4').checked) == true))
-            { var gender = "nonbinaryF";
-                var gendername = 'She/They';
-            }
-               if ((document.getElementById('gender5')) && ((document.getElementById('gender5').checked) == true))
-            { var gender = "nonbinaryM";
-                var gendername = 'He/They';
-            }
-  if ((document.getElementById('gender6')) && ((document.getElementById('gender6').checked) == true))
-            { var gender = "neutral";
-                var gendername = 'Zie/Zir/Zirs';
-            }
-            if (gender != null) { var gen = '\n The Clients gender information has been changed to ' + gendername + '\n'; }
-           //Gender Identity Works
-            //DOB
-                 var bday= "";
-           var dOB = document.getElementById("dOB").value;
-        var dOBHidden = document.getElementById("dOBHidden").value;
-        //text
-            if (dOB != dOBHidden)
-            { var bday= "\n The Clients last name has been changed to " + dOB + "\n"; }
-            //DOB
+                if (youthOffense != null) { var youthOf = '\n The clients information has been changed to ' + youthOffensename + '\n'; }
+
+                //First Name Working
+                var fNam = "";
+                var fName = document.getElementById("fName").value;
+                var fNameHidden = document.getElementById("fNameHidden").value;
+                //text
+                if (fName != fNameHidden) { var fNam = "\n The Clients first name has been changed to " + fName + "\n"; }
+                //first Name Working
+                //Last Name
+                var lNam = "";
+                var lName = document.getElementById("lName").value;
+                var lNameHidden = document.getElementById("lNameHidden").value;
+                //text
+                if (lName != lNameHidden) { var lNam = "\n The Clients last name has been changed to " + lName + "\n"; }
+                //Last Name
+                //Gender Identity
+                var gendername = "";
+                var gen = "";
+
+                if ((document.getElementById('male')) && ((document.getElementById('male').checked) == true)) {
+                    var gender = "male";
+                    var gendername = 'He/Him/His';
+                }
+                if ((document.getElementById('female1')) && ((document.getElementById('female1').checked) == true)) {
+                    var gender = "female";
+                    var gendername = 'She/Her/Hers';
+                }
+                if ((document.getElementById('gender3')) && ((document.getElementById('gender3').checked) == true)) {
+                    var gender = "trans*";
+                    var gendername = 'They/Them/Theirs';
+                }
+                if ((document.getElementById('gender4')) && ((document.getElementById('gender4').checked) == true)) {
+                    var gender = "nonbinaryF";
+                    var gendername = 'She/They';
+                }
+                if ((document.getElementById('gender5')) && ((document.getElementById('gender5').checked) == true)) {
+                    var gender = "nonbinaryM";
+                    var gendername = 'He/They';
+                }
+                if ((document.getElementById('gender6')) && ((document.getElementById('gender6').checked) == true)) {
+                    var gender = "neutral";
+                    var gendername = 'Zie/Zir/Zirs';
+                }
+                if (gender != null) { var gen = '\n The Clients gender information has been changed to ' + gendername + '\n'; }
+                //Gender Identity Works
+                //DOB
+                var bday = "";
+                var dOB = document.getElementById("dOB").value;
+                var dOBHidden = document.getElementById("dOBHidden").value;
+                //text
+                if (dOB != dOBHidden) { var bday = "\n The Clients last name has been changed to " + dOB + "\n"; }
+                //DOB
                 //guardians first name
-                 var gfn= "";
-           var guardianName = document.getElementById("guardianName").value;
-        var guardianNameHidden = document.getElementById("guardianNameHidden").value;
-        //text
-            if (guardianNameHidden != guardianName)
-            { var gfn= "\n The guardian's first name has been changed to " + guardianName + "\n"; }
-            //guardians first name
-                  //guardians last name
-                 var gln= "";
-           var guardianlName = document.getElementById("guardianlName").value;
-        var guardianlNameHidden = document.getElementById("guardianlNameHidden").value;
-        //text
-            if (guardianlName != guardianlNameHidden)
-            { var gln= "\n The guardian's last name has been changed to " + guardianlName + "\n"; }
-            //guardians last name//done
-            //Relationship to the youth
-            var regu = "";
-            var guardRe = document.getElementById("guardRe").value;
-           
-            var guardianRelationshipHidden = document.getElementById("guardianRelationshipHidden").value;
-           
-            if (guardRe != guardianRelationshipHidden)
-            { var regu = "\n The guardian's relationship has been changed to " + guardRe + "\n"; }
-            //organization
-             var org = "";
-            var nameOrg = document.getElementById("nameOrg").value;
-           
-            var nameOrgHidden = document.getElementById("nameOrgHidden").value;
-           
-            if (nameOrg != nameOrgHidden)
-            { var org = "\n The referral's organization has been changed to " + nameOrg + "\n"; }
-            //Street Address
-               var sta= "";
-           var address = document.getElementById("address").value;
-        var addressHidden = document.getElementById("addressHidden").value;
-        //text
-            if (address != addressHidden)
-            { var sta= "\n The Clients address has been changed to " + address + "\n"; }
-            //zip
-                var zi= "";
-           var zip = document.getElementById("zip").value;
-        var zipHidden = document.getElementById("zipHidden").value;
-        //text
-            if (zip != zipHidden)
-            { var zi= "\n The Clients zip code has been changed to " + zip + "\n"; }
-            //guardian email
-         
-                     var ge= "";
-           var guardianEmail = document.getElementById("guardianEmail").value;
-        var guardianEmailHidden = document.getElementById("guardianEmailHidden").value;
-        //text
-            if (guardianEmail != guardianEmailHidden)
-            { var ge = "\n The guardian email has been changed to " + guardianEmail + "\n"; }
+                var gfn = "";
+                var guardianName = document.getElementById("guardianName").value;
+                var guardianNameHidden = document.getElementById("guardianNameHidden").value;
+                //text
+                if (guardianNameHidden != guardianName) { var gfn = "\n The guardian's first name has been changed to " + guardianName + "\n"; }
+                //guardians first name
+                //guardians last name
+                var gln = "";
+                var guardianlName = document.getElementById("guardianlName").value;
+                var guardianlNameHidden = document.getElementById("guardianlNameHidden").value;
+                //text
+                if (guardianlName != guardianlNameHidden) { var gln = "\n The guardian's last name has been changed to " + guardianlName + "\n"; }
+                //guardians last name//done
+                //Relationship to the youth
+                var regu = "";
+                var guardRe = document.getElementById("guardRe").value;
 
-            //Issues
-             var issuesname= "";
-           var issues = document.getElementById("issues0").value;
-            var issuesHidden = document.getElementById("issuesHidden").value;
-            //text
-            if (issues !=issuesHidden)
-            { var issuesname= "\n The Clients issues have been changed to " + issues + "\n"; }
-            //check if exists (document.getElementById('youthInDuvalSchool1')) and is unchecked var x = document.getElementById("myCheck").defaultChecked;
-            //impact
+                var guardianRelationshipHidden = document.getElementById("guardianRelationshipHidden").value;
 
-             var youthImpactname= "";
-           var youthImpact = document.getElementById("youthImpact").value;
-            var youthImpactHidden = document.getElementById("youthImpactHidden").value;
-       
-            if (youthImpact !=youthImpactHidden)
-            { var youthImpactname= "\n The Clients youth Impact have been changed to " + youthImpact + "\n"; }
-            //impact
-            var meetingname = "";
-            var meet = "";
+                if (guardRe != guardianRelationshipHidden) { var regu = "\n The guardian's relationship has been changed to " + guardRe + "\n"; }
+                //organization
+                var org = "";
+                var nameOrg = document.getElementById("nameOrg").value;
 
-            if (((document.getElementById('yesCheck').defaultChecked)==false) &&((document.getElementById('yesCheck').checked) == true))
-            {
-                var meeting = "1";
-                var meetingname = "having a meeting";
-            }
-                        if (((document.getElementById('noCheck').defaultChecked)==false) && ((document.getElementById('noCheck').checked) == true))
-            {
-                var meeting = "0";
-                var meetingname = "not having a meeting";
-            }
-                        if ( ((document.getElementById('nooCheck').defaultChecked)==false) &&((document.getElementById('nooCheck').checked) == true) )
-            {
-                var meeting = "2";
-                var meetingname = "maybe having a meeting";
-            }
-            
-            if (meeting != null) { var meet = '\n The meeting information has been changed to ' + meetingname + '\n'; }
-            //meeting date time
+                var nameOrgHidden = document.getElementById("nameOrgHidden").value;
 
-            var me="";
-           var date = document.getElementById("date").value;
-            var dateHidden = document.getElementById("dateHidden").value;
-            var str = date.replace("T", " ");
-        //text
-            if (str == "") { str = "no meeting date and time";}
-            if (date != dateHidden)
-            { var me = "\n The Client's meeting date and time was changed to " + str + "\n"; }
+                if (nameOrg != nameOrgHidden) { var org = "\n The referral's organization has been changed to " + nameOrg + "\n"; }
+                //Street Address
+                var sta = "";
+                var address = document.getElementById("address").value;
+                var addressHidden = document.getElementById("addressHidden").value;
+                //text
+                if (address != addressHidden) { var sta = "\n The Clients address has been changed to " + address + "\n"; }
+                //zip
+                var zi = "";
+                var zip = document.getElementById("zip").value;
+                var zipHidden = document.getElementById("zipHidden").value;
+                //text
+                if (zip != zipHidden) { var zi = "\n The Clients zip code has been changed to " + zip + "\n"; }
+                //guardian email
+
+                var ge = "";
+                var guardianEmail = document.getElementById("guardianEmail").value;
+                var guardianEmailHidden = document.getElementById("guardianEmailHidden").value;
+                //text
+                if (guardianEmail != guardianEmailHidden) { var ge = "\n The guardian email has been changed to " + guardianEmail + "\n"; }
+                //guardian phone
+                var guardianPhonename = "";
+                var guardianPhone = document.getElementById("guardianPhone").value;
+                var guardianPhoneHidden = document.getElementById("guardianPhoneHidden").value;
+                //text
+                if (guardianPhone != guardianPhoneHidden) { var guardianPhonename = "\n The guardian's phone number has been changed to " + guardianPhone + "\n"; }
+
+                //Issues
+                var issuesname = "";
+                var issues = document.getElementById("issues0").value;
+                var issuesHidden = document.getElementById("issuesHidden").value;
+                //text
+                if (issues != issuesHidden) { var issuesname = "\n The Clients issues have been changed to " + issues + "\n"; }
+                //check if exists (document.getElementById('youthInDuvalSchool1')) and is unchecked var x = document.getElementById("myCheck").defaultChecked;
+                //impact
+
+                var youthImpactname = "";
+                var youthImpact = document.getElementById("youthImpact").value;
+                var youthImpactHidden = document.getElementById("youthImpactHidden").value;
+
+                if (youthImpact != youthImpactHidden) { var youthImpactname = "\n The Clients youth Impact have been changed to " + youthImpact + "\n"; }
+                //impact
+                var meetingname = "";
+                var meet = "";
+
+                if (((document.getElementById('yesCheck').defaultChecked) == false) && ((document.getElementById('yesCheck').checked) == true)) {
+                    var meeting = "1";
+                    var meetingname = "having a meeting";
+                }
+                if (((document.getElementById('noCheck').defaultChecked) == false) && ((document.getElementById('noCheck').checked) == true)) {
+                    var meeting = "0";
+                    var meetingname = "not having a meeting";
+                }
+                if (((document.getElementById('nooCheck').defaultChecked) == false) && ((document.getElementById('nooCheck').checked) == true)) {
+                    var meeting = "2";
+                    var meetingname = "maybe having a meeting";
+                }
+
+                if (meeting != null) { var meet = '\n The meeting information has been changed to ' + meetingname + '\n'; }
+                //meeting date time
+
+                var me = "";
+                var date = document.getElementById("date").value;
+                var dateHidden = document.getElementById("dateHidden").value;
+                var str = date.replace("T", " ");
+                //text
+                if (str == "" ) {
+                    str = "no meeting date and time";
+                    date = "1900-01-01T24:00";
+                }
+               
+                if (date != dateHidden) { var me = "\n The Client's meeting date and time was changed to " + str + "\n"; }
                 //Duval school
                 var youthInDuvalSchoolname = "";
-            var yids = "";
-         
-               if ((document.getElementById('youthInDuvalSchool1')) && ((document.getElementById('youthInDuvalSchool1').selected)==true)) {
-                   var youthInDuvalSchool = "1";
-                   var youthInDuvalSchoolname = 'is in a duval school';
-                
-            }
-           if ((document.getElementById('youthInDuvalSchool0')) &&(document.getElementById('youthInDuvalSchool0').selected)== true) {
-               var youthInDuvalSchool ='0';
-                var youthInDuvalSchoolname = 'not being in a duval school';
-            }
-              if ((document.getElementById('youthInDuvalSchool2'))&&(document.getElementById('youthInDuvalSchool2').selected)==true) {
-               var youthInDuvalSchool = "2";
-                var youthInDuvalSchoolname = 'not sure if the client is in a duval school';
-            }
-          
-        if (youthInDuvalSchool != null) { var yids = '\n The Clients information has been changed to ' + youthInDuvalSchoolname + '\n'; }
-        
-            //grade
-            var gradename = "";
-            var gra = "";
-            var gradeHidden = document.getElementById("gradeHidden").value;
-            var grade = document.getElementById("grade").value;
-             if ((document.getElementById("Kindergarten")) && ((document.getElementById('Kindergarten').selected) == true)) {
-              
-                 var gradename = "Kindergarten";
-            }
-            if ((document.getElementById("one")) && ((document.getElementById('one').selected) == true)) {
-          
-                var gradename = "1st";
-            }
-              if ((document.getElementById("two")) && ((document.getElementById('two').selected) == true)) {
-           
-                  var gradename = "2nd";
-            }
-              if ((document.getElementById("three")) && ((document.getElementById('three').selected) == true)) {
+                var yids = "";
+
+                if ((document.getElementById('youthInDuvalSchool1')) && ((document.getElementById('youthInDuvalSchool1').selected) == true)) {
+                    var youthInDuvalSchool = "1";
+                    var youthInDuvalSchoolname = 'is in a duval school';
+
+                }
+                if ((document.getElementById('youthInDuvalSchool0')) && (document.getElementById('youthInDuvalSchool0').selected) == true) {
+                    var youthInDuvalSchool = '0';
+                    var youthInDuvalSchoolname = 'not being in a duval school';
+                }
+                if ((document.getElementById('youthInDuvalSchool2')) && (document.getElementById('youthInDuvalSchool2').selected) == true) {
+                    var youthInDuvalSchool = "2";
+                    var youthInDuvalSchoolname = 'not sure if the client is in a duval school';
+                }
+
+                if (youthInDuvalSchool != null) { var yids = '\n The Clients information has been changed to ' + youthInDuvalSchoolname + '\n'; }
+
+                //grade
+                var gradename = "";
+                var gra = "";
+                var gradeHidden = document.getElementById("gradeHidden").value;
+                var grade = document.getElementById("grade").value;
+                if ((document.getElementById("Kindergarten")) && ((document.getElementById('Kindergarten').selected) == true)) {
+
+                    var gradename = "Kindergarten";
+                }
+                if ((document.getElementById("one")) && ((document.getElementById('one').selected) == true)) {
+
+                    var gradename = "1st";
+                }
+                if ((document.getElementById("two")) && ((document.getElementById('two').selected) == true)) {
+
+                    var gradename = "2nd";
+                }
+                if ((document.getElementById("three")) && ((document.getElementById('three').selected) == true)) {
+
+                    var gradename = "3rd";
+                }
+                if ((document.getElementById("four")) && ((document.getElementById('four').selected) == true)) {
+
+                    var gradename = "4th";
+                }
+                if ((document.getElementById("five")) && ((document.getElementById('five').selected) == true)) {
+
+                    var gradename = "5th";
+                }
+                if ((document.getElementById("six")) && ((document.getElementById('six').selected) == true)) {
+
+                    var gradename = "6th";
+                }
+                if ((document.getElementById("seven")) && ((document.getElementById('seven').selected) == true)) {
+
+                    var gradename = "7th";
+                }
+                if ((document.getElementById("eight")) && ((document.getElementById('eight').selected) == true)) {
+
+                    var gradename = "8th";
+                }
+                if ((document.getElementById("nine")) && ((document.getElementById('nine').selected) == true)) {
+
+                    var gradename = "9th";
+                }
+                if ((document.getElementById("ten")) && ((document.getElementById('ten').selected) == true)) {
+
+                    var gradename = "10th";
+                }
+                if ((document.getElementById("eleven")) && ((document.getElementById("eleven").selected) == true)) {
+
+                    var gradename = "11th";
+                }
+                if ((document.getElementById("twelve")) && ((document.getElementById('twelve').selected) == true)) {
+
+                    var gradename = "12th";
+                }
+                if ((document.getElementById("N/A")) && ((document.getElementById('N/A').selected) == true)) {
+
+                    var gradename = "N/A";
+                }
+                if (grade != gradeHidden) { var gra = '\n The Clients grade has been changed to ' + gradename + '\n'; }
+
+                //grade working
+                //youth currently at school------------------------------------------NOT DONE
+                var youthschoolname = "";
+                var ys = "";
+
+                if (((document.getElementById('yesclick').defaultChecked) == false) && ((document.getElementById('yesclick').checked) == true)) {
+                    var youthInSchool = "1";
+                    var youthschoolname = "youth in school";
+                }
+                if (((document.getElementById('noclick').defaultChecked) == false) && ((document.getElementById('noclick').checked) == true)) {
+                    var youthInSchool = "0";
+                    var youthschoolname = "youth not in school";
+                }
+                if (((document.getElementById('nooclick').defaultChecked) == false) && ((document.getElementById('nooclick').checked) == true)) {
+                    var youthInSchool = "2";
+                    var youthschoolname = "don't know if the youth is in school";
+                }
+
+                if (youthInSchool != null) { var ys = '\n The clients information has been changed to ' + youthschoolname + ''; }
+                //what school
+                var skull = "";
+                var school = document.getElementById("school").value;
+                var schoolHidden = document.getElementById("schoolHidden").value;
                
-                  var gradename = "3rd";
-            }
-              if ((document.getElementById("four")) && ((document.getElementById('four').selected) == true)) {
-              
-                  var gradename = "4th";
-            }
-             if ((document.getElementById("five")) && ((document.getElementById('five').selected) == true)) {
-              
-                 var gradename = "5th";
-            }
-              if ((document.getElementById("six")) && ((document.getElementById('six').selected) == true)) {
-              
-                  var gradename = "6th";
-            }
-              if ((document.getElementById("seven")) && ((document.getElementById('seven').selected) == true)) {
-              
-                  var gradename = "7th";
-            }
-              if ((document.getElementById("eight")) && ((document.getElementById('eight').selected) == true)) {
-            
-                  var gradename = "8th";
-            }
-             if ((document.getElementById("nine")) && ((document.getElementById('nine').selected) == true)) {
-              
-                 var gradename = "9th";
-            }
-              if ((document.getElementById("ten")) && ((document.getElementById('ten').selected) == true)) {
-              
-                  var gradename = "10th";
-            }
-              if ((document.getElementById("eleven")) && ((document.getElementById("eleven").selected) == true)) {
-             
-                  var gradename = "11th";
-            }
-              if ((document.getElementById("twelve")) && ((document.getElementById('twelve').selected) == true)) {
-          
-                  var gradename = "12th";
-            }
-               if ((document.getElementById("N/A")) && ((document.getElementById('N/A').selected) == true)) {
-          
-                  var gradename = "N/A";
-            }
-            if (grade != gradeHidden) { var gra = '\n The Clients grade has been changed to ' + gradename +  '\n'; }
-            
-        //grade working
-            //youth currently at school------------------------------------------NOT DONE
-              var youthschoolname = "";
-            var ys = "";
+                //text
+               
+                if (school == "" || school == null) { schoolnme = "none"; }
 
-            if (((document.getElementById('yesclick').defaultChecked)==false) &&((document.getElementById('yesclick').checked) == true))
-            {
-                var youthInSchool = "1";
-                var youthschoolname = "youth in school";
-            }
-                        if (((document.getElementById('noclick').defaultChecked)==false) && ((document.getElementById('noclick').checked) == true))
-            {
-                var youthInSchool = "0";
-                var youthschoolname= "youth not in school";
-            }
-                        if ( ((document.getElementById('nooclick').defaultChecked)==false) &&((document.getElementById('nooclick').checked) == true) )
-            {
-                var youthInSchool = "2";
-                var youthschoolname = "don't know if the youth is in school";
-            }
-            
-            if (youthInSchool != null) { var ys = '\n The clients information has been changed to ' + youthschoolname + ''; }
-            //what school
-             var skull= "";
-           var school = document.getElementById("school").value;
-        var schoolHidden = document.getElementById("schoolHidden").value;
-        //text
-            if (school == "") { schoolname = "none";}
-            if (school != schoolHidden)
-            
-            { var skull = "\n The Client's school has been changed to " + school + "\n"; }
+                if (school != schoolHidden) {
+                    schoolnme = school;
+                    var skull = "\n The Client's school has been changed to " + schoolnme + "\n";
+                }
 
-            //RadioButton for arrest working
-            var arrestname = "";
-            var arr = "";
-         
-            var arrestHidden = document.getElementById('arrestHidden').value;
+                //RadioButton for arrest working
+                var arrestname = "";
+                var arr = "";
 
-            if ((document.getElementById('yesarrest').defaultChecked==false) && ((document.getElementById('yesarrest').checked) == true)) {
-                   var arrest = "1";
-                   var arrestname = 'has been arrested';
-                
-            }
-         
-           if ((document.getElementById('noarrest').defaultChecked==false) &&(document.getElementById('noarrest').checked)== true) {
-               var arrest ='0';
-                var arrestname = 'not having been arrest';
-            }
-          
-              if ((document.getElementById('maybearrest').defaultChecked==false)&&(document.getElementById('maybearrest').checked)==true) {
-               var arrest = "2";
-                var arrestname = 'not sure if client has been arrested';
-            }
-         
-        if (arrest != null) { var arr = '\n The Clients information has been changed to ' + arrestname + '\n'; }
-        //info
-          
-                 var info= "";
-           var moreInfo = document.getElementById("moreInfo").value;
-        var moreInfoHidden = document.getElementById("moreInfoHidden").value;
-        //text
-            if (moreInfo != moreInfoHidden)
-            { var info = "\n The Client's information has been changed to " + moreInfo + "\n"; }
-        
+                var arrestHidden = document.getElementById('arrestHidden').value;
 
-            //reasons
-                 var reas= "";
-           var reason = document.getElementById("reason").value;
-        var reasonHidden = document.getElementById("reasonHidden").value;
-        //text
-            if (reason != reasonHidden)
-            { var reas = "\n The Client's reason has been changed to " + reason + "\n"; }
-            //Communicate
-            var Reachname = "";
-            var ach = "";
-         
-            
-               if ((document.getElementById('phone')) && ((document.getElementById('phone').checked)==true)) {
-                   var Reach = "Phone";
-                   var Reachname = 'Phone';
-                
-            }
-          
-           if ((document.getElementById('email')) &&(document.getElementById('email').checked)== true) {
-               var Reach ='Email';
-                var Reachname = 'Email';
-            }
-              if ((document.getElementById('text'))&&(document.getElementById('text').checked)==true) {
-               var Reach = "Text";
-                var Reachname = 'Text';
-            }
-           
-        if (Reach != null) { var ach = '\n The best way to contact the client has been changed to ' + Reachname + '\n'; }
-            //status
-             var statusname = "";
-            var stat = "";
-         
-            
-               if ((document.getElementById('pending')) && ((document.getElementById('pending').checked)==true)) {
-                   var status = "Pending";
-                   var statusname = 'pending';
-                
-            }
-          
-           if ((document.getElementById('open')) &&(document.getElementById('open').checked)== true) {
-               var status ='Contacted - Open Service';
-                var statusname = 'Contacted - Open Service';
-            }
-              if ((document.getElementById('dont'))&&(document.getElementById('dont').checked)==true) {
-               var status = "Contacted - Does not want services";
-                var statusname = 'Contacted - Does not want services';
-            }
-               if ((document.getElementById('unable')) &&(document.getElementById('unable').checked)== true) {
-               var status ='Unable to Contact';
-                var statusname = 'Unable to Contact';
-            }
-            
-            if (status != null) { var stat = '\n The Clients status has been changed to ' + statusname + '\n'; }
-           
-            //date referral
-                  var Input= "";
-           var dateInput = document.getElementById("dateInput").value;
-        var dateInputHidden = document.getElementById("dateInputHidden").value;
-        //text
-            if (dateInput != dateInputHidden)
-            { var Input = "\n The Client's referral input date was changed to " + dateInput + "\n"; }
-            //first name referral
-              var rfn= "";
-           var referralfname = document.getElementById("referralfname").value;
-        var referralfnameHidden = document.getElementById("referralfnameHidden").value;
-        //text
-            if (referralfname != referralfnameHidden)
-            { var rfn = "\n The referrals first name was changed to " + referralfname + "\n"; }
-            //last name referral
-               var rln= "";
-           var referrallname = document.getElementById("referrallname").value;
-        var referrallnameHidden = document.getElementById("referrallnameHidden").value;
-        //text
-            if (referrallname != referrallnameHidden)
-            { var rln = "\n The referrals last name was changed to " + referrallname + "\n"; }
-            //referral email
-             var remail= "";
-           var refemailname = document.getElementById("refemail").value;
-        var emailHidden = document.getElementById("emailHidden").value;
-        //text
-            if (refemailname != emailHidden)
-            { var remail = "\n The referrals email was changed to " + refemailname + "\n"; }
-          
-//youthNu begin
-   var ynu= "";
-           var youthNu = document.getElementById("youthNu").value;
-        var youthNuHidden = document.getElementById("youthNuHidden").value;
-            if (youthNu != youthNuHidden)
-            { var ynu = "\n The Youth's phone number has been changed to " + youthNu + "\n"; }
-            //youthNu end
-            //youthEmail begin
-              var yemail= "";
-           var youthEmail = document.getElementById("youthEmail").value;
-        var youthEmailHidden = document.getElementById("youthEmailHidden").value;
-            if (youthEmail != youthEmailHidden)
-            { var yemail = "\n The Youth's email has been changed to " + youthEmail + "\n"; }
-            //youthEmail end
-            //youth alt
-            var yal = "";
-            var youthAltname = "unanswered";
-           var youthAlt = document.getElementById("youthAltId").value;
-            var youthAltHidden = document.getElementById("youthAltHidden").value;
-              if (youthAlt == "0") { youthAltname = "not at risk"; }
-            if (youthAlt == "1") { youthAltname = "at risk"; }
-            if (youthAlt == "2") { youthAltname = "may be at risk"; }
-            if (youthAlt != youthAltHidden)
-            { var yal = "\n The Youth's risk for placement into a alternative school has been changed to " + youthAltname + "\n"; }
-            //youth alt
-            //youthsetting
-            var yset = "";
-              var youthSettingname = "unanswered";
-           var youthSetting = document.getElementById("youthSettingId").value;
-            var youthSettingHidden = document.getElementById("youthSettingHidden").value;
-             if (youthSetting == "0") { youthSettingname = "not in one"; }
-            if (youthSetting == "1") { youthSettingname = "in one"; }
-            if (youthSetting == "2") { youthSettingname = "may be in one"; }
-            if (youthSetting != youthSettingHidden)
-            { var yset = "\n The Youth's position in a self contained education setting has been changed to " + youthSettingname + "\n"; }
-            //youthinjunction
-            var yinj = "";
-            var youthInjunctionname = "unanswered";
-            var youthInjunction = document.getElementById("youthInjunctionId").value;
-            if (youthInjunction == "1") { youthInjunctionname = "has a injunction"; }
-            if (youthInjunction == "0") { youthInjunctionname = "does not have a injunction"; }
-            if (youthInjunction == "2") { youthInjunctionname = "may have a injunction"; }
-        var youthInjunctionHidden = document.getElementById("youthInjunctionHidden").value;
-            if (youthInjunction != youthInjunctionHidden)
-            { var yinj = "\n The Youth's Injunction position by the school has been changed to " + youthInjunctionname + "\n"; }
-            //confirm
-            if (confirm("Please Confirm you would like to Submit your changes\n" + fNam + lNam + ynu + yemail + gen + bday + gfn+ gln + sta + zi + ge + yids+ gra + skull+ arr+yCit+ youthOf+ info + reas + ach + stat + Input + rfn + rln + remail +org+ regu + meet + me + issuesname +youthImpactname+ ys +yinj+yset+yal+ ""))
-            { return true; }
-            else {
-                return false;
-                event.preventDefault();
+                if ((document.getElementById('yesarrest').defaultChecked == false) && ((document.getElementById('yesarrest').checked) == true)) {
+                    var arrest = "1";
+                    var arrestname = 'has been arrested';
+
+                }
+
+                if ((document.getElementById('noarrest').defaultChecked == false) && (document.getElementById('noarrest').checked) == true) {
+                    var arrest = '0';
+                    var arrestname = 'not having been arrest';
+                }
+
+                if ((document.getElementById('maybearrest').defaultChecked == false) && (document.getElementById('maybearrest').checked) == true) {
+                    var arrest = "2";
+                    var arrestname = 'not sure if client has been arrested';
+                }
+
+                if (arrest != null) { var arr = '\n The Clients information has been changed to ' + arrestname + '\n'; }
+                //info
+
+                var info = "";
+                var moreInfo = document.getElementById("moreInfo").value;
+                var moreInfoHidden = document.getElementById("moreInfoHidden").value;
+                //text
+                if (moreInfo != moreInfoHidden) { var info = "\n The Client's information has been changed to " + moreInfo + "\n"; }
+
+
+                //reasons
+                var reas = "";
+                var reason = document.getElementById("reason").value;
+                var reasonHidden = document.getElementById("reasonHidden").value;
+                //text
+                if (reason != reasonHidden) { var reas = "\n The Client's reason has been changed to " + reason + "\n"; }
+                //Communicate
+                var Reachname = "";
+                var ach = "";
+
+
+                if ((document.getElementById('phone')) && ((document.getElementById('phone').checked) == true)) {
+                    var Reach = "Phone";
+                    var Reachname = 'Phone';
+
+                }
+
+                if ((document.getElementById('email')) && (document.getElementById('email').checked) == true) {
+                    var Reach = 'Email';
+                    var Reachname = 'Email';
+                }
+                if ((document.getElementById('text')) && (document.getElementById('text').checked) == true) {
+                    var Reach = "Text";
+                    var Reachname = 'Text';
+                }
+
+                if (Reach != null) { var ach = '\n The best way to contact the client has been changed to ' + Reachname + '\n'; }
+                //status
+                var statusname = "";
+                var stat = "";
+
+
+                if ((document.getElementById('pending')) && ((document.getElementById('pending').checked) == true)) {
+                    var status = "Pending";
+                    var statusname = 'pending';
+
+                }
+
+                if ((document.getElementById('open')) && (document.getElementById('open').checked) == true) {
+                    var status = 'Contacted - Open Service';
+                    var statusname = 'Contacted - Open Service';
+                }
+                if ((document.getElementById('dont')) && (document.getElementById('dont').checked) == true) {
+                    var status = "Contacted - Does not want services";
+                    var statusname = 'Contacted - Does not want services';
+                }
+                if ((document.getElementById('unable')) && (document.getElementById('unable').checked) == true) {
+                    var status = 'Unable to Contact';
+                    var statusname = 'Unable to Contact';
+                }
+
+                if (status != null) { var stat = '\n The Clients status has been changed to ' + statusname + '\n'; }
+
+                //date referral
+                var Input = "";
+                var dateInput = document.getElementById("dateInput").value;
+                var dateInputHidden = document.getElementById("dateInputHidden").value;
+                //text
+                if (dateInput != dateInputHidden) { var Input = "\n The Client's referral input date was changed to " + dateInput + "\n"; }
+                //first name referral
+                var rfn = "";
+                var referralfname = document.getElementById("referralfname").value;
+                var referralfnameHidden = document.getElementById("referralfnameHidden").value;
+                //text
+                if (referralfname != referralfnameHidden) { var rfn = "\n The referrals first name was changed to " + referralfname + "\n"; }
+                //last name referral
+                var rln = "";
+                var referrallname = document.getElementById("referrallname").value;
+                var referrallnameHidden = document.getElementById("referrallnameHidden").value;
+                //text
+                if (referrallname != referrallnameHidden) { var rln = "\n The referrals last name was changed to " + referrallname + "\n"; }
+                //referral email
+                var remail = "";
+                var refemailname = document.getElementById("refemail").value;
+                var emailHidden = document.getElementById("emailHidden").value;
+                //text
+                if (refemailname != emailHidden) { var remail = "\n The referrals email was changed to " + refemailname + "\n"; }
+
+                //youthNu begin
+                var ynu = "";
+                var youthNu = document.getElementById("youthNu").value;
+                var youthNuHidden = document.getElementById("youthNuHidden").value;
+                if (youthNu != youthNuHidden) { var ynu = "\n The Youth's phone number has been changed to " + youthNu + "\n"; }
+                //youthNu end
+                //youthEmail begin
+                var yemail = "";
+                var youthEmail = document.getElementById("youthEmail").value;
+                var youthEmailHidden = document.getElementById("youthEmailHidden").value;
+                if (youthEmail != youthEmailHidden) { var yemail = "\n The Youth's email has been changed to " + youthEmail + "\n"; }
+                //youthEmail end
+                //youth alt
+                var yal = "";
+                var youthAltname = "unanswered";
+                var youthAlt = document.getElementById("youthAltId").value;
+                var youthAltHidden = document.getElementById("youthAltHidden").value;
+                if (youthAlt == "0") { youthAltname = "not at risk"; }
+                if (youthAlt == "1") { youthAltname = "at risk"; }
+                if (youthAlt == "2") { youthAltname = "may be at risk"; }
+                if (youthAlt != youthAltHidden) { var yal = "\n The Youth's risk for placement into a alternative school has been changed to " + youthAltname + "\n"; }
+                //youth alt
+                //youthsetting
+                var yset = "";
+                var youthSettingname = "unanswered";
+                var youthSetting = document.getElementById("youthSettingId").value;
+                var youthSettingHidden = document.getElementById("youthSettingHidden").value;
+                if (youthSetting == "0") { youthSettingname = "not in one"; }
+                if (youthSetting == "1") { youthSettingname = "in one"; }
+                if (youthSetting == "2") { youthSettingname = "may be in one"; }
+                if (youthSetting != youthSettingHidden) { var yset = "\n The Youth's position in a self contained education setting has been changed to " + youthSettingname + "\n"; }
+                //youthinjunction
+                var yinj = "";
+                var youthInjunctionname = "unanswered";
+                var youthInjunction = document.getElementById("youthInjunctionId").value;
+                if (youthInjunction == "1") { youthInjunctionname = "has a injunction"; }
+                if (youthInjunction == "0") { youthInjunctionname = "does not have a injunction"; }
+                if (youthInjunction == "2") { youthInjunctionname = "may have a injunction"; }
+                var youthInjunctionHidden = document.getElementById("youthInjunctionHidden").value;
+                if (youthInjunction != youthInjunctionHidden) { var yinj = "\n The Youth's Injunction position by the school has been changed to " + youthInjunctionname + "\n"; }
+
+
+
+                //confirm
+                if (confirm("Please Confirm you would like to Submit your changes\n" + fNam + lNam + ynu + yemail + gen + bday + gfn + gln + sta + zi + ge + yids + gra + skull + arr + yCit + youthOf + info + reas + ach + stat + Input + rfn + rln + remail + org + regu + meet + me + issuesname + youthImpactname + ys + yinj + yset + yal + guardianPhonename + "")) { return true; }
+                else {
+                    return false;
+                    event.preventDefault();
+                }
             }
         }
          //end CHANGE CONFIRM-------------------------------------------------------------------------------
@@ -699,24 +785,29 @@
                     <td class="t" style="text-align:right"> First Name:</td>
 
                     <td>
-                        <input type="text" name="fName" value="@data.fName" asp-for="fName" id="fName">
+                        <input type="text" name="fName" value="@data.fName" asp-for="fName" id="fName" maxlength="20">
                         <input type="hidden" name="fNameHidden" asp-for="fNameHidden" id="fNameHidden" value="@data.fName">
+                        <p style="color:red" id="fNameerror"></p>
+                        <p style="color:red" id="fnamewarnValid"></p>
                     </td>
                 </tr>
                 <tr>
                     <td class="t" style="text-align:right"> Last Name: </td>
 
                     <td>
-                        <input type="text" value="@data.lName" name="lName" asp-for="lName" id="lName">
+                        <input type="text" value="@data.lName" name="lName" asp-for="lName" id="lName" maxlength="20">
                         <input type="hidden" name="lNameHidden" asp-for="lNameHidden" id="lNameHidden" value="@data.lName">
+                        <p style="color:red" id="lNameerror"></p>
+                        <p style="color:red" id="lnamewarnValid"></p>
                     </td>
                 </tr>
                 <tr>
                     <td class="t" style="text-align:right">Youth's email address: </td>
 
                     <td>
-                        <input type="email" value="@data.youthEmail" name="youthEmail" asp-for="youthEmail" id="youthEmail">
+                        <input type="email" value="@data.youthEmail" name="youthEmail" asp-for="youthEmail" id="youthEmail" maxlength="50">
                         <input type="hidden" name="youthEmailHidden" asp-for="youthEmailHidden" id="youthEmailHidden" value="@data.youthEmail">
+                        <p style="color:red" id="youthemailwarnValid"></p>
                     </td>
                 </tr>
                 <tr>
@@ -724,7 +815,8 @@
 
                     <td>
                         <input type="text" value="@data.youthNu" name="youthNu" asp-for="youthNu" id="youthNu">
-                        <input type="hidden" name="youthNuHidden" asp-for="youthNuHidden" id="youthNuHidden" value="@data.youthNu">
+                        <input type="hidden" name="youthNuHidden" asp-for="youthNuHidden" id="youthNuHidden" value="@data.youthNu" maxlength="12">
+                        <p style="color:red" id="youthphoneError"></p>
                     </td>
                 </tr>
                 <tr>
@@ -797,21 +889,32 @@
 
                     }
 
-                    <td>
-                     <input type="date" name="dOB" value="@answer50" asp-for="dOB" id="dOB">
-                        <input type="hidden" name="dOBHidden" asp-for="dOBHidden" value="@answer50" id="dOBHidden">
-                    </td>
+                <td>
+                    <input type="date" name="dOB" value="@answer50" asp-for="dOB" id="dOB">
+                    <input type="hidden" name="dOBHidden" asp-for="dOBHidden" value="@answer50" id="dOBHidden">
+                    <p style="color:red" id="dobwarnValid"></p>
+                </td>
                 </tr>
                 <tr>
                     <td class="t" style="text-align:right">   Guardian's First Name:</td>
 
-                    <td><input type="text" name="guardianName" value="@data.guardianName" asp-for="guardianName"><input type="hidden" name="guardianNameHidden" asp-for="guardianNameHidden" value="@data.guardianName" id="guardianNameHidden"></td>
+                    <td>
+                        <input type="text" name="guardianName" value="@data.guardianName" asp-for="guardianName" id="guardianName" maxlength="20">
+                        <input type="hidden" name="guardianNameHidden" asp-for="guardianNameHidden" value="@data.guardianName" id="guardianNameHidden">
+                        <p style="color:red" id="guardianNameError"></p>
+                        <p style="color:red" id="guardianNamewarnValid"></p>
+                    </td>
 
                 </tr>
                 <tr>
                     <td class="t" style="text-align:right">   Guardian's Last Name:</td>
 
-                    <td><input type="text" name="guardianlName" value="@data.guardianlName" asp-for="guardianlName"><input type="hidden" name="guardianlNameHidden" asp-for="guardianlNameHidden" value="@data.guardianlName" id="guardianlNameHidden"></td>
+                    <td>
+                        <input type="text" name="guardianlName" value="@data.guardianlName" asp-for="guardianlName" id="guardianlName" maxlength="20">
+                        <input type="hidden" name="guardianlNameHidden" asp-for="guardianlNameHidden" value="@data.guardianlName" id="guardianlNameHidden">
+                        <p style="color:red" id="guardianlNameError"></p>
+                        <p style="color:red" id="guardianlNamewarnValid"></p>
+                    </td>
 
                 </tr>
                 <tr>
@@ -852,9 +955,9 @@
 
 
                             if (meccaa != "Family member" && meccaa != "Foster Parent" && meccaa != "Guardian" && meccaa != "Father" && meccaa != "Mother" && meccaa != "N/A" && meccaa != "" && meccaa != null)
-                            { <input type="checkbox" id="input" name="input1" value="Other" onclick="afunction()" checked>}
+                            { <input type="checkbox" id="input" name="input1" value="Other" onclick="afunction()" checked >}
                             else
-                            { <input type="checkbox" id="input" name="input1" value="Other" onclick="afunction()"> }
+                            { <input type="checkbox" id="input" name="input1" value="Other" onclick="afunction()" > }
                         }
 
                         Other:
@@ -865,9 +968,9 @@
 
 
                             if (mecca != "Family member" && mecca != "Foster Parent" && mecca != "Guardian" && mecca != "Father" && mecca != "Mother" && mecca != "N/A")
-                            { <input type="text" name="array" value="@mecca" id="array3">}
+                            { <input type="text" name="array" value="@mecca" id="array3" maxlength="20">}
                             else
-                            {<input type="text" name="array" id="array3" disabled> }
+                            {<input type="text" name="array" id="array3" disabled maxlength="20"> }
                         }
 
 
@@ -881,26 +984,40 @@
                     <td class="t" style="text-align:right"> Street Address:</td>
 
 
-                    <td> <input type="text" name="address" value="@data.address" asp-for="address" id="address"><input type="hidden" name="addressHidden" asp-for="addressHidden" value="@data.address" id="addressHidden"></td>
+                    <td> <input type="text" name="address" value="@data.address" asp-for="address" id="address" maxlength="50"><input type="hidden" name="addressHidden" asp-for="addressHidden" value="@data.address" id="addressHidden"></td>
 
                 </tr>
                 <tr>
                     <td class="t" style="text-align:right">  Zip Code</td>
 
-                    <td><input type="text" name="zip" value="@data.zip" asp-for="zip" id="zip"><input type="hidden" name="zipHidden" asp-for="zipHidden" value="@data.zip" id="zipHidden"></td>
+                    <td>
+                        <input type="text" name="zip" value="@data.zip" asp-for="zip" id="zip" maxlength="5">
+                        <input type="hidden" name="zipHidden" asp-for="zipHidden" value="@data.zip" id="zipHidden">
+                        <p style="color:red" id="zipError"></p>
+                    </td>
 
                 </tr>
                 <tr>
                     <td class="t" style="text-align:right"> Parent/Guardian's Email:</td>
 
-                    <td>  <input type="email" name="guardianEmail" value="@data.guardianEmail" id="guardianEmail" asp-for="guardianEmail"><input type="hidden" name="guardianEmailHidden" asp-for="guardianEmailHidden" value="@data.guardianEmail" id="guardianEmailHidden"></td>
+                    <td>
+                        <input type="email" name="guardianEmail" value="@data.guardianEmail" id="guardianEmail" asp-for="guardianEmail" maxlength="50">
+                        <input type="hidden" name="guardianEmailHidden" asp-for="guardianEmailHidden" value="@data.guardianEmail" id="guardianEmailHidden">
+                        <p style="color:red" id="parentemailwarnValid"></p>
+                    </td>
 
 
                 </tr>
                 <tr>
                     <td class="t" style="text-align:right"> Parent/Guardian Phone Number:</td>
 
-                    <td><input type="text" value="@data.guardianPhone" asp-for="guardianPhone"></td>
+                    <td>
+                        <input type="text" value="@data.guardianPhone" asp-for="guardianPhone" id="guardianPhone" maxlength="12">
+                        <input type="hidden" name="guardianPhoneHidden" asp-for="guardianPhoneHidden" value="@data.guardianPhone" id="guardianPhoneHidden">
+                        <p style="color:red" id="parentphoneError"></p>
+                        <p style="color:red" id="parentphonewarnValid"></p>
+                    
+                    </td>
 
 
                 </tr>
@@ -1031,7 +1148,7 @@
                             if (meccaab != "Failed a grade or more" && meccaab != "Frequently suspended, called to be picked up, or told not to come to school" && meccaab != "In an alternative school setting" && meccaab != "Has a 504 plan or an IEP but is not making academic progress or continues to get in frequent trouble" && meccaab != "Not enrolled in school but was previously at a DCPS school" && meccaab != "Has a history of being Baker Acted from school" && meccaab != "Dependent" && meccaab != "WINS" && meccaab != "N/A" && meccaab != "" && meccaab != null)
                             { <input type="checkbox" id="input33" name="input33" value="Other" onclick="tfunction()" checked>}
                             else
-                            { <input type="checkbox" id="input33" name="input33" value="Other" onclick="tfunction()"> }
+                            { <input type="checkbox" id="input33" name="input33" value="Other" onclick="tfunction()" > }
                         }
                         &nbsp;Other:
                         @{
@@ -1041,9 +1158,9 @@
 
 
                             if (meccai != "Failed a grade or more" && meccai != "Frequently suspended, called to be picked up, or told not to come to school" && meccai != "In an alternative school setting" && meccai != "Has a 504 plan or an IEP but is not making academic progress or continues to get in frequent trouble" && meccai != "Not enrolled in school but was previously at a DCPS school" && meccai != "Has a history of being Baker Acted from school" && meccai != "Dependent" && meccai != "WINS" && meccai != "N/A" && meccai != "" && meccai != null)
-                            {  <input type="text" name="array33" id="array33" value="@meccai" >}
+                            {  <input type="text" name="array33" id="array33" value="@meccai" maxlength="50">}
                             else
-                            {<input type="text" name="array33" id="array33" disabled> }
+                            {<input type="text" name="array33" id="array33" disabled maxlength="50"> }
                         }
 
                        
@@ -1283,7 +1400,8 @@
                         <div id="Yes" style="@and">
                             <br />Where is the youth currently attending school?<br />
                           
-                            <input type="text" name="school" value="@data.school" asp-for="school" id="school"><input type="hidden" name="schoolHidden" value="@data.school" asp-for="schoolHidden" />
+                            <input type="text" name="school" value="@data.school" asp-for="school" id="school" maxlength="50">
+                            <input type="hidden" name="schoolHidden" value="@data.school" asp-for="schoolHidden" />
                         </div>
                     </td>
                 </tr>
@@ -1489,24 +1607,24 @@
                 </tr>
                 <tr>
                     <td class="t" style="text-align:right">
-                        Is there anything else you would like us to know about the youth or their family?<br />
+                        Is there anything else you would like us to know about the youth or their family?<i style=color:blue>* </i><br />
                     </td>
                     <td>
-                        <input type="text" value="@data.moreInfo" name="moreInfo" asp-for="moreInfo" size="110">
+                        <input type="text" value="@data.moreInfo" name="moreInfo" asp-for="moreInfo" size="110" maxlength="225">
                         <input type="hidden" value="@data.moreInfo" name="moreInfoHidden" asp-for="moreInfoHidden" id="moreInfoHidden" />
-
+                        <br />  <sub style=color:blue><i>*225 characters max</i></sub>
                     </td>
                 </tr>
                 <tr>
                     <td class="t" style="text-align:right">
-                        Reason for Referral?<br />
+                        Reason for Referral?<i style=color:blue>* </i><br />
                     </td>
                     <td>
 
 
-                        <input type="text" value="@data.reason" name="reason" asp-for="reason" size="110">
+                        <input type="text" value="@data.reason" name="reason" asp-for="reason" size="110" maxlength="225">
                         <input type="hidden" value="@data.reason" name="reasonHidden" id="reasonHidden" asp-for="reasonHidden" />
-
+                        <br /><sub style=color:blue><i>*225 characters max</i></sub>
                     </td>
                 </tr>
 
@@ -1594,8 +1712,10 @@
                     <td class="t" style="text-align:right"> Referral Source's First Name:</td>
 
                     <td>
-                        <input type="text" name="referralfname" value="@data.referralfname" asp-for="referralfname" id="referralfname">
+                        <input type="text" name="referralfname" value="@data.referralfname" asp-for="referralfname" id="referralfname" maxlength="20">
                         <input type="hidden" name="referralfnameHidden" value="@data.referralfname" asp-for="referralfnameHidden" id="referralfnameHidden" />
+                        <p style="color:red" id="reffnameError"></p>
+                        <p style="color:red" id="inputtextValid"></p>
                     </td>
 
 
@@ -1604,8 +1724,10 @@
                     <td class="t" style="text-align:right"> Referral Source's Last Name:</td>
 
                     <td>
-                        <input type="text" name="referrallname" value="@data.referrallname" asp-for="referrallname" id="referrallname">
+                        <input type="text" name="referrallname" value="@data.referrallname" asp-for="referrallname" id="referrallname" maxlength="20">
                         <input type="hidden" name="referrallnameHidden" value="@data.referrallname" asp-for="referrallnameHidden" id="referrallnameHidden" />
+                        <p style="color:red" id="reflnameError"></p>
+                        <p style="color:red" id="reflastnameValid"></p>
                     </td>
 
 
@@ -1614,8 +1736,9 @@
                     <td class="t" style="text-align:right"> Referral Source's Email for youth:</td>
 
                     <td>
-                        <input type="email" name="email" value="@data.email" asp-for="email" id="refemail">
+                        <input type="email" name="email" value="@data.email" asp-for="email" id="refemail" maxlength="50">
                         <input type="hidden" name="emailHidden" value="@data.email" asp-for="emailHidden" id="emailHidden" />
+                        <p style="color:red" id="refemailwarnValid"></p>
                     </td>
 
 
@@ -1631,9 +1754,9 @@
                             else
                             { <input type="checkbox" name="arrayorg" value="JFCS CJRG">} } &nbsp; JFCS CJRG<br>
                         @{ if (data.nameOrg.Contains("Public Defender's Office"))
-                            {<input type="checkbox" name="arrayorg" value="Public Defender''s Office" checked>}
+                            {<input type="checkbox" name="arrayorg" value="Public Defender's Office" checked>}
                             else
-                            {<input type="checkbox" name="arrayorg" value="Public Defender''s Office"> } }&nbsp; Public Defender's Office<br>
+                            {<input type="checkbox" name="arrayorg" value="Public Defender's Office"> } }&nbsp; Public Defender's Office<br>
                         @{if (data.nameOrg.Contains("WINS HOPE Court"))
                             {<input type="checkbox" name="arrayorg" value="WINS HOPE Court" checked> }
                             else
@@ -1651,9 +1774,9 @@
                         &nbsp; Other:
                         @{
                             if (ansorg != "JFCS CJRG" && ansorg != "Public Defender's Office" && ansorg != "WINS HOPE Court" && ansorg != "N/A" && ansorg != "" && ansorg != null)
-                            { <input type="text" name="finalarrayorg" value="@ansorg" id="finalarrayorg">}
+                            { <input type="text" name="finalarrayorg" value="@ansorg" id="finalarrayorg" maxlength="50">}
                             else
-                            {<input type="text" name="finalarrayorg" id="finalarrayorg" disabled> }
+                            {<input type="text" name="finalarrayorg" id="finalarrayorg" disabled maxlength="50"> }
                         }
 
                         <input type="hidden" id="nameOrg" name="nameOrg" asp-for="nameOrg">

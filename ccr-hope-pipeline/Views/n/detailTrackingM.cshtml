@@ -139,7 +139,7 @@
                     @Html.DisplayFor(modelItem => item.ClientID)
                 </td>
             </tr>
-          
+
 
             <tr>
                 <td class="t" style="text-align:right">
@@ -195,7 +195,7 @@
                     @Html.DisplayFor(modelItem => item.school)
                 </td>
             </tr>
-           
+
             <tr>
                 <td class="t" style="text-align:right">
                     Current Grade:
@@ -214,24 +214,29 @@
                     @Html.DisplayFor(modelItem => item.failedGrade)
                 </td>
             </tr>
-            <tr>
-                <td class="t" style="text-align:right">
-                    If yes, which grade?
-                </td>
+          if (item.failedGrade != "No")
+                {
+                    <tr>
+                        <td class="t" style="text-align:right">
+                            If yes, which grade?
+                        </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.whichGradeFailed)
-                </td>
-            </tr>
-            <tr>
-                <td class="t" style="text-align:right">
-                    How many times?
-                </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.whichGradeFailed)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="t" style="text-align:right">
+                            How many times?
+                        </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.failCount)
-                </td>
-            </tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.failCount)
+                        </td>
+                    </tr>
+ }
+            
+          
             <tr>
                 <td class="t" style="text-align:left;" colspan="2">
                     <h2><b>Caregiver Info</b></h2>
@@ -412,6 +417,8 @@
                     </td>
 
                 </tr>
+                if (item.iep != "No")
+                {
                 <tr>
                     <td class="t" style="text-align:right">
                         If yes, IEP Plan:<br />
@@ -430,6 +437,7 @@
                     </td>
 
                 </tr>
+                }
                 <tr>
                     <td class="t" style="text-align:right">
                         In Pride:
@@ -467,6 +475,8 @@
                     </td>
 
                 </tr>
+                if (item.compService != "No")
+                {
                 <tr>
                     <td class="t" style="text-align:right">
                         If yes, what services <br />
@@ -484,7 +494,7 @@
                         @Html.DisplayFor(modelItem => item.compTime)
                     </td>
 
-                </tr>
+                </tr>}
 
                 <tr>
                     <td class="t" style="text-align:right">
@@ -495,24 +505,27 @@
                     </td>
 
                 </tr>
-                <tr>
-                    <td class="t" style="text-align:right">
-                        If yes, was it reported  <br />
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.bullyReport)
-                    </td>
+           if (item.bullied != "No")
+                    {
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                If yes, was it reported  <br />
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.bullyReport)
+                            </td>
 
-                </tr>
-                <tr>
-                    <td class="t" style="text-align:right">
-                        Date of report  <br />
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.dateofBully)
-                    </td>
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                Date of report  <br />
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.dateofBully)
+                            </td>
 
-                </tr>
+                        </tr>
+ } 
             }
         </table>
     </p>
@@ -690,15 +703,20 @@
                     </td>
 
                 </tr>
-                <tr>
-                    <td class="t" style="text-align:right">
-                        If yes, how many times: <br />
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.suspendCount)
-                    </td>
+               if (item.suspended != "No")
+                    {
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                If yes, how many times: <br />
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.suspendCount)
+                            </td>
 
-                </tr>
+                        </tr>
+                    
+                }
+
                 <tr>
                     <td class="t" style="text-align:right">
                         Total In School Suspension<br />
@@ -722,9 +740,9 @@
                         Total ISS and OSS<br />
                     </td>
                     <td>
-                 
-                         @Html.DisplayFor(modelItem => item.totaldaysdisicpline)
-                       
+
+                        @Html.DisplayFor(modelItem => item.totaldaysdisicpline)
+
                     </td>
 
                 </tr>
@@ -737,42 +755,47 @@
                     </td>
 
                 </tr>
-                <tr>
-                    <td class="t" style="text-align:right">
-                        Alternative School Attended Name<br />
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.altSchoolName)
-                    </td>
+            if (item.altSchool != "No")
+                    {
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                Alternative School Attended Name<br />
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.altSchoolName)
+                            </td>
 
-                </tr>
-                <tr>
-                    <td class="t" style="text-align:right">
-                        How many times was the youth in an Alternative School<br />
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.timesInAlt)
-                    </td>
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                How many times was the youth in an Alternative School<br />
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.timesInAlt)
+                            </td>
 
-                </tr>
-                <tr>
-                    <td class="t" style="text-align:right">
-                        What day did the student enter the Alternative School<br />
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.dateOfAlt)
-                    </td>
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                What day did the student enter the Alternative School<br />
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.dateOfAlt)
+                            </td>
 
-                </tr>
-                <tr>
-                    <td class="t" style="text-align:right">
-                        How many days owed<br />
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.daysOwed)
-                    </td>
+                        </tr>
+                        <tr>
+                            <td class="t" style="text-align:right">
+                                How many days owed<br />
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.daysOwed)
+                            </td>
 
-                </tr>
+                        </tr>
+ }
+                
+
                 <tr>
                     <td class="t" style="text-align:right">
                         Total Days since Intake<br />

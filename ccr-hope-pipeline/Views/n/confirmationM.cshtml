@@ -82,28 +82,28 @@
 
     <br /><br />
 
-    <form asp-action="Emailreferral" class="form-style-9" asp-controller="n" method="post">
-        <h4>A referral was successfully made for @ViewBag.Name </h4>
-        <h4>at @ViewBag.Bessage</h4>
-        <h4>Thank you for your submission</h4>
+          <form asp-action="Emailreferral" class="form-style-9" asp-controller="n" method="post">
+              <h4>A referral was successfully made for @ViewBag.Name </h4>
+              <h4>at @ViewBag.Bessage</h4>
+              <h4>Thank you for your submission</h4>
 
 
-        <br />
-        <br />
-        
-            <input type="hidden" id="custId" name="name" value="@ViewBag.Name">
-            <p>
+              <br />
+              <br />
+              <input type="hidden" id="key" name="key" value="@ViewBag.Key">
+              <input type="hidden" id="custId" name="name" value="@ViewBag.Name">
+              <p>
 
-                To get this confirmation in an email, please enter your email address and click the email icon:<br />
-                <input type="email" name="emailaddress" size="35" style="font-size:25px;vertical-align:middle" value="hopepipeline@mail.com">
+                  To get this confirmation in an email, please enter your email address and click the email icon:<br />
+                  <input type="email" name="emailaddress" size="35" style="font-size:25px;vertical-align:middle" value="hopepipeline@mail.com">
 
-                &nbsp;&nbsp;&nbsp;
-                <input type="image" style="vertical-align:middle;width:140px;height:57px;"src="~/images/email33.png" alt="Submit" onclick="return myConfirm(name);"><br />
-                <br />
-               <button onclick="location.href='@Url.Action("Index","Home")'" class="cancelbtn">Cancel</button>
+                  &nbsp;&nbsp;&nbsp;
+                  <input type="image" style="vertical-align:middle;width:140px;height:57px;" src="~/images/email33.png" alt="Submit" onclick="return myConfirm(name);"><br />
+                  <br />
+                  <button onclick="location.href='@Url.Action("Index","Home")'" class="cancelbtn">Cancel</button>
 
-            </p>
-        </form>
+              </p>
+          </form>
 
         <br />
 

@@ -61,13 +61,27 @@
         </style>
         <script type="text/javascript">
             function myConfirm(name) {
-                var name = document.getElementById('custId').value;
-                if (confirm("Please Confirm you would like to recieve a copy of " + name + "'s referral")) {
-                    return true;
-                }
+                var refemailwarn = document.getElementById("emailaddress").value;
+                var email = /^[a-zA-Z0-9_\-.]+\u0040[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$/;
+
+                if ((!refemailwarn.match(email) && refemailwarn.length != 0)) {
+                    if (!refemailwarn.match(email) && refemailwarn.length != 0) {
+                        document.getElementById('refemailwarnValid').innerHTML = 'This is not a valid email address';
+                    }
+                    else { document.getElementById('refemailwarnValid').innerHTML = ''; }
+                
+                alert("You will need to correct the error's in red before submitting this referral");
+                return false;
+            }
                 else {
-                    return false;
-                    event.preventDefault();
+                    var name = document.getElementById('custId').value;
+                    if (confirm("Please Confirm you would like to recieve a copy of " + name + "'s referral")) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                        event.preventDefault();
+                    }
                 }
             }
         </script>
@@ -95,14 +109,15 @@
               <p>
 
                   To get this confirmation in an email, please enter your email address and click the email icon:<br />
-                  <input type="email" name="emailaddress" size="35" style="font-size:25px;vertical-align:middle" value="hopepipeline@mail.com">
+                  <input type="email" name="emailaddress" id="emailaddress" size="35" style="font-size:25px;vertical-align:middle" value="hopepipeline@mail.com">
 
                   &nbsp;&nbsp;&nbsp;
                   <input type="image" style="vertical-align:middle;width:140px;height:57px;" src="~/images/email33.png" alt="Submit" onclick="return myConfirm(name);"><br />
-                  <br />
-                  <button onclick="location.href='@Url.Action("Index","Home")'" class="cancelbtn">Cancel</button>
+              <p style="color:red" id="refemailwarnValid"></p>
+              <br />
+              <button onclick="location.href='@Url.Action("Index","Home")'" class="cancelbtn">Cancel</button>
 
-              </p>
+              
           </form>
 
         <br />

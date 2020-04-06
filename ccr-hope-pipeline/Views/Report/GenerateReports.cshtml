@@ -6,227 +6,11 @@
 }
 
 <h2 id="hey">Summary Statistics</h2>
+    
+
+
 <div>
-    <!--<form asp-controller="Report" asp-action="ViewReports" method="post">
-        <p>
-            <select id="field1" name="field1">
-                <option value="none" selected>None</option>
-                <option value="Name">Name</option>
-                <option value="ClientID">ClientID</option>
-                <option value="caregender">caregender</option>
-                <option value="carename">carename</option>
-                <option value="gender">gender</option>
-                <option value="ethnicity">ethnicity</option>
-                <option value="dob">dob</option>
-                <option value="school">school</option>
-                <option value="referral">referral</option>
-                <option value="fail">fail</option>
-                <option value="failedGrade">failedGrade</option>
-                <option value="baker">baker</option>
-                <option value="femHouse">femHouse</option>
-                <option value="domVio">domVio</option>
-                <option value="adopted">adopted</option>
-                <option value="evicted">evicted</option>
-                <option value="incarParent">incarParent</option>
-                <option value="asthma">asthma</option>
-                <option value="iep">iep</option>
-                <option value="inPride">inPride</option>
-                <option value="newFBA">newFBA</option>
-                <option value="accomGained">accomGained</option>
-                <option value="compService">compService</option>
-                <option value="services">services</option>
-                <option value="bullied">bullied</option>
-                <option value="report">report</option>
-                <option value="dateofBully">dateofBully</option>
-                <option value="suspended">suspended</option>
-                <option value="altSchool">altSchool</option>
-                <option value="altSchoolName">altSchoolName</option>
-                <option value="dateOfAlt">dateOfAlt</option>
-                <option value="timesInAlt">timesInAlt</option>
-                <option value="daysOwed">daysOwed</option>
-                <option value="firstLegal">firstLegal</option>
-                <option value="secondLegal">secondLegal</option>
-            </select>
-            <input id="text1" name="text1" />
-            <a onclick="addSearchField(1);">+</a>
-            <br />
-        </p>
-
-
-        <p>
-            <select id="field2" name="field2">
-                <option value="none" selected>None</option>
-                <option value="Name">Name</option>
-                <option value="ClientID">ClientID</option>
-                <option value="caregender">caregender</option>
-                <option value="carename">carename</option>
-                <option value="gender">gender</option>
-                <option value="ethnicity">ethnicity</option>
-                <option value="dob">dob</option>
-                <option value="school">school</option>
-                <option value="referral">referral</option>
-                <option value="fail">fail</option>
-                <option value="failedGrade">failedGrade</option>
-                <option value="baker">baker</option>
-                <option value="femHouse">femHouse</option>
-                <option value="domVio">domVio</option>
-                <option value="adopted">adopted</option>
-                <option value="evicted">evicted</option>
-                <option value="incarParent">incarParent</option>
-                <option value="asthma">asthma</option>
-                <option value="iep">iep</option>
-                <option value="inPride">inPride</option>
-                <option value="newFBA">newFBA</option>
-                <option value="accomGained">accomGained</option>
-                <option value="compService">compService</option>
-                <option value="services">services</option>
-                <option value="bullied">bullied</option>
-                <option value="report">report</option>
-                <option value="dateofBully">dateofBully</option>
-                <option value="suspended">suspended</option>
-                <option value="altSchool">altSchool</option>
-                <option value="altSchoolName">altSchoolName</option>
-                <option value="dateOfAlt">dateOfAlt</option>
-                <option value="timesInAlt">timesInAlt</option>
-                <option value="daysOwed">daysOwed</option>
-                <option value="firstLegal">firstLegal</option>
-                <option value="secondLegal">secondLegal</option>
-            </select>
-            <input id="text2" name="text2" />
-            <a onclick="addSearchField(2);">+</a>
-        </p>
-
-        <p>
-            <select id="field3" name="field3">
-                <option value="none" selected>None</option>
-                <option value="none" selected>None</option>
-                <option value="Name">Name</option>
-                <option value="ClientID">ClientID</option>
-                <option value="caregender">caregender</option>
-                <option value="carename">carename</option>
-                <option value="gender">gender</option>
-                <option value="ethnicity">ethnicity</option>
-                <option value="dob">dob</option>
-                <option value="school">school</option>
-                <option value="referral">referral</option>
-                <option value="fail">fail</option>
-                <option value="failedGrade">failedGrade</option>
-                <option value="baker">baker</option>
-                <option value="femHouse">femHouse</option>
-                <option value="domVio">domVio</option>
-                <option value="adopted">adopted</option>
-                <option value="evicted">evicted</option>
-                <option value="incarParent">incarParent</option>
-                <option value="asthma">asthma</option>
-                <option value="iep">iep</option>
-                <option value="inPride">inPride</option>
-                <option value="newFBA">newFBA</option>
-                <option value="accomGained">accomGained</option>
-                <option value="compService">compService</option>
-                <option value="services">services</option>
-                <option value="bullied">bullied</option>
-                <option value="report">report</option>
-                <option value="dateofBully">dateofBully</option>
-                <option value="suspended">suspended</option>
-                <option value="altSchool">altSchool</option>
-                <option value="altSchoolName">altSchoolName</option>
-                <option value="dateOfAlt">dateOfAlt</option>
-                <option value="timesInAlt">timesInAlt</option>
-                <option value="daysOwed">daysOwed</option>
-                <option value="firstLegal">firstLegal</option>
-                <option value="secondLegal">secondLegal</option>
-            </select>
-            <input id="text3" name="text3" />
-            <a onclick="addSearchField(3);">+</a>
-        </p>
-
-        <p>
-            <select id="field4" name="field4">
-                <option value="none" selected>None</option>
-                <option value="Name">Name</option>
-                <option value="ClientID">ClientID</option>
-                <option value="caregender">caregender</option>
-                <option value="carename">carename</option>
-                <option value="gender">gender</option>
-                <option value="ethnicity">ethnicity</option>
-                <option value="dob">dob</option>
-                <option value="school">school</option>
-                <option value="referral">referral</option>
-                <option value="fail">fail</option>
-                <option value="failedGrade">failedGrade</option>
-                <option value="baker">baker</option>
-                <option value="femHouse">femHouse</option>
-                <option value="domVio">domVio</option>
-                <option value="adopted">adopted</option>
-                <option value="evicted">evicted</option>
-                <option value="incarParent">incarParent</option>
-                <option value="asthma">asthma</option>
-                <option value="iep">iep</option>
-                <option value="inPride">inPride</option>
-                <option value="newFBA">newFBA</option>
-                <option value="accomGained">accomGained</option>
-                <option value="compService">compService</option>
-                <option value="services">services</option>
-                <option value="bullied">bullied</option>
-                <option value="report">report</option>
-                <option value="dateofBully">dateofBully</option>
-                <option value="suspended">suspended</option>
-                <option value="altSchool">altSchool</option>
-                <option value="altSchoolName">altSchoolName</option>
-                <option value="dateOfAlt">dateOfAlt</option>
-                <option value="timesInAlt">timesInAlt</option>
-                <option value="daysOwed">daysOwed</option>
-                <option value="firstLegal">firstLegal</option>
-                <option value="secondLegal">secondLegal</option>
-            </select>
-            <input id="text4" name="text4" />
-            <a onclick="addSearchField(4);">+</a>
-        </p>
-
-        <p>
-            <select id="field5" name="field5">
-                <option value="none" selected>None</option>
-                <option value="Name">Name</option>
-                <option value="ClientID">ClientID</option>
-                <option value="caregender">caregender</option>
-                <option value="carename">carename</option>
-                <option value="gender">gender</option>
-                <option value="ethnicity">ethnicity</option>
-                <option value="dob">dob</option>
-                <option value="school">school</option>
-                <option value="referral">referral</option>
-                <option value="fail">fail</option>
-                <option value="failedGrade">failedGrade</option>
-                <option value="baker">baker</option>
-                <option value="femHouse">femHouse</option>
-                <option value="domVio">domVio</option>
-                <option value="adopted">adopted</option>
-                <option value="evicted">evicted</option>
-                <option value="incarParent">incarParent</option>
-                <option value="asthma">asthma</option>
-                <option value="iep">iep</option>
-                <option value="inPride">inPride</option>
-                <option value="newFBA">newFBA</option>
-                <option value="accomGained">accomGained</option>
-                <option value="compService">compService</option>
-                <option value="services">services</option>
-                <option value="bullied">bullied</option>
-                <option value="report">report</option>
-                <option value="dateofBully">dateofBully</option>
-                <option value="suspended">suspended</option>
-                <option value="altSchool">altSchool</option>
-                <option value="altSchoolName">altSchoolName</option>
-                <option value="dateOfAlt">dateOfAlt</option>
-                <option value="timesInAlt">timesInAlt</option>
-                <option value="daysOwed">daysOwed</option>
-                <option value="firstLegal">firstLegal</option>
-                <option value="secondLegal">secondLegal</option>
-            </select>
-            <input id="text5" name="text5" />
-        </p>
-        <button type="submit" onclick="">Generate Reports</button>
-
-    </form>-->
+    
 
     <script src="https://cdn.plot.ly/plotly-1.2.0.min.js"></script>
     <div id="gender" style="width:500px;height:500px;"></div>
@@ -236,10 +20,15 @@
     <div id="advo" style="width:1000px;height:500px"></div>
 
     <script>
+        var genderIdentities = @Html.Raw(Json.Serialize(@ViewData["GenderIdentities"]));
+        var genderCounts = @Html.Raw(Json.Serialize(@ViewData["GenderCounts"]));
+
+        console.log(genderIdentities);
+        console.log(genderCounts);
 
         GENDER = document.getElementById('gender');
 
-        var trace1 = {
+        /*var trace1 = {
             x: ['Client', 'Referral'],
             y: [4, 9],
             width: [0.8],
@@ -276,6 +65,21 @@
         var layout = {
             barmode: 'stack',
             title: 'Gender Breakdown'
+        };*/
+
+        var trace1 = {
+            type: 'bar',
+            x: genderIdentities,
+            y: genderCounts,
+            orientation: 'v'
+        };
+
+        var data = [trace1];
+
+        var layout = {
+            title: 'Gender Breakdown',
+            xaxis: {title: 'Gender Identities' },
+            yaxis: {text: 'Number of Clients' }
         };
 
         Plotly.newPlot(gender, data, layout);

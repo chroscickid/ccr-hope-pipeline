@@ -11,84 +11,42 @@ namespace HopePipeline.Controllers
 {
     public class ReportController : Controller
     {
-        public string connectionString = "Server=tcp:ccrhopepipeline.database.windows.net,1433;Initial Catalog=Hope Pipeline;Persist Security Info=False;User ID=user;Password=P4ssw0rd;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        public string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!; MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout = 30;";
 
-        //This doesn't actually generate reports! This just calls the form
         public IActionResult GenerateReports()
         {
-            return View();
-        }
-
-
-        [HttpPost]
-        public IActionResult ViewReports(ReportForm genReport)
-        {
-            var results = new List<ReportRow>();
-            SqlConnection cnn;
-            cnn = new SqlConnection(connectionString);
-            SqlCommand command;
-            SqlDataAdapter adapter = new SqlDataAdapter();
+            // make a new SqlConnection called cnn
+            SqlConnection cnn = new SqlConnection(connectionString);
             cnn.Open();
 
-            List<string> fields = new List<string>();
-            List<string> text = new List<string>();
+            // make a string for the SQL query
+            string genderQuery = "SELECT A.genderIdentity, COUNT (A.genderIdentity) FROM client A GROUP BY A.genderIdentity";
 
-            //there must be a more practical way of dong this
-            if (genReport.field1 == null)
+            // make a SqlCommand called command
+            SqlCommand command = new SqlCommand(genderQuery, cnn);
+            SqlDataReader reader = command.ExecuteReader();
+
+            // make two thick lists
+            var genderIdResults = new List<string>();
+            var genderCntResults = new List<int>();
+            
+            // loop through reader
+            while (reader.Read())
             {
-                return View("Index");
+                // variables from the query
+                string genderIdentity = reader.GetString(0);
+                int genderCount = reader.GetInt32(1);
+
+                // append to the results arrays
+                genderIdResults.Add(genderIdentity);
+                genderCntResults.Add(genderCount);
             }
-            else
-            {
-                fields.Add(genReport.field1);
-                text.Add(genReport.text1);
-            }
-            if (genReport.field2 != null)
-            {
-                fields.Add(genReport.field2);
-                text.Add(genReport.text2);
-            }
-            if (genReport.field3 != null)
-            {
-                fields.Add(genReport.field3);
-                text.Add(genReport.text3);
-            }
-            if (genReport.field4 != null)
-            {
-                fields.Add(genReport.field4);
-                text.Add(genReport.text4);
-            }
-            if (genReport.field5 != null)
-            {
-                fields.Add(genReport.field5);
-                text.Add(genReport.text5);
-            }
+            reader.Close();
 
-            int count = 0;
-            foreach (var field in fields)
-            {
-                if (text[count] != null)
-                {
-                    string query = "SELECT clientLast, clientFirst FROM ??? WHERE " + field + " = " + text[count];
-                    command = new SqlCommand(query, cnn);
-                    SqlDataReader reader = command.ExecuteReader();
-
-
-
-                    while (reader.Read())
-                    {
-                        ReportRow row = new ReportRow { fName = reader.GetString(0), lName = reader.GetString(1) };
-
-                        results.Add(row);
-                    }
-                    reader.Close();
-                }
-
-
-
-            }
-            return View("ViewReports", results);
-
+            ViewData["GenderIdentities"] = genderIdResults;
+            ViewData["GenderCounts"] = genderCntResults;
+            
+            return View("GenerateReports");
 
             /* while (reader.Read())
              {

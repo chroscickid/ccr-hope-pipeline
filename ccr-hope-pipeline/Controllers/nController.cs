@@ -10,8 +10,10 @@ using HopePipeline.Models.DbEntities.Tracking;
 using System.Diagnostics;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
-using System.Threading.Tasks;
+//using Microsoft.Azure;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using System.IO;
 
 namespace HopePipeline.Controllers
 {
@@ -248,6 +250,10 @@ namespace HopePipeline.Controllers
 
 
             SqlDataReader reader = command.ExecuteReader();
+
+
+
+
             emailaddress = "hopepipeline@gmail.com";
             
             htmlplain = "A new was referral was made by " + form.referralfname + " " + form.referrallname + " for " + form.fName + " " + form.lName + " as of " + form.dateInput+"";
@@ -4160,6 +4166,35 @@ namespace HopePipeline.Controllers
             var response = await client.SendEmailAsync(msg);
 
         }
+        //method to upload blob
+        //static async Task Blob()
+        //{
+        //    string storageConnection = CloudConfigurationManager.GetSetting("BlobStorageConnectionString"); CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(storageConnection);
+
+        //    //create a block blob CloudBlobClient cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
+
+        //    //create a container CloudBlobContainer cloudBlobContainer = cloudBlobClient.GetContainerReference("appcontainer");
+
+        //    //create a container if it is not already exists
+
+        //    if (await cloudBlobContainer.CreateIfNotExistsAsync())
+        //    {
+
+        //        await cloudBlobContainer.SetPermissionsAsync(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
+
+        //    }
+
+        //    string imageName = "Test-" + Path.GetExtension(imageToUpload.FileName);
+
+        //    //get Blob reference
+
+        //    CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(imageName); cloudBlockBlob.Properties.ContentType = imageToUpload.ContentType;
+
+        //    await cloudBlockBlob.UploadFromStreamAsync(imageToUpload.InputStream);
+
+        //}
+        //method to download blob
+
         
     }
 }

@@ -60,6 +60,13 @@
             }
         </style>
         <script type="text/javascript">
+            function buttondisable() {
+	 if(document.getElementById("emailaddress").value===""||document.getElementById("emailaddress").value==="Please enter your email address") { 
+            document.getElementById('emailbutton').disabled = true; 
+        } else { 
+            document.getElementById('emailbutton').disabled = false;
+        }
+    }
             function myConfirm(name) {
                 var refemailwarn = document.getElementById("emailaddress").value;
                 var email = /^[a-zA-Z0-9_\-.]+\u0040[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$/;
@@ -75,7 +82,8 @@
             }
                 else {
                     var name = document.getElementById('custId').value;
-                    if (confirm("Please Confirm you would like to recieve a copy of " + name + "'s referral")) {
+                    var emailaddress1 = document.getElementById('emailaddress').value;
+                    if (confirm("Please Confirm you would like to send a copy of " + name + "'s referral to "+ emailaddress1)) {
                         return true;
                     }
                     else {
@@ -109,10 +117,10 @@
               <p>
 
                   To get this confirmation in an email, please enter your email address and click the email icon:<br />
-                  <input type="email" name="emailaddress" id="emailaddress" size="35" style="font-size:25px;vertical-align:middle" value="hopepipeline@mail.com">
+                  <input type="email" name="emailaddress" id="emailaddress" size="35" style="font-size:25px;vertical-align:middle" onkeyup="buttondisable()"value="Please enter your email address">
 
                   &nbsp;&nbsp;&nbsp;
-                  <input type="image" style="vertical-align:middle;width:140px;height:57px;" src="~/images/email33.png" alt="Submit" onclick="return myConfirm(name);"><br />
+                  <input type="image" style="vertical-align:middle;width:140px;height:57px;" id ="emailbutton"src="~/images/email33.png" alt="Submit" onclick="return myConfirm(name);" disabled><br />
               <p style="color:red" id="refemailwarnValid"></p>
               <br />
               <button onclick="location.href='@Url.Action("Index","Home")'" class="cancelbtn">Cancel</button>

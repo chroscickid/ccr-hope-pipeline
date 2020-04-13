@@ -7,6 +7,7 @@ using HopePipeline.Models;
 using System.Data.SqlClient;
 using HopePipeline.Models.DbEntities.Tracking;
 using HopePipeline.Models.DbEntities.Meetings;
+using HopePipeline.Models.DbEntities.Referrals;
 using HopePipeline.Models.Contexts;
 
 namespace HopePipeline.Controllers
@@ -477,10 +478,61 @@ namespace HopePipeline.Controllers
             return View("AssignTrackingList", mod);
         }
 
-        public IActionResult ViewAssignedTracking(Guid clientCode)
+        public IActionResult ViewAssignedTracking(Guid clientCode, string fname, string lname)
         {
-            return null;
-        }
+            var results = new TrackRefList();
+            results.list = new List<TrackRefRow>();
+            SqlConnection cnn;
+            cnn = new SqlConnection(connectionString);
+            SqlCommand command1;
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            cnn.Open();
+
+            string q1 = "SELECT * from referral where clientCode = '" + clientCode + "'";
+            command1 = new SqlCommand(q1, cnn);
+            SqlDataReader reader = command1.ExecuteReader();
+            List<Guid> RefCodes = new List<Guid>();
+            while (reader.Read())
+            {
+                RefCodes.Add(reader.GetGuid(0));
+            }
+
+            List<string> commands = new List<string>();
+            foreach(var code in RefCodes)
+            {
+                commands.Add("SELECT referralfname, referrallname, dateinput, clientCode FROM refform where clientCode = '" + code + "'" );
+            }
+            reader.Close();
+
+            foreach(var command in commands)
+            {
+                SqlCommand sqlComm;
+                sqlComm = new SqlCommand(command, cnn);
+                SqlDataReader reader2 = sqlComm.ExecuteReader();
+                while (reader2.Read())
+                {
+                    //We push information from the query into a row and onto the list of rows
+                    TrackRefRow row = new TrackRefRow
+                    {
+                        firstName = reader2.GetString(0),
+                        lastName = reader2.GetString(1),
+                        inputdate = reader2.GetDateTime(2),
+                        refCode = reader2.GetGuid(3)
+                    };
+                    results.list.Add(row);
+
+                }
+                reader2.Close();
+            }
+            results.studentName = fname + " " + lname;
+
+
+            return View("RefTrackList", results);
+            }
+       
+
+
+        
 
         public IActionResult AssignSpecific(Guid clientCode, Guid refCode)
         {
@@ -504,7 +556,7 @@ namespace HopePipeline.Controllers
         }
 
 
-        public IActionResult ViewTrackRefs(Guid clientCode)
+        /*public IActionResult ViewTrackRefs(Guid clientCode)
         {
             SqlConnection cnn;
             cnn = new SqlConnection(connectionString);
@@ -543,6 +595,7 @@ namespace HopePipeline.Controllers
             return View("RefTrackList", mod);
 
         }
+        */
 
        
     }

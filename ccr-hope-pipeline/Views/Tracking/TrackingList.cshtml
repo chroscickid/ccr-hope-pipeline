@@ -98,7 +98,7 @@
                     </div> |
                     <a asp-controller="n" asp-action="EditTrackingM" asp-route-clientCode="@item.clientCode">Edit</a> |
                     <a asp-controller="n" asp-action="detailTrackingM" asp-route-clientCode="@item.clientCode">Details</a> |
-                    <a asp-controller="Tracking" asp-action="ViewTrackRefs" asp-route-clientCode="@item.clientCode">View Referrals</a> |
+                    <a asp-controller="Tracking" asp-action="ViewAssignedTracking" asp-route-clientCode="@item.clientCode" asp-route-fname="@item.fname" asp-route-lname="@item.lname">View Referrals</a> |
                     <a asp-controller="Tracking" asp-action="Delete" asp-route-clientCode="@item.clientCode">Delete</a>
                 </td>
             </tr>

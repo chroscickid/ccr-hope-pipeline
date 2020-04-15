@@ -119,7 +119,7 @@ namespace HopePipeline.Controllers
             List<string> qs = new List<String>
             {
                 "INSERT INTO dbo.demographics VALUES (" + id + ")",
-                "INSERT INTO dbo.accomodations VALUES (" + sub.accomGained + "," + sub.compService + ",'" + sub.ifWhatServices + "'," + id + ")",
+                "INSERT INTO dbo.accomodations VALUES (" + sub.accomGained + "," + sub.compService + ",'" + sub.ifWhatServices + "'," + sub.addServicesGained + "," + id + ")",
                 "INSERT INTO dbo.client VALUES ('" + sub.clientLastName + "','" + sub.clientFirstName + "','" + sub.adopted + "','" + sub.clientGender + "','" + sub.clientEthnicity + "','" + sub.clientDOB + "'," + id + ",'" + sub.carePhone + "')",
 
 
@@ -134,12 +134,12 @@ namespace HopePipeline.Controllers
                 
                 "INSERT INTO dbo.currentStatus VALUES (" + sub.readingLevel + "," + sub.mathLevel + ",'" + "currentServices?" + "'," + sub.inPride + "," + sub.newFBA + "," + 0 + ",'" + "servicesGained" + "'," + id + ")",
                 "INSERT INTO dbo.failed VALUES (" + sub.failedGrade + "," + sub.whichGradeFailed + "," + sub.failCount + "," + id + ")",
-                "INSERT INTO dbo.health VALUES (" + sub.baker + "," + sub.marchman + "," + sub.asthma + "," + id + ")",
+                "INSERT INTO dbo.health VALUES (" + sub.baker + "," + sub.marchman + "," + sub.asthma + "," + sub.pregnantparenting + "," + id + ")",
                 "INSERT INTO dbo.household VALUES (" + sub.femHouse + "," + sub.domVio + "," + sub.adopted + "," + sub.evicted + "," + sub.incarParent + "," + sub.publicAssistance + "," + id + ")",
                "INSERT INTO dbo.iep VALUES (" + sub.iep + ",'" + sub.iepplan1 + "','" + sub.iepplan2 + "'," + "0" + "," + id + ")",
                 "INSERT INTO dbo.legal VALUES ('" + sub.firstLegal + "','" + sub.secondLegal + "','" + sub.justiceOutcome + "'," + id + ")",
                 "INSERT INTO dbo.refinfo VALUES ('" + sub.reffname + "','" + sub.reflname + "','" + sub.referralDate + "'," + id + ",'" + sub.emailOfFirstReferralSource + "')",
-                "INSERT INTO dbo.school VALUES (" + id + "," + sub.currentGrade + ",'" + sub.school + "','" + sub.schoolRef + "')"
+                "INSERT INTO dbo.school VALUES (" + id + "," + sub.currentGrade + ",'" + sub.school + "','" + sub.schoolRef + "'," + sub.reenrolled + ")"
             };
 
             //Um, this needs to be outside of that for some reason
@@ -409,13 +409,26 @@ namespace HopePipeline.Controllers
                 DeleteSqlCommand("demographics", clientCode),
 
             };
+            string q = "SELECT refCode FROM referral WHERE clientCode ='" + clientCode + "'";
+            command = new SqlCommand(q, cnn);
+            SqlDataReader reader = command.ExecuteReader();
+            Guid refCode = new Guid();
+            while (reader.Read())
+            {
+                refCode = reader.GetGuid(0);
+            }
+            reader.Close();
+
+            qs.Add("DELETE FROM referral where clientCode = '" + clientCode + "'");
+            qs.Add("UPDATE refform SET assignRef = 0 WHERE clientCode = '" + refCode + "'");
+
 
 
             foreach (string query in qs)
             {
                 command = new SqlCommand(query, cnn);
-                SqlDataReader reader = command.ExecuteReader();
-                reader.Close();
+                SqlDataReader reader2 = command.ExecuteReader();
+                reader2.Close();
             }
 
 
@@ -556,46 +569,7 @@ namespace HopePipeline.Controllers
         }
 
 
-        /*public IActionResult ViewTrackRefs(Guid clientCode)
-        {
-            SqlConnection cnn;
-            cnn = new SqlConnection(connectionString);
-            SqlCommand command;
-            SqlDataAdapter adapter = new SqlDataAdapter();
-            cnn.Open();
-            var mod = new TrackRefList();
-            mod.list = new List<TrackRefRow>();
-
-            string q1 = "SELECT * FROM referral WHERE clientCode = '" + clientCode + "'";
-            command = new SqlCommand(q1, cnn);
-            SqlDataReader reader = command.ExecuteReader();
-            var refCodeList = new List<int>();
-            while (reader.Read())
-            {
-                refCodeList.Add(reader.GetInt32(0));
-            }
-            reader.Close();
-
-
-            foreach (int refcode in refCodeList)
-            {
-                string query = "SELECT referralfname, referrallname FROM refform WHERE clientCode = " + clientCode;
-                command = new SqlCommand(q1, cnn);
-                SqlDataReader reader2 = command.ExecuteReader();
-                while (reader2.Read())
-                {
-                    var row = new TrackRefRow { firstName = reader2.GetString(0), lastName = reader2.GetString(1), refCode = reader.GetGuid(2) };
-                    mod.list.Add(row);
-                }
-                reader2.Close();
-
-                mod.studentName = "Placeholder";
-            }
-
-            return View("RefTrackList", mod);
-
-        }
-        */
+       
 
        
     }

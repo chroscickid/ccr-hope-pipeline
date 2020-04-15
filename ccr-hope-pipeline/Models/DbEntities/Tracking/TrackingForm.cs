@@ -55,12 +55,15 @@ namespace HopePipeline.Models.DbEntities.Tracking
         //Accomodations       
         public int accomGained { get; set; }
         public int compService { get; set; }
+        public int addServicesGained { get; set; }
         public string ifWhatServices { get; set; }
 
 
         public int bullied { get; set; }
         public int bullyReport { get; set; }
         public string dateofBully { get; set; }
+        public int reenrolled { get; set; }
+        public int pregnantparenting { get; set; }
         public int suspended { get; set; }
         public int suspendCount { get; set; }
         public int iss { get; set; }

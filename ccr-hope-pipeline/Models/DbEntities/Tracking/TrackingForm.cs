@@ -13,6 +13,7 @@ namespace HopePipeline.Models.DbEntities.Tracking
     {
         public HopePipeline.Models.referralBrandi referralBrandi { get; set; }
         public Guid ClientID { get; set; }
+        public Guid refCode { get; set; }
         public string reffname { get; set; }
         public string reflname { get; set; }
 
@@ -77,7 +78,8 @@ namespace HopePipeline.Models.DbEntities.Tracking
         public string otherLegal { get; set; }
         public string firstLegal { get; set; }
         public string secondLegal { get; set; }
-        public string referralDate { get; set; }
+        public DateTime referralDate { get; set; }
+        public DateTime referralTime { get; set; }
         public string intakeDate { get; set; }
         public string schoolAtClosure { get; set; }
         public string emailOfFirstReferralSource { get; set; }

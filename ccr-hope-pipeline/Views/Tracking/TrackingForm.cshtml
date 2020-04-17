@@ -15,6 +15,10 @@
             border-collapse: collapse;
         }
 
+        label{
+            font-weight: 500;
+        }
+
         th, td {
             border: 1px solid black;
             border-collapse: collapse;
@@ -95,6 +99,18 @@
         }
 
         #noBullied:checked ~ #ifNoBullied {
+            display: block;
+        }
+
+         #ifYesLegalAdvo, #ifNoLegalAdvo {
+            display: none;
+        }
+
+        #yesLegalAdvo:checked ~ #ifYesLegalAdvo {
+            display: block;
+        }
+
+        #noLegalAdvo:checked ~ #ifNoLegalAdvo {
             display: block;
         }
 
@@ -262,7 +278,9 @@
         <input asp-for="ClientID" type="hidden" class="field-style field-full align-none" placeholder="Client ID" value="@Model.ClientID" />
         @{
             var refMove = Model.referralBrandi;
+
         }
+        <input asp-for="refCode" type="hidden" value="@refMove.clientCode" />
         <div id="page1">
             <table id="t01">
                 <tr>
@@ -271,8 +289,8 @@
                 <tr>
                     <td>
                         <label asp-for="reffname">Referral Source's First Name: </label><br />
-                        <input asp-for="reffname" type="text" name="referral" placeholder="Referral Source First Name" value="@refMove.referralfname" maxlength="20" /></br>
-                        <label asp-for="reflname">Referral Source's Last Name:</label>
+                        <input asp-for="reffname" type="text" name="referral" placeholder="Referral Source First Name" value="@refMove.referralfname" maxlength="20" /><br />
+                        <label asp-for="reflname">Referral Source's Last Name:</label><br/>
                         <input asp-for="reflname" type="text" name="referral" placeholder="Referral Source Last Name" value="@refMove.referrallname" maxlength="20" />
                     </td>
 
@@ -285,7 +303,11 @@
 
                     <td>
                         <label asp-for="clientDOB"> Date of Birth: </label><br />
-                        <input asp-for="clientDOB" type="date" min="2001-01-01" max="2050-12-31" class="field-style field-full align-none" placeholder="Date of Birth" value="@refMove.dOB" required> <br />
+                        @{ 
+                            string dateformat = "yyyy-MM-dd";
+
+                        }
+                        <input asp-for="clientDOB" type="date" min="2001-01-01" max="2050-12-31" class="field-style field-full align-none" placeholder="Date of Birth" value="@refMove.dOB.Value.ToString(dateformat)" required> <br />
                     </td>
 
                 </tr>
@@ -462,8 +484,8 @@
                         <br>
                         <div class="form-group">
                         <label class="question" asp-for="carePhone">Caretaker Phone Number:</label> <br />
-                        <input type="tel" asp-for="carePhone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" class="field-style field-full align-none" required />
-                            </br>
+                        <input type="tel" asp-for="carePhone" pattern="^[2-9]\d{2}-\d{3}-\d{4}$" class="field-style field-full align-none" required />
+                            <br />
                         <small>Formatted: 555-555-5555</small>
                             </div>
                     </td>
@@ -734,13 +756,13 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <label asp-for="reenrolled">Is the the student re-enrolled?</label>
+                        <label asp-for="reenrolled">Is the the student re-enrolled?</label><br />
                         <input asp-for="reenrolled" type="radio" value="1" />Yes <br/>
                         <input asp-for="reenrolled" type="radio" value="0"/>No <br/>
 
                     </td>
                     <td>
-                        <label asp-for="pregnantparenting">Is the student pregnant/parenting?</label>
+                        <label asp-for="pregnantparenting">Is the student pregnant/parenting?</label><br />
                         <input asp-for="pregnantparenting" type="radio" value="1"/>Yes <br/>
                         <input asp-for="pregnantparenting" type="radio" value="0" />No
                     </td>
@@ -754,7 +776,7 @@
         <div id="page3" hidden>
             <table id="t01">
                 <tr>
-                    <th colspan="4">Discipline Information</th>
+                    <th colspan="2">Discipline Information</th>
                 </tr>
 
                 <tr>
@@ -783,7 +805,7 @@
                         </div>
                     </td>
 
-                    <td colspan="2">
+                    <td>
                         <label asp-for="iss">How many days have they spent in ISS?</label><br />
                         <input asp-for="iss" type="number" required /> <br />
                         <br />
@@ -793,17 +815,19 @@
                         <br />
                         <br />
                     </td>
-
+                    </tr>
+                <tr>
+                    
                     <td>
-                        <label asp-for="altSchool">Alternative School?</label><br />
+                        <label asp-for="altSchool">Alternative school?</label><br />
                         Yes <input asp-for="altSchool" type="radio" id="yesAlt" value="1"> &nbsp;
                         No <input asp-for="altSchool" type="radio" id="noAlt" value="0" checked /> &nbsp;
                         <br />
 
                         <div id="ifYesAlt">
                             <label asp-for="altSchoolName">If yes, which school?</label><br />
-                            <input asp-for="altSchoolName" type="radio" id="Mattie" value="yes"> Mattie V  <br />
-                            <input asp-for="altSchoolName" type="radio" id="Grand" value="no" /> Grand Park <br />
+                            <input asp-for="altSchoolName" type="radio" id="Mattie" value="Mattie V"> Mattie V  <br />
+                            <input asp-for="altSchoolName" type="radio" id="Grand" value="Grand Park" /> Grand Park <br />
                             <br />
                             <br />
 
@@ -829,25 +853,17 @@
                     
                 </div>
                     </td>
-                </tr>
 
-                <tr>
+             
                    
 
                     <td>
-                        <label asp-for="daysSinceIntake">Total Days since Intake:</label> <br />
+                        <label asp-for="daysSinceIntake">Total days since intake:</label> <br />
                         <input asp-for="daysSinceIntake" type="number" id="dateintake" class="field-style field-full align-none"> <br />
                     </td>
 
-                    <td colspan="2">
-                        
-                    </td>
+                    
 
-                    <td>
-                        <br />
-                        
-
-                    </td>
                 </tr>
             </table>
         </div>
@@ -863,9 +879,10 @@
                     <td colspan="2">
                         <label asp-for="referralDate">Referral Date and Time:</label>
                         <br />
-                        <input asp-for="referralDate" type="datetime" class="field-style field-full align-none" id="refdate"
-                               value="@refMove.dateInput"
-                               min="2000-06-07T00:00" max="2060-06-14T00:00" required>
+                        <input asp-for="referralDate" type="date" class="field-style field-full align-none" id="refdate"
+                               value="@refMove.dateInput.Value.ToString(dateformat)"
+                               min="2000-06-07" max="2060-06-14" required>
+                        <input asp-for="referralTime" type="time" class="field-style field-full align-none" id="refdate" value="@refMove.dateInput.Value.ToString("hh:MM")" />
                         <br />
                     </td>
 
@@ -886,7 +903,7 @@
                 <tr>
                     <td colspan="2">
                         <label asp-for="emailOfFirstReferralSource">Email of First Referral Source:</label> <br />
-                        <input asp-for="emailOfFirstReferralSource" type="text" class="field-style field-full align-none" id="referralemail" required /> <br />
+                        <input asp-for="emailOfFirstReferralSource" type="email" pattern="^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$" class="field-style field-full align-none" id="referralemail" required /> <br />
                     </td>
 
 
@@ -928,17 +945,20 @@
                         </select>
                         <br />
                         <br />
+                        <label asp-for="secondLegal">Other:</label></br>
                         <input asp-for="secondLegal" type="text" class="field-style field-full align-none" />
                     </td>
 
 
                     <td colspan="2">
                         <label asp-for="legalAdvocacy">Legal Advocacy?</label><br />
-                        <input asp-for="legalAdvocacy" type="radio" id="yes" value="1"> Yes<br />
-                        <input asp-for="legalAdvocacy" type="radio" id="no" value="0" checked /> No<br />
+                        <input asp-for="legalAdvocacy" type="radio" id="yesLegalAdvo" value="1"> Yes<br />
+                        <input asp-for="legalAdvocacy" type="radio" id="noLegalAdvo" value="0" checked /> No<br />
                         <br />
-                        <label asp-for="legalAdvoTaken">What was the legal advocacy taken?</label> <br />
-                        <input asp-for="legalAdvoTaken" type="text" class="field-style field-split align-left" />
+                        <div id="ifYesLegalAdvo">
+                         <label asp-for="legalAdvoTaken">What was the legal advocacy taken?</label> <br />
+                         <input asp-for="legalAdvoTaken" type="text" class="field-style field-split align-left" />
+                            </div>
                     </td>
 
                     <td>

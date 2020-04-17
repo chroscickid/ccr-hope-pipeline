@@ -64,6 +64,8 @@ namespace HopePipeline.Controllers
                         relRef.guardianName = reader.GetString(reader.GetOrdinal("guardianName"));
                     if (!reader.IsDBNull(reader.GetOrdinal("guardianPhone")))
                         relRef.guardianPhone = reader.GetString(reader.GetOrdinal("guardianPhone"));
+                if (!reader.IsDBNull(reader.GetOrdinal("dateInput")))
+                    relRef.dateInput = reader.GetDateTime(reader.GetOrdinal("dateInput"));
                     if(!reader.IsDBNull(reader.GetOrdinal("guardianRelationship")))
                         relRef.guardianRelationship = reader.GetString(reader.GetOrdinal("guardianRelationship"));
                     if(!reader.IsDBNull(reader.GetOrdinal("issues")))
@@ -139,7 +141,9 @@ namespace HopePipeline.Controllers
                "INSERT INTO dbo.iep VALUES (" + sub.iep + ",'" + sub.iepplan1 + "','" + sub.iepplan2 + "'," + "0" + "," + id + ")",
                 "INSERT INTO dbo.legal VALUES ('" + sub.firstLegal + "','" + sub.secondLegal + "','" + sub.justiceOutcome + "'," + id + ")",
                 "INSERT INTO dbo.refinfo VALUES ('" + sub.reffname + "','" + sub.reflname + "','" + sub.referralDate + "'," + id + ",'" + sub.emailOfFirstReferralSource + "')",
-                "INSERT INTO dbo.school VALUES (" + id + "," + sub.currentGrade + ",'" + sub.school + "','" + sub.schoolRef + "'," + sub.reenrolled + ")"
+                "INSERT INTO dbo.school VALUES (" + id + "," + sub.currentGrade + ",'" + sub.school + "','" + sub.schoolRef + "'," + sub.reenrolled + ")",
+                "UPDATE refform SET assignRef = 1 WHERE clientCode = '" + sub.refCode + "';",
+                "INSERT INTO dbo.referral VALUES ('" + sub.refCode + "'," + id + ")"
             };
 
             //Um, this needs to be outside of that for some reason

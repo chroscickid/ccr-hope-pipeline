@@ -1181,7 +1181,7 @@ namespace HopePipeline.Controllers
             //SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
-            string query = "SELECT dbo.accomodations.clientCode, dbo.accomodations.accomGained, dbo.accomodations.compServices, dbo.accomodations.ifWhatServices," +
+            string query = "SELECT dbo.accomodations.clientCode, dbo.accomodations.accomGained, dbo.accomodations.compServices, dbo.accomodations.ifWhatServices, dbo.accomodations.addServicesGained," +
 "dbo.advocacy.rearrestAdvo, dbo.advocacy.courtAdvo, dbo.advocacy.staffingAdvo, dbo.advocacy.legalAdvo, dbo.advocacy.legalAdvoTaken, " +
 "dbo.altSchool.altSchool, dbo.altSchool.altSchoolName, dbo.altSchool.altSchoolDate, dbo.altSchool.altSchoolTimes, dbo.altSchool.daysOwed, dbo.altSchool.daysSinceIntake, " +
 "dbo.bully.bullied, dbo.bully.reported, dbo.bully.reportDate, " +
@@ -1191,11 +1191,11 @@ namespace HopePipeline.Controllers
 "dbo.comp.compTime, " +
 "dbo.currentStatus.readingLevel, dbo.currentStatus.mathLevel, dbo.currentStatus.currentServices, dbo.currentStatus.inPride, dbo.currentStatus.newFBA, dbo.currentStatus.addService, dbo.currentStatus.servicesGained, " +
 "dbo.failed.gradeFailed, dbo.failed.whichGrade, dbo.failed.failedRepeat, " +
-"dbo.health.bakerActed, dbo.health.marchmanActed, dbo.health.asthma, " +
+"dbo.health.bakerActed, dbo.health.marchmanActed, dbo.health.asthma, dbo.health.pregnantparenting, " +
 "dbo.household.femLed, dbo.household.domVio, dbo.household.adopted, dbo.household.evicted, dbo.household.incarParent, dbo.household.publicAssistance, " +
 "dbo.suspension.suspendedThrice, dbo.suspension.numSuspensions, dbo.suspension.totalDaysSuspended, dbo.suspension.ISS, dbo.suspension.OSS, dbo.suspension.daysofDiscipline, dbo.suspension.disciplineSinceIntake, " +
 "dbo.iep.IEP, dbo.iep.primaryIEP, dbo.iep.secondaryIEP, dbo.iep.addIEp, dbo.legal.legalIssues, dbo.legal.leagalIssues2, dbo.legal.juvJusticeOutcome, " +
-"dbo.school.grade, dbo.school.school, dbo.school.SchoolRef, " +
+"dbo.school.grade, dbo.school.school, dbo.school.SchoolRef, dbo.school.reenrolled," +
 "dbo.refInfo.refFName, dbo.refInfo.refLName, dbo.refInfo.refDate, dbo.refInfo.refEmail" +
 " FROM (((((((((((((((((dbo.accomodations  LEFT JOIN dbo.advocacy  on dbo.accomodations.clientCode = dbo.advocacy.clientCode)" +
 "LEFT JOIN dbo.altSchool on dbo.accomodations.clientCode = dbo.altSchool.clientCode) " +
@@ -1353,6 +1353,40 @@ namespace HopePipeline.Controllers
                     { client.failedGrade = "N/A"; }
                     else
                     { client.failedGrade = client.failedGrade; }
+
+
+                    client.reenrolled = Convert.ToString(dataReader["reenrolled"]);
+                    //  var failgr = Int32.TryParse(client.reenrolled, out int failg);
+                    if (client.reenrolled == "1")
+                    { client.reenrolled = "Yes"; }
+                    if (client.reenrolled == "0")
+                    { client.reenrolled = "No"; }
+                    if (client.reenrolled == "" || sc == 0)
+                    { client.reenrolled = "N/A"; }
+                    else
+                    { client.reenrolled = client.reenrolled; }
+
+                    client.addServicesGained = Convert.ToString(dataReader["addServicesGained"]);
+                    //  var failgr = Int32.TryParse(client.addServicesGained, out int failg);
+                    if (client.addServicesGained == "1")
+                    { client.addServicesGained = "Yes"; }
+                    if (client.addServicesGained == "0")
+                    { client.addServicesGained = "No"; }
+                    if (client.addServicesGained == "" || acc == 0)
+                    { client.addServicesGained = "N/A"; }
+                    else
+                    { client.addServicesGained = client.addServicesGained; }
+
+                    client.pregnantparenting= Convert.ToString(dataReader["pregnantparenting"]);
+                    //  var failgr = Int32.TryParse(client.pregnantparenting, out int failg);
+                    if (client.pregnantparenting== "1")
+                    { client.pregnantparenting= "Yes"; }
+                    if (client.pregnantparenting== "0")
+                    { client.pregnantparenting= "No"; }
+                    if (client.pregnantparenting== "" || hc == 0)
+                    { client.pregnantparenting= "N/A"; }
+                    else
+                    { client.pregnantparenting= client.pregnantparenting; }
 
                     client.whichGradeFailed = Convert.ToString(dataReader["whichGrade"]);
                     if (client.whichGradeFailed == "0")
@@ -1934,7 +1968,7 @@ namespace HopePipeline.Controllers
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
-            string query = "SELECT dbo.accomodations.clientCode, dbo.accomodations.accomGained, dbo.accomodations.compServices, dbo.accomodations.ifWhatServices," +
+            string query = "SELECT dbo.accomodations.clientCode, dbo.accomodations.accomGained, dbo.accomodations.compServices, dbo.accomodations.ifWhatServices, dbo.accomodations.addServicesGained," +
             "dbo.advocacy.rearrestAdvo, dbo.advocacy.courtAdvo, dbo.advocacy.staffingAdvo, dbo.advocacy.legalAdvo, dbo.advocacy.legalAdvoTaken, " +
             "dbo.altSchool.altSchool, dbo.altSchool.altSchoolName, dbo.altSchool.altSchoolDate, dbo.altSchool.altSchoolTimes, dbo.altSchool.daysOwed, dbo.altSchool.daysSinceIntake, " +
             "dbo.bully.bullied, dbo.bully.reported, dbo.bully.reportDate, " +
@@ -1944,12 +1978,12 @@ namespace HopePipeline.Controllers
             "dbo.comp.compTime, " +
             "dbo.currentStatus.readingLevel, dbo.currentStatus.mathLevel, dbo.currentStatus.currentServices, dbo.currentStatus.inPride, dbo.currentStatus.newFBA, dbo.currentStatus.addService, dbo.currentStatus.servicesGained, " +
             "dbo.failed.gradeFailed, dbo.failed.whichGrade, dbo.failed.failedRepeat, " +
-            "dbo.health.bakerActed, dbo.health.marchmanActed, dbo.health.asthma, " +
+            "dbo.health.bakerActed, dbo.health.marchmanActed, dbo.health.asthma, dbo.health.pregnantparenting, " +
             "dbo.household.femLed, dbo.household.domVio, dbo.household.adopted, dbo.household.evicted, dbo.household.incarParent, dbo.household.publicAssistance, " +
             //"dbo.referral.referralDate, dbo.referral.intakeDate, dbo.referral.referral1, dbo.referral.referral2, dbo.referral.referral3, dbo.referral.referrerName, dbo.referral.referrerEmail, " +
             "dbo.suspension.suspendedThrice, dbo.suspension.numSuspensions, dbo.suspension.totalDaysSuspended, dbo.suspension.ISS, dbo.suspension.OSS, dbo.suspension.daysofDiscipline, dbo.suspension.disciplineSinceIntake, " +
             "dbo.iep.IEP, dbo.iep.primaryIEP, dbo.iep.secondaryIEP, dbo.iep.addIEp, dbo.legal.legalIssues, dbo.legal.leagalIssues2, dbo.legal.juvJusticeOutcome, " +
-            "dbo.school.grade, dbo.school.school, dbo.school.SchoolRef, " +
+            "dbo.school.grade, dbo.school.school, dbo.school.SchoolRef, dbo.school.reenrolled," +
             "dbo.refform.email, dbo.refform.referralfname, dbo.refform.referrallname, dbo.refform.dateInput," +
             "dbo.refInfo.refFName, dbo.refInfo.refLName, dbo.refInfo.refDate, dbo.refInfo.refEmail" +
             " FROM ((((((((((((((((((dbo.accomodations  LEFT JOIN dbo.advocacy  on dbo.accomodations.clientCode = dbo.advocacy.clientCode)" +
@@ -2021,6 +2055,18 @@ namespace HopePipeline.Controllers
                     if (Convert.IsDBNull(dataReader["gradeFailed"]))
                     { client.failedGrade = 33; }
                     else { client.failedGrade = Convert.ToInt16(dataReader["gradeFailed"]); }
+
+                    if (Convert.IsDBNull(dataReader["addServicesGained"]))
+                    { client.addServicesGained = 33; }
+                    else { client.addServicesGained = Convert.ToInt16(dataReader["addServicesGained"]); }
+
+                    if (Convert.IsDBNull(dataReader["reenrolled"]))
+                    { client.reenrolled = 33; }
+                    else { client.reenrolled = Convert.ToInt16(dataReader["reenrolled"]); }
+
+                    if (Convert.IsDBNull(dataReader["pregnantparenting"]))
+                    { client.pregnantparenting = 33; }
+                    else { client.pregnantparenting = Convert.ToInt16(dataReader["pregnantparenting"]); }
 
                     if (Convert.IsDBNull(dataReader["whichGrade"]))
                     { client.whichGradeFailed = 33; }
@@ -2607,7 +2653,7 @@ namespace HopePipeline.Controllers
                 using (SqlConnection link = new SqlConnection(cconnectionString))
                 using (SqlCommand stateacc = new SqlCommand("", link))
                 {
-                    stateacc.CommandText = "INSERT INTO dbo.accomodations (accomGained,  compServices, ifWhatServices, clientCode) VALUES (@accomGained,  @compServices, @ifWhatServices, @clientCode);";
+                    stateacc.CommandText = "INSERT INTO dbo.accomodations (accomGained,  compServices, ifWhatServices, addServicesGained, clientCode) VALUES (@accomGained,  @compServices, @ifWhatServices, @addServicesGained, @clientCode);";
                     stateacc.Parameters.AddWithValue("@clientCode", form.ClientID);
                     SqlParameter rearrestAdvoCodeParam = stateacc.Parameters.AddWithValue("@rearrestAdvo", form.rearrestAdvocacy);
                     SqlParameter accomGainedCodeParam = stateacc.Parameters.AddWithValue("@accomGained", form.accomGained);
@@ -2620,10 +2666,16 @@ namespace HopePipeline.Controllers
                     {
                         compServicesCodeParam.Value = DBNull.Value;
                     }
+
                     SqlParameter ifWhatServicesCodeParam = stateacc.Parameters.AddWithValue("@ifWhatServices", form.ifWhatServices);
                     if (form.ifWhatServices == null)
                     {
                         ifWhatServicesCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter addServicesGainedCodeParam = stateacc.Parameters.AddWithValue("@addServicesGained", form.addServicesGained);
+                    if (form.addServicesGained != 1 && form.addServicesGained != 0)
+                    {
+                        addServicesGainedCodeParam.Value = DBNull.Value;
                     }
                     link.Open();
                     stateacc.ExecuteNonQuery();
@@ -2865,7 +2917,7 @@ namespace HopePipeline.Controllers
                 using (SqlConnection link = new SqlConnection(cconnectionString))
                 using (SqlCommand healthstate = new SqlCommand("", link))
                 {
-                    healthstate.CommandText = "INSERT INTO dbo.health (bakerActed,  marchmanActed,  asthma, clientCode) VALUES (@bakerActed,  @marchmanActed,  @asthma, @clientCode);";
+                    healthstate.CommandText = "INSERT INTO dbo.health (bakerActed,  marchmanActed,  asthma, pregnantparenting, clientCode) VALUES (@bakerActed,  @marchmanActed,  @asthma, @pregnantparenting, @clientCode);";
                     healthstate.Parameters.AddWithValue("@clientCode", form.ClientID);
                     SqlParameter bakerActed = healthstate.Parameters.AddWithValue("@bakerActed", form.baker);
                     if ((form.baker != 0 && form.baker != 1))
@@ -2882,7 +2934,11 @@ namespace HopePipeline.Controllers
                     {
                         asthma.Value = DBNull.Value;
                     }
-
+                    SqlParameter pregnantparenting = healthstate.Parameters.AddWithValue("@pregnantparenting", form.pregnantparenting);
+                    if (form.pregnantparenting != 0 && form.pregnantparenting != 1)
+                    {
+                        pregnantparenting.Value = DBNull.Value;
+                    }
                     link.Open();
                     healthstate.ExecuteNonQuery();
                     link.Close();
@@ -3045,7 +3101,7 @@ namespace HopePipeline.Controllers
                 using (SqlConnection link = new SqlConnection(cconnectionString))
                 using (SqlCommand schoolstate = new SqlCommand("", link))
                 {
-                    schoolstate.CommandText = "INSERT INTO dbo.school (grade,  school,  SchoolRef, clientCode) VALUES (@grade,  @school,  @SchoolRef, @clientCode);";
+                    schoolstate.CommandText = "INSERT INTO dbo.school (grade,  school,  SchoolRef, reenrolled, clientCode) VALUES (@grade,  @school,  @SchoolRef, @reenrolled, @clientCode);";
                     schoolstate.Parameters.AddWithValue("@clientCode", form.ClientID);
                     SqlParameter grade = schoolstate.Parameters.AddWithValue("@grade", form.currentGrade);
                     if (form.currentGrade == null)
@@ -3061,6 +3117,11 @@ namespace HopePipeline.Controllers
                     if (form.schoolRef == null)
                     {
                         schoolRef.Value = DBNull.Value;
+                    }
+                    SqlParameter reenrolled = schoolstate.Parameters.AddWithValue("@reenrolled", form.reenrolled);
+                    if (form.reenrolled != 0 && form.reenrolled != 1)
+                    {
+                        reenrolled.Value = DBNull.Value;
                     }
 
                     link.Open();
@@ -3092,7 +3153,7 @@ namespace HopePipeline.Controllers
                    "WHERE clientCode = @clientCode; " +
 
                     "UPDATE dbo.accomodations" +
-                    " SET accomGained = @accomGained,  compServices = @compServices ,ifWhatServices = @ifWhatServices " +
+                    " SET accomGained = @accomGained,  compServices = @compServices ,ifWhatServices = @ifWhatServices, addServicesGained = @addServicesGained " +
                     " WHERE  clientCode = @clientCode; " +
 
                     "UPDATE dbo.altSchool" +
@@ -3120,7 +3181,7 @@ namespace HopePipeline.Controllers
                     " WHERE  clientCode = @clientCode; " +
 
                     "UPDATE dbo.health" +
-                    " SET bakerActed = @bakerActed,  marchmanActed = @marchmanActed,  asthma = @asthma " +
+                    " SET bakerActed = @bakerActed,  marchmanActed = @marchmanActed,  asthma = @asthma,  pregnantparenting = @pregnantparenting  " +
                     " WHERE  clientCode = @clientCode; " +
 
                     " UPDATE dbo.household" +
@@ -3140,7 +3201,7 @@ namespace HopePipeline.Controllers
                    " WHERE  clientCode = @clientCode; " +
 
                    " UPDATE dbo.school" +
-                    " SET  grade = @grade,  school = @school,  SchoolRef = @SchoolRef" +
+                    " SET  grade = @grade,  school = @school,  SchoolRef = @SchoolRef,  reenrolled = @reenrolled " +
                    " WHERE  clientCode = @clientCode; " +
 
                      " UPDATE dbo.refInfo" +
@@ -3234,6 +3295,21 @@ namespace HopePipeline.Controllers
                     if (form.compService != 1 && form.compService != 0)
                     {
                         compServicesCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter reenrolledCodeParam = command.Parameters.AddWithValue("@reenrolled", form.reenrolled);
+                    if (form.reenrolled != 1 && form.reenrolled != 0)
+                    {
+                        reenrolledCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter pregnantparentingCodeParam = command.Parameters.AddWithValue("@pregnantparenting", form.pregnantparenting);
+                    if (form.pregnantparenting != 1 && form.pregnantparenting != 0)
+                    {
+                        pregnantparentingCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter addServicesGainedCodeParam = command.Parameters.AddWithValue("@addServicesGained", form.addServicesGained);
+                    if (form.addServicesGained != 1 && form.addServicesGained != 0)
+                    {
+                        addServicesGainedCodeParam.Value = DBNull.Value;
                     }
                     SqlParameter ifWhatServicesCodeParam = command.Parameters.AddWithValue("@ifWhatServices", form.ifWhatServices);
                     if (form.ifWhatServices == null)

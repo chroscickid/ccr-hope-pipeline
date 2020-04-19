@@ -221,5 +221,12 @@ namespace HopePipeline.Models.DbEntities.Tracking
 
         public int publicAssistanceHidden { get; set; }
         public string otherLegalHidden { get; set; }
+
+        public int addServicesGained { get; set; }
+        public int addServicesGainedHidden { get; set; }
+        public int reenrolled { get; set; }
+        public int reenrolledHidden { get; set; }
+        public int pregnantparenting { get; set; }
+        public int pregnantparentingHidden { get; set; }
     }
 }

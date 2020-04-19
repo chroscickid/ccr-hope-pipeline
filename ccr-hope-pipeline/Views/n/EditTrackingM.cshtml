@@ -1393,7 +1393,42 @@
             //can't find
             //var otherLegal= document.getElementById("otherLegal");
             //var otherLegalHidden = document.getElementById("otherLegalHidden");
+          
+            //start reenrolled
+            var editenroll = "";
+            var reenrolledname = "";
 
+            var reenrolled = document.getElementById("reenrolled").value;
+            if (reenrolled == "0") { reenrolledname = "No"; }
+            if (reenrolled == "1") { reenrolledname = "Yes"; }
+            
+            var reenrolledHidden = document.getElementById("reenrolledHidden").value;
+            if (reenrolled != reenrolledHidden) { var editenroll = "\n The client's reenrolled status has been changed to " + reenrolledname + "\n"; }
+            //end reenrolled
+
+              //start pregnantparenting
+            var editpp= "";
+            var pregnantparentingname = "";
+
+            var pregnantparenting = document.getElementById("pregnantparenting").value;
+            if (pregnantparenting == "0") { pregnantparentingname = "No"; }
+            if (pregnantparenting == "1") { pregnantparentingname = "Yes"; }
+            
+            var pregnantparentingHidden = document.getElementById("pregnantparentingHidden").value;
+            if (pregnantparenting != pregnantparentingHidden) { var editpp = "\n The client's pregnant parenting status has been changed to " + pregnantparentingname + "\n"; }
+            //end pregnantparenting
+
+              //start addServicesGained
+            var editasg= "";
+            var addServicesGainedname = "";
+
+            var addServicesGained = document.getElementById("addServicesGained").value;
+            if (addServicesGained == "0") { addServicesGainedname = "No"; }
+            if (addServicesGained == "1") { addServicesGainedname = "Yes"; }
+            
+            var addServicesGainedHidden = document.getElementById("addServicesGainedHidden").value;
+            if (addServicesGained != addServicesGainedHidden) { var editasg = "\n The client's added Services Gained status has been changed to " + addServicesGainedname + "\n"; }
+            //end addServicesGained
 
             if (confirm("Please Confirm you would like to Submit your changes\n" + rS + rSl +
                 cfn + cln +
@@ -1403,7 +1438,7 @@
                 iepn + iep1 + iep2 + reskull + read + math + ip + FBA + ag + cS + ifs + cT + bully + br + dbr + lspn + redate + ind + ner + cs + LA + LAT + rr + rwr + skullc +
                 refemail + sus + susc + asn + asnn + doa + tia + dowed + fl + sl + isss + osss + dsit +
                 jj + carefn + careln +
-                careeth + cp + pan +
+                careeth + cp + pan + editenroll + editpp + editasg  +
                 "")) { return true; }
 
             else {
@@ -2703,7 +2738,7 @@
                             <input type="hidden" asp-for="ifWhatServicesHidden" value="@info.ifWhatServices" id="ifWhatServicesHidden">
                             <br />
                             <br />
-                            How much time have they spent using these compensatory services?
+                            Total minutes of compensatory services to be provided:
                             <input asp-for="compTime" type="text" value="@info.compTime" id="compTime" maxlength="20" />
                             <input type="hidden" asp-for="compTimeHidden" value="@info.compTime" id="compTimeHidden">
                         </div>
@@ -2711,6 +2746,35 @@
                         <div id="ifNoComp">
 
                         </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Additional Services Gained<br />
+                    </td>
+                    <td>
+                        <select asp-for="addServicesGained" id="addServicesGained">
+                            @{if (info.addServicesGained == 1)
+                                {
+                                    <option value="1" selected>Yes</option>
+                                }
+                                else
+                                {
+                                    <option value="1">1</option>
+                                }}
+                            @{if (info.addServicesGained == 0)
+                                {
+                                    <option value="0" selected>No</option>
+                                }
+                                else
+                                {
+                                    <option value="0">0</option>
+                                }}
+
+                        </select>
+                        <input type="hidden" asp-for="addServicesGainedHidden" value="@info.addServicesGained" id="addServicesGainedHidden">
+
+                        <br />
                     </td>
                 </tr>
                 <tr>
@@ -2750,7 +2814,7 @@
                             <div id="ifYesReport">
 
                                 Date of report <br />
-                                <input asp-for="dateofBully" type="date" id="dateofBully" value="@info.stringDateOfBully"  max="2050-12-31"> <br />
+                                <input asp-for="dateofBully" type="date" id="dateofBully" value="@info.stringDateOfBully" max="2050-12-31"> <br />
                                 <input type="hidden" asp-for="dateofBullyHidden" value="@info.stringDateOfBully" id="dateofBullyHidden">
 
                             </div>
@@ -2764,10 +2828,70 @@
                         <div id="ifNoReport">
 
                         </div>
+
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        Is the the student re-enrolled?<br />
+                    </td>
+                    <td>
+                        <select asp-for="reenrolled" id="reenrolled">
+                            @{if (info.reenrolled == 1)
+                                {
+                                    <option value="1" selected>Yes</option>
+                                }
+                                else
+                                {
+                                    <option value="1">1</option>
+                                }}
+                            @{if (info.reenrolled == 0)
+                                {
+                                    <option value="0" selected>No</option>
+                                }
+                                else
+                                {
+                                    <option value="0">0</option>
+                                }}
+
+                        </select>
+                        <input type="hidden" asp-for="reenrolledHidden" value="@info.reenrolled" id="reenrolledHidden">
+
+                        <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Is the student pregnant/parenting?<br />
+                    </td>
+                    <td>
+                        <select asp-for="pregnantparenting" id="pregnantparenting">
+                            @{if (info.pregnantparenting == 1)
+                                {
+                                    <option value="1" selected>Yes</option>
+                                }
+                                else
+                                {
+                                    <option value="1">1</option>
+                                }}
+                            @{if (info.pregnantparenting == 0)
+                                {
+                                    <option value="0" selected>No</option>
+                                }
+                                else
+                                {
+                                    <option value="0">0</option>
+                                }}
+
+                        </select>
+                        <input type="hidden" asp-for="pregnantparentingHidden" value="@info.pregnantparenting" id="pregnantparentingHidden">
+
+                        <br />
+                    </td>
+                </tr>
+
             </table>
-        </p>
+       
     </div>
 
     <div id="Discipline Information" class="tabcontent">
@@ -2974,24 +3098,7 @@
                             } }
                     </select>
                     <input type="hidden" asp-for="timesInAltHidden" value="@info.timesInAlt" id="timesInAltHidden">
-                    @*@{ string answeralt = info.dateOfAlt.ToString();
-                        int spacealt = answeralt.IndexOf(" ");
-                        string datealt = answeralt.Substring(0, spacealt);
-
-
-                        string[] strlistalt = datealt.Split('/');
-
-
-                        string yearalt = strlistalt[2];
-                        string monthalt = strlistalt[1];
-                        if ((monthalt.Length) == 1)
-                        { monthalt = "0" + monthalt; }
-                        string dayalt = strlistalt[0];
-                        if ((dayalt.Length) == 1)
-                        { dayalt = "0" + dayalt; }
-                        string answeraltschool = yearalt + "-" + dayalt + "-" + monthalt;
-
-                    }*@
+                 
                     <br />
                     What day did the student enter the alternative school<br>
                     <input asp-for="dateOfAlt" type="date" id="dateOfAlt"
@@ -3005,7 +3112,10 @@
                     <input type="hidden" asp-for="daysOwedHidden" value="@info.daysOwed" id="daysOwedHidden">
                     <br />
                 </div>
-    </div>
+   
+                
+                
+               
 
 
 
@@ -3024,394 +3134,394 @@
                         <input type="hidden" asp-for="daysSinceIntakeHidden" value="@info.daysSinceIntake" id="daysSinceIntakeHidden">
                     </td>
                 </tr>
-                <tr>
-                    <td class="t" style="text-align:right">
-                        Juvenile Justice Outcome
-                    </td>
-                    <td>
-                        <input asp-for="justiceOutcome" type="text" value="@info.justiceOutcome" id="justiceOutcome" maxlength="40">
-                        <input type="hidden" asp-for="justiceOutcomeHidden" value="@info.justiceOutcome" id="justiceOutcomeHidden">
-                        <br />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="t" style="text-align:right">
-                        Other legal issues?
-                    </td>
-                    <td>
-                        <select asp-for="firstLegal" id="firstLegal">
-                            @{if (info.firstLegal == "education")
-                                {
-                                    <option value="education" id="edu" selected>Education</option>
-                                }
-                                else
-                                {
-                                    <option value="education" id="edu"> Education </option>
-                                } }
-                            @{if (info.firstLegal == "juvenilejustice")
-                                {
-                                    <option value="juvenilejustice" id="juv" selected>Juvenile Justice</option>
-                                }
-                                else
-                                {
-                                    <option value="juvenilejustice" id="juv">Juvenile Justice</option>
-                                } }
-                            @{if (info.firstLegal == "dependency")
-                                {
-                                    <option value="dependency" id="dependency" selected>Dependency</option>
-                                }
-                                else
-                                {
-                                    <option value="dependency" id="dependency">Dependency</option>
-                                } }
-                            @{if (info.firstLegal == "bakeract")
-                                {
-                                    <option value="bakeract" id="edu" selected>Baker Act</option>
-                                }
-                                else
-                                {
-                                    <option value="bakeract" id="edu">Baker Act</option>
-                                } }
-                            @{if (info.firstLegal == "familylaw")
-                                {
-                                    <option value="familylaw" id="famlaw" selected>Family Law</option>
-                                }
-                                else
-                                {
-                                    <option value="familylaw" id="famlaw">Family Law</option>
-                                } }
-                            @{if (info.firstLegal == "immigration")
-                                {
-                                    <option value="immigration" id="immig" selected>Immigration</option>
-                                }
-                                else
-                                {
-                                    <option value="immigration" id="immig">Immigration</option>
-                                } }
-                            @{if (info.firstLegal == "publicbenefits")
-                                {
-                                    <option value="publicbenefits" id="publicben" selected>Public Benefits</option>
-                                }
-                                else
-                                {
-                                    <option value="publicbenefits" id="publicben">Public Benefits</option>
-                                } }
-                            @{if (info.firstLegal == "housing")
-                                {
-                                    <option value="housing" id="housing" selected>Housing</option>
-                                }
-                                else
-                                {
-                                    <option value="housing" id="housing">Housing</option>
-                                } }
-                            @{if (info.firstLegal == "other")
-                                {
-                                    <option value="other" id="other" selected>Other</option>
-                                }
-                                else
-                                {
-                                    <option value="other" id="other">Other</option>
-                                } }
-
-
-                        </select>
-                        <input type="hidden" asp-for="firstLegalHidden" value="@info.firstLegal" id="firstLegalHidden"><br />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="t" style="text-align:right">
-                        State Legal Issue if not Listed above
-                    </td>
-                    <td>
-                        <input asp-for="secondLegal" type="text" value="@info.secondLegal" id="secondLegal" maxlength="60" />
-                        <input type="hidden" asp-for="secondLegalHidden" value="@info.secondLegal" id="secondLegalHidden"><br />
-
-                    </td>
-                </tr>
+                
             </table>
-        </p>
+      
     </div>
 
 
     <div id="CCR" class="tabcontent">
         
 
-            <table id="t01">
-                <tr>
+        <table id="t01">
+            <tr>
 
-                    <td class="t" style="text-align:left" colspan="2">
-                        <h2><b>Center For Children's Rights Information</b></h2>
+                <td class="t" style="text-align:left" colspan="2">
+                    <h2><b>Center For Children's Rights Information</b></h2>
 
-                    </td>
-                </tr>
-                <tr>
-                    <td class="t" style="text-align:right">
+                </td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
 
-                        Referral Date
-                    </td>
-                    <td>
-                        <input asp-for="referralDate" type="date" id="refdate"
-                               value="@info.stringReferralDate"
-                               max="2050-12-31">
+                    Referral Date
+                </td>
+                <td>
+                    <input asp-for="referralDate" type="date" id="refdate"
+                           value="@info.stringReferralDate"
+                           max="2050-12-31">
 
-                        <input type="hidden" asp-for="referralDateHidden" value="@info.stringReferralDate" id="referralDateHidden"><br />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="t" style="text-align:right">
-                        Intake Date
-                    </td>
-                    <td>
-                        <input asp-for="trackingdate" type="date" id="intdate" max="2050-12-31" value="@info.stringtrackingdate">
+                    <input type="hidden" asp-for="referralDateHidden" value="@info.stringReferralDate" id="referralDateHidden"><br />
+                </td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    Intake Date
+                </td>
+                <td>
+                    <input asp-for="trackingdate" type="date" id="intdate" max="2050-12-31" value="@info.stringtrackingdate">
 
-                        <input type="hidden" asp-for="trackingdateHidden" value="@info.stringtrackingdate" id="trackingdateHidden"><br />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="t" style="text-align:right">
-                        School at time of Case Closure
-                    </td>
-                    <td>
-                        <input asp-for="schoolAtClosure" type="text" value="@info.schoolAtClosure" id="schoolAtClosure" maxlength="60" size="60" />
+                    <input type="hidden" asp-for="trackingdateHidden" value="@info.stringtrackingdate" id="trackingdateHidden"><br />
+                </td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    School at time of Case Closure
+                </td>
+                <td>
+                    <input asp-for="schoolAtClosure" type="text" value="@info.schoolAtClosure" id="schoolAtClosure" maxlength="60" size="60" />
 
-                        <input type="hidden" asp-for="schoolAtClosureHidden" value="@info.schoolAtClosure" id="schoolAtClosureHidden"><br />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="t" style="text-align:right">
+                    <input type="hidden" asp-for="schoolAtClosureHidden" value="@info.schoolAtClosure" id="schoolAtClosureHidden"><br />
+                </td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
 
-                        Referral Source First Name
-                    </td>
-                    <td>
-                        <input asp-for="referralSource" type="text" value="@info.referralSource" id="referralSource" maxlength="20" />
-                        <p style="color:red" id="refFError"></p>
-                        <p style="color:red" id="refFErrorReq"></p>
-        <input type="hidden" asp-for="referralSourceHidden" value="@info.referralSource" id="referralSourceHidden">
-        </td>
-        </tr>
-        <tr>
-            <td class="t" style="text-align:right">
+                    Referral Source First Name
+                </td>
+                <td>
+                    <input asp-for="referralSource" type="text" value="@info.referralSource" id="referralSource" maxlength="20" />
+                    <p style="color:red" id="refFError"></p>
+                    <p style="color:red" id="refFErrorReq"></p>
+                    <input type="hidden" asp-for="referralSourceHidden" value="@info.referralSource" id="referralSourceHidden">
+                </td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
 
 
-                Referral Source Last Name
-            </td>
-            <td>
-                <input asp-for="referrallSource" type="text" value="@info.referrallSource" id="referrallSource" maxlength="20" />
-                <p style="color:red" id="refLError"></p>
-                <p style="color:red" id="refLErrorReq"></p>
-                <input type="hidden" asp-for="referrallSourceHidden" value="@info.referrallSource" id="referrallSourceHidden">
+                    Referral Source Last Name
+                </td>
+                <td>
+                    <input asp-for="referrallSource" type="text" value="@info.referrallSource" id="referrallSource" maxlength="20" />
+                    <p style="color:red" id="refLError"></p>
+                    <p style="color:red" id="refLErrorReq"></p>
+                    <input type="hidden" asp-for="referrallSourceHidden" value="@info.referrallSource" id="referrallSourceHidden">
 
-            </td>
-        </tr>
-        <tr>
-            <td class="t" style="text-align:right">
-                Email of First Referral Source
-            </td>
-            <td>
-                <input asp-for="emailOfFirstReferralSource" type="text" value="@info.emailOfFirstReferralSource" id="referralemail" maxlength="50" /> <br />
-                <p style="color:red" id="refemailwarn"></p>
-               
-                <input type="hidden" asp-for="emailOfFirstReferralSourceHidden" value="@info.emailOfFirstReferralSource" id="emailOfFirstReferralSourceHidden">
+                </td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    Email of First Referral Source
+                </td>
+                <td>
+                    <input asp-for="emailOfFirstReferralSource" type="text" value="@info.emailOfFirstReferralSource" id="referralemail" maxlength="50" /> <br />
+                    <p style="color:red" id="refemailwarn"></p>
 
-            </td>
-        </tr>
-        <tr>
-            <td class="t" style="text-align:right">
+                    <input type="hidden" asp-for="emailOfFirstReferralSourceHidden" value="@info.emailOfFirstReferralSource" id="emailOfFirstReferralSourceHidden">
 
-                Level of Service Provided
-            </td>
-            <td>
-                @{if (!info.levelOfServiceProvided.Contains("info") || !info.levelOfServiceProvided.Contains("service") || !info.levelOfServiceProvided.Contains("full"))
-                    { <input asp-for="levelOfServiceProvided" type="radio" name="levelOfServiceProvided" id="none" value="n" checked /> }
-                    else
-                    { <input asp-for="levelOfServiceProvided" type="radio" name="levelOfServiceProvided" id="none" value="n" />} }
-                None<br />
-                @{if (info.levelOfServiceProvided.Contains("info"))
-                    { <input asp-for="levelOfServiceProvided" type="radio" name="levelOfServiceProvided" id="infoEdu" value="info" checked />}
-                    else
-                    {<input asp-for="levelOfServiceProvided" type="radio" name="levelOfServiceProvided" id="infoEdu" value="info" /> }}
-                Information/Education<br />
-                @{if (info.levelOfServiceProvided.Contains("service"))
-                    {<input asp-for="levelOfServiceProvided" type="radio" name="levelOfServiceProvided" id="serviceAdvice" value="service" checked> }
-                    else
-                    {<input asp-for="levelOfServiceProvided" type="radio" name="levelOfServiceProvided" id="serviceAdvice" value="service"> }} Brief Service/Advice<br />
-                @{if (info.levelOfServiceProvided.Contains("full"))
-                    { <input asp-for="levelOfServiceProvided" type="radio" name="levelOfServiceProvided" id="full" value="full" checked /> }
-                    else
-                    { <input asp-for="levelOfServiceProvided" type="radio" name="levelOfServiceProvided" id="full" value="full" /> } }
-                Full<br />
-                <input type="hidden" asp-for="levelOfServiceProvidedHidden" value="@info.levelOfServiceProvided">
-            </td>
-        </tr>
-        <tr>
-            <td class="t" style="text-align:right">
-                Reason for Nonengagement
-            </td>
-            <td>
-                @{if (info.nonEngagementReason.Contains("n") && !info.nonEngagementReason.Contains("info"))
-                    { <input asp-for="nonEngagementReason" type="radio" name="nonEngagementReason" id="contact" value="n" checked>}
-                    else
-                    {<input asp-for="nonEngagementReason" type="radio" name="nonEngagementReason" id="contact" value="n"> }
-                }Unable to Contact<br />
-                @{if (info.nonEngagementReason.Contains("info"))
-                    {<input asp-for="nonEngagementReason" type="radio" name="nonEngagementReason" id="intake" value="info" checked> }
-                    else
-                    {<input asp-for="nonEngagementReason" type="radio" name="nonEngagementReason" id="intake" value="info"> }
-                }
-                Unable to Complete Intake<br />
-                @{if (info.nonEngagementReason.Contains("service"))
-                    {<input asp-for="nonEngagementReason" type="radio" name="nonEngagementReason" id="declined" value="service" checked>}
-                    else
-                    {<input asp-for="nonEngagementReason" type="radio" name="nonEngagementReason" id="declined" value="service">}
-                } Family Declined Services<br />
-                <input type="hidden" asp-for="nonEngagementReasonHidden" value="@info.nonEngagementReason" id="nonEngagementReasonHidden">
-            </td>
-        </tr>
-        <tr>
-            <td class="t" style="text-align:right">
-                Case Status
-            </td>
-            <td>
-                @{if (info.caseStatus == 1)
-                    { <input asp-for="caseStatus" type="radio" id="openclose" name="caseStatus" value="1" checked> }
-                    else
-                    {<input asp-for="caseStatus" type="radio" id="openclose" name="caseStatus" value="1"> }}
-                Open<br />
-                @{if (info.caseStatus == 0)
-                    { <input asp-for="caseStatus" type="radio" id="close" name="caseStatus" value="0" checked> }
-                    else
-                    {<input asp-for="caseStatus" type="radio" id="close" name="caseStatus" value="0" /> }}
-                Closed<br />
-                @{if (info.caseStatus == 2)
-                    {<input asp-for="caseStatus" type="radio" id="nonEngageClose" name="caseStatus" value="2" checked> }
-                    else
-                    {<input asp-for="caseStatus" type="radio" id="nonEngageClose" name="caseStatus" value="2"> }}
-                Closed due to nonengagement<br />
-                <input type="hidden" asp-for="caseStatusHidden" value="@info.caseStatus" id="caseStatusHidden">
-            </td>
-        </tr>
-        <tr>
-            <td class="t" style="text-align:right">
-                Legal Advocacy
-            </td>
-            <td>
-                @{if (info.legalAdvocacy == 1)
-                    { <input asp-for="legalAdvocacy" type="radio" id="yes" name="legalAdvocacy" value="1" checked> }
-                    else
-                    { <input asp-for="legalAdvocacy" type="radio" id="yes" name="legalAdvocacy" value="1"> } }
-                Yes <br />
-                @{if (info.legalAdvocacy == 0)
-                    { <input asp-for="legalAdvocacy" type="radio" id="no" name="legalAdvocacy" value="0" checked> }
-                    else
-                    { <input asp-for="legalAdvocacy" type="radio" id="no" name="legalAdvocacy" value="0"> } }
-                No <br />
-                <input type="hidden" asp-for="legalAdvocacyHidden" value="@info.legalAdvocacy" id="legalAdvocacyHidden">
-            </td>
-        </tr>
-        <tr>
-            <td class="t" style="text-align:right">
-                Legal Advocacy Taken
+                </td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
 
-            </td>
-            <td>
-                <input asp-for="legalAdvoTaken" type="text" value="@info.legalAdvoTaken" id="legalAdvoTaken" maxlength="60" />
-                <input type="hidden" asp-for="legalAdvoTakenHidden" value="@info.legalAdvoTaken" id="legalAdvoTakenHidden">
-            </td>
-        </tr>
-        <tr>
-            <td class="t" style="text-align:right">
-                Remedy Resolution
-            </td>
-            <td>
-                @{if (info.remedyResolution == 1)
-                    { <input asp-for="remedyResolution" type="radio" id="yes" name="remedyResolution" value="1" checked> }
-                    else
-                    { <input asp-for="remedyResolution" type="radio" id="yesremedy" name="remedyResolution" value="1"> } }
-                Yes <br />
-                @{if (info.remedyResolution == 0)
-                    { <input asp-for="remedyResolution" type="radio" id="no" name="remedyResolution" value="0" checked> }
-                    else
-                    { <input asp-for="remedyResolution" type="radio" id="noremedy" name="remedyResolution" value="0"> } }
-                No <br />
-                <input type="hidden" asp-for="remedyResolutionHidden" value="@info.remedyResolution">
-            </td>
-        </tr>
-        <tr>
-            <td class="t" style="text-align:right">
-                Re-arrest while Being Represented
-            </td>
-            <td>
-                @{if (info.rearrestWhileRepresented == 1)
-                    { <input asp-for="rearrestWhileRepresented" type="radio" id="yes" name="rearrestWhileRepresented" value="1" checked> }
-                    else
-                    { <input asp-for="rearrestWhileRepresented" type="radio" id="rearrestWhileRepresented1" name="rearrestWhileRepresented" value="1"> } }
-                Yes <br />
-                @{if (info.rearrestWhileRepresented == 0)
-                    { <input asp-for="rearrestWhileRepresented" type="radio" id="no" name="rearrestWhileRepresented" value="0" checked> }
-                    else
-                    { <input asp-for="rearrestWhileRepresented" type="radio" id="rearrestWhileRepresented0" name="rearrestWhileRepresented" value="0"> } }
-                No <br />
-                <input type="hidden" asp-for="rearrestWhileRepresentedHidden" value="@info.rearrestWhileRepresented" id="rearrestWhileRepresentedHidden">
-            </td>
-        </tr>
-        <tr>
-            <td class="t" style="text-align:right">
-                Advocacy at Court?
-            </td>
-            <td>
-                @{if (info.courtAdvocacy == 1)
-                    { <input asp-for="courtAdvocacy" type="radio" id="yes" name="courtAdvocacy" value="1" checked> }
-                    else
-                    { <input asp-for="courtAdvocacy" type="radio" id="courtAdvocacy1" name="courtAdvocacy" value="1"> } }
-                Yes <br />
-                @{if (info.courtAdvocacy == 0)
-                    { <input asp-for="courtAdvocacy" type="radio" id="no" name="courtAdvocacy" value="0" checked> }
-                    else
-                    { <input asp-for="courtAdvocacy" type="radio" id="courtAdvocacy0" name="courtAdvocacy" value="0"> } }
-                No <br />
-                <input type="hidden" asp-for="courtAdvocacyHidden" value="@info.courtAdvocacy">
-            </td>
-        </tr>
-        <tr>
-            <td class="t" style="text-align:right">
-                Advocacy at Staffing?
-            </td>
-            <td>
-                @{if (info.staffAdvocacy == 1)
-                    { <input asp-for="staffAdvocacy" type="radio" id="yes" name="staffAdvocacy" value="1" checked> }
-                    else
-                    { <input asp-for="staffAdvocacy" type="radio" id="staffAdvocacy1" name="staffAdvocacy" value="1"> }
-                }Yes<br />
-                @{if (info.staffAdvocacy == 0)
-                    { <input asp-for="staffAdvocacy" type="radio" id="no" name="staffAdvocacy" value="0" checked> }
-                    else
-                    { <input asp-for="staffAdvocacy" type="radio" id="staffAdvocacy0" name="staffAdvocacy" value="0"> }
-                } No<br />
-                <input type="hidden" asp-for="staffAdvocacyHidden" value="@info.staffAdvocacy">
-            </td>
-        </tr>
-        <tr>
-            <td class="t" style="text-align:right">
-                Rearrest advocacy?
-            </td>
-            <td>
-                @{if (info.rearrestAdvocacy == 1)
-                    { <input asp-for="rearrestAdvocacy" type="radio" id="yes" name="rearrestAdvocacy" value="1" checked> }
-                    else
-                    { <input asp-for="rearrestAdvocacy" type="radio" id="rearrestAdvocacy1" name="rearrestAdvocacy" value="1"> }
-                }Yes<br />
-                @{if (info.rearrestAdvocacy == 0)
-                    { <input asp-for="rearrestAdvocacy" type="radio" id="no" name="rearrestAdvocacy" value="0" checked> }
-                    else
-                    { <input asp-for="rearrestAdvocacy" type="radio" id="rearrestAdvocacy0" name="rearrestAdvocacy" value="0"> }
-                }
-                No<br /> <input type="hidden" asp-for="rearrestAdvocacyHidden" value="@info.rearrestAdvocacy">
-            </td>
-        </tr>
+                    Level of Service Provided
+                </td>
+                <td>
+                    @{if (!info.levelOfServiceProvided.Contains("info") || !info.levelOfServiceProvided.Contains("service") || !info.levelOfServiceProvided.Contains("full"))
+                        { <input asp-for="levelOfServiceProvided" type="radio" name="levelOfServiceProvided" id="none" value="n" checked /> }
+                        else
+                        { <input asp-for="levelOfServiceProvided" type="radio" name="levelOfServiceProvided" id="none" value="n" />} }
+                    None<br />
+                    @{if (info.levelOfServiceProvided.Contains("info"))
+                        { <input asp-for="levelOfServiceProvided" type="radio" name="levelOfServiceProvided" id="infoEdu" value="info" checked />}
+                        else
+                        {<input asp-for="levelOfServiceProvided" type="radio" name="levelOfServiceProvided" id="infoEdu" value="info" /> }}
+                    Information/Education<br />
+                    @{if (info.levelOfServiceProvided.Contains("service"))
+                        {<input asp-for="levelOfServiceProvided" type="radio" name="levelOfServiceProvided" id="serviceAdvice" value="service" checked> }
+                        else
+                        {<input asp-for="levelOfServiceProvided" type="radio" name="levelOfServiceProvided" id="serviceAdvice" value="service"> }} Brief Service/Advice<br />
+                    @{if (info.levelOfServiceProvided.Contains("full"))
+                        { <input asp-for="levelOfServiceProvided" type="radio" name="levelOfServiceProvided" id="full" value="full" checked /> }
+                        else
+                        { <input asp-for="levelOfServiceProvided" type="radio" name="levelOfServiceProvided" id="full" value="full" /> } }
+                    Full<br />
+                    <input type="hidden" asp-for="levelOfServiceProvidedHidden" value="@info.levelOfServiceProvided">
+                </td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    Reason for Nonengagement
+                </td>
+                <td>
+                    @{if (info.nonEngagementReason.Contains("n") && !info.nonEngagementReason.Contains("info"))
+                        { <input asp-for="nonEngagementReason" type="radio" name="nonEngagementReason" id="contact" value="n" checked>}
+                        else
+                        {<input asp-for="nonEngagementReason" type="radio" name="nonEngagementReason" id="contact" value="n"> }
+                    }Unable to Contact<br />
+                    @{if (info.nonEngagementReason.Contains("info"))
+                        {<input asp-for="nonEngagementReason" type="radio" name="nonEngagementReason" id="intake" value="info" checked> }
+                        else
+                        {<input asp-for="nonEngagementReason" type="radio" name="nonEngagementReason" id="intake" value="info"> }
+                    }
+                    Unable to Complete Intake<br />
+                    @{if (info.nonEngagementReason.Contains("service"))
+                        {<input asp-for="nonEngagementReason" type="radio" name="nonEngagementReason" id="declined" value="service" checked>}
+                        else
+                        {<input asp-for="nonEngagementReason" type="radio" name="nonEngagementReason" id="declined" value="service">}
+                    } Family Declined Services<br />
+                    <input type="hidden" asp-for="nonEngagementReasonHidden" value="@info.nonEngagementReason" id="nonEngagementReasonHidden">
+                </td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    Case Status
+                </td>
+                <td>
+                    @{if (info.caseStatus == 1)
+                        { <input asp-for="caseStatus" type="radio" id="openclose" name="caseStatus" value="1" checked> }
+                        else
+                        {<input asp-for="caseStatus" type="radio" id="openclose" name="caseStatus" value="1"> }}
+                    Open<br />
+                    @{if (info.caseStatus == 0)
+                        { <input asp-for="caseStatus" type="radio" id="close" name="caseStatus" value="0" checked> }
+                        else
+                        {<input asp-for="caseStatus" type="radio" id="close" name="caseStatus" value="0" /> }}
+                    Closed<br />
+                    @{if (info.caseStatus == 2)
+                        {<input asp-for="caseStatus" type="radio" id="nonEngageClose" name="caseStatus" value="2" checked> }
+                        else
+                        {<input asp-for="caseStatus" type="radio" id="nonEngageClose" name="caseStatus" value="2"> }}
+                    Closed due to nonengagement<br />
+                    <input type="hidden" asp-for="caseStatusHidden" value="@info.caseStatus" id="caseStatusHidden">
+                </td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    Juvenile Justice Outcome
+                </td>
+                <td>
+                    <input asp-for="justiceOutcome" type="text" value="@info.justiceOutcome" id="justiceOutcome" maxlength="40">
+                    <input type="hidden" asp-for="justiceOutcomeHidden" value="@info.justiceOutcome" id="justiceOutcomeHidden">
+                    <br />
+                </td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    Other legal issues?
+                </td>
+                <td>
+                    <select asp-for="firstLegal" id="firstLegal">
+                        @{if (info.firstLegal == "education")
+                            {
+                                <option value="education" id="edu" selected>Education</option>
+                            }
+                            else
+                            {
+                                <option value="education" id="edu"> Education </option>
+                            } }
+                        @{if (info.firstLegal == "juvenilejustice")
+                            {
+                                <option value="juvenilejustice" id="juv" selected>Juvenile Justice</option>
+                            }
+                            else
+                            {
+                                <option value="juvenilejustice" id="juv">Juvenile Justice</option>
+                            } }
+                        @{if (info.firstLegal == "dependency")
+                            {
+                                <option value="dependency" id="dependency" selected>Dependency</option>
+                            }
+                            else
+                            {
+                                <option value="dependency" id="dependency">Dependency</option>
+                            } }
+                        @{if (info.firstLegal == "bakeract")
+                            {
+                                <option value="bakeract" id="edu" selected>Baker Act</option>
+                            }
+                            else
+                            {
+                                <option value="bakeract" id="edu">Baker Act</option>
+                            } }
+                        @{if (info.firstLegal == "familylaw")
+                            {
+                                <option value="familylaw" id="famlaw" selected>Family Law</option>
+                            }
+                            else
+                            {
+                                <option value="familylaw" id="famlaw">Family Law</option>
+                            } }
+                        @{if (info.firstLegal == "immigration")
+                            {
+                                <option value="immigration" id="immig" selected>Immigration</option>
+                            }
+                            else
+                            {
+                                <option value="immigration" id="immig">Immigration</option>
+                            } }
+                        @{if (info.firstLegal == "publicbenefits")
+                            {
+                                <option value="publicbenefits" id="publicben" selected>Public Benefits</option>
+                            }
+                            else
+                            {
+                                <option value="publicbenefits" id="publicben">Public Benefits</option>
+                            } }
+                        @{if (info.firstLegal == "housing")
+                            {
+                                <option value="housing" id="housing" selected>Housing</option>
+                            }
+                            else
+                            {
+                                <option value="housing" id="housing">Housing</option>
+                            } }
+                        @{if (info.firstLegal == "other")
+                            {
+                                <option value="other" id="other" selected>Other</option>
+                            }
+                            else
+                            {
+                                <option value="other" id="other">Other</option>
+                            } }
+
+
+                    </select>
+                    <input type="hidden" asp-for="firstLegalHidden" value="@info.firstLegal" id="firstLegalHidden"><br />
+                </td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    State Legal Issue if not Listed above
+                </td>
+                <td>
+                    <input asp-for="secondLegal" type="text" value="@info.secondLegal" id="secondLegal" maxlength="60" />
+                    <input type="hidden" asp-for="secondLegalHidden" value="@info.secondLegal" id="secondLegalHidden"><br />
+
+                </td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    Legal Advocacy
+                </td>
+                <td>
+                    @{if (info.legalAdvocacy == 1)
+                        { <input asp-for="legalAdvocacy" type="radio" id="yes" name="legalAdvocacy" value="1" checked> }
+                        else
+                        { <input asp-for="legalAdvocacy" type="radio" id="yes" name="legalAdvocacy" value="1"> } }
+                    Yes <br />
+                    @{if (info.legalAdvocacy == 0)
+                        { <input asp-for="legalAdvocacy" type="radio" id="no" name="legalAdvocacy" value="0" checked> }
+                        else
+                        { <input asp-for="legalAdvocacy" type="radio" id="no" name="legalAdvocacy" value="0"> } }
+                    No <br />
+                    <input type="hidden" asp-for="legalAdvocacyHidden" value="@info.legalAdvocacy" id="legalAdvocacyHidden">
+                </td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    Legal Advocacy Taken
+
+                </td>
+                <td>
+                    <input asp-for="legalAdvoTaken" type="text" value="@info.legalAdvoTaken" id="legalAdvoTaken" maxlength="60" />
+                    <input type="hidden" asp-for="legalAdvoTakenHidden" value="@info.legalAdvoTaken" id="legalAdvoTakenHidden">
+                </td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    Remedy Resolution
+                </td>
+                <td>
+                    @{if (info.remedyResolution == 1)
+                        { <input asp-for="remedyResolution" type="radio" id="yes" name="remedyResolution" value="1" checked> }
+                        else
+                        { <input asp-for="remedyResolution" type="radio" id="yesremedy" name="remedyResolution" value="1"> } }
+                    Yes <br />
+                    @{if (info.remedyResolution == 0)
+                        { <input asp-for="remedyResolution" type="radio" id="no" name="remedyResolution" value="0" checked> }
+                        else
+                        { <input asp-for="remedyResolution" type="radio" id="noremedy" name="remedyResolution" value="0"> } }
+                    No <br />
+                    <input type="hidden" asp-for="remedyResolutionHidden" value="@info.remedyResolution">
+                </td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    Re-arrest while Being Represented
+                </td>
+                <td>
+                    @{if (info.rearrestWhileRepresented == 1)
+                        { <input asp-for="rearrestWhileRepresented" type="radio" id="yes" name="rearrestWhileRepresented" value="1" checked> }
+                        else
+                        { <input asp-for="rearrestWhileRepresented" type="radio" id="rearrestWhileRepresented1" name="rearrestWhileRepresented" value="1"> } }
+                    Yes <br />
+                    @{if (info.rearrestWhileRepresented == 0)
+                        { <input asp-for="rearrestWhileRepresented" type="radio" id="no" name="rearrestWhileRepresented" value="0" checked> }
+                        else
+                        { <input asp-for="rearrestWhileRepresented" type="radio" id="rearrestWhileRepresented0" name="rearrestWhileRepresented" value="0"> } }
+                    No <br />
+                    <input type="hidden" asp-for="rearrestWhileRepresentedHidden" value="@info.rearrestWhileRepresented" id="rearrestWhileRepresentedHidden">
+                </td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    Advocacy at Court?
+                </td>
+                <td>
+                    @{if (info.courtAdvocacy == 1)
+                        { <input asp-for="courtAdvocacy" type="radio" id="yes" name="courtAdvocacy" value="1" checked> }
+                        else
+                        { <input asp-for="courtAdvocacy" type="radio" id="courtAdvocacy1" name="courtAdvocacy" value="1"> } }
+                    Yes <br />
+                    @{if (info.courtAdvocacy == 0)
+                        { <input asp-for="courtAdvocacy" type="radio" id="no" name="courtAdvocacy" value="0" checked> }
+                        else
+                        { <input asp-for="courtAdvocacy" type="radio" id="courtAdvocacy0" name="courtAdvocacy" value="0"> } }
+                    No <br />
+                    <input type="hidden" asp-for="courtAdvocacyHidden" value="@info.courtAdvocacy">
+                </td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    Advocacy at staffing, MDT, or other?
+                </td>
+                <td>
+                    @{if (info.staffAdvocacy == 1)
+                        { <input asp-for="staffAdvocacy" type="radio" id="yes" name="staffAdvocacy" value="1" checked> }
+                        else
+                        { <input asp-for="staffAdvocacy" type="radio" id="staffAdvocacy1" name="staffAdvocacy" value="1"> }
+                    }Yes<br />
+                    @{if (info.staffAdvocacy == 0)
+                        { <input asp-for="staffAdvocacy" type="radio" id="no" name="staffAdvocacy" value="0" checked> }
+                        else
+                        { <input asp-for="staffAdvocacy" type="radio" id="staffAdvocacy0" name="staffAdvocacy" value="0"> }
+                    } No<br />
+                    <input type="hidden" asp-for="staffAdvocacyHidden" value="@info.staffAdvocacy">
+                </td>
+            </tr>
+            <tr>
+                <td class="t" style="text-align:right">
+                    Arrest for new charge during advocacy?
+                </td>
+                <td>
+                    @{if (info.rearrestAdvocacy == 1)
+                        { <input asp-for="rearrestAdvocacy" type="radio" id="yes" name="rearrestAdvocacy" value="1" checked> }
+                        else
+                        { <input asp-for="rearrestAdvocacy" type="radio" id="rearrestAdvocacy1" name="rearrestAdvocacy" value="1"> }
+                    }Yes<br />
+                    @{if (info.rearrestAdvocacy == 0)
+                        { <input asp-for="rearrestAdvocacy" type="radio" id="no" name="rearrestAdvocacy" value="0" checked> }
+                        else
+                        { <input asp-for="rearrestAdvocacy" type="radio" id="rearrestAdvocacy0" name="rearrestAdvocacy" value="0"> }
+                    }
+                    No<br /> <input type="hidden" asp-for="rearrestAdvocacyHidden" value="@info.rearrestAdvocacy">
+                </td>
+            </tr>
 
         </table>
 
-        </p>
     </div>
     <br />
     <button type="submit" class="btn btn-primary" onclick="return editConfirm();">Submit</button>

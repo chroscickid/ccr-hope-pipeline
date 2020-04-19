@@ -630,12 +630,14 @@
 
                 <tr>
                     <td>
-                       <label asp-for="iep">Does the youth have an IEP/504 Plan?</label><br />
+                        <label asp-for="iep">Does the youth have an IEP/504 Plan?</label><br />
                         <input asp-for="iep" type="radio" id="yesIEP" value="1"> Yes <br />
                         <input asp-for="iep" type="radio" id="noIEP" value="0" required /> No<br />
+                        <br />
+                        <br />
 
                         <div id="ifYesIEP">
-                            <label asp-for="iepplan1">Primary IEP/504 Plan</label><br />
+                            <label asp-for="iepplan1">Primary IEP/504 Plan:</label><br />
                             <input asp-for="iepplan1" type="radio" id="emo" value="emo"> Emotional/Behavioral Disability<br />
                             <input asp-for="iepplan1" type="radio" id="gifted" value="gifted" /> Gifted<br />
                             <input asp-for="iepplan1" type="radio" id="intellectual" value="intell"> Intellectual Disability<br />
@@ -647,7 +649,7 @@
                             <br />
                             <br />
 
-                            <label asp-for="iepplan2">Secondary IEP/504 Plan</label><br />
+                            <label asp-for="iepplan2">Secondary IEP/504 Plan:</label><br />
                             <input asp-for="iepplan2" type="radio" id="none" value="none"> None<br />
                             <input asp-for="iepplan2" type="radio" id="emo" value="emo"> Emotional/Behavioral Disability<br />
                             <input asp-for="iepplan2" type="radio" id="gifted" value="gifted" /> Gifted<br />
@@ -700,7 +702,7 @@
                     </td>
 
                     <td>
-                       <label asp-for="compService">Additional Compensatory Services</label>
+                        <label asp-for="compService">Additional Compensatory Services</label>
                         <br />
                         <input asp-for="compService" type="radio" id="yesComp" value="1"> Yes<br />
                         <input asp-for="compService" type="radio" id="noComp" value="0" checked> No<br />
@@ -712,15 +714,15 @@
                             <input asp-for="ifWhatServices" type="text" class="field-style field-full align-none" />
                             <br />
                             <br />
-                            <label asp-for="compTime">Total minutes of compensatory services to be provided</label>
+                            <label asp-for="compTime">Total minutes of compensatory services to be provided: </label>
                             <input asp-for="compTime" type="number" class="field-style field-full align-none" />
 
                         </div>
-
+                        <br />
                         <label asp-for="addServicesGained">Additional Services Gained</label>
                         <br />
-                        <input asp-for="addServicesGained" type="radio" value="1" />Yes <br/>
-                        <input asp-for="addServicesGained" type="radio" value="0"/>No 
+                        <input asp-for="addServicesGained" type="radio" value="1" />Yes <br />
+                        <input asp-for="addServicesGained" type="radio" value="0" />No
 
                         <div id="ifNoComp">
 
@@ -823,6 +825,7 @@
                         Yes <input asp-for="altSchool" type="radio" id="yesAlt" value="1"> &nbsp;
                         No <input asp-for="altSchool" type="radio" id="noAlt" value="0" checked /> &nbsp;
                         <br />
+                        <br />
 
                         <div id="ifYesAlt">
                             <label asp-for="altSchoolName">If yes, which school?</label><br />
@@ -838,20 +841,22 @@
                                 <option value="2" id="2">2</option>
                                 <option value="3" id="3">3+</option>
                             </select>
+                            <br />
+                            <br />
                             <label asp-for="dateOfAlt">What day did the student enter the alternative school</label> <br />
                             <input asp-for="dateOfAlt" type="datetime-local" class="field-style field-full align-none" id="dateOfAlt"
                                    min="2000-06-07T00:00" max="2060-06-14T00:00">
                             <br />
-                    
-                        <label asp-for="daysOwed">How many days owed:</label><br />
-                        <input asp-for="daysOwed" type="number" class="field-style field-full align-none" required> <br />
-                        <br />
+                            <br />
+                            <label asp-for="daysOwed">How many days owed:</label><br />
+                            <input asp-for="daysOwed" type="number" class="field-style field-full align-none" required> <br />
+                            <br />
 
 
-                        <div id="ifNoAlt">
+                            <div id="ifNoAlt">
+                            </div>
+
                         </div>
-                    
-                </div>
                     </td>
 
              
@@ -1013,7 +1018,7 @@
                 </tr>
             </table>
 
-
+            <br />
             <button type="submit" class="btn btn-primary">Submit</button>
             <br />
             <br />

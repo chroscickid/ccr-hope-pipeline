@@ -134,27 +134,27 @@ namespace HopePipeline.Controllers
             List<string> qs = new List<String>
             {
                 "INSERT INTO dbo.demographics VALUES (" + id + ")",
-                "INSERT INTO dbo.accomodations VALUES (" + sub.accomGained + "," + sub.compService + ",'" + sub.ifWhatServices + "'," + sub.addServicesGained + "," + id + ")",
-                "INSERT INTO dbo.client VALUES ('" + sub.clientLastName + "','" + sub.clientFirstName + "','" + sub.adopted + "','" + sub.clientGender + "','" + sub.clientEthnicity + "','" + sub.clientDOB + "'," + id + ",'" + sub.carePhone + "')",
+                "INSERT INTO dbo.accomodations VALUES (" + sub.accomGained + "," + sub.compService + ",'" + filterSqlCommand(sub.ifWhatServices) + "'," + sub.addServicesGained + "," + id + ")",
+                "INSERT INTO dbo.client VALUES ('" + filterSqlCommand(sub.clientLastName) + "','" + filterSqlCommand(sub.clientFirstName) + "','" + sub.adopted + "','" + sub.clientGender + "','" + sub.clientEthnicity + "','" + sub.clientDOB + "'," + id + ",'" + sub.carePhone + "')",
 
 
 
-                "INSERT INTO dbo.advocacy VALUES (" + sub.rearrestAdvocacy + "," + sub.courtAdvocacy + "," + sub.staffAdvocacy + "," + sub.legalAdvocacy + ",'" + sub.legalAdvoTaken + "'," + id + ")",
-                "INSERT INTO dbo.altSchool VALUES (" + sub.altSchool + ",'" + sub.altSchoolName + "','" + sub.dateOfAlt + "'," + sub.timesInAlt + "," + sub.daysOwed + "," + sub.daysSinceIntake + "," + id + ")",
+                "INSERT INTO dbo.advocacy VALUES (" + sub.rearrestAdvocacy + "," + sub.courtAdvocacy + "," + sub.staffAdvocacy + "," + sub.legalAdvocacy + ",'" + filterSqlCommand(sub.legalAdvoTaken) + "'," + id + ")",
+                "INSERT INTO dbo.altSchool VALUES (" + sub.altSchool + ",'" + filterSqlCommand(sub.altSchoolName) + "','" + sub.dateOfAlt + "'," + sub.timesInAlt + "," + sub.daysOwed + "," + sub.daysSinceIntake + "," + id + ")",
                 "INSERT INTO dbo.bully VALUES (" + sub.bullied + "," + sub.bullyReport + ",'" + sub.dateofBully + "'," + id + ")",
-                "INSERT INTO dbo.caregiver VALUES ('" + sub.careFirstName + "','" + sub.careLastName + "','" + sub.careGender + "','" + sub.careEthnicity + "'," + "'careRelationship'" + "," + id + ")",
+                "INSERT INTO dbo.caregiver VALUES ('" + filterSqlCommand(sub.careFirstName) + "','" + filterSqlCommand(sub.careLastName) + "','" + sub.careGender + "','" + sub.careEthnicity + "'," + "'careRelationship'" + "," + id + ")",
 
-                "INSERT dbo.ccr VALUES ('" + sub.levelOfServiceProvided + "'," + sub.caseStatus + ",'" + sub.nonEngagementReason + "'," + sub.remedyResolution + "," + sub.rearrestWhileRepresented + ",'" + sub.schoolAtClosure + "'," + id + "," + sub.intakeDate + ")",
-                "INSERT INTO dbo.comp VALUES (" + sub.compService + ",'" + sub.ifWhatServices + "','" + sub.compTime + "'," + id + ")",
+                "INSERT dbo.ccr VALUES ('" + sub.levelOfServiceProvided + "'," + sub.caseStatus + ",'" + filterSqlCommand(sub.nonEngagementReason) + "'," + sub.remedyResolution + "," + sub.rearrestWhileRepresented + ",'" + filterSqlCommand(sub.schoolAtClosure) + "'," + id + "," + sub.intakeDate + ")",
+                "INSERT INTO dbo.comp VALUES (" + sub.compService + ",'" + filterSqlCommand(sub.ifWhatServices) + "','" + sub.compTime + "'," + id + ")",
                 
                 "INSERT INTO dbo.currentStatus VALUES (" + sub.readingLevel + "," + sub.mathLevel + ",'" + "currentServices?" + "'," + sub.inPride + "," + sub.newFBA + "," + 0 + ",'" + "servicesGained" + "'," + id + ")",
                 "INSERT INTO dbo.failed VALUES (" + sub.failedGrade + "," + sub.whichGradeFailed + "," + sub.failCount + "," + id + ")",
                 "INSERT INTO dbo.health VALUES (" + sub.baker + "," + sub.marchman + "," + sub.asthma + "," + sub.pregnantparenting + "," + id + ")",
                 "INSERT INTO dbo.household VALUES (" + sub.femHouse + "," + sub.domVio + "," + sub.adopted + "," + sub.evicted + "," + sub.incarParent + "," + sub.publicAssistance + "," + id + ")",
-               "INSERT INTO dbo.iep VALUES (" + sub.iep + ",'" + sub.iepplan1 + "','" + sub.iepplan2 + "'," + "0" + "," + id + ")",
-                "INSERT INTO dbo.legal VALUES ('" + sub.firstLegal + "','" + sub.secondLegal + "','" + sub.justiceOutcome + "'," + id + ")",
-                "INSERT INTO dbo.refinfo VALUES ('" + sub.reffname + "','" + sub.reflname + "','" + sub.referralDate + "'," + id + ",'" + sub.emailOfFirstReferralSource + "')",
-                "INSERT INTO dbo.school VALUES (" + id + "," + sub.currentGrade + ",'" + sub.school + "','" + sub.schoolRef + "'," + sub.reenrolled + ")",
+               "INSERT INTO dbo.iep VALUES (" + sub.iep + ",'" + filterSqlCommand(sub.iepplan1) + "','" + filterSqlCommand(sub.iepplan2) + "'," + "0" + "," + id + ")",
+                "INSERT INTO dbo.legal VALUES ('" + sub.firstLegal + "','" + filterSqlCommand(sub.secondLegal) + "','" + filterSqlCommand(sub.justiceOutcome) + "'," + id + ")",
+                "INSERT INTO dbo.refinfo VALUES ('" + filterSqlCommand(sub.reffname) + "','" + filterSqlCommand(sub.reflname) + "','" + sub.referralDate + "'," + id + ",'" + sub.emailOfFirstReferralSource + "')",
+                "INSERT INTO dbo.school VALUES (" + id + "," + sub.currentGrade + ",'" + filterSqlCommand(sub.school) + "','" + filterSqlCommand(sub.schoolRef) + "'," + sub.reenrolled + ")",
                 "UPDATE refform SET assignRef = 1 WHERE clientCode = '" + sub.refCode + "';",
                 "INSERT INTO dbo.referral VALUES ('" + sub.refCode + "'," + id + ")"
             };

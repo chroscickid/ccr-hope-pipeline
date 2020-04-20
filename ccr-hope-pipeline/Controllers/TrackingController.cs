@@ -16,6 +16,19 @@ namespace HopePipeline.Controllers
     {
         public string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
+        public string filterSqlCommand(string str)
+        {
+
+            
+            for (int i = 0; i < str.Length; i++)
+            {
+                if(str[i] == '\'' && str[i-1] != '\'')
+                {
+                    str = str.Insert(i, "'");
+                }
+            }
+            return str;
+        }
 
         public ViewResult TrackingForm(Guid clientCode)
         {

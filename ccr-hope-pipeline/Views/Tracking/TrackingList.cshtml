@@ -5,7 +5,79 @@
 
 }
 <style>
+    .button1 {
+            padding: 3px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
 
+        .button3 {
+            background-color: #DDDDDD; /* Gray */
+            border: 3px solid #003A62;
+            color: #003A62;
+        }
+
+            .button3:hover {
+                background-color: #003A62;
+                color: #DDDDDD;
+            }
+
+        .button4 {
+            background-color: #005199; /* Gray */
+            border: 3px solid #003A62;
+            color: #DDDDDD;
+        }
+
+            .button4:hover {
+                background-color: #005199;
+                color: #DDDDDD;
+                border: 3px solid #003A62;
+            }
+
+        .button5 {
+            background-color: #cc0000; /* Gray */
+            border: 3px solid #cc0000;
+            color: white;
+        }
+
+            .button5:hover {
+                background-color: white;
+                color: #cc0000;
+                border: 3px solid #cc0000;
+            }
+
+        .button2 {
+            border-radius: 4px;
+        }
+
+        .button1 span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
+
+            .button1 span:after {
+                content: '\00bb';
+                position: absolute;
+                opacity: 0;
+                top: 0;
+                right: -20px;
+                transition: 0.5s;
+            }
+
+        .button1:hover span {
+            padding-right: 25px;
+        }
+
+            .button1:hover span:after {
+                opacity: 1;
+                right: 0;
+            }
     /* The container <div> - needed to position the dropdown content */
     .dropdown {
         position: relative;
@@ -67,6 +139,9 @@
             <th>
                 More Options
             </th>
+            <th>
+                @*the delete collumn is here*@
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -87,19 +162,22 @@
                     
                 </td>
                 <td>
-                    <a asp-controller="Tracking" asp-action="MeetingList" asp-route-clientCode="@item.clientCode">Meetings</a> |
+                    <button class="button4 button1 button1" asp-controller="Tracking" asp-action="MeetingList" asp-route-clientCode="@item.clientCode">Meetings</button> 
                     <div class="dropdown">
-                        <a class="dropbtn">Change Status</a>
+                        <button class="button4 dropbtn">Change Status</button>
                         <div class="dropdown-content">
                             <a asp-controller="Tracking" asp-action="ChangeStatus" asp-route-clientCode="@item.clientCode" asp-route-status="1">"Open"</a>
                             <a asp-controller="Tracking" asp-action="ChangeStatus" asp-route-clientCode="@item.clientCode" asp-route-status="0">"Closed"</a>
                             <a asp-controller="Tracking" asp-action="ChangeStatus" asp-route-clientCode="@item.clientCode" asp-route-status="2">"Closed to Non-engagement"</a>
                         </div>
-                    </div> |
-                    <a asp-controller="n" asp-action="EditTrackingM" asp-route-clientCode="@item.clientCode">Edit</a> |
-                    <a asp-controller="n" asp-action="detailTrackingM" asp-route-clientCode="@item.clientCode">Details</a> |
-                    <a asp-controller="Tracking" asp-action="ViewAssignedTracking" asp-route-clientCode="@item.clientCode" asp-route-fname="@item.fname" asp-route-lname="@item.lname">View Referrals</a> |
-                    <a asp-controller="Tracking" asp-action="Delete" asp-route-clientCode="@item.clientCode">Delete</a>
+                    </div>
+                    <button class="button4 button2 button1" asp-controller="n" asp-action="EditTrackingM" asp-route-clientCode="@item.clientCode">Edit</button> 
+                    <button class="button4 button2 button1" asp-controller="n" asp-action="detailTrackingM" asp-route-clientCode="@item.clientCode">Details</button> 
+                    <button class="button4 button2 button1" asp-controller="Tracking" asp-action="ViewAssignedTracking" asp-route-clientCode="@item.clientCode" asp-route-fname="@item.fname" asp-route-lname="@item.lname">View Referrals</button> 
+                   
+                </td>
+                <td>
+                    <button class="button1 button2 button5" asp-controller="Tracking" asp-action="Delete" asp-route-clientCode="@item.clientCode">Delete</button>
                 </td>
             </tr>
             ;

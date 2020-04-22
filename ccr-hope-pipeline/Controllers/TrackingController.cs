@@ -19,7 +19,9 @@ namespace HopePipeline.Controllers
         public string filterSqlCommand(string str)
         {
 
-            
+            if (str == null)
+                return "";
+
             for (int i = 0; i < str.Length; i++)
             {
                 if(str[i] == '\'' && str[i-1] != '\'')

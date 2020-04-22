@@ -162,7 +162,7 @@
                     
                 </td>
                 <td>
-                    <button class="button4 button1 button1" asp-controller="Tracking" asp-action="MeetingList" asp-route-clientCode="@item.clientCode">Meetings</button> 
+                    <button class="button4 button1 button1" onclick="window.location.href = '@Url.Action("MeetingList", "Tracking",new { Area = "", clientCode =@item.clientCode})'">Meetings</button> 
                     <div class="dropdown">
                         <button class="button4 dropbtn">Change Status</button>
                         <div class="dropdown-content">
@@ -171,13 +171,13 @@
                             <a asp-controller="Tracking" asp-action="ChangeStatus" asp-route-clientCode="@item.clientCode" asp-route-status="2">"Closed to Non-engagement"</a>
                         </div>
                     </div>
-                    <button class="button4 button2 button1" asp-controller="n" asp-action="EditTrackingM" asp-route-clientCode="@item.clientCode">Edit</button> 
-                    <button class="button4 button2 button1" asp-controller="n" asp-action="detailTrackingM" asp-route-clientCode="@item.clientCode">Details</button> 
-                    <button class="button4 button2 button1" asp-controller="Tracking" asp-action="ViewAssignedTracking" asp-route-clientCode="@item.clientCode" asp-route-fname="@item.fname" asp-route-lname="@item.lname">View Referrals</button> 
+                    <button class="button4 button2 button1" onclick="window.location.href = '@Url.Action("EditTrackingM", "n",new { Area = "", clientCode =@item.clientCode})'">Edit Tracking</button> 
+                    <button class="button4 button2 button1" onclick="window.location.href = '@Url.Action("detailTrackingM", "n",new { Area = "", clientCode =@item.clientCode})'">Details</button> 
+                    <button class="button4 button2 button1" onclick="window.location.href = '@Url.Action("ViewAssignedTracking", "Tracking",new { Area = "", clientCode =@item.clientCode, fname=@item.fname, @lname=item.lname})'">View Referrals</button> 
                    
                 </td>
                 <td>
-                    <button class="button1 button2 button5" asp-controller="Tracking" asp-action="Delete" asp-route-clientCode="@item.clientCode">Delete</button>
+                    <button class="button1 button2 button5" onclick="window.location.href = '@Url.Action("Delete", "Tracking",new { Area = "", clientCode =@item.clientCode})'">Delete</button>
                 </td>
             </tr>
             ;

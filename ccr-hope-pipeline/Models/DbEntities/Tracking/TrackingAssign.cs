@@ -9,5 +9,6 @@ namespace HopePipeline.Models.DbEntities.Tracking
     {
         public List<TrackingRow> list { get; set; }
         public Guid referralClientCode { get; set; }
+
     }
 }

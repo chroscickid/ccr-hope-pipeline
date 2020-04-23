@@ -94,12 +94,14 @@
     </head>
 <h2>Referrals</h2>
 <h3>Showing @Model.Count referrals</h3>
-
-<form asp-controller="Referral" asp-action="search">
-    <input name="term" />
-    <button type="submit">Search</button>
-</form>
-
+<style>
+     table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+        }
+</style>
 <table id="reflist" class="table">
     <thead>
         <tr>

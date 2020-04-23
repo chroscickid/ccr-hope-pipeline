@@ -2,6 +2,14 @@
 @{
     ViewData["Title"] = "RefTrackList";
 }
+<style>
+    table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+        }
+</style>
 
 <h1>Referral forms assigned to @Model.studentName</h1>
 @if (Model.list.Count == 0)

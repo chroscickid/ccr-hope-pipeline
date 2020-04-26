@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection.Metadata;
 
 namespace HopePipeline.Models
 {
@@ -146,7 +147,7 @@ namespace HopePipeline.Models
         public int youthSettingHidden { get; set; }
         public int youthInjunctionHidden { get; set; }
 
-        
+        public string file { get; set; }
 
     }
 }

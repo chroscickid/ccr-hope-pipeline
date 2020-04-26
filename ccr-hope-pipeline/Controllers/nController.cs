@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using System.Threading.Tasks;
 using HopePipeline.Models;
 using System.Data.SqlClient;
@@ -14,6 +15,9 @@ using SendGrid.Helpers.Mail;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.IO;
+using Azure.Storage.Blobs;
+using System.Reflection.Metadata;
+using Microsoft.AspNetCore.Hosting.Internal;
 
 namespace HopePipeline.Controllers
 {
@@ -246,32 +250,94 @@ namespace HopePipeline.Controllers
                 youthInjunctioncheck.Value = DBNull.Value;
             }
 
-   
-
-
-            SqlDataReader reader = command.ExecuteReader();
-
-
-
+            SqlDataReader reader= command.ExecuteReader();
+          
 
             emailaddress = "hopepipeline@gmail.com";
             
             htmlplain = "A new was referral was made by " + form.referralfname + " " + form.referrallname + " for " + form.fName + " " + form.lName + " as of " + form.dateInput+"";
             subjectemail = "New Referral from " + form.referralfname +" " +form.referrallname+ " as of "+ form.dateInput;
             Execute(emailaddress, messagehtml, subjectemail, referralname, htmlplain).Wait();
+            string here = form.file.ToString();
+            Console.WriteLine("files =" + here);
             string fname = form.fName.ToString();
             string lname = form.lName.ToString();
             string namestring = fname+ " " + lname;
       // var key = form.clientCode;
           var  key = Guid.Parse(form.clientCode.ToString());
             reader.Close();
+            adapter.Dispose();
+            command.Dispose();
+
+            //file uploads
+            Array file1 = new Array[1];
+            string delimiter = "\" \""; 
+            Console.WriteLine("delimiter =" + delimiter);
+            if (here.Contains("\" \""))
+            {  file1 = new Array[here.Split(delimiter).Length]; }
+            else { file1 = new Array[1]; }
+           
+            //List<string> file1 = new List<string>();
+
+            int cat = 0;
+            int number = 0;
+
+
+            foreach (var files in file1)
+            {
+                Guid herefiles = Guid.NewGuid();
+                Console.WriteLine("herefiles =" + herefiles);
+                if (files != null)
+
+                {
+                    string unqiueFileName = null;
+
+                    //file string
+                    string strPath = "\"" + files + "\"".ToString();
+                    Console.WriteLine("files =" + files);
+                    //get filename
+                    string filename = Path.GetFileName(strPath);
+                    Console.WriteLine("strPath =" + strPath);
+                    //guid plus filename
+                    //unqiueFileName = Guid.NewGuid().ToString() + "_" + filename;
+                    Console.WriteLine("unqiueFileName =" + unqiueFileName);
+
+                    SqlConnection cnnn;
+                    cnnn = new SqlConnection(connectionString);
+                    SqlCommand commandd;
+                    SqlDataAdapter adapterr = new SqlDataAdapter();
+                    cnnn.Open();
+
+                    string queryy = "INSERT INTO dbo.attachments VALUES (@clientCode, @pk , @filename);";
+
+                    commandd = new SqlCommand(queryy, cnnn);
+                    //Pass values to Parameters
+                   commandd.Parameters.AddWithValue("@clientCode", form.clientCode);
+                    commandd.Parameters.AddWithValue("@pk", herefiles);
+                    SqlParameter filenamee = commandd.Parameters.AddWithValue("@filename", files);
+                    if (filenamee == null)
+                    {
+                        filenamee.Value = DBNull.Value;
+                    }
+                    SqlDataReader readerr = commandd.ExecuteReader();
+                    fileAsync(here, herefiles).Wait();
+                    readerr.Close();
+                    adapterr.Dispose();
+                    commandd.Dispose();
+                }
+
+
+            }
+
+       
+
 
             //COnnect to the DB
             ViewBag.key = key;
             ViewBag.Name = namestring;
             ViewBag.Bessage = DateTime.Now;
-            adapter.Dispose();
-            command.Dispose();
+            
+          
             return View("confirmationM", "n");
 
         }//-------------------------------------------------------------End Form Submit Referral GUID DONE
@@ -4242,112 +4308,70 @@ namespace HopePipeline.Controllers
             var response = await client.SendEmailAsync(msg);
 
         }
-
-        public void file()
+        [Route("api/blobs/upload")]
+        public async Task fileAsync(string file, Guid herefiles)
         {
-            file.ToList();
-            int cat = 0;
-            int number = 0;
-            int herefiles = 0;
-            
+            //string here = file;
+            // string delimiter = "\" \"";
+            // Array file1 = new Array[here.Split(delimiter).Length];
 
-           
-            foreach (var files in file)
-            {
+            var connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
 
-                if (files != null)
+            if (file != null)
 
                 {
-                    //create container
-                    // Create a BlobServiceClient object which will be used to create a container client
-                    BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
+               
+                //create container
+                // Create a BlobServiceClient object which will be used to create a container client
+                BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
 
                     //Create a unique name for the container
-                    string containerName = "quickstartblobs" + Guid.NewGuid().ToString();
+                    string containerName = "container" + herefiles.ToString();
 
                     // Create the container and return a container client object
                     BlobContainerClient containerClient = await blobServiceClient.CreateBlobContainerAsync(containerName);
 
                     //end container
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    
+                    //get filepath
+
+
+
+
+
                     //start upload
                     // Create a local file in the ./data/ directory for uploading and downloading
-                    string localPath = "./data/";
-                    string fileName = "quickstart" + Guid.NewGuid().ToString() + ".txt";
-                    string localFilePath = Path.Combine(localPath, fileName);
+                    //string localPath = "./data/";
+                   
+                    //string fileName = "name" + Guid.NewGuid().ToString() + ".txt";
+                    //string strPath = Path.GetFileName(files.ToString()); ;
+                   // string localFilePath = Path.Combine(localPath, fileName);
 
                     // Write text to the file
-                    await File.WriteAllTextAsync(localFilePath, "Hello, World!");
+                    //await File.WriteAllTextAsync(localFilePath, "Hello, World!");
 
+
+
+                    //file string convert the file format in the array to a tostring so itcan be recieved from the blob
+                    string filestring = file.ToString();
                     // Get a reference to a blob
-                    BlobClient blobClient = containerClient.GetBlobClient(fileName);
+                    BlobClient blobClient = containerClient.GetBlobClient(filestring);
+                Console.WriteLine("filestring =" + filestring);
+                Console.WriteLine("Uploading to Blob storage as blob:\n\t {0}\n", blobClient.Uri);
 
-                    Console.WriteLine("Uploading to Blob storage as blob:\n\t {0}\n", blobClient.Uri);
+                // Open the file and upload its data
 
-                    // Open the file and upload its data
-                    using FileStream uploadFileStream = File.OpenRead(localFilePath);
+                FileStream uploadFileStream = System.IO.File.OpenRead(filestring);
                     await blobClient.UploadAsync(uploadFileStream, true);
                     uploadFileStream.Close();
-                    //upload
-                    string unqiueFileName = null;
+                    //end download
 
-                    string webRootPath = hostingEnvironment.ContentRootPath;
-
-                    string uploadsFolder = Path.Combine(webRootPath, "wwwroot\\images");
-                    string strPath = files.FileName;
-                    string filename = Path.GetFileName(strPath);
-                    unqiueFileName = Guid.NewGuid().ToString() + "_" + filename;
-
-                    string filePath = Path.Combine(uploadsFolder, unqiueFileName);
-                    using (FileStream fs = System.IO.File.Create(filePath))
-                    {
-                        files.CopyTo(fs);
-                        fs.Flush();
-                    }
+                    //begin upload
+                 
 
 
-
-
-                    int numbe = 0;
-
-
-
-                    if (cat < 1)
-                    {
-                        cat++;
-                        filesReferralBrandi referralfile = new filesReferralBrandi();
-                        referralfile.idPK = herefiles;
-                        referralfile.pK = Convert.ToInt32(sessionID);
-                        referralfile.file = files.FileName;
-                        referralfile.fileCode = filePath;
-                        referralfile.fileNameY = "/images/" + unqiueFileName;
-
-                        db.filesReferralBrandi.Add(referralfile);
-
-                        db.SaveChanges();
-
-                    }
-                    else
-                    {
-                        cat++;
-                        number++;
-                        herefiles++;
-                        filesReferralBrandi referralfile = new filesReferralBrandi();
-
-                        numbe = referralfile.idPK + herefiles;
-                        referralfile.idPK = numbe;
-                        referralfile.pK = Convert.ToInt32(sessionID);
-                        referralfile.file = files.FileName;
-                        referralfile.fileCode = filePath;
-                        referralfile.fileNameY = "/images/" + unqiueFileName;
-
-                        db.filesReferralBrandi.Add(referralfile);
-
-                        db.SaveChanges();
-
-                    }
-
-
-                }
+                
             }
         }
         //method to upload blob

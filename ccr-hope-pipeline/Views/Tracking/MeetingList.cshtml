@@ -1,0 +1,77 @@
+﻿@model HopePipeline.Models.DbEntities.Meetings.MeetingList
+@{
+    ViewData["Title"] = "MeetingList";
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+<style>
+    table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+        }
+    
+</style>
+
+
+<h3>Add Meeting</h3>
+<div id="addMeeting">
+    <form asp-controller="Tracking" asp-action="AddMeeting" method="post">
+        <input type="hidden" name="clientCode" value="@Model.clientCode" />
+        <p>Date: <input id="today" type="date" name="meetingDate" required/></p>
+        <p>Purpose: <input type="text" name="MeetingPurpose" required/></p>
+        <p>Notes: </p>
+        <textarea name="MeetingNotes"></textarea>   
+        </br> </br>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+@{ if(Model.list.Count == 0)
+    {
+        <h3>Sorry, there are no associated meetings for this student</h3>
+    } else
+    {
+       <h1>@Model.fname @Model.lname's Meetings</h1>
+        <table class="table" id="meetlist">
+            <thead>
+                <tr>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Purpose
+                    </th>
+                    <th>
+                        Notes
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                
+        @foreach(var row in Model.list)
+        {
+            <tr>
+                <td>
+                    @row.MeetingDate.ToString("yy-MM-dd")
+                </td>
+                <td>
+                    @row.MeetingPurpose
+                </td>
+                <td>
+                    @row.MeetingNotes
+                </td>
+                <td>
+                    <a asp-controller="Tracking" asp-action="DeleteMeeting" asp-route-meetingCode="@row.meetingCode" asp-route-clientCode="@Model.clientCode">Delete</a>
+                </td>
+            </tr>            
+        }
+                </tbody>
+        </table>
+    }
+
+}
+

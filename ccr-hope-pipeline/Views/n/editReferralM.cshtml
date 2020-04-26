@@ -1,0 +1,1811 @@
+﻿@model HopePipeline.Models.referralBrandi;
+@{
+    ViewData["Title"] = "editReferralM";
+}
+
+
+@{
+    var data = ViewBag.Lessage;
+}
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table {
+            width: 100%;
+            border: 3px solid #003A62;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        table#t01 tr:nth-child(even) {
+            background-color: #e6f3ff;
+        }
+
+        table#t01 tr:nth-child(odd) {
+            background-color: #fff;
+        }
+
+        table#t01 th {
+            background-color: #005199;
+            color: white;
+        }
+        /* Style width of form */
+        .t {
+            width: 30%;
+            table-layout: fixed;
+        }
+    </style>
+    <script type="text/javascript">
+        function editConfirm() {
+             var arrayorg = []
+            var checkboxes2 = document.querySelectorAll('input[name=arrayorg]:checked')
+
+            for (var i = 0; i < checkboxes2.length; i++) {
+                arrayorg.push(checkboxes2[i].value)
+            }
+            var checkarrayorg = document.getElementById("checkarrayorg");
+            var finalarrayorg = document.getElementById("finalarrayorg").value;
+            if (checkarrayorg.checked && finalarrayorg != "JFCS CJRG"&& finalarrayorg != "Public Defender's Office"&& finalarrayorg != "WINS HOPE Court") {
+                //for (var i = 0; i < array3.length; i++)
+                { arrayorg.push(finalarrayorg) }
+            }
+
+            document.getElementById("nameOrg").value = arrayorg;
+
+            //array for guardian relationship begin
+
+            var array = []
+            var checkboxes = document.querySelectorAll('input[name=array]:checked')
+            for (var i = 0; i < checkboxes.length; i++) {
+                array.push(checkboxes[i].value)
+            }
+
+            var input = document.getElementById("input");
+            var array3 = document.getElementById("array3").value;
+            if (input.checked) {
+                { array.push(array3) }
+            }
+
+            document.getElementById("guardRe").value = array;
+            //array for guardian relationship end
+            //array for issues begin
+            var array1 = []
+            var checkboxes1 = document.querySelectorAll('input[name=array1]:checked')
+
+            for (var i = 0; i < checkboxes1.length; i++) {
+                array1.push(checkboxes1[i].value)
+            }
+
+           var input33 = document.getElementById("input33");
+            var array33 = document.getElementById("array33").value;
+               if (input33.checked) {
+                //for (var i = 0; i < array3.length; i++)
+                { array1.push(array33) }
+            }
+
+            document.getElementById("issues0").value = array1;
+//array for issues end
+            //array impact
+               var arrayImpact = []
+            var checkboxes3 = document.querySelectorAll('input[name=arrayImpact]:checked')
+
+            for (var i = 0; i < checkboxes3.length; i++) {
+               arrayImpact.push(checkboxes3[i].value)
+            }
+          
+            document.getElementById("youthImpact").value = arrayImpact;
+            //array impact
+
+            //required
+                      //required data
+            var inputtextwarn = document.getElementById("referralfname").value;
+           var reflastnamewarn = document.getElementById("referrallname").value;
+           var lnamewarn = document.getElementById("fName").value;
+           var fnamewarn = document.getElementById("lName").value;
+           var guardianNamewarn = document.getElementById("guardianName").value;
+          var guardianlNamewarn = document.getElementById("guardianlName").value;
+         var youthphonewarn = document.getElementById("youthNu").value;
+         var parentphonewarn = document.getElementById("guardianPhone").value;
+           var zipwarn = document.getElementById("zip").value;
+          //       //email
+       var parentemailwarn = document.getElementById("guardianEmail").value;
+            var youthemailwarn = document.getElementById("youthEmail").value;
+           var refemailwarn = document.getElementById("refemail").value;
+          //  //dob
+          var dobwarn = document.getElementById("dOB").value;
+   
+          //  //address validate/phone number validate/zip code validation
+          //  //NOT DONE YET LENGTH
+          var letters = /^[A-Za-z]+$/;
+          var phoneno = /^[1-9]\d{2}-\d{3}-\d{4}/;
+          var zipno = /^\d{5}$/;
+           
+     var email =/^[a-zA-Z0-9_\-.]+\u0040[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-.]+$/;
+         
+            if ((!inputtextwarn.match(letters) && inputtextwarn.length != 0) || (!reflastnamewarn.match(letters) && reflastnamewarn.length != 0)
+                || (!lnamewarn.match(letters) && lnamewarn.length != 0) || (!fnamewarn.match(letters) && fnamewarn.length != 0)
+                || (!guardianNamewarn.match(letters) && guardianNamewarn.length != 0) || (!guardianlNamewarn.match(letters) && guardianlNamewarn.length != 0)
+                || (!youthphonewarn.match(phoneno) && youthphonewarn.length != 0) || (!parentphonewarn.match(phoneno) && parentphonewarn.length != 0) || (!zipwarn.match(zipno) && zipwarn.length != 0)
+                || (!parentemailwarn.match(email) && parentemailwarn.length != 0) || (!youthemailwarn.match(email) && youthemailwarn.length != 0) || (!refemailwarn.match(email) && refemailwarn.length != 0)
+            || (dobwarn.length == 0))
+            {
+                //reffirstname//reflast name/ lastname/first name//guardian name//phone
+                if (!inputtextwarn.match(letters) && inputtextwarn.length != 0) { document.getElementById("reffnameError").innerHTML = "Please input alphabet characters only"; }
+                else { document.getElementById("reffnameError").innerHTML = ""; }
+                  if (!reflastnamewarn.match(letters) && reflastnamewarn.length != 0) { document.getElementById('reflnameError').innerHTML = 'Please input alphabet characters only'; }
+                else { document.getElementById('reflnameError').innerHTML = ''; }
+                  if (!lnamewarn.match(letters) && lnamewarn.length != 0) { document.getElementById('fNameerror').innerHTML = 'Please input alphabet characters only'; }
+                else { document.getElementById('fNameerror').innerHTML = ''; }
+                if (!fnamewarn.match(letters) && fnamewarn.length != 0) { document.getElementById('lNameerror').innerHTML = 'Please input alphabet characters only'; }
+                else { document.getElementById('lNameerror').innerHTML = ''; }
+                  if (!guardianNamewarn.match(letters) && guardianNamewarn.length != 0) { document.getElementById('guardianNameError').innerHTML = 'Please input alphabet characters only'; }
+                else { document.getElementById('guardianNameError').innerHTML = ''; }
+                if (!guardianlNamewarn.match(letters) && guardianlNamewarn.length != 0) { document.getElementById('guardianlNameError').innerHTML = 'Please input alphabet characters only'; }
+                else { document.getElementById('guardianlNameError').innerHTML = ''; }
+                 if (!youthphonewarn.match(phoneno) && youthphonewarn.length != 0) { document.getElementById('youthphoneError').innerHTML = 'Please format your phone numbers as ###-###-####'; }
+                else { document.getElementById('youthphoneError').innerHTML = ''; }
+                if ((!parentphonewarn.match(phoneno) && parentphonewarn.length != 0)) { document.getElementById('parentphoneError').innerHTML = 'Please format your phone numbers as ###-###-####'; }
+                else { document.getElementById('parentphoneError').innerHTML = ''; }
+                if (!zipwarn.match(zipno) && zipwarn.length != 0) { document.getElementById('zipError').innerHTML = 'Please only enter 5 digits'; }
+                else { document.getElementById('zipError').innerHTML = ''; }
+                    if (inputtextwarn.length == 0) {
+                    document.getElementById('inputtextValid').innerHTML = 'This field is required';
+                }
+                else { document.getElementById('inputtextValid').innerHTML = ''; }
+                if (reflastnamewarn.length == 0) {
+                    document.getElementById('reflastnameValid').innerHTML = 'This field is required';
+                }
+                else { document.getElementById('reflastnameValid').innerHTML = ''; }
+                if (lnamewarn.length == 0) {
+                    document.getElementById('lnamewarnValid').innerHTML = 'This field is required';
+                }
+                else { document.getElementById('lnamewarnValid').innerHTML = ''; }
+                 if (fnamewarn.length == 0) {
+                    document.getElementById('fnamewarnValid').innerHTML = 'This field is required';
+                }
+                else { document.getElementById('fnamewarnValid').innerHTML = ''; }
+                if (guardianNamewarn.length == 0) {
+                    document.getElementById('guardianNamewarnValid').innerHTML = 'This field is required';
+                }
+                else { document.getElementById('guardianNamewarnValid').innerHTML = ''; }
+                if (guardianlNamewarn.length == 0) {
+                    document.getElementById('guardianlNamewarnValid').innerHTML = 'This field is required';
+                }
+                else { document.getElementById('guardianlNamewarnValid').innerHTML = ''; }
+                if (parentphonewarn.length == 0) {
+                    document.getElementById('parentphonewarnValid').innerHTML = 'This field is required';
+                }
+                else { document.getElementById('parentphonewarnValid').innerHTML = ''; }
+                if (!parentemailwarn.match(email) && parentemailwarn.length != 0) {
+                    document.getElementById('parentemailwarnValid').innerHTML = 'This is not a valid email address';
+                }
+                else { document.getElementById('parentemailwarnValid').innerHTML = ''; }
+                if (!youthemailwarn.match(email) && youthemailwarn.length != 0) {
+                    document.getElementById('youthemailwarnValid').innerHTML = 'This is not a valid email address';
+                }
+                else { document.getElementById('youthemailwarnValid').innerHTML = ''; }
+                if (!refemailwarn.match(email) && refemailwarn.length != 0) {
+                    document.getElementById('refemailwarnValid').innerHTML = 'This is not a valid email address';
+                }
+                else { document.getElementById('refemailwarnValid').innerHTML = ''; }
+                     if (dobwarn.length == 0) {
+                    document.getElementById('dobwarnValid').innerHTML = 'This field is required';
+                }
+                else { document.getElementById('dobwarnValid').innerHTML = ''; }
+                alert("You will need to correct the error's in red before submitting this referral");
+                return false;
+
+   
+            }
+            else {
+
+
+                //end required start else
+
+
+                //begin CHANGE CONFIRM-------------------------------------------------------------------------------
+                //youthCit
+                var youthCitname = "";
+                var yCit = "";
+
+                if (((document.getElementById('value1Cit').defaultChecked) == false) && ((document.getElementById('value1Cit').checked) == true)) {
+                    var youthCit = "1";
+                    var youthCitname = "is in a unsuccessful civil citation or diversion case";
+                }
+                if (((document.getElementById('value0Cit').defaultChecked) == false) && ((document.getElementById('value0Cit').checked) == true)) {
+                    var youthCit = "0";
+                    var youthCitname = "is not in a unsuccessful civil citation or diversion case";
+                }
+
+                if (youthCit != null) { var yCit = '\n The clients information has been changed to ' + youthCitname + '\n'; }
+
+                //youthOffense
+                var youthOffensename = "";
+                var youthOf = "";
+
+                if (((document.getElementById('value1Offense').defaultChecked) == false) && ((document.getElementById('value1Offense').checked) == true)) {
+                    var youthOffense = "1";
+                    var youthOffensename = "was arrested for a school related offense";
+                }
+                if (((document.getElementById('value0Offense').defaultChecked) == false) && ((document.getElementById('value0Offense').checked) == true)) {
+                    var youthOffense = "0";
+                    var youthOffensename = "was not arrested for a school related offense";
+                }
+                if (((document.getElementById('value2Offense').defaultChecked) == false) && ((document.getElementById('value2Offense').checked) == true)) {
+                    var youthOffense = "2";
+                    var youthOffensename = "don't know if the youth was arrested for a school related offense";
+                }
+
+                if (youthOffense != null) { var youthOf = '\n The clients information has been changed to ' + youthOffensename + '\n'; }
+
+                //First Name Working
+                var fNam = "";
+                var fName = document.getElementById("fName").value;
+                var fNameHidden = document.getElementById("fNameHidden").value;
+                //text
+                if (fName != fNameHidden) { var fNam = "\n The Clients first name has been changed to " + fName + "\n"; }
+                //first Name Working
+                //Last Name
+                var lNam = "";
+                var lName = document.getElementById("lName").value;
+                var lNameHidden = document.getElementById("lNameHidden").value;
+                //text
+                if (lName != lNameHidden) { var lNam = "\n The Clients last name has been changed to " + lName + "\n"; }
+                //Last Name
+                //Gender Identity
+                var gendername = "";
+                var gen = "";
+
+                if ((document.getElementById('male')) && ((document.getElementById('male').checked) == true)) {
+                    var gender = "male";
+                    var gendername = 'He/Him/His';
+                }
+                if ((document.getElementById('female1')) && ((document.getElementById('female1').checked) == true)) {
+                    var gender = "female";
+                    var gendername = 'She/Her/Hers';
+                }
+                if ((document.getElementById('gender3')) && ((document.getElementById('gender3').checked) == true)) {
+                    var gender = "trans*";
+                    var gendername = 'They/Them/Theirs';
+                }
+                if ((document.getElementById('gender4')) && ((document.getElementById('gender4').checked) == true)) {
+                    var gender = "nonbinaryF";
+                    var gendername = 'She/They';
+                }
+                if ((document.getElementById('gender5')) && ((document.getElementById('gender5').checked) == true)) {
+                    var gender = "nonbinaryM";
+                    var gendername = 'He/They';
+                }
+                if ((document.getElementById('gender6')) && ((document.getElementById('gender6').checked) == true)) {
+                    var gender = "neutral";
+                    var gendername = 'Zie/Zir/Zirs';
+                }
+                if (gender != null) { var gen = '\n The Clients gender information has been changed to ' + gendername + '\n'; }
+                //Gender Identity Works
+                //DOB
+                var bday = "";
+                var dOB = document.getElementById("dOB").value;
+                var dOBHidden = document.getElementById("dOBHidden").value;
+                //text
+                if (dOB != dOBHidden) { var bday = "\n The Clients last name has been changed to " + dOB + "\n"; }
+                //DOB
+                //guardians first name
+                var gfn = "";
+                var guardianName = document.getElementById("guardianName").value;
+                var guardianNameHidden = document.getElementById("guardianNameHidden").value;
+                //text
+                if (guardianNameHidden != guardianName) { var gfn = "\n The guardian's first name has been changed to " + guardianName + "\n"; }
+                //guardians first name
+                //guardians last name
+                var gln = "";
+                var guardianlName = document.getElementById("guardianlName").value;
+                var guardianlNameHidden = document.getElementById("guardianlNameHidden").value;
+                //text
+                if (guardianlName != guardianlNameHidden) { var gln = "\n The guardian's last name has been changed to " + guardianlName + "\n"; }
+                //guardians last name//done
+                //Relationship to the youth
+                var regu = "";
+                var guardRe = document.getElementById("guardRe").value;
+
+                var guardianRelationshipHidden = document.getElementById("guardianRelationshipHidden").value;
+
+                if (guardRe != guardianRelationshipHidden) { var regu = "\n The guardian's relationship has been changed to " + guardRe + "\n"; }
+                //organization
+                var org = "";
+                var nameOrg = document.getElementById("nameOrg").value;
+
+                var nameOrgHidden = document.getElementById("nameOrgHidden").value;
+
+                if (nameOrg != nameOrgHidden) { var org = "\n The referral's organization has been changed to " + nameOrg + "\n"; }
+                //Street Address
+                var sta = "";
+                var address = document.getElementById("address").value;
+                var addressHidden = document.getElementById("addressHidden").value;
+                //text
+                if (address != addressHidden) { var sta = "\n The Clients address has been changed to " + address + "\n"; }
+                //zip
+                var zi = "";
+                var zip = document.getElementById("zip").value;
+                var zipHidden = document.getElementById("zipHidden").value;
+                //text
+                if (zip != zipHidden) { var zi = "\n The Clients zip code has been changed to " + zip + "\n"; }
+                //guardian email
+
+                var ge = "";
+                var guardianEmail = document.getElementById("guardianEmail").value;
+                var guardianEmailHidden = document.getElementById("guardianEmailHidden").value;
+                //text
+                if (guardianEmail != guardianEmailHidden) { var ge = "\n The guardian email has been changed to " + guardianEmail + "\n"; }
+                //guardian phone
+                var guardianPhonename = "";
+                var guardianPhone = document.getElementById("guardianPhone").value;
+                var guardianPhoneHidden = document.getElementById("guardianPhoneHidden").value;
+                //text
+                if (guardianPhone != guardianPhoneHidden) { var guardianPhonename = "\n The guardian's phone number has been changed to " + guardianPhone + "\n"; }
+
+                //Issues
+                var issuesname = "";
+                var issues = document.getElementById("issues0").value;
+                var issuesHidden = document.getElementById("issuesHidden").value;
+                //text
+                if (issues != issuesHidden) { var issuesname = "\n The Clients issues have been changed to " + issues + "\n"; }
+                //check if exists (document.getElementById('youthInDuvalSchool1')) and is unchecked var x = document.getElementById("myCheck").defaultChecked;
+                //impact
+
+                var youthImpactname = "";
+                var youthImpact = document.getElementById("youthImpact").value;
+                var youthImpactHidden = document.getElementById("youthImpactHidden").value;
+
+                if (youthImpact != youthImpactHidden) { var youthImpactname = "\n The Clients youth Impact have been changed to " + youthImpact + "\n"; }
+                //impact
+                var meetingname = "";
+                var meet = "";
+
+                if (((document.getElementById('yesCheck').defaultChecked) == false) && ((document.getElementById('yesCheck').checked) == true)) {
+                    var meeting = "1";
+                    var meetingname = "having a meeting";
+                }
+                if (((document.getElementById('noCheck').defaultChecked) == false) && ((document.getElementById('noCheck').checked) == true)) {
+                    var meeting = "0";
+                    var meetingname = "not having a meeting";
+                }
+                if (((document.getElementById('nooCheck').defaultChecked) == false) && ((document.getElementById('nooCheck').checked) == true)) {
+                    var meeting = "2";
+                    var meetingname = "maybe having a meeting";
+                }
+
+                if (meeting != null) { var meet = '\n The meeting information has been changed to ' + meetingname + '\n'; }
+                //meeting date time
+
+                var me = "";
+                var date = document.getElementById("date").value;
+                var dateHidden = document.getElementById("dateHidden").value;
+                var str = date.replace("T", " ");
+                //text
+                if (str == "" ) {
+                    str = "no meeting date and time";
+                    date = "1900-01-01T24:00";
+                }
+               
+                if (date != dateHidden) { var me = "\n The Client's meeting date and time was changed to " + str + "\n"; }
+                //Duval school
+                var youthInDuvalSchoolname = "";
+                var yids = "";
+
+                if ((document.getElementById('youthInDuvalSchool1')) && ((document.getElementById('youthInDuvalSchool1').selected) == true)) {
+                    var youthInDuvalSchool = "1";
+                    var youthInDuvalSchoolname = 'is in a duval school';
+
+                }
+                if ((document.getElementById('youthInDuvalSchool0')) && (document.getElementById('youthInDuvalSchool0').selected) == true) {
+                    var youthInDuvalSchool = '0';
+                    var youthInDuvalSchoolname = 'not being in a duval school';
+                }
+                if ((document.getElementById('youthInDuvalSchool2')) && (document.getElementById('youthInDuvalSchool2').selected) == true) {
+                    var youthInDuvalSchool = "2";
+                    var youthInDuvalSchoolname = 'not sure if the client is in a duval school';
+                }
+
+                if (youthInDuvalSchool != null) { var yids = '\n The Clients information has been changed to ' + youthInDuvalSchoolname + '\n'; }
+
+                //grade
+                var gradename = "";
+                var gra = "";
+                var gradeHidden = document.getElementById("gradeHidden").value;
+                var grade = document.getElementById("grade").value;
+                if ((document.getElementById("Kindergarten")) && ((document.getElementById('Kindergarten').selected) == true)) {
+
+                    var gradename = "Kindergarten";
+                }
+                if ((document.getElementById("one")) && ((document.getElementById('one').selected) == true)) {
+
+                    var gradename = "1st";
+                }
+                if ((document.getElementById("two")) && ((document.getElementById('two').selected) == true)) {
+
+                    var gradename = "2nd";
+                }
+                if ((document.getElementById("three")) && ((document.getElementById('three').selected) == true)) {
+
+                    var gradename = "3rd";
+                }
+                if ((document.getElementById("four")) && ((document.getElementById('four').selected) == true)) {
+
+                    var gradename = "4th";
+                }
+                if ((document.getElementById("five")) && ((document.getElementById('five').selected) == true)) {
+
+                    var gradename = "5th";
+                }
+                if ((document.getElementById("six")) && ((document.getElementById('six').selected) == true)) {
+
+                    var gradename = "6th";
+                }
+                if ((document.getElementById("seven")) && ((document.getElementById('seven').selected) == true)) {
+
+                    var gradename = "7th";
+                }
+                if ((document.getElementById("eight")) && ((document.getElementById('eight').selected) == true)) {
+
+                    var gradename = "8th";
+                }
+                if ((document.getElementById("nine")) && ((document.getElementById('nine').selected) == true)) {
+
+                    var gradename = "9th";
+                }
+                if ((document.getElementById("ten")) && ((document.getElementById('ten').selected) == true)) {
+
+                    var gradename = "10th";
+                }
+                if ((document.getElementById("eleven")) && ((document.getElementById("eleven").selected) == true)) {
+
+                    var gradename = "11th";
+                }
+                if ((document.getElementById("twelve")) && ((document.getElementById('twelve').selected) == true)) {
+
+                    var gradename = "12th";
+                }
+                if ((document.getElementById("N/A")) && ((document.getElementById('N/A').selected) == true)) {
+
+                    var gradename = "N/A";
+                }
+                if (grade != gradeHidden) { var gra = '\n The Clients grade has been changed to ' + gradename + '\n'; }
+
+                //grade working
+                //youth currently at school------------------------------------------NOT DONE
+                var youthschoolname = "";
+                var ys = "";
+
+                if (((document.getElementById('yesclick').defaultChecked) == false) && ((document.getElementById('yesclick').checked) == true)) {
+                    var youthInSchool = "1";
+                    var youthschoolname = "youth in school";
+                }
+                if (((document.getElementById('noclick').defaultChecked) == false) && ((document.getElementById('noclick').checked) == true)) {
+                    var youthInSchool = "0";
+                    var youthschoolname = "youth not in school";
+                }
+                if (((document.getElementById('nooclick').defaultChecked) == false) && ((document.getElementById('nooclick').checked) == true)) {
+                    var youthInSchool = "2";
+                    var youthschoolname = "don't know if the youth is in school";
+                }
+
+                if (youthInSchool != null) { var ys = '\n The clients information has been changed to ' + youthschoolname + ''; }
+                //what school
+                var skull = "";
+                var school = document.getElementById("school").value;
+                var schoolHidden = document.getElementById("schoolHidden").value;
+               
+                //text
+               
+                if (school == "" || school == null) { schoolnme = "none"; }
+
+                if (school != schoolHidden) {
+                    schoolnme = school;
+                    var skull = "\n The Client's school has been changed to " + schoolnme + "\n";
+                }
+
+                //RadioButton for arrest working
+                var arrestname = "";
+                var arr = "";
+
+                var arrestHidden = document.getElementById('arrestHidden').value;
+
+                if ((document.getElementById('yesarrest').defaultChecked == false) && ((document.getElementById('yesarrest').checked) == true)) {
+                    var arrest = "1";
+                    var arrestname = 'has been arrested';
+
+                }
+
+                if ((document.getElementById('noarrest').defaultChecked == false) && (document.getElementById('noarrest').checked) == true) {
+                    var arrest = '0';
+                    var arrestname = 'not having been arrest';
+                }
+
+                if ((document.getElementById('maybearrest').defaultChecked == false) && (document.getElementById('maybearrest').checked) == true) {
+                    var arrest = "2";
+                    var arrestname = 'not sure if client has been arrested';
+                }
+
+                if (arrest != null) { var arr = '\n The Clients information has been changed to ' + arrestname + '\n'; }
+                //info
+
+                var info = "";
+                var moreInfo = document.getElementById("moreInfo").value;
+                var moreInfoHidden = document.getElementById("moreInfoHidden").value;
+                //text
+                if (moreInfo != moreInfoHidden) { var info = "\n The Client's information has been changed to " + moreInfo + "\n"; }
+
+
+                //reasons
+                var reas = "";
+                var reason = document.getElementById("reason").value;
+                var reasonHidden = document.getElementById("reasonHidden").value;
+                //text
+                if (reason != reasonHidden) { var reas = "\n The Client's reason has been changed to " + reason + "\n"; }
+                //Communicate
+                var Reachname = "";
+                var ach = "";
+
+
+                if ((document.getElementById('phone')) && ((document.getElementById('phone').checked) == true)) {
+                    var Reach = "Phone";
+                    var Reachname = 'Phone';
+
+                }
+
+                if ((document.getElementById('email')) && (document.getElementById('email').checked) == true) {
+                    var Reach = 'Email';
+                    var Reachname = 'Email';
+                }
+                if ((document.getElementById('text')) && (document.getElementById('text').checked) == true) {
+                    var Reach = "Text";
+                    var Reachname = 'Text';
+                }
+
+                if (Reach != null) { var ach = '\n The best way to contact the client has been changed to ' + Reachname + '\n'; }
+                //status
+                var statusname = "";
+                var stat = "";
+
+
+                if ((document.getElementById('pending')) && ((document.getElementById('pending').checked) == true)) {
+                    var status = "Pending";
+                    var statusname = 'pending';
+
+                }
+
+                if ((document.getElementById('open')) && (document.getElementById('open').checked) == true) {
+                    var status = 'Contacted - Open Service';
+                    var statusname = 'Contacted - Open Service';
+                }
+                if ((document.getElementById('dont')) && (document.getElementById('dont').checked) == true) {
+                    var status = "Contacted - Does not want services";
+                    var statusname = 'Contacted - Does not want services';
+                }
+                if ((document.getElementById('unable')) && (document.getElementById('unable').checked) == true) {
+                    var status = 'Unable to Contact';
+                    var statusname = 'Unable to Contact';
+                }
+
+                if (status != null) { var stat = '\n The Clients status has been changed to ' + statusname + '\n'; }
+
+                //date referral
+                var Input = "";
+                var dateInput = document.getElementById("dateInput").value;
+                var dateInputHidden = document.getElementById("dateInputHidden").value;
+                //text
+                if (dateInput != dateInputHidden) { var Input = "\n The Client's referral input date was changed to " + dateInput + "\n"; }
+                //first name referral
+                var rfn = "";
+                var referralfname = document.getElementById("referralfname").value;
+                var referralfnameHidden = document.getElementById("referralfnameHidden").value;
+                //text
+                if (referralfname != referralfnameHidden) { var rfn = "\n The referrals first name was changed to " + referralfname + "\n"; }
+                //last name referral
+                var rln = "";
+                var referrallname = document.getElementById("referrallname").value;
+                var referrallnameHidden = document.getElementById("referrallnameHidden").value;
+                //text
+                if (referrallname != referrallnameHidden) { var rln = "\n The referrals last name was changed to " + referrallname + "\n"; }
+                //referral email
+                var remail = "";
+                var refemailname = document.getElementById("refemail").value;
+                var emailHidden = document.getElementById("emailHidden").value;
+                //text
+                if (refemailname != emailHidden) { var remail = "\n The referrals email was changed to " + refemailname + "\n"; }
+
+                //youthNu begin
+                var ynu = "";
+                var youthNu = document.getElementById("youthNu").value;
+                var youthNuHidden = document.getElementById("youthNuHidden").value;
+                if (youthNu != youthNuHidden) { var ynu = "\n The Youth's phone number has been changed to " + youthNu + "\n"; }
+                //youthNu end
+                //youthEmail begin
+                var yemail = "";
+                var youthEmail = document.getElementById("youthEmail").value;
+                var youthEmailHidden = document.getElementById("youthEmailHidden").value;
+                if (youthEmail != youthEmailHidden) { var yemail = "\n The Youth's email has been changed to " + youthEmail + "\n"; }
+                //youthEmail end
+                //youth alt
+                var yal = "";
+                var youthAltname = "unanswered";
+                var youthAlt = document.getElementById("youthAltId").value;
+                var youthAltHidden = document.getElementById("youthAltHidden").value;
+                if (youthAlt == "0") { youthAltname = "not at risk"; }
+                if (youthAlt == "1") { youthAltname = "at risk"; }
+                if (youthAlt == "2") { youthAltname = "may be at risk"; }
+                if (youthAlt != youthAltHidden) { var yal = "\n The Youth's risk for placement into a alternative school has been changed to " + youthAltname + "\n"; }
+                //youth alt
+                //youthsetting
+                var yset = "";
+                var youthSettingname = "unanswered";
+                var youthSetting = document.getElementById("youthSettingId").value;
+                var youthSettingHidden = document.getElementById("youthSettingHidden").value;
+                if (youthSetting == "0") { youthSettingname = "not in one"; }
+                if (youthSetting == "1") { youthSettingname = "in one"; }
+                if (youthSetting == "2") { youthSettingname = "may be in one"; }
+                if (youthSetting != youthSettingHidden) { var yset = "\n The Youth's position in a self contained education setting has been changed to " + youthSettingname + "\n"; }
+                //youthinjunction
+                var yinj = "";
+                var youthInjunctionname = "unanswered";
+                var youthInjunction = document.getElementById("youthInjunctionId").value;
+                if (youthInjunction == "1") { youthInjunctionname = "has a injunction"; }
+                if (youthInjunction == "0") { youthInjunctionname = "does not have a injunction"; }
+                if (youthInjunction == "2") { youthInjunctionname = "may have a injunction"; }
+                var youthInjunctionHidden = document.getElementById("youthInjunctionHidden").value;
+                if (youthInjunction != youthInjunctionHidden) { var yinj = "\n The Youth's Injunction position by the school has been changed to " + youthInjunctionname + "\n"; }
+
+
+
+                //confirm
+                if (confirm("Please Confirm you would like to Submit your changes\n" + fNam + lNam + ynu + yemail + gen + bday + gfn + gln + sta + zi + ge + yids + gra + skull + arr + yCit + youthOf + info + reas + ach + stat + Input + rfn + rln + remail + org + regu + meet + me + issuesname + youthImpactname + ys + yinj + yset + yal + guardianPhonename + "")) { return true; }
+                else {
+                    return false;
+                    event.preventDefault();
+                }
+            }
+        }
+         //end CHANGE CONFIRM-------------------------------------------------------------------------------
+
+        //visibility on click methods
+        //meeting view
+        function yesnoCheck() {
+            if (document.getElementById('yesCheck').checked==true) {
+                document.getElementById('ifYes').style.display = 'block';
+               document.getElementById("date").disabled = false;
+            }
+            else document.getElementById('ifYes').style.display = 'none';
+           document.getElementById("date").disabled = false;
+         document.getElementById("date").value = null;
+        }
+        //meeting view
+         function yesnoCheck1() {
+            if (document.getElementById('yesclick').checked == true) {
+                document.getElementById('Yes').style.display = 'block';
+                document.getElementById('school').disabled = false;
+            }
+            else {
+                document.getElementById('Yes').style.display = 'none';
+                document.getElementById('school').disabled = true;
+                 document.getElementById('school').value = null;
+            }
+
+        }
+               function ffunction() {
+            if (!document.getElementById('checkarrayorg').checked) {
+                document.getElementById('finalarrayorg').setAttribute('disabled', 'disabled');
+
+            }
+            else document.getElementById('finalarrayorg').removeAttribute('disabled');
+                  document.getElementById('finalarrayorg').value= null;
+        }
+        function afunction() {
+            if (!document.getElementById('input').checked) {
+                document.getElementById('array3').setAttribute('disabled', 'disabled');
+
+            }
+            else document.getElementById('array3').removeAttribute('disabled');
+            document.getElementById('array3').value = null;
+
+        }
+             //issues
+          function tfunction() {
+            if (!document.getElementById('input33').checked) {
+                document.getElementById('array33').setAttribute('disabled', 'disabled');
+
+            }
+            else document.getElementById('array33').removeAttribute('disabled');
+              document.getElementById('array33').value= null;
+        }//issues
+        //arrest
+        function yesarrestCheck() {
+            if (document.getElementById('yesarrest').checked) {
+                document.getElementById('ifyesarrest').style.display = 'block';
+                document.getElementById('ifnoarrest').style.display = 'none';
+                //document if yes then other in checked no
+                document.getElementById('value0Cit').checked = true;
+                document.getElementById('value1Cit').checked=false;
+            }
+            else document.getElementById('ifyesarrest').style.display = 'none';
+            if (document.getElementById('noarrest').checked) {
+                document.getElementById('ifnoarrest').style.display = 'block';
+                //document if yes then other in checked no
+                document.getElementById('value0Offense').checked = true;
+                 document.getElementById('value1Offense').checked = false;
+                
+            }
+               else document.getElementById('ifnoarrest').style.display = 'none';
+               if (document.getElementById('maybearrest').checked)
+               {
+                   document.getElementById('ifyesarrest').style.display = 'none';
+                   document.getElementById('ifnoarrest').style.display = 'none';
+                    document.getElementById('value0Offense').checked = true;
+                   document.getElementById('value1Offense').checked = false;
+                   document.getElementById('value0Cit').checked = true;
+                document.getElementById('value1Cit').checked=false;
+               }
+        }
+        //visibility on click methods
+    </script>
+
+
+</head>
+<body onload="myFunction()">
+
+
+    <!-- Decision after login by authorized user -->
+
+    <h1>Edit Client Referral Information</h1>
+
+
+
+    <!-- register should only be provided by authorized personal so not for any user till logged in and authorized user will have to register new users
+    1.1 Login Page -->
+
+    <div>
+        <form asp-action="editReferralForm" asp-controller="n" method="post" onreset="yesnoCheck(); tfunction(); afunction(); yesnoCheck1(); yesarrestCheck(); yesarrestCheck();">
+
+            <input type="hidden" name="clientCode" asp-for="clientCode" value="@data.clientCode">
+            <table id="t01">
+                <tr>
+                    <td class="t" style="text-align:right"> First Name:</td>
+
+                    <td>
+                        <input type="text" name="fName" value="@data.fName" asp-for="fName" id="fName" maxlength="20">
+                        <input type="hidden" name="fNameHidden" asp-for="fNameHidden" id="fNameHidden" value="@data.fName">
+                        <p style="color:red" id="fNameerror"></p>
+                        <p style="color:red" id="fnamewarnValid"></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right"> Last Name: </td>
+
+                    <td>
+                        <input type="text" value="@data.lName" name="lName" asp-for="lName" id="lName" maxlength="20">
+                        <input type="hidden" name="lNameHidden" asp-for="lNameHidden" id="lNameHidden" value="@data.lName">
+                        <p style="color:red" id="lNameerror"></p>
+                        <p style="color:red" id="lnamewarnValid"></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right">Youth's email address: </td>
+
+                    <td>
+                        <input type="email" value="@data.youthEmail" name="youthEmail" asp-for="youthEmail" id="youthEmail" maxlength="50">
+                        <input type="hidden" name="youthEmailHidden" asp-for="youthEmailHidden" id="youthEmailHidden" value="@data.youthEmail">
+                        <p style="color:red" id="youthemailwarnValid"></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right"> Youth's phone number: </td>
+
+                    <td>
+                        <input type="text" value="@data.youthNu" name="youthNu" asp-for="youthNu" id="youthNu">
+                        <input type="hidden" name="youthNuHidden" asp-for="youthNuHidden" id="youthNuHidden" value="@data.youthNu" maxlength="12">
+                        <p style="color:red" id="youthphoneError"></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right"> Gender Identity:  </td>
+
+                    <td>
+                        @{if (data.gender == "male")
+                            { <input type="radio" id="mal" name="gender" value="male" asp-for="gender" checked>}
+                            else
+                            { <input type="radio" id="male" name="gender" value="male" asp-for="gender">}
+                        }
+                        He/Him/His<br>
+                        @{if (data.gender == "female")
+                            { <input type="radio" name="gender" value="female" asp-for="gender" id="female" checked>}
+                            else
+                            { <input type="radio" name="gender" value="female" asp-for="gender" id="female1">}
+
+                        }She/Her/Hers<br>
+
+                        @{if (data.gender == "trans*")
+                            { <input type="radio" name="gender" value="trans*" asp-for="gender" id="trans*" checked> }
+                            else
+                            { <input type="radio" name="gender" value="trans*" asp-for="gender" id="gender3"> } }
+                        They/Them/Theirs<br />
+                        @{if (data.gender == "nonbinaryF")
+                            { <input type="radio" name="gender" value="nonbinaryF" asp-for="gender" id="nonbinaryF" checked>}
+                            else
+                            { <input type="radio" name="gender" value="nonbinaryF" asp-for="gender" id="gender4">}
+
+                        }
+                        She/They<br>
+                        @{if (data.gender == "nonbinaryM")
+                            { <input type="radio" name="gender" value="nonbinaryM" asp-for="gender" id="nonbinaryM" checked>}
+                            else
+                            { <input type="radio" name="gender" value="nonbinaryM" asp-for="gender" id="gender5">}
+
+                        }He/They<br>
+                        @{if (data.gender == "neutral")
+                            { <input type="radio" name="gender" value="neutral" asp-for="gender" id="neutral" checked>}
+                            else
+                            { <input type="radio" name="gender" value="neutral" asp-for="gender" id="gender6">}
+
+                        }
+                        Zie/Zir/Zirs<br />
+
+                    </td>
+
+
+                </tr>
+
+
+                <tr>
+                    <td class="t" style="text-align:right"> Date of Birth:</td>
+                    @{ string answer = data.dOB.ToString();
+                        int space = answer.IndexOf(" ");
+                        string date = answer.Substring(0, space);
+
+
+                        string[] strlist = date.Split("/");
+
+
+                        string year = strlist[2];
+                        string month = strlist[1];
+                        if ((month.Length) == 1)
+                        { month = "0" + month; }
+                        string day = strlist[0];
+                        if ((day.Length) == 1)
+                        { day = "0" + day; }
+                        string answer50 = year + "-" + day + "-" + month;
+
+                    }
+
+                <td>
+                    <input type="date" name="dOB" value="@answer50" asp-for="dOB" id="dOB">
+                    <input type="hidden" name="dOBHidden" asp-for="dOBHidden" value="@answer50" id="dOBHidden">
+                    <p style="color:red" id="dobwarnValid"></p>
+                </td>
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right">   Guardian's First Name:</td>
+
+                    <td>
+                        <input type="text" name="guardianName" value="@data.guardianName" asp-for="guardianName" id="guardianName" maxlength="20">
+                        <input type="hidden" name="guardianNameHidden" asp-for="guardianNameHidden" value="@data.guardianName" id="guardianNameHidden">
+                        <p style="color:red" id="guardianNameError"></p>
+                        <p style="color:red" id="guardianNamewarnValid"></p>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right">   Guardian's Last Name:</td>
+
+                    <td>
+                        <input type="text" name="guardianlName" value="@data.guardianlName" asp-for="guardianlName" id="guardianlName" maxlength="20">
+                        <input type="hidden" name="guardianlNameHidden" asp-for="guardianlNameHidden" value="@data.guardianlName" id="guardianlNameHidden">
+                        <p style="color:red" id="guardianlNameError"></p>
+                        <p style="color:red" id="guardianlNamewarnValid"></p>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right">  Guardian's relationship to the youth:</td>
+
+                    <td>
+                        <br>
+                        @{if (data.guardianRelationship.Contains("Mother"))
+                            {<input type="checkbox" value="Mother" name="array" checked> }
+                            else
+                            {<input type="checkbox" name="array" id="mother" value="Mother"> }
+                        }Mother<br />
+                        @{if (data.guardianRelationship.Contains("Father"))
+                            {<input type="checkbox" name="array" value=" Father" checked> }
+                            else
+                            {<input type="checkbox" name="array" id="father" value=" Father"> }
+                        }Father<br>
+                        @{if (data.guardianRelationship.Contains("Guardian"))
+                            {<input type="checkbox" name="array" value="Guardian" checked> }
+                            else
+                            {<input type="checkbox" name="array" id="guardian" value="Guardian"> }
+                        }Guardian<br>
+                        @{if (data.guardianRelationship.Contains("Foster Parent"))
+                            {<input type="checkbox" name="array" value="Foster Parent" checked> }
+                            else
+                            {<input type="checkbox" name="array" id="foster" value="Foster Parent"> }
+                        }Foster Parent<br>
+                        @{if (data.guardianRelationship.Contains("Family member"))
+                            {<input type="checkbox" name="array" value="Family member" checked> }
+                            else
+                            {<input type="checkbox" name="array" id="relative" value="Family member"> }
+                        }Family member(aunt, uncle, grandmother, grandfather, great grandparent, sibiling, cousin, etc)<br>
+                        @{
+                            string othera = data.guardianRelationship.ToString();
+                            string[] lista = othera.Split(",");
+                            string meccaa = lista[lista.Length - 1];
+                            // meccaa = meccaa.Replace(" ", String.Empty);
+
+
+                            if (meccaa != "Family member" && meccaa != "Foster Parent" && meccaa != "Guardian" && meccaa != "Father" && meccaa != "Mother" && meccaa != "N/A" && meccaa != "" && meccaa != null)
+                            { <input type="checkbox" id="input" name="input1" value="Other" onclick="afunction()" checked >}
+                            else
+                            { <input type="checkbox" id="input" name="input1" value="Other" onclick="afunction()" > }
+                        }
+
+                        Other:
+                        @{
+                            string other = data.guardianRelationship.ToString();
+                            string[] list = other.Split(",");
+                            string mecca = list[list.Length - 1];
+
+
+                            if (mecca != "Family member" && mecca != "Foster Parent" && mecca != "Guardian" && mecca != "Father" && mecca != "Mother" && mecca != "N/A")
+                            { <input type="text" name="array" value="@mecca" id="array3" maxlength="20">}
+                            else
+                            {<input type="text" name="array" id="array3" disabled maxlength="20"> }
+                        }
+
+
+                        <input type="hidden" id="guardRe" name="guardianRelationship" value="@data.guardianRelationship" asp-for="guardianRelationship">
+                        <input type="hidden" id="guardianRelationshipHidden" name="guardianRelationshipHidden" value="@data.guardianRelationship" asp-for="guardianRelationshipHidden" />
+                        <br>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right"> Street Address:</td>
+
+
+                    <td> <input type="text" name="address" value="@data.address" asp-for="address" id="address" maxlength="50"><input type="hidden" name="addressHidden" asp-for="addressHidden" value="@data.address" id="addressHidden"></td>
+
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right">  Zip Code</td>
+
+                    <td>
+                        <input type="text" name="zip" value="@data.zip" asp-for="zip" id="zip" maxlength="5">
+                        <input type="hidden" name="zipHidden" asp-for="zipHidden" value="@data.zip" id="zipHidden">
+                        <p style="color:red" id="zipError"></p>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right"> Parent/Guardian's Email:</td>
+
+                    <td>
+                        <input type="email" name="guardianEmail" value="@data.guardianEmail" id="guardianEmail" asp-for="guardianEmail" maxlength="50">
+                        <input type="hidden" name="guardianEmailHidden" asp-for="guardianEmailHidden" value="@data.guardianEmail" id="guardianEmailHidden">
+                        <p style="color:red" id="parentemailwarnValid"></p>
+                    </td>
+
+
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right"> Parent/Guardian Phone Number:</td>
+
+                    <td>
+                        <input type="text" value="@data.guardianPhone" asp-for="guardianPhone" id="guardianPhone" maxlength="12">
+                        <input type="hidden" name="guardianPhoneHidden" asp-for="guardianPhoneHidden" value="@data.guardianPhone" id="guardianPhoneHidden">
+                        <p style="color:red" id="parentphoneError"></p>
+                        <p style="color:red" id="parentphonewarnValid"></p>
+                    
+                    </td>
+
+
+                </tr>
+
+                <tr>
+                    <td class="t" style="text-align:right"> Does the youth have a meeting?</td>
+
+                    <td>
+
+                        Yes
+                        @{if (data.meeting == 1)
+                            {<input type="radio" onclick="javascript:yesnoCheck();" name="Meeting" value="1" id="yesCheck" asp-for="meeting" checked> }
+                            else
+                            {<input type="radio" onclick="javascript:yesnoCheck();" name="Meeting" value="1" id="yesCheck" asp-for="meeting"> }}&nbsp;&nbsp;
+                        No @{if (data.meeting == 0)
+                            {<input type="radio" onclick="javascript:yesnoCheck();" name="Meeting" value="0" id="noCheck" asp-for="meeting" checked> }
+                            else
+                            {<input type="radio" onclick="javascript:yesnoCheck();" name="Meeting" value="0" id="noCheck" asp-for="meeting"> }}&nbsp;&nbsp;
+                        Maybe @{if (data.meeting == 2)
+                            {<input type="radio" onclick="javascript:yesnoCheck();" name="Meeting" value="2" id="nooCheck" asp-for="meeting" checked>}
+                            else
+                            {<input type="radio" onclick="javascript:yesnoCheck();" name="Meeting" value="2" id="nooCheck" asp-for="meeting"> }}<br>
+
+                        @{ string answera = data.date.ToString();
+                            int spacea = answera.IndexOf(' ');
+                            string datea = answera.Substring(0, spacea);
+                            string[] thingsti = answera.Split(' ');
+                            Console.WriteLine(thingsti[2]);
+
+                            int counteram = 0;
+
+                            Console.WriteLine(thingsti[1]);
+
+                            string[] calc = thingsti[1].Split(':');
+                            int hour = Int32.Parse(calc[0]);
+                            string righthour = "";
+                            if (thingsti[2] == "AM") { righthour = hour.ToString(); }
+                            if (thingsti[2] == "PM")
+                            {
+                                hour = hour + 12;
+                                righthour = hour.ToString();
+                            }
+                            Console.WriteLine(righthour);
+
+                            string[] strlista = datea.Split('/');
+
+                            string yeara = strlista[2];
+                            string montha = strlista[1];
+                            if ((montha.Length) == 1)
+                            { montha = "0" + montha; }
+                            string dayz = strlista[0];
+                            string daya = "";
+                            if ((dayz.Length) == 2)
+                            { daya = dayz; }
+                            else
+                            { daya = "0" + dayz; }
+                            if (righthour.Length == 1) { righthour = "0" + righthour; }
+                            if (calc[1].Length == 1) { calc[1] = "0" + calc[1]; }
+                            string answer50a = yeara + "-" + daya + "-" + montha + "T" + righthour + ":" + calc[1];
+                            Console.WriteLine(answer50a);
+
+
+                        }
+                        @{ string an = "display:none";
+                            if (data.meeting == 0)
+                            { an = "display:block"; }
+                            if (data.meeting == 1)
+                            { an = "display:block"; }
+                            else
+                            { an = "display:none"; }
+                        }
+                        <div id="ifYes" style="@an">
+                            <br />Date of Youth's Meeting:&nbsp;<br /><input type="datetime-local" value="@answer50a" name="date" asp-for="date" id="date">
+                            <input type="hidden" value="@answer50a" name="dateHidden" asp-for="dateHidden" id="dateHidden" /><br /><br />
+
+                        </div>
+                    </td>
+
+
+                </tr>
+
+                <tr>
+                    <td class="t" style="text-align:right"> Issues which are currently impacting the Youth:</td>
+
+                    <td>
+
+                        @{if (data.issues.Contains("Failed a grade or more"))
+                            {<input type="checkbox" name="array1" value="Failed a grade or more" checked> }
+                            else
+                            { <input type="checkbox" name="array1" id="Failg" value="Failed a grade or more"> } } Failed a grade or more<br>
+                        @{if (data.issues.Contains("Frequently suspended, called to be picked up, or told not to come to school"))
+                            {<input type="checkbox" name="array1" value="Frequently suspended, called to be picked up, or told not to come to school" checked> }
+                            else
+                            { <input type="checkbox" name="array1" id="Fsus" value="Frequently suspended, called to be picked up, or told not to come to school"> } }
+                        Frequently suspended, called to be picked up, or told not to come to school<br>
+                        @{if (data.issues.Contains("In an alternative school setting"))
+                            {<input type="checkbox" name="array1" value="In an alternative school setting" checked> }
+                            else
+                            { <input type="checkbox" name="array1" id="altscho" value="In an alternative school setting">} } In an alternative school setting(Mattie V., Grand Park, AMI, Pace, etc)<br />
+                        @{if (data.issues.Contains("Has a 504 plan or an IEP but is not making academic progress or continues to get in frequent trouble"))
+                            {<input type="checkbox" name="array1" value="Has a 504 plan or an IEP but is not making academic progress or continues to get in frequent trouble" checked>}
+                            else
+                            { <input type="checkbox" name="array1" id="504plan" value="Has a 504 plan or an IEP but is not making academic progress or continues to get in frequent trouble">} } Has a 504 plan or an IEP but is not making academic progress or continues to get in frequent trouble<br>
+                        @{if (data.issues.Contains("Not enrolled in school but was previously at a DCPS school"))
+                            {<input type="checkbox" name="array1" value="Not enrolled in school but was previously at a DCPS school" checked> }
+                            else
+                            { <input type="checkbox" name="array1" id="note" value="Not enrolled in school but was previously at a DCPS school">} } Not enrolled in school but was previously at a DCPS school<br>
+
+                        @{if (data.issues.Contains("Has a history of being Baker Acted from school"))
+                            {<input type="checkbox" name="array1" value="Has a history of being Baker Acted from school" checked>}
+                            else
+                            { <input type="checkbox" name="array1" id="Bact" value="Has a history of being Baker Acted from school">} }Has a history of being Baker Acted from school<br>
+                        @{if (data.issues.Contains("Dependent"))
+                            { <input type="checkbox" name="array1" value="Dependent" checked>}
+                            else
+                            { <input type="checkbox" name="array1" id="dep" value="Dependent">} } Dependent<br>
+                        @{if (data.issues.Contains("WINS"))
+                            { <input type="checkbox" name="array1" value="WINS" checked>}
+                            else
+                            { <input type="checkbox" name="array1" id="wi" value="WINS">} }&nbsp; WINS<br>&nbsp;
+                        @{
+                            string otherab = data.issues.ToString();
+                            string[] listab = otherab.Split(",");
+                            string meccaab = listab[listab.Length - 1];
+                            // meccaa = meccaa.Replace(" ", String.Empty);
+
+
+                            if (meccaab != "Failed a grade or more" && meccaab != "Frequently suspended, called to be picked up, or told not to come to school" && meccaab != "In an alternative school setting" && meccaab != "Has a 504 plan or an IEP but is not making academic progress or continues to get in frequent trouble" && meccaab != "Not enrolled in school but was previously at a DCPS school" && meccaab != "Has a history of being Baker Acted from school" && meccaab != "Dependent" && meccaab != "WINS" && meccaab != "N/A" && meccaab != "" && meccaab != null)
+                            { <input type="checkbox" id="input33" name="input33" value="Other" onclick="tfunction()" checked>}
+                            else
+                            { <input type="checkbox" id="input33" name="input33" value="Other" onclick="tfunction()" > }
+                        }
+                        &nbsp;Other:
+                        @{
+                            string otheri = data.issues.ToString();
+                            string[] listi = otheri.Split(",");
+                            string meccai = listi[listi.Length - 1];
+
+
+                            if (meccai != "Failed a grade or more" && meccai != "Frequently suspended, called to be picked up, or told not to come to school" && meccai != "In an alternative school setting" && meccai != "Has a 504 plan or an IEP but is not making academic progress or continues to get in frequent trouble" && meccai != "Not enrolled in school but was previously at a DCPS school" && meccai != "Has a history of being Baker Acted from school" && meccai != "Dependent" && meccai != "WINS" && meccai != "N/A" && meccai != "" && meccai != null)
+                            {  <input type="text" name="array33" id="array33" value="@meccai" maxlength="50">}
+                            else
+                            {<input type="text" name="array33" id="array33" disabled maxlength="50"> }
+                        }
+
+                       
+
+                        <input type="hidden" id="issues0" name="issues" asp-for="issues">
+                        <input type="hidden" id="issuesHidden" name="issuesHidden" asp-for="issuesHidden" value="@data.issues" />
+                    </td>
+                  
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right">  Youth is impacted by not being in school because of the following:</td>
+                    <td>
+                        @{if (data.youthImpact.Contains("suspensions"))
+                            { <input type="checkbox" name="arrayImpact" value="suspensions" checked>}
+                            else
+                            {<input type="checkbox" name="arrayImpact" value="suspensions">}}&nbsp;suspensions
+                        @{ if (data.youthImpact.Contains("being told to stay home, not come, or being sent home without suspension"))
+                            { <br><input type="checkbox" name="arrayImpact" value="being told to stay home, not come, or being sent home without suspension" checked> }
+                            else
+                            { <br><input type="checkbox" name="arrayImpact" value="being told to stay home, not come, or being sent home without suspension"> }}&nbsp;being told to stay home, not come, or being sent home without suspension
+                        @{ if (data.youthImpact.Contains("expulsion"))
+                            {<br /><input type="checkbox" name="arrayImpact" value="expulsion" checked> }
+                            else
+                            {<br /><input type="checkbox" name="arrayImpact" value="expulsion"> }}&nbsp;expulsion
+                        @{if (data.youthImpact.Contains("dropped out"))
+                            { <br><input type="checkbox" name="arrayImpact" value="dropped out" checked> }
+                            else
+                            {<br><input type="checkbox" name="arrayImpact" value="dropped out"> }} &nbsp;dropped out
+                        @{if (data.youthImpact.Contains("prevented from enrolling"))
+                            {<br><input type="checkbox" name="arrayImpact" value="prevented from enrolling" checked> }
+                            else
+                            {<br><input type="checkbox" name="arrayImpact" value="prevented from enrolling"> }} &nbsp;prevented from enrolling
+                        <br>
+
+                        <input type="hidden" id="youthImpact" name="youthImpact" asp-for="youthImpact">
+                        <input type="hidden" id="youthImpactHidden" name="youthImpactHidden" asp-for="youthImpactHidden" value="@data.youthImpact" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right">
+                        Is this youth a student in a Duval County Public School? <br />
+                    </td>
+                    <td>
+                        <select name="youthInDuvalSchool" asp-for="youthInDuvalSchool">
+                            @{if (data.youthInDuvalSchool == 1)
+                                {
+                                    <option value="1" selected>Yes</option>
+                                }
+                                else
+                                {
+                                    <option value="1" id="youthInDuvalSchool1">Yes</option>
+                                }
+                            }
+                            @{if (data.youthInDuvalSchool == 0)
+                                {
+                                    <option value="0" selected>No</option>
+                                }
+                                else
+                                {
+                                    <option value="0" id="youthInDuvalSchool0">No</option>
+                                }
+                            }
+                            @{if (data.youthInDuvalSchool == 2)
+                                {
+                                    <option value="2" selected>Maybe</option>
+                                }
+                                else
+                                {
+                                    <option value="2" id="youthInDuvalSchool2">Maybe</option>
+                                }
+                            }
+
+
+                        </select><br>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="t" style="text-align:right">
+                        What is the youth's grade in school?
+                        <br />
+                    </td>
+                    <td>
+                        @{string nullanswer = null; }
+                        <select name="grade" asp-for="grade" value="@data.grade" id="grade">
+                            @{if (data.grade == null)
+                                {
+                                    <option value="@nullanswer" selected>N/A</option>
+                                }
+                                else
+                                {
+                                    <option value="@nullanswer" id="N/A">N/A</option>
+                                } }
+
+                            @{if (data.grade == "Kindergarten")
+                                {
+                                    <option value="Kindergarten" selected>Kindergarten</option>
+                                }
+                                else
+                                {
+                                    <option value="Kindergarten" id="Kindergarten">Kindergarten</option>
+                                } }
+                            @{if (data.grade == "1st")
+                                {
+                                    <option value="1st" selected>1st</option>
+                                }
+                                else
+                                {
+                                    <option value="1st" id="one">1st</option>
+                                } }
+                            @{if (data.grade == "2nd")
+                                {
+                                    <option value="2nd" selected>2nd</option>
+                                }
+                                else
+                                {
+                                    <option value="2nd" id="two">2nd</option>
+                                } }
+                            @{if (data.grade == "3rd")
+                                {
+                                    <option value="3rd" selected>3rd</option>
+                                }
+                                else
+                                {
+                                    <option value="3rd" id="three">3rd</option>
+                                } }
+                            @{if (data.grade == "4th")
+                                {
+                                    <option value="4th" selected>4th</option>
+                                }
+                                else
+                                {
+                                    <option value="4th" id="four">4th</option>
+                                } }
+                            @{if (data.grade == "5th")
+                                {
+                                    <option value="5th" selected>5th</option>
+                                }
+                                else
+                                {
+                                    <option value="5th" id="five">5th</option>
+                                } }
+                            @{if (data.grade == "6th")
+                                {
+                                    <option value="6th" selected>6th</option>
+                                }
+                                else
+                                {
+                                    <option value="6th" id="six">6th</option>
+                                } }
+                            @{ if (data.grade == "7th")
+                                {
+                                    <option value="7th" selected>7th</option>
+                                }
+                                else
+                                {
+                                    <option value="7th" id="seven">7th</option>
+                                } }
+                            @{if (data.grade == "8th")
+                                {
+                                    <option value="8th" selected>8th</option>
+                                }
+                                else
+                                {
+                                    <option value="8th" id="eight">8th</option>
+                                } }
+                            @{if (data.grade == "9th")
+                                {
+                                    <option value="9th" selected>9th</option>
+                                }
+                                else
+                                {
+                                    <option value="9th" id="nine">9th</option>
+                                } }
+                            @{if (data.grade == "10th")
+                                {
+                                    <option value="10th" selected>10th</option>
+                                }
+                                else
+                                {
+                                    <option value="10th" id="ten">10th</option>
+                                } }
+                            @{if (data.grade == "11th")
+                                {
+                                    <option value="11th" selected>11th</option>
+                                }
+                                else
+                                {
+                                    <option value="11th" id="eleven">11th</option>
+                                } }
+                            @{if (data.grade == "12th")
+                                {
+                                    <option value="12th" selected>12th</option>
+                                }
+                                else
+                                {
+                                    <option value="12th" id="twelve">12th</option>
+                                } }
+
+
+
+                        </select><br>
+                        <input type="hidden" value="@data.grade" name="gradeHidden" id="gradeHidden" asp-for="gradeHidden" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="t" style="text-align:right">
+                        Is the the youth currently attending school?<br />
+                    </td>
+                    <td>
+                        Yes @{if (data.youthInSchool == 1)
+                            {<input type="radio" onclick="javascript:yesnoCheck1();" name="youthInSchool" id="yesclick" asp-for="youthInSchool" value="1" checked> }
+                            else
+                            {<input type="radio" onclick="javascript:yesnoCheck1();" name="youthInSchool" id="yesclick" asp-for="youthInSchool" value="1"> }
+                        }&nbsp;&nbsp;
+                        No @{if (data.youthInSchool == 0)
+                            {<input type="radio" onclick="javascript:yesnoCheck1();" name="youthInSchool" id="noclick" asp-for="youthInSchool" value="0" checked> }
+                            else
+                            {<input type="radio" onclick="javascript:yesnoCheck1();" name="youthInSchool" id="noclick" asp-for="youthInSchool" value="0"> }
+                        }&nbsp;&nbsp;
+                        Maybe @{if (data.youthInSchool == 2)
+                            {<input type="radio" onclick="javascript:yesnoCheck1();" name="youthInSchool" id="nooclick" asp-for="youthInSchool" value="2" checked> }
+                            else
+                            {<input type="radio" onclick="javascript:yesnoCheck1();" name="youthInSchool" id="nooclick" asp-for="youthInSchool" value="2"> }
+                        }&nbsp;&nbsp;
+                        <br>
+                        @{ string and = "display:none";
+                            //  if (data.youthInSchool == 0)
+                            //  { and = "display:block"; }
+                            if (data.youthInSchool == 1)
+                            { and = "display:block"; }
+                            else
+                            { and = "display:none"; }
+                        }
+                        <div id="Yes" style="@and">
+                            <br />Where is the youth currently attending school?<br />
+                          
+                            <input type="text" name="school" value="@data.school" asp-for="school" id="school" maxlength="50">
+                            <input type="hidden" name="schoolHidden" value="@data.school" asp-for="schoolHidden" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right">Is youth at risk of placement in alternative school, either Mattie V or Grand Park?  </td>
+                    <td>
+                        <br />
+                        <select name="youthAlt" asp-for="youthAlt" id="youthAltId">
+                            @{if (data.youthAlt != 1 || data.youthAlt != 0 || data.youthAlt != 2)
+                                {
+                                    <option disabled="disabled" selected>Please Select an Option</option>
+                                }
+                                else
+                                {
+                                    <option disabled="disabled" > Please Select an Option </option>
+                                } }
+                            @{if (data.youthAlt == 1)
+                                {
+                                    <option value="1" selected>Yes</option>
+                                }
+                                else
+                                {
+                                    <option value="1">Yes</option>
+                                }
+                            }
+                            @{if (data.youthAlt == 0)
+                                {
+                                    <option value="0" selected>No</option>
+                                }
+                                else
+                                {
+                                    <option value="0">No</option>
+                                }
+                            }
+                            @{if (data.youthAlt == 2)
+                                {
+                                    <option value="2" selected>Maybe</option>
+                                }
+                                else
+                                {
+                                    <option value="2">Maybe</option>
+                                }
+                            }
+                        </select><br>
+                        <input type="hidden" name="youthAltHidden" value="@data.youthAlt" asp-for="youthAltHidden" id="youthAltHidden" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right">Is youth in a self-contained educational setting(i.e. PRIDE)? </td>
+                    <td>
+                        <br />
+                        <select name="youthSetting" asp-for="youthSetting" id="youthSettingId">
+                            @{if (data.youthSetting != 1 || data.youthSetting != 0 || data.youthSetting != 2)
+                                {
+                                    <option disabled="disabled" selected>Please Select an Option</option>
+                                }
+                                else
+                                {
+                                    <option disabled="disabled"> Please Select an Option </option>
+                                } }
+                            @{if (data.youthSetting == 1)
+                                {
+                                    <option value="1" selected>Yes</option>
+                                }
+                                else
+                                {
+                                    <option value="1">Yes</option>
+                                }
+                            }
+                            @{if (data.youthSetting == 0)
+                                {
+                                    <option value="0" selected>No</option>
+                                }
+                                else
+                                {
+                                    <option value="0">No</option>
+                                }
+                            }
+                            @{if (data.youthSetting == 2)
+                                {
+                                    <option value="2" selected>Maybe</option>
+                                }
+                                else
+                                {
+                                    <option value="2">Maybe</option>
+                                }
+                            }
+                        </select><br>
+                                 <input type="hidden" name="youthSettingHidden" value="@data.youthSetting"id="youthSettingHidden" asp-for="youthSettingHidden" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right"> Has a school staff person taken out an injunction against this youth?</td>
+                    <td>
+                        <br />
+                        <select name="youthInjunction" asp-for="youthInjunction" id="youthInjunctionId">
+                            @{if (data.youthInjunction != 1 || data.youthInjunction != 0 || data.youthInjunction != 2)
+                                {
+                                    <option disabled="disabled" selected>Please Select an Option</option>
+                                }
+                                else
+                                {
+                                    <option disabled="disabled"> Please Select an Option </option>
+                                } }
+                            @{if (data.youthInjunction == 1)
+                                {
+                                    <option value="1" selected>Yes</option>
+                                }
+                                else
+                                {
+                                    <option value="1">Yes</option>
+                                }
+                            }
+                            @{if (data.youthInjunction == 0)
+                                {
+                                    <option value="0" selected>No</option>
+                                }
+                                else
+                                {
+                                    <option value="0">No</option>
+                                }
+                            }
+                            @{if (data.youthInjunction == 2)
+                                {
+                                    <option value="2" selected>Maybe</option>
+                                }
+                                else
+                                {
+                                    <option value="2">Maybe</option>
+                                }
+                            }
+                        </select><br>
+                        <input type="hidden" name="youthInjunctionHidden" value="@data.youthInjunction"id="youthInjunctionHidden" asp-for="youthInjunctionHidden" />
+                    </td>
+                </tr>
+             
+
+                <tr>
+                    <td class="t" style="text-align:right">
+                        Has the youth been arrested?<br />
+                    </td>
+                    <td>
+                        Yes @{if (data.arrest == 1)
+                            {<input type="radio" name="arrest" onclick="javascript: yesarrestCheck();" id="yesarrest" asp-for="arrest" value="1" checked> }
+                            else
+                            {<input type="radio" name="arrest" onclick="javascript: yesarrestCheck();" id="yesarrest" asp-for="arrest" value="1"> } } &nbsp;&nbsp;
+
+                        No @{if (data.arrest == 0)
+                            {<input type="radio" name="arrest" onclick="javascript: yesarrestCheck();" id="noarrest" asp-for="arrest" value="0" checked> }
+                            else
+                            { <input type="radio" name="arrest" onclick="javascript: yesarrestCheck();" id="noarrest" asp-for="arrest" value="0">} }&nbsp;&nbsp;
+                        Maybe @{if (data.arrest == 2)
+                            {<input type="radio" name="arrest" onclick="javascript: yesarrestCheck();" id="maybearrest" asp-for="arrest" value="2" checked> }
+                            else
+                            {<input type="radio" name="arrest" onclick="javascript: yesarrestCheck();" id="maybearrest" asp-for="arrest" value="2"> } }&nbsp;&nbsp;<br />
+                        <input type="hidden" asp-for="arrestHidden" value="@data.arrest" id="arrestHidden" name="arrestHidden">
+                        @{ string show = "display:none";
+                            if (data.arrest == 0)
+                            { show = "display:block"; }
+                            else
+                            { show = "display:none"; }
+                        }
+                        @{ string tell = "display:none";
+                            if (data.arrest == 1)
+                            { tell = "display:block"; }
+                            else
+                            { tell = "display:none"; }
+                        }
+                    <div id="ifnoarrest" style="@show">
+                        <br /> If youth has not been arrested, is this an unsuccessful civil citation or diversion case?<br />
+                        &nbsp;&nbsp;Yes @{if (data.youthCit == 1)
+                            {<input type="radio" name="youthCit" value="1" id="value1Cit" asp-for="youthCit" checked> }
+                            else
+                            {<input type="radio" name="youthCit" value="1" id="value1Cit" asp-for="youthCit"> } } &nbsp;&nbsp;
+                        No @{if (data.youthCit == 0)
+                            {<input type="radio" name="youthCit" value="0" id="value0Cit" asp-for="youthCit" checked> }
+                            else
+                            {<input type="radio" name="youthCit" value="0" id="value0Cit" asp-for="youthCit"> }
+                        } &nbsp;&nbsp;<br><br>
+                    </div>
+                    <div id="ifyesarrest" style="@tell">
+
+                        <br /> Was youth arrested for a school related offense? (For example, battery on a school board employee)<br />
+                        Yes &nbsp;&nbsp;@{if (data.youthOffense == 1)
+                            {<input type="radio" name="youthOffense" value="1" id="value1Offense" asp-for="youthOffense" checked> }
+                            else
+                            { <input type="radio" name="youthOffense" value="1" id="value1Offense" asp-for="youthOffense">} }
+                        &nbsp;&nbsp;
+                        No &nbsp;&nbsp;@{if (data.youthOffense == 0)
+                            {<input type="radio" name="youthOffense" value="0" id="value0Offense" asp-for="youthOffense" checked> }
+                            else
+                            {<input type="radio" name="youthOffense" value="0" id="value0Offense" asp-for="youthOffense"> }
+                        }&nbsp;&nbsp;
+
+                        Maybe &nbsp;&nbsp; @{if (data.youthOffense == 2)
+                            {<input type="radio" name="youthOffense" value="2" id="value2Offense" asp-for="youthOffense" checked> }
+                            else
+                            {<input type="radio" name="youthOffense" value="2" id="value2Offense" asp-for="youthOffense"> } }<br>
+                    </div>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right">
+                        Is there anything else you would like us to know about the youth or their family?<i style=color:blue>* </i><br />
+                    </td>
+                    <td>
+                        <input type="text" value="@data.moreInfo" name="moreInfo" asp-for="moreInfo" size="110" maxlength="225">
+                        <input type="hidden" value="@data.moreInfo" name="moreInfoHidden" asp-for="moreInfoHidden" id="moreInfoHidden" />
+                        <br />  <sub style=color:blue><i>*225 characters max</i></sub>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right">
+                        Reason for Referral?<i style=color:blue>* </i><br />
+                    </td>
+                    <td>
+
+
+                        <input type="text" value="@data.reason" name="reason" asp-for="reason" size="110" maxlength="225">
+                        <input type="hidden" value="@data.reason" name="reasonHidden" id="reasonHidden" asp-for="reasonHidden" />
+                        <br /><sub style=color:blue><i>*225 characters max</i></sub>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="t" style="text-align:right"> Best way to Communicate with youth:</td>
+
+                    <td>
+                        @{if (data.Reach == "Phone")
+                            {<input type="radio" name="Reach" value="Phone" asp-for="Reach" checked> }
+                            else
+                            {<input type="radio" name="Reach" value="Phone" id="phone" asp-for="Reach">} }
+                        Phone&nbsp;&nbsp;
+                        @{if (data.Reach == "Email")
+                            { <input type="radio" name="Reach" value="Email" asp-for="Reach" checked>}
+                            else
+                            {<input type="radio" name="Reach" value="Email" id="email" asp-for="Reach">}}
+                        Email&nbsp;&nbsp;
+                        @{if (data.Reach == "Text")
+                            {<input type="radio" name="Reach" value="Text" asp-for="Reach" checked> }
+                            else
+                            {<input type="radio" name="Reach" value="Text" id="text" asp-for="Reach"> }
+                        }
+                        Text&nbsp;&nbsp;
+
+                    </td>
+
+
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right"> Status:</td>
+
+                    <td>
+                        @{ if (data.status == "Pending")
+                            {<input type="radio" name="status" value="Pending" asp-for="status" checked> }
+                            else
+                            {<input type="radio" name="status" value="Pending" id="pending" asp-for="status"> } }Open&nbsp;&nbsp;
+                        @{ if (data.status == "Contacted - Open Service")
+                            {<input type="radio" name="status" value="Contacted - Open Service" asp-for="status" checked> }
+                            else
+                            {<input type="radio" name="status" value="Contacted - Open Service" id="open" asp-for="status"> } }Contacted - Open Service&nbsp;&nbsp;
+                        @{ if (data.status == "Contacted - Does not want services")
+                            {<input type="radio" name="status" value="Contacted - Does not want services" asp-for="status" checked> }
+                            else
+                            {<input type="radio" name="status" value="Contacted - Does not want services" id="dont" asp-for="status"> } }Contacted - Does not want services&nbsp;&nbsp;
+                        @{ if (data.status == "Unable to Contact")
+                            {<input type="radio" name="status" value="Unable to Contact" asp-for="status" checked> }
+                            else
+                            {<input type="radio" name="status" value="Unable to Contact" id="unable" asp-for="status"> } }Unable to Contact&nbsp;&nbsp;
+                        <br>
+                    </td>
+
+
+                </tr>
+
+
+                <tr>
+                    @{ string answerb = data.dateInput.ToString();
+                        int spaceb = answerb.IndexOf(" ");
+                        string dateb = answerb.Substring(0, spaceb);
+
+
+                        string[] strlistb = dateb.Split("/");
+
+
+                        string yearb = strlistb[2];
+                        string monthb = strlistb[1];
+                        if ((monthb.Length) == 1)
+                        { monthb = "0" + monthb; }
+                        string dayb = strlistb[0];
+                        if ((dayb.Length) == 1)
+                        { dayb = "0" + dayb; }
+                        string answer50b = yearb + "-" + dayb + "-" + monthb;
+
+                    }
+                    <td class="t" style="text-align:right">  Date Referral Input:</td>
+
+                    <td>
+                        <input type="date" value="@answer50b" name="dateInput" asp-for=" dateInput" id="dateInput">
+                        <input type="hidden" value="@answer50b" name="dateInputHidden" asp-for="dateInputHidden" id="dateInputHidden" />
+                    </td>
+
+
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right"> Referral Source's First Name:</td>
+
+                    <td>
+                        <input type="text" name="referralfname" value="@data.referralfname" asp-for="referralfname" id="referralfname" maxlength="20">
+                        <input type="hidden" name="referralfnameHidden" value="@data.referralfname" asp-for="referralfnameHidden" id="referralfnameHidden" />
+                        <p style="color:red" id="reffnameError"></p>
+                        <p style="color:red" id="inputtextValid"></p>
+                    </td>
+
+
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right"> Referral Source's Last Name:</td>
+
+                    <td>
+                        <input type="text" name="referrallname" value="@data.referrallname" asp-for="referrallname" id="referrallname" maxlength="20">
+                        <input type="hidden" name="referrallnameHidden" value="@data.referrallname" asp-for="referrallnameHidden" id="referrallnameHidden" />
+                        <p style="color:red" id="reflnameError"></p>
+                        <p style="color:red" id="reflastnameValid"></p>
+                    </td>
+
+
+                </tr>
+                <tr>
+                    <td class="t" style="text-align:right"> Referral Source's Email for youth:</td>
+
+                    <td>
+                        <input type="email" name="email" value="@data.email" asp-for="email" id="refemail" maxlength="50">
+                        <input type="hidden" name="emailHidden" value="@data.email" asp-for="emailHidden" id="emailHidden" />
+                        <p style="color:red" id="refemailwarnValid"></p>
+                    </td>
+
+
+                </tr>
+                <tr>
+                   
+                    <td class="t" style="text-align:right">Name of organization making referral:</td>
+
+                    <td>
+                        <br />
+                        @{ if (data.nameOrg.Contains("JFCS CJRG"))
+                            { <input type="checkbox" name="arrayorg" value="JFCS CJRG" checked>}
+                            else
+                            { <input type="checkbox" name="arrayorg" value="JFCS CJRG">} } &nbsp; JFCS CJRG<br>
+                        @{ if (data.nameOrg.Contains("Public Defender's Office"))
+                            {<input type="checkbox" name="arrayorg" value="Public Defender's Office" checked>}
+                            else
+                            {<input type="checkbox" name="arrayorg" value="Public Defender's Office"> } }&nbsp; Public Defender's Office<br>
+                        @{if (data.nameOrg.Contains("WINS HOPE Court"))
+                            {<input type="checkbox" name="arrayorg" value="WINS HOPE Court" checked> }
+                            else
+                            {<input type="checkbox" name="arrayorg" value="WINS HOPE Court"> }} &nbsp; WINS HOPE Court<br>
+                        @{
+                            string truthorg = data.nameOrg.ToString();
+                            string[] listorg = truthorg.Split(",");
+                            string ansorg = listorg[listorg.Length - 1];
+                            if (ansorg != "JFCS CJRG" && ansorg != "Public Defender's Office" && ansorg != "WINS HOPE Court" && ansorg != "N/A" && ansorg != "" && ansorg != null)
+                            { <input type="checkbox" id="checkarrayorg" name="checkarrayorg" value="Other" onclick="ffunction()" checked>}
+                            else
+                            { <input type="checkbox" id="checkarrayorg" name="checkarrayorg" value="Other" onclick="ffunction()"> }
+
+                        }
+                        &nbsp; Other:
+                        @{
+                            if (ansorg != "JFCS CJRG" && ansorg != "Public Defender's Office" && ansorg != "WINS HOPE Court" && ansorg != "N/A" && ansorg != "" && ansorg != null)
+                            { <input type="text" name="finalarrayorg" value="@ansorg" id="finalarrayorg" maxlength="50">}
+                            else
+                            {<input type="text" name="finalarrayorg" id="finalarrayorg" disabled maxlength="50"> }
+                        }
+
+                        <input type="hidden" id="nameOrg" name="nameOrg" asp-for="nameOrg">
+                        <input type="hidden" id="nameOrgHidden" name="nameOrgHidden" asp-for="nameOrgHidden" value="@data.nameOrg">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="t" style="text-align:right"> File:</td>
+
+                    <td>
+                        file  &nbsp;  &nbsp;  &nbsp;
+                    </td>
+                </tr>
+
+            </table>
+            <br />
+            <button type="submit" onclick="return editConfirm();" value="Submit">Submit<br /></button><br />
+
+
+            <br /><input type="reset" onclick="reset();" value="Reset"><br /><br /><br />
+        </form>
+        <a asp-action="RefList" asp-controller="Referral">Back to List</a>
+
+
+
+        <p id="demo"></p>
+    </div>
+
+
+</body>
+</html>

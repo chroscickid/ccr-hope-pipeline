@@ -1,0 +1,93 @@
+﻿@model HopePipeline.Models.DbEntities.Tracking.TrackingAssign;
+@{
+    ViewData["Title"] = "Tracking List";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+<style>
+
+    /* The container <div> - needed to position the dropdown content */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+    /* Dropdown Content (Hidden by Default) */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+        /* Links inside the dropdown */
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+            /* Change color of dropdown links on hover */
+            .dropdown-content a:hover {
+                background-color: #ddd;
+            }
+    /* Show the dropdown menu on hover */
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+    /* Change the background color of the dropdown button when the dropdown content is shown */
+    .dropdown:hover .dropbtn {
+        background-color: #3e8e41;
+    }
+
+    table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+        }
+</style>
+<h2>Tracking</h2>
+<h3>Showing @Model.list.Count</h3>
+
+
+<h1>Assign Tracking</h1>
+
+<table class="table" id="tracklist">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Phone number
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                More Options
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.list)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.lname) , @Html.DisplayFor(modelItem => item.fname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.phoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.status)
+                </td>
+                <td>
+                    <a asp-controller="Tracking" asp-action="AssignSpecific" asp-route-clientCode="@item.clientCode" asp-route-refCode="@Model.referralClientCode">Assign</a>
+                </td>
+            </tr>
+            ;
+        }
+    </tbody>
+</table>

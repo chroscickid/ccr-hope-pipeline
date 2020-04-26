@@ -1,0 +1,192 @@
+﻿@model List<HopePipeline.Models.DbEntities.Tracking.TrackingRow>;
+@{
+    ViewData["Title"] = "Tracking List";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+<style>
+    .button1 {
+            padding: 3px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        .button3 {
+            background-color: #DDDDDD; /* Gray */
+            border: 3px solid #003A62;
+            color: #003A62;
+        }
+
+            .button3:hover {
+                background-color: #003A62;
+                color: #DDDDDD;
+            }
+
+        .button4 {
+            background-color: #005199; /* Gray */
+            border: 3px solid #003A62;
+            color: #DDDDDD;
+        }
+
+            .button4:hover {
+                background-color: #005199;
+                color: #DDDDDD;
+                border: 3px solid #003A62;
+            }
+
+        .button5 {
+            background-color: #cc0000; /* Gray */
+            border: 3px solid #cc0000;
+            color: white;
+        }
+
+            .button5:hover {
+                background-color: white;
+                color: #cc0000;
+                border: 3px solid #cc0000;
+            }
+
+        .button2 {
+            border-radius: 4px;
+        }
+
+        .button1 span {
+            cursor: pointer;
+            display: inline-block;
+            position: relative;
+            transition: 0.5s;
+        }
+
+            .button1 span:after {
+                content: '\00bb';
+                position: absolute;
+                opacity: 0;
+                top: 0;
+                right: -20px;
+                transition: 0.5s;
+            }
+
+        .button1:hover span {
+            padding-right: 25px;
+        }
+
+            .button1:hover span:after {
+                opacity: 1;
+                right: 0;
+            }
+    /* The container <div> - needed to position the dropdown content */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+    /* Dropdown Content (Hidden by Default) */
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+        /* Links inside the dropdown */
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+            /* Change color of dropdown links on hover */
+            .dropdown-content a:hover {
+                background-color: #ddd;
+            }
+    /* Show the dropdown menu on hover */
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+    /* Change the background color of the dropdown button when the dropdown content is shown */
+    .dropdown:hover .dropbtn {
+        background-color: #3e8e41;
+    }
+    table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+           
+        }
+</style>
+<h2>Tracking</h2>
+<h3>Showing @Model.Count</h3>
+
+<form asp-controller="Tracking" asp-action="search">
+    <input name="term" />
+    <button type="submit">Search</button>
+</form>
+
+
+<table class="table" id="tracklist">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Phone number
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Last meeting
+            </th>
+            <th>
+                More Options
+            </th>
+            <th>
+                @*the delete collumn is here*@
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.lname) , @Html.DisplayFor(modelItem => item.fname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.phoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.status)
+                </td>
+                <td>
+                   @Html.DisplayFor(modelItem => item.lastMeeting)
+                    
+                </td>
+                <td>
+                    <button class="button4 button1 button1" onclick="window.location.href = '@Url.Action("MeetingList", "Tracking",new { Area = "", clientCode =@item.clientCode})'">Meetings</button> 
+                    <div class="dropdown">
+                        <button class="button4 dropbtn">Change Status</button>
+                        <div class="dropdown-content">
+                            <a asp-controller="Tracking" asp-action="ChangeStatus" asp-route-clientCode="@item.clientCode" asp-route-status="1">"Open"</a>
+                            <a asp-controller="Tracking" asp-action="ChangeStatus" asp-route-clientCode="@item.clientCode" asp-route-status="0">"Closed"</a>
+                            <a asp-controller="Tracking" asp-action="ChangeStatus" asp-route-clientCode="@item.clientCode" asp-route-status="2">"Closed to Non-engagement"</a>
+                        </div>
+                    </div>
+                    <button class="button4 button2 button1" onclick="window.location.href = '@Url.Action("EditTrackingM", "n",new { Area = "", clientCode =@item.clientCode})'">Edit Tracking</button> 
+                    <button class="button4 button2 button1" onclick="window.location.href = '@Url.Action("detailTrackingM", "n",new { Area = "", clientCode =@item.clientCode})'">Details</button> 
+                    <button class="button4 button2 button1" onclick="window.location.href = '@Url.Action("ViewAssignedTracking", "Tracking",new { Area = "", clientCode =@item.clientCode, fname=@item.fname, @lname=item.lname})'">View Referrals</button> 
+                   
+                </td>
+                <td>
+                    <button class="button1 button2 button5" onclick="window.location.href = '@Url.Action("Delete", "Tracking",new { Area = "", clientCode =@item.clientCode})'">Delete</button>
+                </td>
+            </tr>
+            ;
+        }
+    </tbody>
+</table>

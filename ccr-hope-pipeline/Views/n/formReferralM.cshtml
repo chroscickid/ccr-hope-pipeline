@@ -493,7 +493,9 @@
                 <td colspan="2">
                     Youth's phone number:<br />
                     <input type="text" asp-for="youthNu" id="youthphone" maxlength="12">
+                    <p> <sub style=color:black><i>*Format: ###-###-####</i></sub></p>
                     <p style="color:red" id="youthphoneError"></p>
+
                 </td>
             </tr>
 
@@ -550,9 +552,11 @@
 
                 <td colspan="2">
                     Parent/Guardian phone number:<br />
-                    <input type="text" asp-for="guardianPhone" id="parentphone" maxlength="12" >
+                    <input type="text" asp-for="guardianPhone" id="parentphone" maxlength="12">
+                    <p><sub style=color:black><i>*Format: ###-###-####</i></sub></p>
                     <p style="color:red" id="parentphoneError"></p>
                     <p style="color:red" id="parentphonewarnValid"></p>
+                   
                 </td>
             </tr>
             <tr>

@@ -4242,6 +4242,114 @@ namespace HopePipeline.Controllers
             var response = await client.SendEmailAsync(msg);
 
         }
+
+        public void file()
+        {
+            file.ToList();
+            int cat = 0;
+            int number = 0;
+            int herefiles = 0;
+            
+
+           
+            foreach (var files in file)
+            {
+
+                if (files != null)
+
+                {
+                    //create container
+                    // Create a BlobServiceClient object which will be used to create a container client
+                    BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
+
+                    //Create a unique name for the container
+                    string containerName = "quickstartblobs" + Guid.NewGuid().ToString();
+
+                    // Create the container and return a container client object
+                    BlobContainerClient containerClient = await blobServiceClient.CreateBlobContainerAsync(containerName);
+
+                    //end container
+                    //start upload
+                    // Create a local file in the ./data/ directory for uploading and downloading
+                    string localPath = "./data/";
+                    string fileName = "quickstart" + Guid.NewGuid().ToString() + ".txt";
+                    string localFilePath = Path.Combine(localPath, fileName);
+
+                    // Write text to the file
+                    await File.WriteAllTextAsync(localFilePath, "Hello, World!");
+
+                    // Get a reference to a blob
+                    BlobClient blobClient = containerClient.GetBlobClient(fileName);
+
+                    Console.WriteLine("Uploading to Blob storage as blob:\n\t {0}\n", blobClient.Uri);
+
+                    // Open the file and upload its data
+                    using FileStream uploadFileStream = File.OpenRead(localFilePath);
+                    await blobClient.UploadAsync(uploadFileStream, true);
+                    uploadFileStream.Close();
+                    //upload
+                    string unqiueFileName = null;
+
+                    string webRootPath = hostingEnvironment.ContentRootPath;
+
+                    string uploadsFolder = Path.Combine(webRootPath, "wwwroot\\images");
+                    string strPath = files.FileName;
+                    string filename = Path.GetFileName(strPath);
+                    unqiueFileName = Guid.NewGuid().ToString() + "_" + filename;
+
+                    string filePath = Path.Combine(uploadsFolder, unqiueFileName);
+                    using (FileStream fs = System.IO.File.Create(filePath))
+                    {
+                        files.CopyTo(fs);
+                        fs.Flush();
+                    }
+
+
+
+
+                    int numbe = 0;
+
+
+
+                    if (cat < 1)
+                    {
+                        cat++;
+                        filesReferralBrandi referralfile = new filesReferralBrandi();
+                        referralfile.idPK = herefiles;
+                        referralfile.pK = Convert.ToInt32(sessionID);
+                        referralfile.file = files.FileName;
+                        referralfile.fileCode = filePath;
+                        referralfile.fileNameY = "/images/" + unqiueFileName;
+
+                        db.filesReferralBrandi.Add(referralfile);
+
+                        db.SaveChanges();
+
+                    }
+                    else
+                    {
+                        cat++;
+                        number++;
+                        herefiles++;
+                        filesReferralBrandi referralfile = new filesReferralBrandi();
+
+                        numbe = referralfile.idPK + herefiles;
+                        referralfile.idPK = numbe;
+                        referralfile.pK = Convert.ToInt32(sessionID);
+                        referralfile.file = files.FileName;
+                        referralfile.fileCode = filePath;
+                        referralfile.fileNameY = "/images/" + unqiueFileName;
+
+                        db.filesReferralBrandi.Add(referralfile);
+
+                        db.SaveChanges();
+
+                    }
+
+
+                }
+            }
+        }
         //method to upload blob
         //static async Task Blob()
         //{

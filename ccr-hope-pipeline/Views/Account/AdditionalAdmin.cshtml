@@ -18,7 +18,7 @@
     <style type="text/css">
 
         body {
-            font-family: 'Varela Round', sans-serif;
+            font-family: 'Arial', sans-serif;
         }
         
 
@@ -156,51 +156,51 @@
 
     </script>
 
-    <li class="container">
+    @*<li class="container">*@
         <p> </p>
         &nbsp;
 
         <h3>Create a new administrator account</h3>
 
         @*<form method="post" asp-controller="Account" asp-action="Verify">*@
-        <form asp-action="newaccount" asp-controller="account" class="form-style-9" ul id="menu" method=post oninput='up2.setCustomValidity(up2.value != up.value ? "Passwords do not match." : "")'>
+    <form asp-action="newaccount" asp-controller="account" class="form-style-9" ul id="menu" method=post oninput='up2.setCustomValidity(up2.value != up.value ? "Passwords do not match." : "")'>
 
-            @*//add styling so that they are on same line*@
+        @*//add styling so that they are on same line*@
 
-            <ul>
-                <p></p>
-
-                <label for="text"><b>First Name & Last Name</b></label>
-                <li>
-                    <input type="text" asp-for="firstname" placeholder="First Name" class="field-style field-split align-left" name="firstname" required="">
-                    <input type="text" asp-for="lastname" placeholder="Last Name" class="field-style field-split align-right" name="lastname" required="">
-                </li>
-                <li>
-                    <label for="email"><b>Email Address</b></label>
-                    <input type="email" asp-for="email" placeholder="Enter Email Address" name="email" required="">
-                </li>
-                <li>
-                    <p></p>
-                    <label for="pass"><b>Password</b></label>
-                    <input type="password" asp-for="pass" placeholder="Enter Password" name="pass" required="">
-                    <p></p>
-                </li>
-                <li>
-                    <label for="pass"><b>Confirm Password</b></label>
-                    <input type="password" placeholder="Confirm Password" id="confirm_password" name="pass2" required="">
-                    <p></p>
-                </li>
-                <li>
-                    <button type="button" onclick="javascript:history.back().style.display='none'" class="cancelbtn" OnClientClick="JavaScript:window.history.back(1);return false;">Cancel </button>
-                    &nbsp;&nbsp;
-                    @Html.AntiForgeryToken()
-                    &nbsp;&nbsp;
-                    <input type="submit" value="Submit">
-                    <p></p>
-                </li>
-            </ul>
+        <ul>
             <p></p>
-        </form>
+
+            <label for="text"><b>First Name & Last Name</b></label>
+            <li>
+                <input type="text" asp-for="firstname" placeholder="First Name" class="field-style field-split align-left" name="firstname" required="">
+                <input type="text" asp-for="lastname" placeholder="Last Name" class="field-style field-split align-right" name="lastname" required="">
+            </li>
+            <li>
+                <label for="email"><b>Email Address</b></label>
+                <input type="email" asp-for="email" placeholder="Enter Email Address" name="email" required="">
+            </li>
+            <li>
+                <p></p>
+                <label for="pass"><b>Password</b></label>
+                <input type="password" asp-for="pass" placeholder="Enter Password" name="pass" required="">
+                <p></p>
+            </li>
+            <li>
+                <label for="pass"><b>Confirm Password</b></label>
+                <input type="password" placeholder="Confirm Password" id="confirm_password" name="pass2" required="">
+                <p></p>
+            </li>
+            <li>
+                <button type="button" onclick="javascript:history.back().style.display='none'" class="cancelbtn" OnClientClick="JavaScript:window.history.back(1);return false;">Cancel </button>
+                &nbsp;&nbsp;
+                @Html.AntiForgeryToken()
+                &nbsp;&nbsp;
+                <input type="submit" value="Submit">
+                <p></p>
+            </li>
+        </ul>
+        <p></p>
+    </form>
 
 </body>
 </html>

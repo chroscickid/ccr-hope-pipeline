@@ -140,7 +140,29 @@ namespace HopePipeline.Controllers
             reader.Close();
             cnn.Close();
 
-            return View("AssignedList", results);
+            return View("AssignedRefList", results);
+        }
+
+        public IActionResult ViewTracking(Guid refCode)
+        {
+            SqlConnection cnn;
+            cnn = new SqlConnection(connectionString);
+            SqlCommand command;
+            cnn.Open();
+            Guid clientCode = new Guid();
+
+            string query = "select clientCode from referral where refCode = '" + refCode + "'";
+            command = new SqlCommand(query, cnn);
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                clientCode = reader.GetGuid(0);
+            }
+            reader.Close();
+            cnn.Close();
+
+             return RedirectToAction("detailTrackingM","n",clientCode);
         }
 
 

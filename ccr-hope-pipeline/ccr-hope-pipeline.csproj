@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Views\Referral\AssignedList.cshtml">
+    <Content Update="Views\Referral\AssignedRefList.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Tracking\AssignTrackingList.cshtml">

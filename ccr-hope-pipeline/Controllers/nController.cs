@@ -287,6 +287,7 @@ namespace HopePipeline.Controllers
             {
                 Guid herefiles = Guid.NewGuid();
                 Console.WriteLine("herefiles =" + herefiles);
+                Console.WriteLine("files =" + files);
                 if (files != null)
 
                 {

@@ -5,53 +5,126 @@
 
 }
 <style>
-    table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-            table-layout: fixed;
-        }
+   
+
+   label{
+        font-weight: 500;
+    }
+
+.wraper{
+	width:800px;
+	margin:0 auto;
+}
+#formElement{
+	text-align:center;
+	border:1px solid #ccc;
+	width:400px;
+    padding-bottom: 10px;
+	padding:0 20px;
+	margin:auto
+}
+h1{
+	margin:15px 0;
+	text-align:center
+}
+
+label{
+	float:left;
+	font-size:17px;
+	font-weight:bold
+}
+    input[type="text"], input[type="date"], input[type="textarea"] {
+        @*width:90%;
+	height:30px;
+	margin-bottom:25px;
+	margin-top:10px;
+	padding:5px 10px;
+	border:1px solid #111 *@
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+
+    textarea {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+
+    input[type="submit"] {
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+        font-weight: bold;
+        color: #fff;
+        background-color: #16425D;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+    }
     
+
 </style>
 
 
 <h3>Add Meeting</h3>
+<br />
+
 <div id="addMeeting">
     <form asp-controller="Tracking" asp-action="AddMeeting" method="post">
         <input type="hidden" name="clientCode" value="@Model.clientCode" />
-        <p>Date: <input id="today" type="date" name="meetingDate" required/></p>
-        <p>Purpose: <input type="text" name="MeetingPurpose" required/></p>
-        <p>Notes: </p>
-        <textarea name="MeetingNotes"></textarea>   
-        </br> </br>
-        <button type="submit">Submit</button>
-    </form>
+
+        <p>Meeting Date: <br /> <input id="today" type="date" name="meetingDate" required /></p>
+        <br />
+
+        <p>Meeting Purpose:<br/> <input type="text" name="MeetingPurpose" required /></p>
+        <br />
+
+        <p>
+            Meeting Notes:
+            <br />
+            <textarea name="MeetingNotes"></textarea>
+            <br />
+        </p>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <br />
+</form>
 </div>
+
 @{ if(Model.list.Count == 0)
     {
         <h3>Sorry, there are no associated meetings for this student</h3>
     } else
     {
        <h1>@Model.fname @Model.lname's Meetings</h1>
-        <table class="table" id="meetlist">
+        <table  id="meetlist" div class="wraper">
             <thead>
                 <tr>
                     <th>
                         Date
                     </th>
+
                     <th>
                         Purpose
                     </th>
+
                     <th>
                         Notes
                     </th>
+
                     <th>
 
                     </th>
                 </tr>
             </thead>
             <tbody>
-                
+       
         @foreach(var row in Model.list)
         {
             <tr>

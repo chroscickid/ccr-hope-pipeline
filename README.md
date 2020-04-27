@@ -17,3 +17,5 @@ For this project, we used a number of technologies and platforms.
 
 We used Microsoft Visual Studio to create the software program. Our charts and graphs for the reporting system are generated using a free Javascript tool called “Plotly”. File hosting for when clients wish to upload additional documentation with a referral form is shared using Blob hosting. SendGrid is utilized for sending comfirmation emails, and notifications for new referrals that have been created.The Asp.Net Core project is being hosted on Microsoft Azure servers, which also includes a SQL server and database, where we’re storing our data. Additionally, we used Git and GitHub to help with collaboration and version control of the project, and Jira to keep track of user stories and other tasks.
 
+## Contributors
+David Chroscicki @chroscickid , Kristina Huston @kristina744 , Brandi Lauria @recognizablepotato , and Lili Weinstein @the-liliw

@@ -14,7 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using dotenv.net;
 
-namespace ccr_hope_pipeline
+namespace HopePipeline
 {
     public class Startup
     {

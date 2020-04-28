@@ -24,6 +24,9 @@
     <Content Update="Views\Referral\AssignedRefList.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Report\GenerateReports.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Tracking\AssignTrackingList.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

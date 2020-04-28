@@ -3,22 +3,6 @@
 
 // Write your JavaScript code.
 
-//Datatables 
-//...
-$(document).ready(function () {
-    $('#tracklist').DataTable({
-        "columns": [
-            'Name',
-            'Phone Number',
-            'Status',
-            'More Options'
-        ]
-    });
-
-    $('#reflist').DataTable();
-
-}
-
 //Generate Reports
 //...
 require('dotenv').config();
@@ -42,15 +26,14 @@ function addSearchField(count) {
     return false;
 }
 
-
-
-    
-        
-
-
-  
-
-        
-
-
-
+//Datatables 
+//...
+$(document).ready(function () {
+    $('#tracklist').DataTable({
+        "columns": [
+            'Name',
+            'Phone Number',
+            'Status',
+            'More Options'
+        ]
+    })});

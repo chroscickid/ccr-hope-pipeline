@@ -11,130 +11,70 @@ namespace HopePipeline.Controllers
 {
     public class ReportController : Controller
     {
-        public string connectionString = "Server=tcp:hopes-sqlserver.database.windows.net,1433;Initial Catalog=hopes-sqldb;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-        //This doesn't actually generate reports! This just calls the form
-        public IActionResult GenerateReports()
+        public string connectionString = "Server=tcp:hopes-sqlserver.database.windows.net,1433;Initial Catalog=hopes-sqldb;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
+    public (List<string>, List<int>) GetData(SqlConnection cnn, string query)
         {
-            return View();
+            // make a SqlCommand called command
+            SqlCommand command = new SqlCommand(query, cnn);
+            SqlDataReader reader = command.ExecuteReader();
+
+            // make thick lists
+            List<string> xList = new List<string>();
+            List<int> yList = new List<int>();
+
+            // loop through reader
+            while (reader.Read())
+            {
+                // variables from the query
+                string xValue = reader.GetString(0);
+                int yValue = reader.GetInt32(1);
+
+                // append to the results arrays
+                xList.Add(xValue);
+                yList.Add(yValue);
+            }
+            reader.Close();
+
+            return (xList, yList);
         }
 
-
-        [HttpPost]
-        public IActionResult ViewReports(ReportForm genReport)
+        public IActionResult GenerateReports()
         {
-            var results = new List<ReportRow>();
-            SqlConnection cnn;
-            cnn = new SqlConnection(connectionString);
-            SqlCommand command;
-            SqlDataAdapter adapter = new SqlDataAdapter();
+            // make a new SqlConnection called cnn
+            SqlConnection cnn = new SqlConnection(connectionString);
             cnn.Open();
 
-            List<string> fields = new List<string>();
-            List<string> text = new List<string>();
+            // gender (client and referral)*
+            string genderQuery = "SELECT A.genderIdentity, COUNT (A.genderIdentity) FROM client A GROUP BY A.genderIdentity;";
+            (List<string> genderIdResults, List<int> genderCntResults) = GetData(cnn, genderQuery);
+            ViewData["GenderIdentities"] = genderIdResults;
+            ViewData["GenderCounts"] = genderCntResults;
+            
+            string refGenQuery = "SELECT B.gender, COUNT (B.gender) FROM refform B GROUP BY  B.gender HAVING B.gender IS NOT NULL";
+            (List<string> refGenResults, List<int> refGenCntResults) = GetData(cnn, refGenQuery);
+            ViewData["RefGenResults"] = refGenResults;
+            ViewData["RefGenCntResults"] = refGenCntResults;
 
-            //there must be a more practical way of dong this
-            if (genReport.field1 == null)
-            {
-                return View("Index");
-            }
-            else
-            {
-                fields.Add(genReport.field1);
-                text.Add(genReport.text1);
-            }
-            if (genReport.field2 != null)
-            {
-                fields.Add(genReport.field2);
-                text.Add(genReport.text2);
-            }
-            if (genReport.field3 != null)
-            {
-                fields.Add(genReport.field3);
-                text.Add(genReport.text3);
-            }
-            if (genReport.field4 != null)
-            {
-                fields.Add(genReport.field4);
-                text.Add(genReport.text4);
-            }
-            if (genReport.field5 != null)
-            {
-                fields.Add(genReport.field5);
-                text.Add(genReport.text5);
-            }
+            // race (client)
+            string raceQuery = "SELECT C.ethnicity, COUNT (C.ethnicity) FROM client C GROUP BY C.ethnicity";
+            (List<string> raceResults, List<int> raceCntResults) = GetData(cnn, raceQuery);
+            ViewData["Ethnicities"] = raceResults;
+            ViewData["EthnicityCounts"] = raceCntResults;
 
-            int count = 0;
-            foreach (var field in fields)
-            {
-                if (text[count] != null)
-                {
-                    string query = "SELECT clientLast, clientFirst FROM ??? WHERE " + field + " = " + text[count];
-                    command = new SqlCommand(query, cnn);
-                    SqlDataReader reader = command.ExecuteReader();
+            //ref. educational issue: failed a grade (failed), alternative school, baker acted (health table), suspended 3 times in a year (suspension), not in school, iep/504 (iep)
+            //  SELECT D.issues, COUNT (D.issues) FROM refform D GROUP BY D.issues
 
 
+            // adverse childhood experience (client and referral)*: femme led household, domestic violence, baker act, adoption, relative caretaker, eviction
+            //SELECT COUNT (E.femLed) AS total, SUM (E.femLed) AS femLed, SUM (E.domVio) AS domVio, SUM (E.adopted) AS adopted, SUM (E.evicted) AS evicted, SUM (F.bakerActed) AS bakerActed
+            //FROM household E
+            // INNER JOIN health F
+            //  ON E.clientCode = F.clientCode
+            //SELECT G.genderIdentity, COUNT (G.genderIdentity) FROM caregiver G GROUP BY G.genderIdentity (can be fed through getdata)
 
-                    while (reader.Read())
-                    {
-                        ReportRow row = new ReportRow { fName = reader.GetString(0), lName = reader.GetString(1) };
+            // advo outcome: add. behavioral support, add. learning support, re-renrolled, grade adjustment, inital eligibility determination, pending elig. determ., complete re-evaulation, updated iep, placement change, graduated, direct referral for litigation, information
 
-                        results.Add(row);
-                    }
-                    reader.Close();
-                }
-
-
-
-            }
-            return View("ViewReports", results);
-
-
-            /* while (reader.Read())
-             {
-                 for (int i = 0; i < 5; i++)
-                 {
-                     string text = texts[i];
-                     string field = fields[i];
-                     //Since yes/no/maybe fields are represented as tinyints
-                     //We wanted CCR to be able to search these in plaintext, so we convert them
-                     if (checkifBool(field))
-                     {
-                         switch (text)
-                         {
-                             case "yes":
-                                 text = "0";
-                                 break;
-                             case "no":
-                                 text = "1";
-                                 break;
-                             case "maybe":
-                                 text = "2";
-                                 break;
-                             default:
-                                 text = null;
-                                 break;
-                         }
-                     }
-                     //We generate a SQL query using the relevant field
-                     string query = "SELECT [firstname],[lastname]," + field + " FROM [TrackingTable] WHERE " + field + " = " + text;
-                     command = new SqlCommand(query, cnn);
-                     SqlDataReader reader = command.ExecuteReader();
-                     while (reader.Read())
-                     {
-                         //We push information from the query into a row and onto the list of rows
-                         ReportRow row = new ReportRow { fName = reader.GetString(0), lName = reader.GetString(1), releField1 = reader.GetString(2) };
-                         results.Add(row);
-                     }
-                     reader.Close();
-                 }
-                 reader.Close();
-             return View("TrackingList", results);
-             }
-             //Pushes the list and relevant field onto the results model, and sends it to the view
-             ReportResults toSend = new ReportResults { ResultsList = results, field = fields};
-             return View("ReportResults", toSend);
-             */
-
+            return View("GenerateReports");
         }
 
         public static bool checkifBool(string field)

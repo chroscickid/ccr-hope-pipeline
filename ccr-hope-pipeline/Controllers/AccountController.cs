@@ -26,8 +26,6 @@ namespace HopePipeline.Controllers
     {
         public string connectionString = "Server=tcp:hopes-sqlserver.database.windows.net,1433;Initial Catalog=hopes-sqldb;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
-
-
         [HttpGet]
         [AllowAnonymous]
         public ActionResult Login()
@@ -76,7 +74,6 @@ namespace HopePipeline.Controllers
 
             else
             {
-                
                 ViewBag.error = "Invalid Account";
                 con.Close();
                 return RedirectToAction("Index", "Home");
@@ -111,7 +108,7 @@ namespace HopePipeline.Controllers
         }
 
 
-       // [Authorize(Roles = "admin")]
+        // [Authorize(Roles = "admin")]
         public IActionResult Delete(AdminRow acc)
         {
             SqlConnection con;
@@ -137,7 +134,7 @@ namespace HopePipeline.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        
+
         [AllowAnonymous]
         public IActionResult ForgotPassword()
         {

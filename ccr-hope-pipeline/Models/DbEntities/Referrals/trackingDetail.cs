@@ -31,6 +31,9 @@ namespace HopePipeline.Models.DbEntities.Referrals
         public string femHouse { get; set; }
         public string marchman { get; set; }
         public string domVio { get; set; }
+        public string reenrolled { get; set; }
+        public string pregnantparenting { get; set; }
+        public string addServicesGained { get; set; }
         public string adopted { get; set; }
         public string evicted { get; set; }
         public string incarParent { get; set; }

@@ -14,14 +14,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using dotenv.net;
 
-namespace ccr_hope_pipeline
+namespace HopePipeline
 {
     public class Startup
     {
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            DotEnv.Config();
+            //DotEnv.Config();
         }
 
         public IConfiguration Configuration { get; }

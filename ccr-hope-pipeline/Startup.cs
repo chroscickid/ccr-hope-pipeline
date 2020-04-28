@@ -18,11 +18,11 @@ namespace HopePipeline
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-            DotEnv.Config();
-        }
+       // public Startup(IConfiguration configuration)
+       // {
+            //Configuration = configuration;
+            //DotEnv.Config();
+       // }
 
         public IConfiguration Configuration { get; }
 

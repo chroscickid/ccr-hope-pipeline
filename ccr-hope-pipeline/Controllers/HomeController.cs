@@ -17,6 +17,7 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
+using ccr_hope_pipeline.Models.Shared;
 
 namespace ccr_hope_pipeline.Controllers
 {

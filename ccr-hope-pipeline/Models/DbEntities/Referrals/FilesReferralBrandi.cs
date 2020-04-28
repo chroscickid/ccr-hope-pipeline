@@ -1,4 +1,4 @@
-﻿namespace HopePipeline.Models
+﻿namespace ccr_hope_pipeline.Models
 {
     using System;
     using System.Collections.Generic;

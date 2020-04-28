@@ -13,7 +13,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection.Metadata;
 using Microsoft.AspNetCore.Http;
 
-namespace HopePipeline.Models
+namespace ccr_hope_pipeline.Models
 {
     
     public class referralBrandi

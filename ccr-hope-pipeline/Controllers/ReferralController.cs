@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using HopePipeline.Models.DbEntities.Referrals;
-using HopePipeline.Models;
+using ccr_hope_pipeline.Models.DbEntities.Referrals;
+using ccr_hope_pipeline.Models;
 using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
-namespace HopePipeline.Controllers
+namespace ccr_hope_pipeline.Controllers
 {
     public class ReferralController : Controller
     {

@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using HopePipeline.Models;
+using ccr_hope_pipeline.Models;
 
 
 using System.Web;
@@ -18,7 +18,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
 
-namespace HopePipeline.Controllers
+namespace ccr_hope_pipeline.Controllers
 {
     public class HomeController : Controller
 

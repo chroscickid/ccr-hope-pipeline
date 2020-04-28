@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using HopePipeline.Models;
+using ccr_hope_pipeline.Models;
 using System.Data.SqlClient;
-using HopePipeline.Models.DbEntities.Tracking;
-using HopePipeline.Models.DbEntities.Meetings;
-using HopePipeline.Models.DbEntities.Referrals;
-using HopePipeline.Models.Contexts;
+using ccr_hope_pipeline.Models.DbEntities.Tracking;
+using ccr_hope_pipeline.Models.DbEntities.Meetings;
+using ccr_hope_pipeline.Models.DbEntities.Referrals;
+using ccr_hope_pipeline.Models.Contexts;
 
-namespace HopePipeline.Controllers
+namespace ccr_hope_pipeline.Controllers
 {
     public class TrackingController : Controller
     {

@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
 
-namespace HopePipeline.Models.DbEntities.Login
+namespace ccr_hope_pipeline.Models.DbEntities.Login
 {
     public class AdminRowContext : DbContext
 

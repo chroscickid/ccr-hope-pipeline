@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HopePipeline.Models.DbEntities.Login
+namespace ccr_hope_pipeline.Models.DbEntities.Login
 {
     public class Account
     {

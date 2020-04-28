@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HopePipeline.Models
+namespace ccr_hope_pipeline.Models
 {
     public interface ReferralRepository
     {

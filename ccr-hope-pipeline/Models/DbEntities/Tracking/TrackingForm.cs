@@ -7,11 +7,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
 
-namespace HopePipeline.Models.DbEntities.Tracking
+namespace ccr_hope_pipeline.Models.DbEntities.Tracking
 {
     public class TrackingForm
     {
-        public HopePipeline.Models.referralBrandi referralBrandi { get; set; }
+        public ccr_hope_pipeline.Models.referralBrandi referralBrandi { get; set; }
         public Guid ClientID { get; set; }
         public Guid refCode { get; set; }
         public string reffname { get; set; }

@@ -11,15 +11,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Http;
-using HopePipeline.Models;
+using ccr_hope_pipeline.Models;
 using System.Net.Mail;
-using HopePipeline.Models.DbEntities;
-using HopePipeline.Models.DbEntities.Login;
+using ccr_hope_pipeline.Models.DbEntities;
+using ccr_hope_pipeline.Models.DbEntities.Login;
 using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace HopePipeline.Controllers
+namespace ccr_hope_pipeline.Controllers
 {
 
     public class AccountController : Controller

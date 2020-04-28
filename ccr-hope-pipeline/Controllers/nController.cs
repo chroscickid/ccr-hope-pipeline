@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
-using HopePipeline.Models;
+using ccr_hope_pipeline.Models;
 using System.Data.SqlClient;
-using HopePipeline.Models.DbEntities.Referrals;
-using HopePipeline.Models.DbEntities.Tracking;
+using ccr_hope_pipeline.Models.DbEntities.Referrals;
+using ccr_hope_pipeline.Models.DbEntities.Tracking;
 using System.Diagnostics;
 using SendGrid;
 using SendGrid.Helpers.Mail;
@@ -25,7 +25,7 @@ using FFImageLoading;
 using Microsoft.Azure;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace HopePipeline.Controllers
+namespace ccr_hope_pipeline.Controllers
 {
     public class nController : Controller
     {

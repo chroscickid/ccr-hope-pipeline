@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HopePipeline.Models.DbEntities.Reports;
+using ccr_hope_pipeline.Models.DbEntities.Reports;
 
-namespace HopePipeline.Models.DbEntities.Reports
+namespace ccr_hope_pipeline.Models.DbEntities.Reports
 {
     public class ReportResults
     {

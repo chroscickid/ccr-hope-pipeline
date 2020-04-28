@@ -1,6 +1,6 @@
 using System;
 
-namespace HopePipeline.Models
+namespace ccr_hope_pipeline.Models
 {
     public class ErrorViewModel
     {

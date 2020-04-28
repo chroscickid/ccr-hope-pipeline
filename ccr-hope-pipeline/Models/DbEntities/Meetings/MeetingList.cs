@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HopePipeline.Models.DbEntities.Meetings
+namespace ccr_hope_pipeline.Models.DbEntities.Meetings
 {
     public class Meeting
     {

@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HopePipeline.Models
+namespace ccr_hope_pipeline.Models
 {
     public class Referral
     {

@@ -11,12 +11,12 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HopePipeline.Models.DbEntities.Tracking
+namespace ccr_hope_pipeline.Models.DbEntities.Tracking
 {
     public class EditTrackingm
 {
 
-        public HopePipeline.Models.referralBrandi referralBrandi { get; set; }
+        public ccr_hope_pipeline.Models.referralBrandi referralBrandi { get; set; }
         public Guid ClientID { get; set; }
         //Demographics
 

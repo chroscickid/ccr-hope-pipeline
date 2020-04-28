@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace HopePipeline.Models.DbEntities.Referrals
+namespace ccr_hope_pipeline.Models.DbEntities.Referrals
 {
     public class RefRowContext : DbContext
     {

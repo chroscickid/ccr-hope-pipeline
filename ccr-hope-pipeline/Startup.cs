@@ -66,6 +66,7 @@ namespace ccr_hope_pipeline
 
             app.UseAuthentication();
 
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

@@ -60,7 +60,7 @@ namespace ccr_hope_pipeline
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            app.UseHttpsRedirection(); 
             app.UseStaticFiles();
             app.UseCookiePolicy();
 

@@ -18,11 +18,11 @@ namespace ccr_hope_pipeline
 {
     public class Startup
     {
-       // public Startup(IConfiguration configuration)
-       // {
-            //Configuration = configuration;
+       public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
             //DotEnv.Config();
-       // }
+       }
 
         public IConfiguration Configuration { get; }
 

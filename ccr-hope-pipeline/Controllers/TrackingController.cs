@@ -13,7 +13,7 @@ namespace HopePipeline.Controllers
 {
     public class TrackingController : Controller
     {
-        public string connectionString = "Server=tcp:hopepipeline.database.windows.net,1433;Initial Catalog=Hope-Pipeline;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        public string connectionString = "Server=tcp:hopes-sqlserver.database.windows.net,1433;Initial Catalog=hopes-sqldb;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
 
         public ViewResult TrackingForm(Guid clientCode)

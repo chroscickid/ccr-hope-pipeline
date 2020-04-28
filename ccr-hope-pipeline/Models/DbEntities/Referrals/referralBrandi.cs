@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
+using System.IO;
+using System.Web;
 
-
+using System.Web;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection.Metadata;
+using Microsoft.AspNetCore.Http;
 
 namespace HopePipeline.Models
 {
@@ -147,7 +151,9 @@ namespace HopePipeline.Models
         public int youthSettingHidden { get; set; }
         public int youthInjunctionHidden { get; set; }
 
-        public string file { get; set; }
+
+        public IFormFile file { get; set; }
+        //public httpPostedFileBase file { get; set; }
 
     }
 }

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using HopePipeline.Models;
 using System.Data.SqlClient;
@@ -12,12 +12,20 @@ using System.Diagnostics;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 //using Microsoft.Azure;
+
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System.IO;
 using Azure.Storage.Blobs;
 using System.Reflection.Metadata;
 using Microsoft.AspNetCore.Hosting.Internal;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.AspNetCore.Http;
+using FFImageLoading;
+using Microsoft.Azure;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HopePipeline.Controllers
 {
@@ -258,50 +266,39 @@ namespace HopePipeline.Controllers
             htmlplain = "A new was referral was made by " + form.referralfname + " " + form.referrallname + " for " + form.fName + " " + form.lName + " as of " + form.dateInput+"";
             subjectemail = "New Referral from " + form.referralfname +" " +form.referrallname+ " as of "+ form.dateInput;
             Execute(emailaddress, messagehtml, subjectemail, referralname, htmlplain).Wait();
-            string here = form.file.ToString();
-            Console.WriteLine("files =" + here);
+           IFormFile file = form.file;
+          Guid herefiles = form.clientCode;
+            Guid key = Guid.NewGuid();
+            Debug.WriteLine("files =" + file);
             string fname = form.fName.ToString();
             string lname = form.lName.ToString();
             string namestring = fname+ " " + lname;
-      // var key = form.clientCode;
-          var  key = Guid.Parse(form.clientCode.ToString());
+    
             reader.Close();
             adapter.Dispose();
             command.Dispose();
 
             //file uploads
-            Array file1 = new Array[1];
-            string delimiter = "\" \""; 
-            Console.WriteLine("delimiter =" + delimiter);
-            if (here.Contains("\" \""))
-            {  file1 = new Array[here.Split(delimiter).Length]; }
-            else { file1 = new Array[1]; }
-           
-            //List<string> file1 = new List<string>();
-
-            int cat = 0;
-            int number = 0;
-
-
-            foreach (var files in file1)
-            {
-                Guid herefiles = Guid.NewGuid();
-                Console.WriteLine("herefiles =" + herefiles);
-                Console.WriteLine("files =" + files);
-                if (files != null)
+         
+                
+                Debug.WriteLine("herefiles =" + herefiles);//makes the guid for the container
+             Debug.WriteLine("files =" + file);
+                if (file != null)
 
                 {
-                    string unqiueFileName = null;
 
                     //file string
-                    string strPath = "\"" + files + "\"".ToString();
-                    Console.WriteLine("files =" + files);
-                    //get filename
-                    string filename = Path.GetFileName(strPath);
-                    Console.WriteLine("strPath =" + strPath);
-                    //guid plus filename
-                    //unqiueFileName = Guid.NewGuid().ToString() + "_" + filename;
-                    Console.WriteLine("unqiueFileName =" + unqiueFileName);
+                    string strPath =file.ToString();
+                Debug.WriteLine("files =" + file);
+                //get fullpath
+                string getfullpath = Path.GetFullPath(strPath);
+                Debug.WriteLine("getfullpath =" + getfullpath);
+                //get filename
+                var filename = file.FileName.ToString();
+                
+                Debug.WriteLine("filename =" + filename);
+                //guid plus filename
+               
 
                     SqlConnection cnnn;
                     cnnn = new SqlConnection(connectionString);
@@ -313,19 +310,19 @@ namespace HopePipeline.Controllers
 
                     commandd = new SqlCommand(queryy, cnnn);
                     //Pass values to Parameters
-                   commandd.Parameters.AddWithValue("@clientCode", form.clientCode);
-                    commandd.Parameters.AddWithValue("@pk", herefiles);
-                    SqlParameter filenamee = commandd.Parameters.AddWithValue("@filename", files);
+                   commandd.Parameters.AddWithValue("@clientCode", herefiles);
+                    commandd.Parameters.AddWithValue("@pk", key);
+                    SqlParameter filenamee = commandd.Parameters.AddWithValue("@filename", filename);
                     if (filenamee == null)
                     {
                         filenamee.Value = DBNull.Value;
                     }
                     SqlDataReader readerr = commandd.ExecuteReader();
-                    fileAsync(here, herefiles).Wait();
+                    fileAsync(file, herefiles, key).Wait();
                     readerr.Close();
                     adapterr.Dispose();
                     commandd.Dispose();
-                }
+                
 
 
             }
@@ -345,7 +342,7 @@ namespace HopePipeline.Controllers
 
         public IActionResult contactInfoM(Guid clientCode)
         {
-            
+           
             //var client= new Contact();
             List<Contact> clientl = new List<Contact>();
             SqlConnection cnn;
@@ -424,9 +421,30 @@ namespace HopePipeline.Controllers
             return View(clientl);
 
         }// GUID --------------------------------------------------GUID should be done for contact----------------------------------------
+        public string checkfordocument(Guid clientCode) {
+           object countdocument = "0";
+            string hello = "0";
+            SqlConnection cnn;
+            cnn = new SqlConnection(cconnectionString);
+            cnn.Open();//Connect
+            object count =new SqlCommand("SELECT COUNT(pk) FROM dbo.attachments WHERE clientCode = '" + clientCode + "'", cnn).ExecuteScalar();
+            int bc = (Convert.ToInt16(count)) + 0;
+            if (bc == 1)
+            {
+                
+                countdocument = new SqlCommand("SELECT pk FROM dbo.attachments WHERE clientCode = '" + clientCode + "'", cnn).ExecuteScalar();
+            }
+            cnn.Close();
+            if (bc == 1)
+            { return countdocument.ToString(); }
+            else 
+            { return hello; }
 
+        }
+    
         public IActionResult detailReferralM(Guid clientCode)
         {
+            string answer = checkfordocument(clientCode);
             
             //var client= new Contact();
             List<referralDetail> clientl = new List<referralDetail>();
@@ -436,7 +454,16 @@ namespace HopePipeline.Controllers
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
-            string query = "SELECT clientCode, fname, lname, dob, guardianName, guardianlName, guardianRelationship, strAddress, gender, guardianEmail, guardianPhone, meeting, youthInDuvalSchool, youthInSchool, issues, currentSchool, zip, grade, currStatus, arrest, school, dateInput, meetingDate, email, reach, moreInfo, reason, referralfname, referrallname, nameOrg, youthNu, youthEmail, youthCit, youthOffense, youthImpact, youthAlt, youthSetting, youthInjunction FROM refform WHERE clientCode= '" + clientCode + "';";
+            string query = "SELECT refform.clientCode, refform.fname, refform.lname, refform.dob, refform.guardianName, " +//5
+"refform.guardianlName, refform.guardianRelationship, refform.strAddress, refform.gender, refform.guardianEmail," +//5
+" refform.guardianPhone, refform.meeting, refform.youthInDuvalSchool, refform.youthInSchool, refform.issues, refform.currentSchool, " +//6
+"refform.zip, refform.grade, refform.currStatus, refform.arrest, refform.school, refform.dateInput, refform.meetingDate, refform.email, refform.reach, refform.moreInfo, " +//10
+"refform.reason, refform.referralfname, refform.referrallname, refform.nameOrg, refform.youthNu, refform.youthEmail, " +//6
+"refform.youthCit, refform.youthOffense, refform.youthImpact, refform.youthAlt, " +//4
+"refform.youthSetting, refform.youthInjunction, attachments.filename " +//3
+"FROM refform " +
+"Left join attachments on refform.clientCode = attachments.clientCode " +
+"WHERE dbo.refform.clientCode = '"+clientCode+"';";
 
             command = new SqlCommand(query, cnn);
 
@@ -707,6 +734,20 @@ namespace HopePipeline.Controllers
                     { client.youthInjunction = "N/A"; }
                     else
                     { client.youthInjunction = client.youthInjunction; }
+
+                 
+
+                    if (answer != "0")
+                    {
+                        
+                      
+                        client.filename = Convert.ToString(dataReader["filename"]);
+                        if (client.filename == null)
+                        { client.filename = "N/A"; }
+                    }
+                   
+                    if (answer == "0")
+                    { client.filename = "N/A"; }
 
                     clientl.Add(client);
 
@@ -4310,7 +4351,7 @@ namespace HopePipeline.Controllers
 
         }
         [Route("api/blobs/upload")]
-        public async Task fileAsync(string file, Guid herefiles)
+        public async Task fileAsync(IFormFile imageToUpload, Guid herefiles, Guid key)
         {
             //string here = file;
             // string delimiter = "\" \"";
@@ -4318,92 +4359,150 @@ namespace HopePipeline.Controllers
 
             var connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
 
-            if (file != null)
+            if (imageToUpload != null)
 
-                {
-               
-                //create container
-                // Create a BlobServiceClient object which will be used to create a container client
-                BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
-
-                    //Create a unique name for the container
-                    string containerName = "container" + herefiles.ToString();
-
-                    // Create the container and return a container client object
-                    BlobContainerClient containerClient = await blobServiceClient.CreateBlobContainerAsync(containerName);
-
-                    //end container
-                    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    
-                    //get filepath
-
-
-
-
-
-                    //start upload
-                    // Create a local file in the ./data/ directory for uploading and downloading
-                    //string localPath = "./data/";
-                   
-                    //string fileName = "name" + Guid.NewGuid().ToString() + ".txt";
-                    //string strPath = Path.GetFileName(files.ToString()); ;
-                   // string localFilePath = Path.Combine(localPath, fileName);
-
-                    // Write text to the file
-                    //await File.WriteAllTextAsync(localFilePath, "Hello, World!");
-
-
-
-                    //file string convert the file format in the array to a tostring so itcan be recieved from the blob
-                    string filestring = file.ToString();
-                    // Get a reference to a blob
-                    BlobClient blobClient = containerClient.GetBlobClient(filestring);
-                Console.WriteLine("filestring =" + filestring);
-                Console.WriteLine("Uploading to Blob storage as blob:\n\t {0}\n", blobClient.Uri);
-
-                // Open the file and upload its data
-
-                FileStream uploadFileStream = System.IO.File.OpenRead(filestring);
-                    await blobClient.UploadAsync(uploadFileStream, true);
-                    uploadFileStream.Close();
-                    //end download
-
-                    //begin upload
-                 
-
-
+              {
                 
+                CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(connectionString);
+                //create a block blob    
+                CloudBlobClient cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
+                //create a container    
+                CloudBlobContainer cloudBlobContainer = cloudBlobClient.GetContainerReference(herefiles.ToString()); ;
+                //create a container if it is not already exists    
+                if (await cloudBlobContainer.CreateIfNotExistsAsync())
+                {
+                    await cloudBlobContainer.SetPermissionsAsync(new BlobContainerPermissions
+                    {
+                        PublicAccess = BlobContainerPublicAccessType.Blob
+                    });
+                }
+                string _imageName = key.ToString();
+                    //+ "-" + Path.GetExtension(imageToUpload.FileName);
+                //get Blob reference    
+                CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(_imageName);
+                cloudBlockBlob.Properties.ContentType = imageToUpload.ContentType;
+                await cloudBlockBlob.UploadFromStreamAsync(imageToUpload.OpenReadStream());
+               string url = cloudBlockBlob.Uri.ToString();
+              
+
+
             }
         }
-        //method to upload blob
-        //static async Task Blob()
-        //{
-        //    string storageConnection = CloudConfigurationManager.GetSetting("BlobStorageConnectionString"); CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(storageConnection);
 
-        //    //create a block blob CloudBlobClient cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
+      
 
-        //    //create a container CloudBlobContainer cloudBlobContainer = cloudBlobClient.GetContainerReference("appcontainer");
+   
+        public async Task<IActionResult> DownloadFile(Guid clientCode)
+       
+        {
+            SqlConnection cnn;
+            cnn = new SqlConnection(cconnectionString);
+            cnn.Open();//Connect
+            object keyobj = new SqlCommand("SELECT pk FROM dbo.attachments WHERE clientCode = '" + clientCode + "'", cnn).ExecuteScalar();
+            //Guid herefiles = herefilesobj.Guid();
+            Guid key = (Guid)keyobj;
+            //object keyobj = new SqlCommand("SELECT key FROM dbo.attachments WHERE clientCode = '" + clientCode + "'", cnn).ExecuteScalar();
+            Guid herefiles = (Guid)clientCode;
+           
+            cnn.Close();
+            //string here = file;
+            // string delimiter = "\" \"";
+            // Array file1 = new Array[here.Split(delimiter).Length];
 
-        //    //create a container if it is not already exists
+            var connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
 
-        //    if (await cloudBlobContainer.CreateIfNotExistsAsync())
-        //    {
+            //container name
+            var _containerName = herefiles.ToString();
+            //get connecction
+            // var accessKey = "lvdAzGhhkgVmyuh7zYWZ71SBUdPkvvENfwUWv4NUuq5BKgAuB8vMMIeH/dU6nKMm5QlFMf1Pw9CS81cUaUr6JQ==";
 
-        //        await cloudBlobContainer.SetPermissionsAsync(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
+            CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(connectionString);
 
-        //    }
+            CloudBlobClient _blobClient = cloudStorageAccount.CreateCloudBlobClient();
+            //get container
+            CloudBlobContainer _cloudBlobContainer = _blobClient.GetContainerReference(_containerName);
+            //get blob reference
+            //sql
+            Debug.WriteLine("here");
 
-        //    string imageName = "Test-" + Path.GetExtension(imageToUpload.FileName);
 
-        //    //get Blob reference
+            CloudBlockBlob _blockBlob = _cloudBlobContainer.GetBlockBlobReference(key.ToString());
 
-        //    CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(imageName); cloudBlockBlob.Properties.ContentType = imageToUpload.ContentType;
+            MemoryStream ms = new MemoryStream();
+            await _blockBlob.DownloadToStreamAsync(ms);
+            Stream blobStream = _blockBlob.OpenReadAsync().Result;
+            Debug.WriteLine(_blockBlob.Properties.ContentType);
+            Debug.WriteLine(_blockBlob.Name);
+            string endtag = null;
+            if (_blockBlob.Properties.ContentType == "text/plain")
+            { endtag = ".txt"; }
+            if (_blockBlob.Properties.ContentType == "application/pdf")
+            { endtag = ".pdf"; }
+            return File(blobStream, "application/pdf", _blockBlob.Name + endtag);
+        }
 
-        //    await cloudBlockBlob.UploadFromStreamAsync(imageToUpload.InputStream);
+        public async Task<IActionResult> DeleteFile(Guid clientCode)
+
+        {
+            SqlConnection cnn;
+            cnn = new SqlConnection(cconnectionString);
+            cnn.Open();//Connect
+            object keyobj = new SqlCommand("SELECT pk FROM dbo.attachments WHERE clientCode = '" + clientCode + "'", cnn).ExecuteScalar();
+
+            //Guid herefiles = herefilesobj.Guid();
+            Guid key = (Guid)keyobj;
+            //object keyobj = new SqlCommand("SELECT key FROM dbo.attachments WHERE clientCode = '" + clientCode + "'", cnn).ExecuteScalar();
+            Guid herefiles = (Guid)clientCode;
+
+            cnn.Close();
+            SqlConnection cnnn;
+            cnnn = new SqlConnection(cconnectionString);
+            cnnn.Open();//Connect
+            new SqlCommand("DELETE FROM attachments WHERE clientCode = '" + clientCode + "'", cnnn).ExecuteScalar();
+            cnnn.Close();
+            //string here = file;
+            // string delimiter = "\" \"";
+            // Array file1 = new Array[here.Split(delimiter).Length];
+
+            var connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
+
+            //container name
+            var _containerName = herefiles.ToString();
+            //get connecction
+            // var accessKey = "lvdAzGhhkgVmyuh7zYWZ71SBUdPkvvENfwUWv4NUuq5BKgAuB8vMMIeH/dU6nKMm5QlFMf1Pw9CS81cUaUr6JQ==";
+
+            CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(connectionString);
+
+            CloudBlobClient _blobClient = cloudStorageAccount.CreateCloudBlobClient();
+            //get container
+            CloudBlobContainer _cloudBlobContainer = _blobClient.GetContainerReference(_containerName);
+            //get blob reference
+            //sql
+            Debug.WriteLine("here");
+
+
+            CloudBlockBlob _blockBlob = _cloudBlobContainer.GetBlockBlobReference(key.ToString());
+            await _blockBlob.DeleteAsync();
+            string url =  Request.Headers["Referer"].ToString();
+
+            return Redirect(url);
+           
+        
+            
+        }
 
         //}
-        //method to download blob
+        //public FileContentResult GetFile(Guid fileId)
+        //{
+        //    var stream = await _blockBlob.OpenReadAsync();
+        //    return File(stream, _blockBlob.Properties.ContentType);
+        //}
+        //public void ConfigureServices(IServiceCollection services)
+        //{
 
-        
+        //    services.AddHttpContextAccessor();
+
+        //}
+
     }
-}
+    }

@@ -402,7 +402,7 @@
 
     <!-- register should only be provided by authorized personal so not for any user till logged in and authorized user will have to register new users
     1.1 Login Page -->
-    <form asp-action="submitform" asp-controller="n" method="post"  >
+    <form asp-action="submitform" asp-controller="n" method="post", new { enctype = "multipart/form-data" }>
         <input type="hidden" name="clientCode" asp-for="clientCode" value="@ViewBag.Tessage">
         <input type="hidden" name="dateInput" asp-for="dateInput" value="@ViewBag.Bessage">
         <p></p>
@@ -749,7 +749,7 @@
             <tr>
                 <td>
                     <h4>Please upload any assessments, evaluations or additional documents you feel are important for us to have related to advocacy for this youth.</h4>
-                    Select files:  <input type="file" name="file" asp-for="file" multiple /><br />
+                    Select files:  <input type="file" name="file" asp-for="file" /><br />
                 </td>
             </tr>
 

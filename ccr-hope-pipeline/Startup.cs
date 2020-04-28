@@ -21,7 +21,7 @@ namespace ccr_hope_pipeline
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            DotEnv.Config();
+           // DotEnv.Config();
         }
 
         public IConfiguration Configuration { get; }

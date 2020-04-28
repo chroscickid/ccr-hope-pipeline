@@ -30,6 +30,6 @@ jobs:
       uses: azure/webapps-deploy@v1
       with:
         app-name: 'hopespipeline'
-        slot-name: 'production'
+        slot-name: 'hopespipeline'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_c26bf59150a94c498e249c7e804cce53 }}
         package: ${{env.DOTNET_ROOT}}/myapp 

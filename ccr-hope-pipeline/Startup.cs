@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using ccr_hope_pipeline.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using dotenv.net;
 
 namespace ccr_hope_pipeline
 {
@@ -20,7 +21,7 @@ namespace ccr_hope_pipeline
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            //DotEnv.Config();
+           // DotEnv.Config();
         }
 
         public IConfiguration Configuration { get; }
@@ -38,23 +39,15 @@ namespace ccr_hope_pipeline
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddDefaultIdentity<IdentityUser>().AddRoles<IdentityRole>()
+            services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+        
         }
 
-
-
-
-
-
-
-
-
-            // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-            public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -72,7 +65,7 @@ namespace ccr_hope_pipeline
             app.UseCookiePolicy();
 
             app.UseAuthentication();
-           
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

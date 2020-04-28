@@ -402,7 +402,7 @@
 
     <!-- register should only be provided by authorized personal so not for any user till logged in and authorized user will have to register new users
     1.1 Login Page -->
-    <form asp-action="submitform" asp-controller="n" method="post"  >
+    <form asp-action="submitform" asp-controller="n" method="post", new { enctype = "multipart/form-data" }>
         <input type="hidden" name="clientCode" asp-for="clientCode" value="@ViewBag.Tessage">
         <input type="hidden" name="dateInput" asp-for="dateInput" value="@ViewBag.Bessage">
         <p></p>
@@ -493,7 +493,9 @@
                 <td colspan="2">
                     Youth's phone number:<br />
                     <input type="text" asp-for="youthNu" id="youthphone" maxlength="12">
+                    <p> <sub style=color:black><i>*Format: ###-###-####</i></sub></p>
                     <p style="color:red" id="youthphoneError"></p>
+
                 </td>
             </tr>
 
@@ -550,9 +552,11 @@
 
                 <td colspan="2">
                     Parent/Guardian phone number:<br />
-                    <input type="text" asp-for="guardianPhone" id="parentphone" maxlength="12" >
+                    <input type="text" asp-for="guardianPhone" id="parentphone" maxlength="12">
+                    <p><sub style=color:black><i>*Format: ###-###-####</i></sub></p>
                     <p style="color:red" id="parentphoneError"></p>
                     <p style="color:red" id="parentphonewarnValid"></p>
+                   
                 </td>
             </tr>
             <tr>
@@ -619,20 +623,19 @@
 
                     Is this youth a student in a Duval County Public School? <br />
                     <select name="youthInDuvalSchool" asp-for="youthInDuvalSchool">
-                        <option value="Select" disabled="disabled" selected>Please Select an Option</option>
                         <option value="1">Yes</option>
                         <option value="0">No</option>
-                        <option value="2">Maybe</option>
+                        <option value="2" selected>Maybe</option>
 
                     </select><br>
                 </td>
                 <td>
                     Is youth at risk of placement in alternative school, either Mattie V or Grand Park? <br />
                     <select name="youthAlt" asp-for="youthAlt">
-                        <option value="Select" disabled="disabled" selected>Please Select an Option</option>
+                        
                         <option value="1">Yes</option>
                         <option value="0">No</option>
-                        <option value="2">Maybe</option>
+                        <option value="2" selected>Maybe</option>
 
                     </select><br>
                 </td>
@@ -746,7 +749,7 @@
             <tr>
                 <td>
                     <h4>Please upload any assessments, evaluations or additional documents you feel are important for us to have related to advocacy for this youth.</h4>
-                    Select files:  <input type="file" multiple /><br />
+                    Select files:  <input type="file" name="file" asp-for="file" /><br />
                 </td>
             </tr>
 

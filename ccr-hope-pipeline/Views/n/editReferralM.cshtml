@@ -508,6 +508,7 @@
                 var skull = "";
                 var school = document.getElementById("school").value;
                 var schoolHidden = document.getElementById("schoolHidden").value;
+                var schoolnme = "";
                
                 //text
                
@@ -928,9 +929,9 @@
                             {<input type="checkbox" name="array" id="mother" value="Mother"> }
                         }Mother<br />
                         @{if (data.guardianRelationship.Contains("Father"))
-                            {<input type="checkbox" name="array" value=" Father" checked> }
+                            {<input type="checkbox" name="array" value="Father" checked> }
                             else
-                            {<input type="checkbox" name="array" id="father" value=" Father"> }
+                            {<input type="checkbox" name="array" id="father" value="Father"> }
                         }Father<br>
                         @{if (data.guardianRelationship.Contains("Guardian"))
                             {<input type="checkbox" name="array" value="Guardian" checked> }
@@ -1410,14 +1411,7 @@
                     <td>
                         <br />
                         <select name="youthAlt" asp-for="youthAlt" id="youthAltId">
-                            @{if (data.youthAlt != 1 || data.youthAlt != 0 || data.youthAlt != 2)
-                                {
-                                    <option disabled="disabled" selected>Please Select an Option</option>
-                                }
-                                else
-                                {
-                                    <option disabled="disabled" > Please Select an Option </option>
-                                } }
+                      
                             @{if (data.youthAlt == 1)
                                 {
                                     <option value="1" selected>Yes</option>
@@ -1454,14 +1448,7 @@
                     <td>
                         <br />
                         <select name="youthSetting" asp-for="youthSetting" id="youthSettingId">
-                            @{if (data.youthSetting != 1 || data.youthSetting != 0 || data.youthSetting != 2)
-                                {
-                                    <option disabled="disabled" selected>Please Select an Option</option>
-                                }
-                                else
-                                {
-                                    <option disabled="disabled"> Please Select an Option </option>
-                                } }
+                     
                             @{if (data.youthSetting == 1)
                                 {
                                     <option value="1" selected>Yes</option>
@@ -1498,14 +1485,7 @@
                     <td>
                         <br />
                         <select name="youthInjunction" asp-for="youthInjunction" id="youthInjunctionId">
-                            @{if (data.youthInjunction != 1 || data.youthInjunction != 0 || data.youthInjunction != 2)
-                                {
-                                    <option disabled="disabled" selected>Please Select an Option</option>
-                                }
-                                else
-                                {
-                                    <option disabled="disabled"> Please Select an Option </option>
-                                } }
+                        
                             @{if (data.youthInjunction == 1)
                                 {
                                     <option value="1" selected>Yes</option>

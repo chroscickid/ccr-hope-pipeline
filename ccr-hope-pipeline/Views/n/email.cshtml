@@ -12,52 +12,10 @@
 
     </script>
     <style>
-        .button1 {
-            padding: 3px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            
-            cursor: pointer;
-        }
-
-      
-
-        .button4 {
-            background-color: #005199; /* Gray */
-            border: 3px solid #003A62;
-            margin: 4px 20px;
-            color: #DDDDDD;
-        }
-
-         
-
-
-        .button2 {
-            border-radius: 4px;
-        }
-
-        .button1 span {
-            cursor: pointer;
-            display: inline-block;
-            position: relative;
-            transition: 0.5s;
-        }
-
-
-         .button5 {
-                background-color: #cc0000; /* Gray */
-                border: 3px solid #cc0000;
-                margin: 4px 60px;
-                color: white;
-            }
-
-         
 
         table {
             width: auto;
-            border: 3px solid #003A62;
+                border: 3px solid #003A62;
             border-collapse: collapse;
         }
 
@@ -66,7 +24,7 @@
             border-collapse: collapse;
         }
 
-        td {
+         td {
             padding: 11px;
             text-align: left;
         }
@@ -106,7 +64,7 @@
         <table id="t01">
 
             <tr>
-                <th class="t" style="text-align:left" colspan="3">
+                <th class="t" style="text-align:left" colspan="2">
                     <h4>Client:&nbsp;@Html.DisplayFor(modelItem => item.lName),&nbsp;@Html.DisplayFor(modelItem => item.fName)</h4>
 
 
@@ -117,20 +75,20 @@
             <tr>
                 <td class="t" style="text-align:right"> Youth's email address:</td>
 
-                <td colspan="2">@Html.DisplayFor(modelItem => item.youthEmail)</td>
+                <td>@Html.DisplayFor(modelItem => item.youthEmail)</td>
 
             </tr>
             <tr>
                 <td class="t" style="text-align:right"> Youth's phone number: </td>
 
-                <td colspan="2"> @Html.DisplayFor(modelItem => item.youthNu)</td>
+                <td> @Html.DisplayFor(modelItem => item.youthNu)</td>
 
             </tr>
 
             <tr>
                 <td class="t" style="text-align:right"> Gender Identity:  </td>
 
-                <td colspan="2">
+                <td>
                     @Html.DisplayFor(modelItem => item.gender)
                 </td>
 
@@ -138,46 +96,46 @@
             <tr>
                 <td class="t" style="text-align:right"> Date of Birth:</td>
 
-                <td colspan="2"> @Html.DisplayFor(modelItem => item.dOB)</td>
+                <td> @Html.DisplayFor(modelItem => item.dOB)</td>
 
             </tr>
             <tr>
                 <td class="t" style="text-align:right">   Guardian's Name:</td>
 
-                <td colspan="2"> @Html.DisplayFor(modelItem => item.guardianlName), @Html.DisplayFor(modelItem => item.guardianName)</td>
+                <td> @Html.DisplayFor(modelItem => item.guardianlName), @Html.DisplayFor(modelItem => item.guardianName)</td>
 
             </tr>
 
             <tr>
                 <td class="t" style="text-align:right"> Guardian's relationship to the youth:</td>
 
-                <td colspan="2"> @Html.DisplayFor(modelItem => item.guardianRelationship)</td>
+                <td> @Html.DisplayFor(modelItem => item.guardianRelationship)</td>
 
             </tr>
             <tr>
                 <td class="t" style="text-align:right"> Street Address:</td>
 
 
-                <td colspan="2"> @Html.DisplayFor(modelItem => item.address)</td>
+                <td> @Html.DisplayFor(modelItem => item.address)</td>
 
             </tr>
             <tr>
                 <td class="t" style="text-align:right">zip</td>
 
-                <td colspan="2">@Html.DisplayFor(modelItem => item.zip)</td>
+                <td>@Html.DisplayFor(modelItem => item.zip)</td>
 
             </tr>
             <tr>
                 <td class="t" style="text-align:right"> Parent/Guardian's Email:</td>
 
-                <td colspan="2">@Html.DisplayFor(modelItem => item.guardianEmail)</td>
+                <td>@Html.DisplayFor(modelItem => item.guardianEmail)</td>
 
 
             </tr>
             <tr>
                 <td class="t" style="text-align:right"> Parent/Guardian's Phone Number:</td>
 
-                <td colspan="2">@Html.DisplayFor(modelItem => item.guardianPhone)</td>
+                <td>@Html.DisplayFor(modelItem => item.guardianPhone)</td>
 
 
             </tr>
@@ -185,14 +143,14 @@
             <tr>
                 <td class="t" style="text-align:right"> Does the youth have a meeting?</td>
 
-                <td colspan="2">
+                <td>
                     @Html.DisplayFor(modelItem => item.meeting)<br />
                 </td>
                 
-            @if (item.meeting != "No" ||item.meeting != "Maybe")
+            @if (item.meeting != "No" || item.meeting != "Maybe")
             { <tr>
                 <td class="t" style="text-align:right">Date of Youth's Meeting:</td>
-                <td colspan="2">@Html.DisplayFor(modelItem => item.date)</td>
+                <td>@Html.DisplayFor(modelItem => item.date)</td>
             </tr>}
 
 
@@ -200,14 +158,14 @@
             <tr>
                 <td class="t" style="text-align:right"> Issues which are currently impacting the Youth:</td>
 
-                <td colspan="2">@Html.DisplayFor(modelItem => item.issues)</td>
+                <td>@Html.DisplayFor(modelItem => item.issues)</td>
 
 
             </tr>
             <tr>
                 <td class="t" style="text-align:right">Youth is impacted by not being in school because of the following:</td>
 
-                <td colspan="2">@Html.DisplayFor(modelItem => item.youthImpact)</td>
+                <td>@Html.DisplayFor(modelItem => item.youthImpact)</td>
 
             </tr>
             <tr>
@@ -215,7 +173,7 @@
                     Is this youth a student in a Duval County Public School? <br />
                 </td>
 
-                <td colspan="2">
+                <td>
                     @Html.DisplayFor(modelItem => item.youthInDuvalSchool)
                 </td>
             </tr>
@@ -225,7 +183,7 @@
                 </td>
 
 
-                <td colspan="2">
+                <td>
                     @Html.DisplayFor(modelItem => item.grade)<br />
                 </td>
             </tr>
@@ -233,7 +191,7 @@
                 <td class="t" style="text-align:right">
                     Is the the youth currently attending school?<br />
                 </td>
-                <td colspan="2">
+                <td>
                     @Html.DisplayFor(modelItem => item.youthInSchool)
                 </td>
             </tr>
@@ -242,29 +200,29 @@
                { <tr>
                 <td class="t" style="text-align:right"> Where is the youth currently attending school?</td>
 
-                <td colspan="2"> @Html.DisplayFor(modelItem => item.school)</td>
+                <td> @Html.DisplayFor(modelItem => item.school)</td>
             </tr>}
                }
             <tr>
                 <td class="t" style="text-align:right">Is youth at risk of placement in alternative school, either Mattie V or Grand Park?</td>
 
-                <td colspan="2"> @Html.DisplayFor(modelItem => item.youthAlt)</td>
+                <td> @Html.DisplayFor(modelItem => item.youthAlt)</td>
             </tr>
             <tr>
                 <td class="t" style="text-align:right">Is youth in a self-contained educational setting(i.e. PRIDE)?</td>
 
-                <td colspan="2"> @Html.DisplayFor(modelItem => item.youthSetting)</td>
+                <td> @Html.DisplayFor(modelItem => item.youthSetting)</td>
             </tr>
             <tr>
                 <td class="t" style="text-align:right">Has a school staff person taken out an injunction against this youth?</td>
 
-                <td colspan="2"> @Html.DisplayFor(modelItem => item.youthInjunction)</td>
+                <td> @Html.DisplayFor(modelItem => item.youthInjunction)</td>
             </tr>
             <tr>
                 <td class="t" style="text-align:right">
                     Has the youth been arrested?<br />
                 </td>
-                <td colspan="2">
+                <td>
                     @Html.DisplayFor(modelItem => item.arrest)
                 </td>
             </tr>
@@ -273,7 +231,7 @@
                 <td class="t" style="text-align:right">
                     If youth has not been arrested, is this an unsuccessful civil citation or diversion case?<br />
                 </td>
-                <td colspan="2">
+                <td>
                     @Html.DisplayFor(modelItem => item.youthCit)
                 </td>
             </tr>}
@@ -284,7 +242,7 @@
                 <td class="t" style="text-align:right">
                     Was youth arrested for a school related offense? (For example, battery on a school board employee)<br />
                 </td>
-                <td colspan="2">
+                <td>
                     @Html.DisplayFor(modelItem => item.youthOffense)
                 </td>
             </tr>}
@@ -293,7 +251,7 @@
                 <td class="t" style="text-align:right">
                     Is there anything else you would like us to know about the youth or their family?<br />
                 </td>
-                <td colspan="2">
+                <td>
                     @Html.DisplayFor(modelItem => item.moreInfo)
                 </td>
             </tr>
@@ -302,7 +260,7 @@
                 <td class="t" style="text-align:right">
                     Reason for Referral?<br />
                 </td>
-                <td colspan="2">
+                <td>
                     @Html.DisplayFor(modelItem => item.reason)
                 </td>
             </tr>
@@ -310,14 +268,14 @@
             <tr>
                 <td class="t" style="text-align:right"> Best way to Communicate with youth:</td>
 
-                <td colspan="2"> @Html.DisplayFor(modelItem => item.Reach)</td>
+                <td> @Html.DisplayFor(modelItem => item.Reach)</td>
 
 
             </tr>
             <tr>
                 <td class="t" style="text-align:right"> Status:</td>
 
-                <td colspan="2"> @Html.DisplayFor(modelItem => item.status)</td>
+                <td> @Html.DisplayFor(modelItem => item.status)</td>
 
 
             </tr>
@@ -326,35 +284,35 @@
             <tr>
                 <td class="t" style="text-align:right"> Date Referral Input:</td>
 
-                <td colspan="2">@Html.DisplayFor(modelItem => item.dateInput)</td>
+                <td>@Html.DisplayFor(modelItem => item.dateInput)</td>
 
 
             </tr>
             <tr>
                 <td class="t" style="text-align:right"> Referral Source's First Name:</td>
 
-                <td colspan="2">@Html.DisplayFor(modelItem => item.referralfname)</td>
+                <td>@Html.DisplayFor(modelItem => item.referralfname)</td>
 
 
             </tr>
             <tr>
                 <td class="t" style="text-align:right"> Referral Source's Last Name:</td>
 
-                <td colspan="2">@Html.DisplayFor(modelItem => item.referrallname)</td>
+                <td>@Html.DisplayFor(modelItem => item.referrallname)</td>
 
 
             </tr>
             <tr>
                 <td class="t" style="text-align:right"> Referral Source's Email for youth:</td>
 
-                <td colspan="2"> @Html.DisplayFor(modelItem => item.email)</td>
+                <td> @Html.DisplayFor(modelItem => item.email)</td>
 
 
             </tr>
             <tr>
                 <td class="t" style="text-align:right"> Name of organization making referral:</td>
 
-                <td colspan="2"> @Html.DisplayFor(modelItem => item.nameOrg)</td>
+                <td> @Html.DisplayFor(modelItem => item.nameOrg)</td>
 
 
             </tr>
@@ -362,46 +320,10 @@
             <tr>
                 <td class="t" style="text-align:right"> File:</td>
 
-               
-                @if (item.filename != "N/A")
-                    {
-            <td>
-                @Html.DisplayFor(modelItem => item.filename)
-                @*Download file*@
-
-                @* <input type="hidden" name="clientCode" value=@item.clientCode>
-
-        <button onclick="location.href='@item.filename'" type="button" value="Open File" target="_blank">
-        </button>
-        <a href="@item.filename" target="_blank">Visit W3Schools.com!</a> *@
-                <form asp-action="DownloadFile" asp-controller="n" method="post">
-                    <input type="hidden" name="clientCode" value=@item.clientCode>
-                    <input type="submit" class="button4 button2 button1" style="vertical-align:middle" value="Open File">
-
-                </form>
-
-            </td>
-
-            <td style="text-align:right">
-                @*Delete file
-        <button class="button1 button2 button5" style="vertical-align:middle" onclick="window.location.href = '@Url.Action("DeleteDoc", "n",new { Area = "", clientCode =@item.clientCode})'"><span>Delete</span></button>
-                *@
-                <form asp-action="DeleteFile" asp-controller="n" method="post">
-                    <input type="hidden" name="clientCode" value=@item.clientCode>
-                    <input type="submit" class="button5 button2 button1" style="vertical-align:middle" value="Delete">
-
-                </form>
-            </td>
-                    }
-                    @{if (item.filename == "N/A")
-                        {
-                                    <td>    @Html.DisplayFor(modelItem => item.filename)</td>
-                            <td></td>
-}
-
-                    }
-                   
-                </tr>
+                <td>
+                    file
+                </td>
+            </tr>
 
 
 
@@ -410,10 +332,7 @@
 
         </table>
 
-        <p id="demo"></p>
     </div>
+                }
 
-    <a asp-controller="n" asp-action="editReferralM" asp-route-clientCode="@tale">Edit</a>}
-<br />
-<a asp-action="RefList" asp-controller="Referral">Back to List</a>
 

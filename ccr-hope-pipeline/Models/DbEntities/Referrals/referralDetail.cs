@@ -85,5 +85,7 @@ namespace HopePipeline.Models.DbEntities.Referrals
 
         public string youthSetting { get; set; }
         public string youthInjunction { get; set; }
+      
+        public string filename { get; set; }
     }
 }

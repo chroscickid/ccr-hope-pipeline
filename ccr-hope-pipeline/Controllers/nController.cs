@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using HopePipeline.Models;
 using System.Data.SqlClient;
@@ -10,15 +11,29 @@ using HopePipeline.Models.DbEntities.Tracking;
 using System.Diagnostics;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
-using System.Threading.Tasks;
+//using Microsoft.Azure;
+
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using System.IO;
+using Azure.Storage.Blobs;
+using System.Reflection.Metadata;
+using Microsoft.AspNetCore.Hosting.Internal;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.AspNetCore.Http;
+using FFImageLoading;
+using Microsoft.Azure;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HopePipeline.Controllers
 {
     public class nController : Controller
     {
-        public string connectionString = "Server=tcp:hopes-sqlserver.database.windows.net,1433;Initial Catalog=hopes-sqldb;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-        public string cconnectionString = "Server=tcp:hopes-sqlserver.database.windows.net,1433;Initial Catalog=hopes-sqldb;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        string connectionString = "Server=tcp:hopes-sqlserver.database.windows.net,1433;Initial Catalog=hopes-sqldb;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
+        string cconnectionString = "Server=tcp:hopes-sqlserver.database.windows.net,1433;Initial Catalog=hopes-sqldb;Persist Security Info=False;User ID=badmin;Password=Hope2020!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
+       
         public IActionResult formReferralM()
         {
             
@@ -45,7 +60,11 @@ namespace HopePipeline.Controllers
         [HttpPost]
         public IActionResult submitform(referralBrandi form)
         {
-           
+            string htmlplain = "";
+            string emailaddress = "";
+            string messagehtml = null;
+            string subjectemail = "";
+            string referralname = "";
             SqlConnection cnn;
             cnn = new SqlConnection(connectionString);
             SqlCommand command;
@@ -239,28 +258,91 @@ namespace HopePipeline.Controllers
                 youthInjunctioncheck.Value = DBNull.Value;
             }
 
+            SqlDataReader reader= command.ExecuteReader();
+          
 
-
-
-            SqlDataReader reader = command.ExecuteReader();
+            emailaddress = "hopepipeline@gmail.com";
+            
+            htmlplain = "A new was referral was made by " + form.referralfname + " " + form.referrallname + " for " + form.fName + " " + form.lName + " as of " + form.dateInput+"";
+            subjectemail = "New Referral from " + form.referralfname +" " +form.referrallname+ " as of "+ form.dateInput;
+            Execute(emailaddress, messagehtml, subjectemail, referralname, htmlplain).Wait();
+           IFormFile file = form.file;
+          Guid herefiles = form.clientCode;
+            Guid key = Guid.NewGuid();
+            Debug.WriteLine("files =" + file);
             string fname = form.fName.ToString();
             string lname = form.lName.ToString();
             string namestring = fname+ " " + lname;
+    
             reader.Close();
-
-            //COnnect to the DB
-
-            ViewBag.Name = namestring;
-            ViewBag.Bessage = DateTime.Now;
             adapter.Dispose();
             command.Dispose();
+
+            //file uploads
+         
+                
+                Debug.WriteLine("herefiles =" + herefiles);//makes the guid for the container
+             Debug.WriteLine("files =" + file);
+                if (file != null)
+
+                {
+
+                    //file string
+                    string strPath =file.ToString();
+                Debug.WriteLine("files =" + file);
+                //get fullpath
+                string getfullpath = Path.GetFullPath(strPath);
+                Debug.WriteLine("getfullpath =" + getfullpath);
+                //get filename
+                var filename = file.FileName.ToString();
+                
+                Debug.WriteLine("filename =" + filename);
+                //guid plus filename
+               
+
+                    SqlConnection cnnn;
+                    cnnn = new SqlConnection(connectionString);
+                    SqlCommand commandd;
+                    SqlDataAdapter adapterr = new SqlDataAdapter();
+                    cnnn.Open();
+
+                    string queryy = "INSERT INTO dbo.attachments VALUES (@clientCode, @pk , @filename);";
+
+                    commandd = new SqlCommand(queryy, cnnn);
+                    //Pass values to Parameters
+                   commandd.Parameters.AddWithValue("@clientCode", herefiles);
+                    commandd.Parameters.AddWithValue("@pk", key);
+                    SqlParameter filenamee = commandd.Parameters.AddWithValue("@filename", filename);
+                    if (filenamee == null)
+                    {
+                        filenamee.Value = DBNull.Value;
+                    }
+                    SqlDataReader readerr = commandd.ExecuteReader();
+                    fileAsync(file, herefiles, key).Wait();
+                    readerr.Close();
+                    adapterr.Dispose();
+                    commandd.Dispose();
+                
+
+
+            }
+
+       
+
+
+            //COnnect to the DB
+            ViewBag.key = key;
+            ViewBag.Name = namestring;
+            ViewBag.Bessage = DateTime.Now;
+            
+          
             return View("confirmationM", "n");
 
         }//-------------------------------------------------------------End Form Submit Referral GUID DONE
 
         public IActionResult contactInfoM(Guid clientCode)
         {
-            
+           
             //var client= new Contact();
             List<Contact> clientl = new List<Contact>();
             SqlConnection cnn;
@@ -339,9 +421,30 @@ namespace HopePipeline.Controllers
             return View(clientl);
 
         }// GUID --------------------------------------------------GUID should be done for contact----------------------------------------
+        public string checkfordocument(Guid clientCode) {
+           object countdocument = "0";
+            string hello = "0";
+            SqlConnection cnn;
+            cnn = new SqlConnection(cconnectionString);
+            cnn.Open();//Connect
+            object count =new SqlCommand("SELECT COUNT(pk) FROM dbo.attachments WHERE clientCode = '" + clientCode + "'", cnn).ExecuteScalar();
+            int bc = (Convert.ToInt16(count)) + 0;
+            if (bc == 1)
+            {
+                
+                countdocument = new SqlCommand("SELECT pk FROM dbo.attachments WHERE clientCode = '" + clientCode + "'", cnn).ExecuteScalar();
+            }
+            cnn.Close();
+            if (bc == 1)
+            { return countdocument.ToString(); }
+            else 
+            { return hello; }
 
+        }
+    
         public IActionResult detailReferralM(Guid clientCode)
         {
+            string answer = checkfordocument(clientCode);
             
             //var client= new Contact();
             List<referralDetail> clientl = new List<referralDetail>();
@@ -351,7 +454,16 @@ namespace HopePipeline.Controllers
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
-            string query = "SELECT clientCode, fname, lname, dob, guardianName, guardianlName, guardianRelationship, strAddress, gender, guardianEmail, guardianPhone, meeting, youthInDuvalSchool, youthInSchool, issues, currentSchool, zip, grade, currStatus, arrest, school, dateInput, meetingDate, email, reach, moreInfo, reason, referralfname, referrallname, nameOrg, youthNu, youthEmail, youthCit, youthOffense, youthImpact, youthAlt, youthSetting, youthInjunction FROM refform WHERE clientCode= '" + clientCode + "';";
+            string query = "SELECT refform.clientCode, refform.fname, refform.lname, refform.dob, refform.guardianName, " +//5
+"refform.guardianlName, refform.guardianRelationship, refform.strAddress, refform.gender, refform.guardianEmail," +//5
+" refform.guardianPhone, refform.meeting, refform.youthInDuvalSchool, refform.youthInSchool, refform.issues, refform.currentSchool, " +//6
+"refform.zip, refform.grade, refform.currStatus, refform.arrest, refform.school, refform.dateInput, refform.meetingDate, refform.email, refform.reach, refform.moreInfo, " +//10
+"refform.reason, refform.referralfname, refform.referrallname, refform.nameOrg, refform.youthNu, refform.youthEmail, " +//6
+"refform.youthCit, refform.youthOffense, refform.youthImpact, refform.youthAlt, " +//4
+"refform.youthSetting, refform.youthInjunction, attachments.filename " +//3
+"FROM refform " +
+"Left join attachments on refform.clientCode = attachments.clientCode " +
+"WHERE dbo.refform.clientCode = '"+clientCode+"';";
 
             command = new SqlCommand(query, cnn);
 
@@ -622,6 +734,20 @@ namespace HopePipeline.Controllers
                     { client.youthInjunction = "N/A"; }
                     else
                     { client.youthInjunction = client.youthInjunction; }
+
+                 
+
+                    if (answer != "0")
+                    {
+                        
+                      
+                        client.filename = Convert.ToString(dataReader["filename"]);
+                        if (client.filename == null)
+                        { client.filename = "N/A"; }
+                    }
+                   
+                    if (answer == "0")
+                    { client.filename = "N/A"; }
 
                     clientl.Add(client);
 
@@ -1163,7 +1289,7 @@ namespace HopePipeline.Controllers
             //SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
-            string query = "SELECT dbo.accomodations.clientCode, dbo.accomodations.accomGained, dbo.accomodations.compServices, dbo.accomodations.ifWhatServices," +
+            string query = "SELECT dbo.accomodations.clientCode, dbo.accomodations.accomGained, dbo.accomodations.compServices, dbo.accomodations.ifWhatServices, dbo.accomodations.addServicesGained," +
 "dbo.advocacy.rearrestAdvo, dbo.advocacy.courtAdvo, dbo.advocacy.staffingAdvo, dbo.advocacy.legalAdvo, dbo.advocacy.legalAdvoTaken, " +
 "dbo.altSchool.altSchool, dbo.altSchool.altSchoolName, dbo.altSchool.altSchoolDate, dbo.altSchool.altSchoolTimes, dbo.altSchool.daysOwed, dbo.altSchool.daysSinceIntake, " +
 "dbo.bully.bullied, dbo.bully.reported, dbo.bully.reportDate, " +
@@ -1173,11 +1299,11 @@ namespace HopePipeline.Controllers
 "dbo.comp.compTime, " +
 "dbo.currentStatus.readingLevel, dbo.currentStatus.mathLevel, dbo.currentStatus.currentServices, dbo.currentStatus.inPride, dbo.currentStatus.newFBA, dbo.currentStatus.addService, dbo.currentStatus.servicesGained, " +
 "dbo.failed.gradeFailed, dbo.failed.whichGrade, dbo.failed.failedRepeat, " +
-"dbo.health.bakerActed, dbo.health.marchmanActed, dbo.health.asthma, " +
+"dbo.health.bakerActed, dbo.health.marchmanActed, dbo.health.asthma, dbo.health.pregnantparenting, " +
 "dbo.household.femLed, dbo.household.domVio, dbo.household.adopted, dbo.household.evicted, dbo.household.incarParent, dbo.household.publicAssistance, " +
 "dbo.suspension.suspendedThrice, dbo.suspension.numSuspensions, dbo.suspension.totalDaysSuspended, dbo.suspension.ISS, dbo.suspension.OSS, dbo.suspension.daysofDiscipline, dbo.suspension.disciplineSinceIntake, " +
 "dbo.iep.IEP, dbo.iep.primaryIEP, dbo.iep.secondaryIEP, dbo.iep.addIEp, dbo.legal.legalIssues, dbo.legal.leagalIssues2, dbo.legal.juvJusticeOutcome, " +
-"dbo.school.grade, dbo.school.school, dbo.school.SchoolRef, " +
+"dbo.school.grade, dbo.school.school, dbo.school.SchoolRef, dbo.school.reenrolled," +
 "dbo.refInfo.refFName, dbo.refInfo.refLName, dbo.refInfo.refDate, dbo.refInfo.refEmail" +
 " FROM (((((((((((((((((dbo.accomodations  LEFT JOIN dbo.advocacy  on dbo.accomodations.clientCode = dbo.advocacy.clientCode)" +
 "LEFT JOIN dbo.altSchool on dbo.accomodations.clientCode = dbo.altSchool.clientCode) " +
@@ -1335,6 +1461,40 @@ namespace HopePipeline.Controllers
                     { client.failedGrade = "N/A"; }
                     else
                     { client.failedGrade = client.failedGrade; }
+
+
+                    client.reenrolled = Convert.ToString(dataReader["reenrolled"]);
+                    //  var failgr = Int32.TryParse(client.reenrolled, out int failg);
+                    if (client.reenrolled == "1")
+                    { client.reenrolled = "Yes"; }
+                    if (client.reenrolled == "0")
+                    { client.reenrolled = "No"; }
+                    if (client.reenrolled == "" || sc == 0)
+                    { client.reenrolled = "N/A"; }
+                    else
+                    { client.reenrolled = client.reenrolled; }
+
+                    client.addServicesGained = Convert.ToString(dataReader["addServicesGained"]);
+                    //  var failgr = Int32.TryParse(client.addServicesGained, out int failg);
+                    if (client.addServicesGained == "1")
+                    { client.addServicesGained = "Yes"; }
+                    if (client.addServicesGained == "0")
+                    { client.addServicesGained = "No"; }
+                    if (client.addServicesGained == "" || acc == 0)
+                    { client.addServicesGained = "N/A"; }
+                    else
+                    { client.addServicesGained = client.addServicesGained; }
+
+                    client.pregnantparenting= Convert.ToString(dataReader["pregnantparenting"]);
+                    //  var failgr = Int32.TryParse(client.pregnantparenting, out int failg);
+                    if (client.pregnantparenting== "1")
+                    { client.pregnantparenting= "Yes"; }
+                    if (client.pregnantparenting== "0")
+                    { client.pregnantparenting= "No"; }
+                    if (client.pregnantparenting== "" || hc == 0)
+                    { client.pregnantparenting= "N/A"; }
+                    else
+                    { client.pregnantparenting= client.pregnantparenting; }
 
                     client.whichGradeFailed = Convert.ToString(dataReader["whichGrade"]);
                     if (client.whichGradeFailed == "0")
@@ -1572,7 +1732,7 @@ namespace HopePipeline.Controllers
                     { client.emailOfFirstReferralSource = "N/A"; }
 
                     client.referralSource = Convert.ToString(dataReader["refFName"]) + " " + Convert.ToString(dataReader["refLName"]);
-                    if (client.referralSource == "")
+                    if (client.referralSource == " ")
                     { client.referralSource = "N/A"; }
 
                     client.rearrestAdvocacy = Convert.ToString(dataReader["rearrestAdvo"]);
@@ -1900,6 +2060,7 @@ namespace HopePipeline.Controllers
 
 
         }
+       
         public IActionResult EditTrackingM(Guid clientCode)
 
         //edit tracking information in a form format
@@ -1915,7 +2076,7 @@ namespace HopePipeline.Controllers
             SqlDataAdapter adapter = new SqlDataAdapter();
             cnn.Open();
 
-            string query = "SELECT dbo.accomodations.clientCode, dbo.accomodations.accomGained, dbo.accomodations.compServices, dbo.accomodations.ifWhatServices," +
+            string query = "SELECT dbo.accomodations.clientCode, dbo.accomodations.accomGained, dbo.accomodations.compServices, dbo.accomodations.ifWhatServices, dbo.accomodations.addServicesGained," +
             "dbo.advocacy.rearrestAdvo, dbo.advocacy.courtAdvo, dbo.advocacy.staffingAdvo, dbo.advocacy.legalAdvo, dbo.advocacy.legalAdvoTaken, " +
             "dbo.altSchool.altSchool, dbo.altSchool.altSchoolName, dbo.altSchool.altSchoolDate, dbo.altSchool.altSchoolTimes, dbo.altSchool.daysOwed, dbo.altSchool.daysSinceIntake, " +
             "dbo.bully.bullied, dbo.bully.reported, dbo.bully.reportDate, " +
@@ -1925,12 +2086,12 @@ namespace HopePipeline.Controllers
             "dbo.comp.compTime, " +
             "dbo.currentStatus.readingLevel, dbo.currentStatus.mathLevel, dbo.currentStatus.currentServices, dbo.currentStatus.inPride, dbo.currentStatus.newFBA, dbo.currentStatus.addService, dbo.currentStatus.servicesGained, " +
             "dbo.failed.gradeFailed, dbo.failed.whichGrade, dbo.failed.failedRepeat, " +
-            "dbo.health.bakerActed, dbo.health.marchmanActed, dbo.health.asthma, " +
+            "dbo.health.bakerActed, dbo.health.marchmanActed, dbo.health.asthma, dbo.health.pregnantparenting, " +
             "dbo.household.femLed, dbo.household.domVio, dbo.household.adopted, dbo.household.evicted, dbo.household.incarParent, dbo.household.publicAssistance, " +
             //"dbo.referral.referralDate, dbo.referral.intakeDate, dbo.referral.referral1, dbo.referral.referral2, dbo.referral.referral3, dbo.referral.referrerName, dbo.referral.referrerEmail, " +
             "dbo.suspension.suspendedThrice, dbo.suspension.numSuspensions, dbo.suspension.totalDaysSuspended, dbo.suspension.ISS, dbo.suspension.OSS, dbo.suspension.daysofDiscipline, dbo.suspension.disciplineSinceIntake, " +
             "dbo.iep.IEP, dbo.iep.primaryIEP, dbo.iep.secondaryIEP, dbo.iep.addIEp, dbo.legal.legalIssues, dbo.legal.leagalIssues2, dbo.legal.juvJusticeOutcome, " +
-            "dbo.school.grade, dbo.school.school, dbo.school.SchoolRef, " +
+            "dbo.school.grade, dbo.school.school, dbo.school.SchoolRef, dbo.school.reenrolled," +
             "dbo.refform.email, dbo.refform.referralfname, dbo.refform.referrallname, dbo.refform.dateInput," +
             "dbo.refInfo.refFName, dbo.refInfo.refLName, dbo.refInfo.refDate, dbo.refInfo.refEmail" +
             " FROM ((((((((((((((((((dbo.accomodations  LEFT JOIN dbo.advocacy  on dbo.accomodations.clientCode = dbo.advocacy.clientCode)" +
@@ -2002,6 +2163,18 @@ namespace HopePipeline.Controllers
                     if (Convert.IsDBNull(dataReader["gradeFailed"]))
                     { client.failedGrade = 33; }
                     else { client.failedGrade = Convert.ToInt16(dataReader["gradeFailed"]); }
+
+                    if (Convert.IsDBNull(dataReader["addServicesGained"]))
+                    { client.addServicesGained = 33; }
+                    else { client.addServicesGained = Convert.ToInt16(dataReader["addServicesGained"]); }
+
+                    if (Convert.IsDBNull(dataReader["reenrolled"]))
+                    { client.reenrolled = 33; }
+                    else { client.reenrolled = Convert.ToInt16(dataReader["reenrolled"]); }
+
+                    if (Convert.IsDBNull(dataReader["pregnantparenting"]))
+                    { client.pregnantparenting = 33; }
+                    else { client.pregnantparenting = Convert.ToInt16(dataReader["pregnantparenting"]); }
 
                     if (Convert.IsDBNull(dataReader["whichGrade"]))
                     { client.whichGradeFailed = 33; }
@@ -2324,7 +2497,7 @@ namespace HopePipeline.Controllers
                         //as you edit the tracking form update the clients referral name, dob, case status
            
             object clientcheckc = new SqlCommand("SELECT COUNT(clientCode) FROM dbo.refform WHERE clientCode = '" + form.ClientID + "'", cnnn).ExecuteScalar();
-
+       
             //if client code is not in the table client ID insert values in table
 
             //SqlCommand commandd = cnnn.CreateCommand();
@@ -2588,7 +2761,7 @@ namespace HopePipeline.Controllers
                 using (SqlConnection link = new SqlConnection(cconnectionString))
                 using (SqlCommand stateacc = new SqlCommand("", link))
                 {
-                    stateacc.CommandText = "INSERT INTO dbo.accomodations (accomGained,  compServices, ifWhatServices, clientCode) VALUES (@accomGained,  @compServices, @ifWhatServices, @clientCode);";
+                    stateacc.CommandText = "INSERT INTO dbo.accomodations (accomGained,  compServices, ifWhatServices, addServicesGained, clientCode) VALUES (@accomGained,  @compServices, @ifWhatServices, @addServicesGained, @clientCode);";
                     stateacc.Parameters.AddWithValue("@clientCode", form.ClientID);
                     SqlParameter rearrestAdvoCodeParam = stateacc.Parameters.AddWithValue("@rearrestAdvo", form.rearrestAdvocacy);
                     SqlParameter accomGainedCodeParam = stateacc.Parameters.AddWithValue("@accomGained", form.accomGained);
@@ -2601,10 +2774,16 @@ namespace HopePipeline.Controllers
                     {
                         compServicesCodeParam.Value = DBNull.Value;
                     }
+
                     SqlParameter ifWhatServicesCodeParam = stateacc.Parameters.AddWithValue("@ifWhatServices", form.ifWhatServices);
                     if (form.ifWhatServices == null)
                     {
                         ifWhatServicesCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter addServicesGainedCodeParam = stateacc.Parameters.AddWithValue("@addServicesGained", form.addServicesGained);
+                    if (form.addServicesGained != 1 && form.addServicesGained != 0)
+                    {
+                        addServicesGainedCodeParam.Value = DBNull.Value;
                     }
                     link.Open();
                     stateacc.ExecuteNonQuery();
@@ -2846,7 +3025,7 @@ namespace HopePipeline.Controllers
                 using (SqlConnection link = new SqlConnection(cconnectionString))
                 using (SqlCommand healthstate = new SqlCommand("", link))
                 {
-                    healthstate.CommandText = "INSERT INTO dbo.health (bakerActed,  marchmanActed,  asthma, clientCode) VALUES (@bakerActed,  @marchmanActed,  @asthma, @clientCode);";
+                    healthstate.CommandText = "INSERT INTO dbo.health (bakerActed,  marchmanActed,  asthma, pregnantparenting, clientCode) VALUES (@bakerActed,  @marchmanActed,  @asthma, @pregnantparenting, @clientCode);";
                     healthstate.Parameters.AddWithValue("@clientCode", form.ClientID);
                     SqlParameter bakerActed = healthstate.Parameters.AddWithValue("@bakerActed", form.baker);
                     if ((form.baker != 0 && form.baker != 1))
@@ -2863,7 +3042,11 @@ namespace HopePipeline.Controllers
                     {
                         asthma.Value = DBNull.Value;
                     }
-
+                    SqlParameter pregnantparenting = healthstate.Parameters.AddWithValue("@pregnantparenting", form.pregnantparenting);
+                    if (form.pregnantparenting != 0 && form.pregnantparenting != 1)
+                    {
+                        pregnantparenting.Value = DBNull.Value;
+                    }
                     link.Open();
                     healthstate.ExecuteNonQuery();
                     link.Close();
@@ -3026,7 +3209,7 @@ namespace HopePipeline.Controllers
                 using (SqlConnection link = new SqlConnection(cconnectionString))
                 using (SqlCommand schoolstate = new SqlCommand("", link))
                 {
-                    schoolstate.CommandText = "INSERT INTO dbo.school (grade,  school,  SchoolRef, clientCode) VALUES (@grade,  @school,  @SchoolRef, @clientCode);";
+                    schoolstate.CommandText = "INSERT INTO dbo.school (grade,  school,  SchoolRef, reenrolled, clientCode) VALUES (@grade,  @school,  @SchoolRef, @reenrolled, @clientCode);";
                     schoolstate.Parameters.AddWithValue("@clientCode", form.ClientID);
                     SqlParameter grade = schoolstate.Parameters.AddWithValue("@grade", form.currentGrade);
                     if (form.currentGrade == null)
@@ -3043,6 +3226,11 @@ namespace HopePipeline.Controllers
                     {
                         schoolRef.Value = DBNull.Value;
                     }
+                    SqlParameter reenrolled = schoolstate.Parameters.AddWithValue("@reenrolled", form.reenrolled);
+                    if (form.reenrolled != 0 && form.reenrolled != 1)
+                    {
+                        reenrolled.Value = DBNull.Value;
+                    }
 
                     link.Open();
                     schoolstate.ExecuteNonQuery();
@@ -3052,8 +3240,8 @@ namespace HopePipeline.Controllers
             }
             cnnn.Close();
             {
-
                 
+
                 SqlConnection cnn;
                 cnn = new SqlConnection(connectionString);
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -3073,7 +3261,7 @@ namespace HopePipeline.Controllers
                    "WHERE clientCode = @clientCode; " +
 
                     "UPDATE dbo.accomodations" +
-                    " SET accomGained = @accomGained,  compServices = @compServices ,ifWhatServices = @ifWhatServices " +
+                    " SET accomGained = @accomGained,  compServices = @compServices ,ifWhatServices = @ifWhatServices, addServicesGained = @addServicesGained " +
                     " WHERE  clientCode = @clientCode; " +
 
                     "UPDATE dbo.altSchool" +
@@ -3101,7 +3289,7 @@ namespace HopePipeline.Controllers
                     " WHERE  clientCode = @clientCode; " +
 
                     "UPDATE dbo.health" +
-                    " SET bakerActed = @bakerActed,  marchmanActed = @marchmanActed,  asthma = @asthma " +
+                    " SET bakerActed = @bakerActed,  marchmanActed = @marchmanActed,  asthma = @asthma,  pregnantparenting = @pregnantparenting  " +
                     " WHERE  clientCode = @clientCode; " +
 
                     " UPDATE dbo.household" +
@@ -3121,7 +3309,7 @@ namespace HopePipeline.Controllers
                    " WHERE  clientCode = @clientCode; " +
 
                    " UPDATE dbo.school" +
-                    " SET  grade = @grade,  school = @school,  SchoolRef = @SchoolRef" +
+                    " SET  grade = @grade,  school = @school,  SchoolRef = @SchoolRef,  reenrolled = @reenrolled " +
                    " WHERE  clientCode = @clientCode; " +
 
                      " UPDATE dbo.refInfo" +
@@ -3215,6 +3403,21 @@ namespace HopePipeline.Controllers
                     if (form.compService != 1 && form.compService != 0)
                     {
                         compServicesCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter reenrolledCodeParam = command.Parameters.AddWithValue("@reenrolled", form.reenrolled);
+                    if (form.reenrolled != 1 && form.reenrolled != 0)
+                    {
+                        reenrolledCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter pregnantparentingCodeParam = command.Parameters.AddWithValue("@pregnantparenting", form.pregnantparenting);
+                    if (form.pregnantparenting != 1 && form.pregnantparenting != 0)
+                    {
+                        pregnantparentingCodeParam.Value = DBNull.Value;
+                    }
+                    SqlParameter addServicesGainedCodeParam = command.Parameters.AddWithValue("@addServicesGained", form.addServicesGained);
+                    if (form.addServicesGained != 1 && form.addServicesGained != 0)
+                    {
+                        addServicesGainedCodeParam.Value = DBNull.Value;
                     }
                     SqlParameter ifWhatServicesCodeParam = command.Parameters.AddWithValue("@ifWhatServices", form.ifWhatServices);
                     if (form.ifWhatServices == null)
@@ -3521,7 +3724,7 @@ namespace HopePipeline.Controllers
                     {
                         dOBCodeParam.Value = DBNull.Value;
                     }
-                
+                 
 
                     connection.Open();
                     command.ExecuteNonQuery();
@@ -3543,34 +3746,763 @@ namespace HopePipeline.Controllers
 
         }
         [HttpPost]
-        public IActionResult Emailreferral( string emailaddress)
+        public IActionResult Emailreferral( string emailaddress, Guid key)
         {
-          //  Main(emailaddress);
+            string htmlplain = null;
+            string referralname = "";
+           string subjectemail = "";
+            string messagehtml = "";
+            List<referralDetail> clientl = new List<referralDetail>();
+            SqlConnection cnn;
+            cnn = new SqlConnection(connectionString);
+            SqlCommand command;
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            cnn.Open();
+
+            string query = "SELECT clientCode, fname, lname, dob, guardianName, guardianlName, guardianRelationship, strAddress, gender, guardianEmail, guardianPhone, meeting, youthInDuvalSchool, youthInSchool, issues, currentSchool, zip, grade, currStatus, arrest, school, dateInput, meetingDate, email, reach, moreInfo, reason, referralfname, referrallname, nameOrg, youthNu, youthEmail, youthCit, youthOffense, youthImpact, youthAlt, youthSetting, youthInjunction FROM refform WHERE clientCode= '" + key + "';";
+
+            command = new SqlCommand(query, cnn);
+
+            //SqlDataReader reader = command.ExecuteReader();
+            using (SqlDataReader dataReader = command.ExecuteReader())
+            {
+                while (dataReader.Read())
+                {
+
+                    referralDetail client = new referralDetail();
+                    client.clientCode = Guid.Parse(Convert.ToString(dataReader["clientCode"]));
+
+
+                    client.fName = Convert.ToString(dataReader["fname"]);
+                    if (client.fName == " " || client.fName == "null" || client.fName == "")
+                    { client.fName = "N/A"; }
+
+                    client.lName = Convert.ToString(dataReader["lname"]);
+                    if (client.lName == " " || client.lName == "null" || client.lName == "")
+                    { client.lName = "N/A"; }
+
+
+
+                    if (Convert.ToString(dataReader["dob"]).Length > 10)
+
+                    {
+                        //int space1 = Convert.ToString(dataReader["dob"]).IndexOf(' ');
+                        client.dOB = Convert.ToString(dataReader["dob"]).Substring(0, 10);
+                    }
+
+                    if (client.dOB == " " || client.dOB == "null" || client.dOB == "" || Convert.ToString(dataReader["dob"]).Length < 10)
+                    { client.dOB = "N/A"; }
+
+
+                    client.guardianName = Convert.ToString(dataReader["guardianName"]);
+                    if (client.guardianName == " " || client.guardianName == "null" || client.guardianName == "")
+                    { client.guardianName = "N/A"; }
+                    client.guardianlName = Convert.ToString(dataReader["guardianlName"]);
+                    if (client.guardianlName == " " || client.guardianlName == "null" || client.guardianlName == "")
+                    { client.guardianlName = "N/A"; }
+                    client.guardianRelationship = Convert.ToString(dataReader["guardianRelationship"]);
+                    if (client.guardianRelationship == " " || client.guardianRelationship == "null" || client.guardianRelationship == "")
+                    { client.guardianRelationship = "N/A"; }
+
+                    client.address = Convert.ToString(dataReader["strAddress"]);
+                    if (client.address == " " || client.address == "null" || client.address == "")
+                    { client.address = "N/A"; }
+
+                    client.gender = Convert.ToString(dataReader["gender"]);
+                    if (client.gender == "male")
+                    { client.gender = "He/Him/His"; }
+                    if (client.gender == "female")
+                    { client.gender = "She/Her/Hers"; }
+                    if (client.gender == "trans*")
+                    { client.gender = "They/them/Theirs"; }
+                    if (client.gender == "nonbinaryF")
+                    { client.gender = "She/They"; }
+                    if (client.gender == "nonbinaryM")
+                    { client.gender = "He/They"; }
+                    if (client.gender == "neutral")
+                    { client.gender = "Zie/Zir/Zirs"; }
+                    if (client.gender == " " || client.gender == "null" || client.gender == "")
+                    { client.gender = "N/A"; }
+
+
+
+
+
+                    client.guardianEmail = Convert.ToString(dataReader["guardianEmail"]);
+                    if (client.guardianEmail == " " || client.guardianEmail == "null" || client.guardianEmail == "")
+                    { client.guardianEmail = "N/A"; }
+                    client.guardianPhone = Convert.ToString(dataReader["guardianPhone"]);
+                    if (client.guardianPhone == " " || client.guardianPhone == "null" || client.guardianPhone == "")
+                    { client.guardianPhone = "N/A"; }
+
+
+
+                    client.meeting = Convert.ToString(dataReader["meeting"]);
+                    // var gar = Int32.TryParse(client.meeting, out int meet);
+                    if (client.meeting == "1")
+                    { client.meeting = "Yes"; }
+                    if (client.meeting == "2")
+                    { client.meeting = "Maybe"; }
+                    if (client.meeting == "0")
+                    { client.meeting = "No"; }
+                    if (client.meeting == "")
+                    { client.meeting = "N/A"; }
+                    else
+                    { client.meeting = client.meeting; }
+
+
+                    client.youthInDuvalSchool = Convert.ToString(dataReader["youthInDuvalSchool"]);
+                    // var gart = Int32.TryParse(client.youthInDuvalSchool, out int tss);
+                    if (client.youthInDuvalSchool == "1")
+                    { client.youthInDuvalSchool = "Yes"; }
+                    if (client.youthInDuvalSchool == "2")
+                    { client.youthInDuvalSchool = "Maybe"; }
+                    if (client.youthInDuvalSchool == "0")
+                    { client.youthInDuvalSchool = "No"; }
+                    if (client.youthInDuvalSchool == "")
+                    { client.youthInDuvalSchool = "N/A"; }
+                    else
+                    { client.youthInDuvalSchool = client.youthInDuvalSchool; }
+
+                    client.youthInSchool = Convert.ToString(dataReader["youthInSchool"]);
+                    // var garth = Int32.TryParse(client.youthInSchool, out int tsss);
+                    if (client.youthInSchool == "1")
+                    { client.youthInSchool = "Yes"; }
+                    if (client.youthInSchool == "2")
+                    { client.youthInSchool = "Maybe"; }
+                    if (client.youthInSchool == "0")
+                    { client.youthInSchool = "No"; }
+                    if (client.youthInSchool == "")
+                    { client.youthInSchool = "N/A"; }
+                    else
+                    { client.youthInSchool = client.youthInSchool; }
+
+                    client.issues = Convert.ToString(dataReader["issues"]);
+                    if (client.issues == " " || client.issues == "null" || client.issues == "")
+                    { client.issues = "N/A"; }
+
+
+                    client.currentSchool = Convert.ToString(dataReader["currentSchool"]);
+                    if (client.currentSchool == " " || client.currentSchool == "null" || client.currentSchool == "")
+                    { client.currentSchool = "N/A"; }
+
+
+
+                    client.zip = Convert.ToString(dataReader["zip"]);
+                    if (client.zip == " " || client.zip == "null" || client.zip == "")
+                    { client.zip = "N/A"; }
+
+                    client.grade = Convert.ToString(dataReader["grade"]);
+                    if (client.grade == " " || client.grade == "null" || client.grade == "")
+                    { client.grade = "N/A"; }
+
+                    client.status = Convert.ToString(dataReader["currStatus"]);
+                    if (client.status == " " || client.status == "null" || client.status == "")
+                    { client.status = "N/A"; }
+
+
+                    client.arrest = Convert.ToString(dataReader["arrest"]);
+                    // var garthy = Int32.TryParse(client.arrest, out int tssss);
+                    if (client.arrest == "1")
+                    { client.arrest = "Yes"; }
+                    if (client.arrest == "2")
+                    { client.arrest = "Maybe"; }
+                    if (client.arrest == "0")
+                    { client.arrest = "No"; }
+                    if (client.arrest == "")
+                    { client.arrest = "N/A"; }
+                    else
+                    { client.arrest = client.arrest; }
+
+
+                    client.school = Convert.ToString(dataReader["school"]);
+                    if (client.school == " " || client.school == "null" || client.school == "")
+                    { client.school = "N/A"; }
+
+                    int space2 = Convert.ToString(dataReader["dateInput"]).IndexOf(' ');
+                    if (Convert.ToString(dataReader["dateInput"]).Length > 10)
+                    { client.dateInput = Convert.ToString(dataReader["dateInput"]).Substring(0, space2); }
+                    if (client.dateInput == " " || client.dateInput == "null" || client.dateInput == "" || Convert.ToString(dataReader["dateInput"]).Length < 10)
+                    { client.dateInput = "N/A"; }
+
+                    client.date = Convert.ToString(dataReader["meetingDate"]);
+                    if (client.date == " " || client.date == "null" || client.date == "" || client.date == "1/1/1900 12:00:00 AM")
+                    { client.date = "N/A"; }
+
+
+
+                    client.email = Convert.ToString(dataReader["email"]);
+                    if (client.email == " " || client.email == "null" || client.email == "")
+                    { client.email = "N/A"; }
+
+
+                    client.Reach = Convert.ToString(dataReader["reach"]);
+                    if (client.Reach == " " || client.Reach == "null" || client.Reach == "")
+                    { client.Reach = "N/A"; }
+                    client.moreInfo = Convert.ToString(dataReader["moreInfo"]);
+                    if (client.moreInfo == " " || client.moreInfo == "null" || client.moreInfo == "")
+                    { client.moreInfo = "N/A"; }
+                    client.reason = Convert.ToString(dataReader["reason"]);
+                    if (client.reason == " " || client.reason == "null" || client.reason == "")
+                    { client.reason = "N/A"; }
+
+                    client.referralfname = Convert.ToString(dataReader["referralfname"]);
+                    if (client.referralfname == " " || client.referralfname == "null" || client.referralfname == "")
+                    { client.referralfname = "N/A"; }
+                    client.referrallname = Convert.ToString(dataReader["referrallname"]);
+                    if (client.referrallname == " " || client.referrallname == "null" || client.referrallname == "")
+                    { client.referrallname = "N/A"; }
+                    //new referral info
+                    client.nameOrg = Convert.ToString(dataReader["nameOrg"]);
+                    if (client.nameOrg == " " || client.nameOrg == "null" || client.nameOrg == "")
+                    { client.nameOrg = "N/A"; }
+                    client.youthNu = Convert.ToString(dataReader["youthNu"]);
+                    if (client.youthNu == " " || client.youthNu == "null" || client.youthNu == "")
+                    { client.youthNu = "N/A"; }
+                    client.youthEmail = Convert.ToString(dataReader["youthEmail"]);
+                    if (client.youthEmail == " " || client.youthEmail == "null" || client.youthEmail == "")
+                    { client.youthEmail = "N/A"; }
+
+                    client.youthCit = Convert.ToString(dataReader["youthCit"]);
+                    // var ycit = Int32.TryParse(client.youthCit, out int yc);
+                    if (client.youthCit == "1")
+                    { client.youthCit = "Yes"; }
+                    if (client.youthCit == "0")
+                    { client.youthCit = "No"; }
+                    if (client.youthCit == "")
+                    { client.youthCit = "N/A"; }
+                    else
+                    { client.youthCit = client.youthCit; }
+
+
+                    client.youthOffense = Convert.ToString(dataReader["youthOffense"]);
+                    // var offense = Int32.TryParse(client.youthOffense, out int ofence);
+                    if (client.youthOffense == "1")
+                    { client.youthOffense = "Yes"; }
+                    if (client.youthOffense == "2")
+                    { client.youthOffense = "Maybe"; }
+                    if (client.youthOffense == "0")
+                    { client.youthOffense = "No"; }
+                    if (client.youthOffense == "")
+                    { client.youthOffense = "N/A"; }
+                    else
+                    { client.youthOffense = client.youthOffense; }
+
+                    client.youthImpact = Convert.ToString(dataReader["youthImpact"]);
+                    if (client.youthImpact == " " || client.youthImpact == "null" || client.youthImpact == "")
+                    { client.youthImpact = "N/A"; }
+
+                    client.youthAlt = Convert.ToString(dataReader["youthAlt"]);
+                    // var Alt = Int32.TryParse(client.youthAlt, out int yalt);
+                    if (client.youthAlt == "1")
+                    { client.youthAlt = "Yes"; }
+                    if (client.youthAlt == "2")
+                    { client.youthAlt = "Maybe"; }
+                    if (client.youthAlt == "0")
+                    { client.youthAlt = "No"; }
+                    if (client.youthAlt == "")
+                    { client.youthAlt = "N/A"; }
+                    else
+                    { client.youthAlt = client.youthAlt; }
+
+                    client.youthSetting = Convert.ToString(dataReader["youthSetting"]);
+                    //   var yset = Int32.TryParse(client.youthSetting, out int ysett);
+                    if (client.youthSetting == "1")
+                    { client.youthSetting = "Yes"; }
+                    if (client.youthSetting == "2")
+                    { client.youthSetting = "Maybe"; }
+                    if (client.youthSetting == "0")
+                    { client.youthSetting = "No"; }
+                    if (client.youthSetting == "")
+                    { client.youthSetting = "N/A"; }
+                    else
+                    { client.youthSetting = client.youthSetting; }
+
+                    client.youthInjunction = Convert.ToString(dataReader["youthInjunction"]);
+                    // var Injun = Int32.TryParse(client.youthInjunction, out int ction);
+                    if (client.youthInjunction == "1")
+                    { client.youthInjunction = "Yes"; }
+                    if (client.youthInjunction == "2")
+                    { client.youthInjunction = "Maybe"; }
+                    if (client.youthInjunction == "0")
+                    { client.youthInjunction = "No"; }
+                    if (client.youthInjunction == "")
+                    { client.youthInjunction = "N/A"; }
+                    else
+                    { client.youthInjunction = client.youthInjunction; }
+
+                    clientl.Add(client);
+
+                }
+            }
+            
+            adapter.Dispose();
+            command.Dispose();
+            cnn.Close();
+            foreach (var item in clientl)
+            {
+                var fname = item.fName;
+                var lname = item.lName;
+                var dob = item.dOB;
+                var guardianName = item.guardianName;
+                var guardianlName = item.guardianlName;
+                var guardianRelationship = item.guardianRelationship;
+                var strAddress = item.address;
+                var gender = item.gender;
+                var guardianEmail = item.guardianEmail;
+                var guardianPhone = item.guardianPhone;
+                var meeting = item.meeting;
+                var youthInDuvalSchool = item.youthInDuvalSchool;
+                var youthInSchool = item.youthInSchool;
+                var issues = item.issues;
+                var currentSchool = item.currentSchool;
+                var zip = item.zip;
+                var grade = item.grade;
+                var currStatus = item.status;
+                var arrest = item.arrest;
+                var school = item.school;
+                var dateInput = item.dateInput;
+                var meetingDate = item.date;
+                var email = item.guardianEmail;
+                var reach = item.Reach;
+                var moreInfo = item.moreInfo;
+                var reason = item.reason;
+
+                var referralfname = item.referralfname;
+                var referrallname = item.referrallname;
+                var nameOrg = item.nameOrg;
+                var youthNu = item.youthNu;
+                var youthEmail = item.youthEmail;
+                var youthCit = item.youthCit;
+                var youthOffense = item.youthOffense;
+
+                var youthImpact = item.youthImpact;
+                var youthAlt = item.youthAlt;
+                var youthSetting = item.youthSetting;
+                var youthInjunction = item.youthInjunction;
+                
+                subjectemail = "Confirmation of your Referral for "+item.lName+", "+item.fName+"" ;
+                referralname = ""+item.referralfname +" " + item.referrallname+" ";
+                messagehtml = "<html><head>" +
+
+    "</head>" +
+    "<h2>Referral</h2>" +
+       " <div>" +
+        "    <h4> Detail </h4>" +
+        "    <hr/>" +
+
+           " <table style =\"width:auto;border:3px solid #003A62;border-collapse:collapse;\" > " +
+
+             " <tr> " +
+                 "<th style = \"border:1px solid black;border-collapse:collapse;padding:4px;text-align:left;font-family: Helvetica;background-color: #005199;color: white; width: 30%;table-layout: fixed;\"colspan =\"2\" > " +
+                 "<h2>Client:  " + item.lName + ",  " + item.fName + "</h2>" +
+                   "</th>" +
+            " </tr>" +
+            "<tr style =\"background-color: #e6f3ff;\" >" +
+                    "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\" > Youth's email address:</td>" +
+
+                    "<td  style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">" + item.youthEmail + "</td>" +
+
+                "</tr> " +
+                "<tr> " +
+                    "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\" > Youth's phone number: </td>" +
+                    "<td  style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">" + item.youthNu + "</td>" +
+
+                "</tr>" +
+
+                "<tr style =\"background-color: #e6f3ff;\" >" +
+                    "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\"> Gender Identity:  </td>" +
+
+                    "<td  style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">" +
+                        "" + item.gender +
+                    "</td>" +
+
+                "</tr>" +
+                "<tr>" +
+                   "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\"> Date of Birth:</td>" +
+
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">" + item.dOB + "</td>" +
+
+                "</tr>" +
+                "<tr style =\"background-color: #e6f3ff;\" >" +
+                    "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\">   Guardian's Name:</td>" +
+
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \"> " + item.guardianlName + ", " + item.guardianName + "</td>" +
+
+                "</tr>" +
+                    "<tr>" +
+                    "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\"> Guardian's relationship to the youth:</td>" +
+
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \"> " + item.guardianRelationship + "</td>" +
+
+                "</tr>" +
+                "<tr style =\"background-color: #e6f3ff;\" >" +
+                    "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\"> Street Address:</td>" +
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \"> " + item.address + "</td>" +
+    "</tr>" +
+                "<tr>" +
+                    "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\">zip</td>" +
+
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">" + item.zip + "</td>" +
+
+                "</tr>" +
+                "<tr style =\"background-color: #e6f3ff;\" >" +
+                    "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\"> Parent/Guardian's Email:</td>" +
+
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">" + item.guardianEmail + "</td>" +
+                " </tr>" +
+               " <tr>" +
+                    "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\"> Parent/Guardian's Phone Number:</td>" +
+
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">" + item.guardianPhone + "</td>" +
+
+
+                "</tr>" +
+
+                "<tr style =\"background-color: #e6f3ff;\" >" +
+                    "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\"> Does the youth have a meeting?</td>" +
+
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">" +
+                       " " + item.meeting + "<br />" +
+                    "</td>" +
+"<tr>" +
+
+        "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\">Date of Youth's Meeting:</td>" +
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">" + item.date + "</td>" +
+                "</tr>" +
+
+
+
+                "<tr style =\"background-color: #e6f3ff;\" >" +
+                    "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\"> Issues which are currently impacting the Youth:</td>" +
+
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">" + item.issues + "</td>" +
+    "</tr>" +
+                "<tr>" +
+                   " <td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\">Youth is impacted by not being in school because of the following:</td>" +
+
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">" + item.youthImpact + "</td>" +
+
+               " </tr>" +
+                "<tr style =\"background-color: #e6f3ff;\" >" +
+                    "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\">" +
+                        "Is this youth a student in a Duval County Public School? <br />" +
+                    "</td>" +
+
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">" +
+                        "" + item.youthInDuvalSchool + "" +
+                    "</td>" +
+                "</tr>" +
+                "<tr>" +
+                    "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\">" +
+                       " What is the youth's grade in school?" +
+                    "</td>" +
+
+
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">" +
+                        "" + item.grade + "<br />" +
+                    "</td>" +
+                "</tr>" +
+                "<tr style =\"background-color: #e6f3ff;\" >" +
+                    "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\">" +
+                       " Is the the youth currently attending school?<br />" +
+                    "</td>" +
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">" +
+                        "" + item.youthInSchool + "" +
+                   " </td>" +
+                "</tr>" +
+" <tr>" +
+                    "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\"> Where is the youth currently attending school?</td>" +
+
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \"> " + item.school + "</td>" +
+               " </tr>" +
+               " <tr style =\"background-color: #e6f3ff;\" >" +
+                   " <td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\">Is youth at risk of placement in alternative school, either Mattie V or Grand Park?</td>" +
+
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \"> " + item.youthAlt + "</td>" +
+                "</tr>" +
+                "<tr>" +
+                    "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\">Is youth in a self-contained educational setting(i.e.PRIDE)?</td>" +
+
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \"> " + item.youthSetting + "</td>" +
+                "</tr>" +
+               " <tr style =\"background-color: #e6f3ff;\" >" +
+                    "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\">Has a school staff person taken out an injunction against this youth?</td>" +
+
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \"> " + item.youthInjunction + "</td>" +
+                "</tr>" +
+               "<tr>" +
+                    "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\">" +
+                        "Has the youth been arrested?<br />" +
+                    "</td>" +
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">" +
+                        "" + item.arrest + "" +
+                   " </td>" +
+                "</tr>" +
+               "<tr style =\"background-color: #e6f3ff;\" >" +
+                   "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\">" +
+                       " If youth has not been arrested, is this an unsuccessful civil citation or diversion case?<br />" +
+                    "</td>" +
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">" +
+                       " " + item.youthCit + "" +
+                    "</td>" +
+                "</tr>" +
+
+                "<tr>" +
+                    "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\">" +
+                        "Was youth arrested for a school related offense? (For example, battery on a school board employee)<br />" +
+                    "</td>" +
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">" +
+                        "" + item.youthOffense + "" +
+                    "</td>" +
+               "</tr>" +
+                "<tr style =\"background-color: #e6f3ff;\" >" +
+                   " <td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\">" +
+                       " Is there anything else you would like us to know about the youth or their family?<br />" +
+                   " </td>" +
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">" +
+                      "  " + item.moreInfo + "" +
+                    "</td>" +
+                "</tr>" +
+
+                "<tr>" +
+                   " <td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\">" +
+                       " Reason for Referral?<br />" +
+                    "</td>" +
+                   " <td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">" +
+                        "" + item.reason + "" +
+                    "</td>" +
+                "</tr>" +
+
+                "<tr style =\"background-color: #e6f3ff;\" >" +
+                    "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\"> Best way to Communicate with youth:</td>" +
+
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \"> " + item.Reach + "</td>" +
+
+
+               " </tr>" +
+                "<tr>" +
+                   " <td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\"> Status:</td>" +
+
+                    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \"> " + item.status + "</td>" +
+                "</tr>" +
+                 "<tr style =\"background-color: #e6f3ff;\" >" +
+                    "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\"> Date Referral Input:</td>" +
+
+                   " <td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">" + item.dateInput + "</td>"+
+            " </tr>" +
+           " <tr>" +
+                " <td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\"> Referral Source's First Name:</td>" +
+    " <td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">" + item.referralfname+"</td>" +
+    "</tr>" +
+               "<tr style =\"background-color: #e6f3ff;\" >" +
+                   "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\"> Referral Source's Last Name:</td>" +
+    "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">" + item.referrallname+"</td>" +
+
+   "</tr>" +
+               "<tr>" +
+                    "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\"> Referral Source's Email for youth:</td>" +
+   "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \"> " + item.email+"</td>" +
+   "</tr>" +
+               "<tr style =\"background-color: #e6f3ff;\" >" +
+                   "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\"> Name of organization making referral:</td>" +
+
+                  " <td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \"> "+item.nameOrg+"</td>" +
+    "</tr>" +
+
+                "<tr>" +
+                   "<td style =\" padding: 11px;text-align: right;border: 1px solid black;border-collapse: collapse; width: 30%; table-layout: fixed;\"> File:</td>" +
+
+                   "<td style =\" padding: 11px;text-align: left;border: 1px solid black;border-collapse: collapse; \">file </td></tr></table></div> <html>";
+            }
+            //got the information
+            //now put it in a html string
+
+
+
+            //  Main(emailaddress);
             //confirmation thank you page for submiting and give email submit referral
-            Execute(emailaddress).Wait();
+            Execute(emailaddress, messagehtml, subjectemail, referralname, htmlplain).Wait();
 
             return RedirectToAction("Index", "Home");
 
         }
 
-        static async Task Execute(string emailaddress)
-        {
-            //    Execute().Wait();
+        static async Task Execute(string emailaddress, string messagehtml, string subjectemail, string referralname, string htmlplain)
+        {  
+
+            //if statments pertaining to if the table doesn't have a clientCode in it display all the variable for the table as N/A
+            //SqlCommand commandd = cnnn.CreateCommand();
+           //    Execute().Wait();
             //}
-           
+
 
             //static async Task Execute()
             //{
             var apiKey = Environment.GetEnvironmentVariable("API_KEY");
             var client = new SendGridClient(apiKey);
             var from = new EmailAddress("n01057930@unf.edu", "The Center for Children's Rights");
-            var subject = "Ex. The Center for Children's Rights Referral Confirmation";
-            var to = new EmailAddress(emailaddress, "Referral Source");
-            var plainTextContent = "Waiting for the template form from betsy on what is wanted in this section";
-            var htmlContent = "<strong>Waiting for the template form from betsy on what is wanted in this section</strong>";
+            var subject = subjectemail;
+            var to = new EmailAddress(emailaddress, referralname);
+            var plainTextContent = htmlplain;
+            var htmlContent = messagehtml;
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             var response = await client.SendEmailAsync(msg);
 
         }
+        [Route("api/blobs/upload")]
+        public async Task fileAsync(IFormFile imageToUpload, Guid herefiles, Guid key)
+        {
+            //string here = file;
+            // string delimiter = "\" \"";
+            // Array file1 = new Array[here.Split(delimiter).Length];
+
+            var connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
+
+            if (imageToUpload != null)
+
+              {
+                
+                CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(connectionString);
+                //create a block blob    
+                CloudBlobClient cloudBlobClient = cloudStorageAccount.CreateCloudBlobClient();
+                //create a container    
+                CloudBlobContainer cloudBlobContainer = cloudBlobClient.GetContainerReference(herefiles.ToString()); ;
+                //create a container if it is not already exists    
+                if (await cloudBlobContainer.CreateIfNotExistsAsync())
+                {
+                    await cloudBlobContainer.SetPermissionsAsync(new BlobContainerPermissions
+                    {
+                        PublicAccess = BlobContainerPublicAccessType.Blob
+                    });
+                }
+                string _imageName = key.ToString();
+                    //+ "-" + Path.GetExtension(imageToUpload.FileName);
+                //get Blob reference    
+                CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(_imageName);
+                cloudBlockBlob.Properties.ContentType = imageToUpload.ContentType;
+                await cloudBlockBlob.UploadFromStreamAsync(imageToUpload.OpenReadStream());
+               string url = cloudBlockBlob.Uri.ToString();
+              
+
+
+            }
+        }
+
+      
+
+   
+        public async Task<IActionResult> DownloadFile(Guid clientCode)
+       
+        {
+            SqlConnection cnn;
+            cnn = new SqlConnection(cconnectionString);
+            cnn.Open();//Connect
+            object keyobj = new SqlCommand("SELECT pk FROM dbo.attachments WHERE clientCode = '" + clientCode + "'", cnn).ExecuteScalar();
+            //Guid herefiles = herefilesobj.Guid();
+            Guid key = (Guid)keyobj;
+            //object keyobj = new SqlCommand("SELECT key FROM dbo.attachments WHERE clientCode = '" + clientCode + "'", cnn).ExecuteScalar();
+            Guid herefiles = (Guid)clientCode;
+           
+            cnn.Close();
+            //string here = file;
+            // string delimiter = "\" \"";
+            // Array file1 = new Array[here.Split(delimiter).Length];
+
+            var connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
+
+            //container name
+            var _containerName = herefiles.ToString();
+            //get connecction
+            // var accessKey = "lvdAzGhhkgVmyuh7zYWZ71SBUdPkvvENfwUWv4NUuq5BKgAuB8vMMIeH/dU6nKMm5QlFMf1Pw9CS81cUaUr6JQ==";
+
+            CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(connectionString);
+
+            CloudBlobClient _blobClient = cloudStorageAccount.CreateCloudBlobClient();
+            //get container
+            CloudBlobContainer _cloudBlobContainer = _blobClient.GetContainerReference(_containerName);
+            //get blob reference
+            //sql
+            Debug.WriteLine("here");
+
+
+            CloudBlockBlob _blockBlob = _cloudBlobContainer.GetBlockBlobReference(key.ToString());
+
+            MemoryStream ms = new MemoryStream();
+            await _blockBlob.DownloadToStreamAsync(ms);
+            Stream blobStream = _blockBlob.OpenReadAsync().Result;
+            Debug.WriteLine(_blockBlob.Properties.ContentType);
+            Debug.WriteLine(_blockBlob.Name);
+            string endtag = null;
+            if (_blockBlob.Properties.ContentType == "text/plain")
+            { endtag = ".txt"; }
+            if (_blockBlob.Properties.ContentType == "application/pdf")
+            { endtag = ".pdf"; }
+            return File(blobStream, "application/pdf", _blockBlob.Name + endtag);
+        }
+
+        public async Task<IActionResult> DeleteFile(Guid clientCode)
+
+        {
+            SqlConnection cnn;
+            cnn = new SqlConnection(cconnectionString);
+            cnn.Open();//Connect
+            object keyobj = new SqlCommand("SELECT pk FROM dbo.attachments WHERE clientCode = '" + clientCode + "'", cnn).ExecuteScalar();
+
+            //Guid herefiles = herefilesobj.Guid();
+            Guid key = (Guid)keyobj;
+            //object keyobj = new SqlCommand("SELECT key FROM dbo.attachments WHERE clientCode = '" + clientCode + "'", cnn).ExecuteScalar();
+            Guid herefiles = (Guid)clientCode;
+
+            cnn.Close();
+            SqlConnection cnnn;
+            cnnn = new SqlConnection(cconnectionString);
+            cnnn.Open();//Connect
+            new SqlCommand("DELETE FROM attachments WHERE clientCode = '" + clientCode + "'", cnnn).ExecuteScalar();
+            cnnn.Close();
+            //string here = file;
+            // string delimiter = "\" \"";
+            // Array file1 = new Array[here.Split(delimiter).Length];
+
+            var connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
+
+            //container name
+            var _containerName = herefiles.ToString();
+            //get connecction
+            // var accessKey = "lvdAzGhhkgVmyuh7zYWZ71SBUdPkvvENfwUWv4NUuq5BKgAuB8vMMIeH/dU6nKMm5QlFMf1Pw9CS81cUaUr6JQ==";
+
+            CloudStorageAccount cloudStorageAccount = CloudStorageAccount.Parse(connectionString);
+
+            CloudBlobClient _blobClient = cloudStorageAccount.CreateCloudBlobClient();
+            //get container
+            CloudBlobContainer _cloudBlobContainer = _blobClient.GetContainerReference(_containerName);
+            //get blob reference
+            //sql
+            Debug.WriteLine("here");
+
+
+            CloudBlockBlob _blockBlob = _cloudBlobContainer.GetBlockBlobReference(key.ToString());
+            await _blockBlob.DeleteAsync();
+            string url =  Request.Headers["Referer"].ToString();
+
+            return Redirect(url);
+           
+        
+            
+        }
+
+        //}
+        //public FileContentResult GetFile(Guid fileId)
+        //{
+        //    var stream = await _blockBlob.OpenReadAsync();
+        //    return File(stream, _blockBlob.Properties.ContentType);
+        //}
+        //public void ConfigureServices(IServiceCollection services)
+        //{
+
+        //    services.AddHttpContextAccessor();
+
+        //}
+
     }
-}
+    }

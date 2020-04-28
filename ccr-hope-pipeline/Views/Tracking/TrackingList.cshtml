@@ -107,9 +107,10 @@
     .dropdown:hover .dropdown-content {
         display: block;
     }
+
     /* Change the background color of the dropdown button when the dropdown content is shown */
     .dropdown:hover .dropbtn {
-        background-color: #3e8e41;
+        background-color: #2b52b3;
     }
     table {
             font-family: arial, sans-serif;
@@ -168,9 +169,9 @@
                     
                 </td>
                 <td>
-                    <button class="button4 button1 button1" onclick="window.location.href = '@Url.Action("MeetingList", "Tracking",new { Area = "", clientCode =@item.clientCode})'">Meetings</button> 
+                    <button class="button4 button2 button1" onclick="window.location.href = '@Url.Action("MeetingList", "Tracking",new { Area = "", clientCode =@item.clientCode})'">Meetings</button> 
                     <div class="dropdown">
-                        <button class="button4 dropbtn">Change Status</button>
+                        <button class="button4 button2 button1 dropbtn">Change Status</button>
                         <div class="dropdown-content">
                             <a asp-controller="Tracking" asp-action="ChangeStatus" asp-route-clientCode="@item.clientCode" asp-route-status="1">"Open"</a>
                             <a asp-controller="Tracking" asp-action="ChangeStatus" asp-route-clientCode="@item.clientCode" asp-route-status="0">"Closed"</a>

@@ -21,8 +21,6 @@ using System.Reflection.Metadata;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
-using Microsoft.WindowsAzure.Storage.Blob;
-using Microsoft.AspNetCore.Http;
 using FFImageLoading;
 using Microsoft.Azure;
 using Microsoft.Extensions.DependencyInjection;

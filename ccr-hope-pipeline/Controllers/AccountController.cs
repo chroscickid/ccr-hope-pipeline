@@ -30,6 +30,7 @@ namespace HopePipeline.Controllers
         [AllowAnonymous]
         public ActionResult Login()
         {
+            
             return View();
         }
 

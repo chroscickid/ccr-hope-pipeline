@@ -5,7 +5,7 @@
 
 //Generate Reports
 //...
-require('dotenv').config();
+//require('dotenv').config();
 console.log(process.env);
 
 function addSearchField(count) {

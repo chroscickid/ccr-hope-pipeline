@@ -6,120 +6,78 @@
 }
 
 <h2 id="hey">Summary Statistics</h2>
-    
 
 
-<div>
-    
+<style>
+    .content {
+       
+        margin: auto;
+    }
+</style>
 
+<div class="content">
     <script src="https://cdn.plot.ly/plotly-1.2.0.min.js"></script>
     <div id="gender" style="width:500px;height:500px;"></div>
     <div id="race" style="width:500px;height:500px;"></div>
-    <div id="edu" style="width:500px;height:500px;"></div>
+    <div id="edu" style="width:1000px;height:500px;"></div>
     <div id="ref" style="width:500px;height:500px;"></div>
     <div id="advo" style="width:1000px;height:500px"></div>
 
     <script>
         var genderIdentities = @Html.Raw(Json.Serialize(@ViewData["GenderIdentities"]));
         var genderCounts = @Html.Raw(Json.Serialize(@ViewData["GenderCounts"]));
-
-        console.log(genderIdentities);
-        console.log(genderCounts);
+        var refGenderIdentities = @Html.Raw(Json.Serialize(@ViewData["RefGenResults"]));
+        var refGenderCounts = @Html.Raw(Json.Serialize(@ViewData["RefGenCntResults"]));
 
         GENDER = document.getElementById('gender');
-
-        /*var trace1 = {
-            x: ['Client', 'Referral'],
-            y: [4, 9],
-            width: [0.8],
-            name: ['Male'],
-            type: 'bar'
-        };
-
-        var trace2 = {
-            x: ['Client', 'Referral'],
-            y: [8, 9],
-            width: [0.8],
-            name: ['Female'],
-            type: 'bar'
-        };
-
-        var trace3 = {
-            x: ['Client', 'Referral'],
-            y: [2, 4],
-            width: [0.8],
-            name: ['Nonbinary'],
-            type: 'bar'
-        };
-
-        var trace4 = {
-            x: ['Client', 'Referral'],
-            y: [3, 5],
-            width: [0.8],
-            name: ['Trans*'],
-            type: 'bar'
-        };
-
-        var data = [trace1, trace2, trace3, trace4];
-
-        var layout = {
-            barmode: 'stack',
-            title: 'Gender Breakdown'
-        };*/
-
+      
         var trace1 = {
             type: 'bar',
             x: genderIdentities,
             y: genderCounts,
+            name: 'Client',
             orientation: 'v'
         };
-
-        var data = [trace1];
-
+        var trace2 = {
+            type: 'bar',
+            x: refGenderIdentities,
+            y: refGenderCounts,
+            name: 'Referral',
+            orientation: 'v'
+        }
+        var data = [trace1, trace2];
         var layout = {
-            title: 'Gender Breakdown',
+            title: 'Gender Breakdown by Client and Referral',
             xaxis: {title: 'Gender Identities' },
             yaxis: {text: 'Number of Clients' }
         };
 
-        Plotly.newPlot(gender, data, layout);
+         Plotly.newPlot(gender, data, layout);
+    
 
     </script>
 
 
     <script>
 
+        var Ethnicities = @Html.Raw(Json.Serialize(@ViewData["Ethnicities"]));
+        var EthnicityCounts = @Html.Raw(Json.Serialize(@ViewData["EthnicityCounts"]));
+
         RACE = document.getElementById('race');
 
         var trace1 = {
-            x: ['Client', 'Referral'],
-            y: [4, 2],
-            width: [0.8],
-            name: ['Black'],
-            type: 'bar'
+            type: 'bar',
+            x: Ethnicities,
+            y: EthnicityCounts,
+            orientation: 'v'
         };
 
-        var trace2 = {
-            x: ['Client', 'Referral'],
-            y: [5, 1],
-            width: [0.8],
-            name: ['White'],
-            type: 'bar'
-        };
-
-        var trace3 = {
-            x: ['Client', 'Referral'],
-            y: [6, 4],
-            width: [0.8],
-            name: ['Latino'],
-            type: 'bar'
-        };
-
-        var data = [trace1, trace2, trace3];
+        var data = [trace1];
 
         var layout = {
-            barmode: 'stack',
-            title: 'Race Breakdown'
+            title: ' Client Race Breakdown',
+            xaxis: { title: 'Ethnicity' },
+            yaxis: { text: 'Number of Clients' }
         };
 
         Plotly.newPlot(race, data, layout);
@@ -135,11 +93,12 @@
             type: 'bar',
             x: [20, 14, 23, 5, 7, 23],
             y: ['Has an IEP/504', 'Not in School', 'Suspended >3 times in a year', 'Baker Acted', 'Alternative School', 'Failed a Grade'],
-            orientation: 'h'
+            orientation: 'h',
+            
         }];
 
         var layout = {
-            title: 'Referring Educational Issue'
+            title: 'Referring Educational Issue',
         };
 
         Plotly.newPlot(edu, data, layout);

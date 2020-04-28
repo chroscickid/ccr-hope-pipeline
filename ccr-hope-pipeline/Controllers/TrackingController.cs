@@ -112,7 +112,7 @@ namespace HopePipeline.Controllers
 
             
             reader.Close();
-
+            cnn.Close();
             //We push it into the model that gets sent to the view
             newF.referralBrandi = relRef;
 
@@ -217,7 +217,7 @@ namespace HopePipeline.Controllers
                 results.Add(row);
             }
             reader.Close();
-
+            cnn.Close();
             return View("TrackingList", results);
         }
 
@@ -236,7 +236,7 @@ namespace HopePipeline.Controllers
             command = new SqlCommand(query, cnn);
             SqlDataReader reader = command.ExecuteReader();
             reader.Close();
-
+            cnn.Close();
 
             //  return RedirectToAction("MeetingList", meet.clientCode);
             return Redirect("MeetingList?clientCode=" + meet.clientCode);
@@ -264,7 +264,7 @@ namespace HopePipeline.Controllers
             }
             reader.Close();
             results.Sort();
-
+            cnn.Close();
             if (results.Count != 0)
                 return results[0].ToString("MM-dd-yyyy");
             else
@@ -307,7 +307,7 @@ namespace HopePipeline.Controllers
             }
             reader.Close();
 
-
+            cnn.Close();
 
             return View("MeetingList", sendme);
         }
@@ -324,7 +324,7 @@ namespace HopePipeline.Controllers
             command = new SqlCommand(query, cnn);
             SqlDataReader reader = command.ExecuteReader();
             reader.Close();
-
+            cnn.Close();
             return RedirectToAction("MeetingList", clientCode);
 
         }
@@ -391,6 +391,7 @@ namespace HopePipeline.Controllers
                 results.Add(row);
             }
             reader2.Close();
+            cnn.Close();
             return View("TrackingList", results);
         }
 
@@ -448,7 +449,7 @@ namespace HopePipeline.Controllers
                 SqlDataReader reader2 = command.ExecuteReader();
                 reader2.Close();
             }
-
+            cnn.Close();
 
             return RedirectToAction("TrackingList");
         }
@@ -505,7 +506,7 @@ namespace HopePipeline.Controllers
             var mod = new TrackingAssign();
             mod.list = results;
             mod.referralClientCode = clientCode;
-
+            cnn.Close();
             return View("AssignTrackingList", mod);
         }
 
@@ -557,7 +558,7 @@ namespace HopePipeline.Controllers
             }
             results.studentName = fname + " " + lname;
 
-
+            cnn.Close();
             return View("RefTrackList", results);
             }
        
@@ -581,7 +582,7 @@ namespace HopePipeline.Controllers
             reader.Close();
             reader = command.ExecuteReader();
             reader.Close();
-
+            cnn.Close();
             return RedirectToAction("RefList", "Referral");
 
         }
